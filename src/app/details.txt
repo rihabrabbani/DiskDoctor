@@ -1,0 +1,40 @@
+have attached photos for you to create a complete landing page of this number of sections and you are supposed to follow the styling for creating a landing page following similar inspirational design you have to use photos as well in hd from internet and you have to use tailwand css provided that it is already configured try to copy the layout of pasted image add a little bit animations / hover / scroll animations and following are the other details :
+•
+•
+3
+Colors: Predominantly white or light gray backgrounds for a clean look, black or charcoal for
+primary text, and the distinctive red (from the logo’s cross) as an accent color. Red will be used
+sparingly to draw attention to calls-to-action, links, or important highlights (e.g. “Free Evaluation”
+buttons, or stats). In dark mode, expect a near-black background (#121212 or similar) and soft
+whites for text , with the red accent slightly muted if needed to avoid eye strain . We will
+avoid pure black backgrounds and pure white text to reduce contrast fatigue, opting for dark
+gray and off-white instead for better visual comfort .
+3
+4
+Typography: Use a clean, sans-serif font throughout for a contemporary, professional
+appearance. For example, a font family like Helvetica Neue, Open Sans, or Roboto (to be
+decided in design) could be used for body text and headings. Headings will be bold and clear,
+while body text will be easily legible and set at a comfortable size (e.g. 16px or larger). We’ll
+establish a clear type scale (e.g. H1, H2, H3, body, small text) and consistent styling for each. The
+2
+tone of the typography should reflect the brand’s expertise and approachability – professional
+but not overly stiff.
+•
+•
+Imagery & Icons: The site will use imagery that evokes technology, trust, and efficiency. This
+may include photographs of clean data center environments, satisfied clients (if available), or
+abstract graphics related to data. Images will be high-quality but used selectively to avoid clutter– for example, one strong hero image or background per key page. Any icons (for services or
+features) will be simple line icons or minimalist illustrations, likely in monochrome or the accent
+red, to maintain visual consistency. We’ll ensure icons match the brand’s style (e.g. using a
+consistent icon library or styleguide). The red cross motif (from the logo) might subtly appear in
+design elements (like a plus-sign graphic in backgrounds or section dividers) to reinforce brand
+identity without being distracting.
+Tone & Personality: The overall tone conveyed through visuals and copy will be assuring and
+expert. We want visitors to feel that Disk Doctors is seasoned (30+ years in business),
+trustworthy (with big-name clients and certifications), and cutting-edge (adopting modern
+design like dark mode and responsive behavior). The design will therefore avoid gimmicks or
+overly trendy elements that might undermine a timeless, professional feel. Instead, we lean on
+classic design fundamentals – strong alignment, clear hierarchy, and consistency – which
+together signal reliability
+
+change and create all this in this page.tsx dont create any additional tailwand file and dont change any tailwand file, you can change global.css to create a overall color scheming

@@ -1,26 +1,187 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+:root {
+  /* Primary palette */
+  --color-primary-50: #e6f7ee;
+  --color-primary-100: #c2ebd6;
+  --color-primary-200: #9fdebf;
+  --color-primary-300: #7ad1a7;
+  --color-primary-400: #56c490;
+  --color-primary-500: #32b77a;
+  --color-primary-600: #00a864;
+  --color-primary-700: #00905a;
+  --color-primary-800: #00794f;
+  --color-primary-900: #006344;
+
+  /* Accent palette (red tones) */
+  --color-accent-50: #fff1f1;
+  --color-accent-100: #ffe1e1;
+  --color-accent-200: #ffc7c7;
+  --color-accent-300: #ffa0a0;
+  --color-accent-400: #ff7a7a;
+  --color-accent-500: #ff5252;
+  --color-accent-600: #ff0000;
+  --color-accent-700: #d70000;
+  --color-accent-800: #b10000;
+  --color-accent-900: #8a0000;
+
+  /* Neutral palette */
+  --color-neutral-50: #f8f9fa;
+  --color-neutral-100: #f1f3f5;
+  --color-neutral-200: #e9ecef;
+  --color-neutral-300: #dee2e6;
+  --color-neutral-400: #ced4da;
+  --color-neutral-500: #adb5bd;
+  --color-neutral-600: #6c757d;
+  --color-neutral-700: #495057;
+  --color-neutral-800: #343a40;
+  --color-neutral-900: #212529;
+
+  /* Background & foreground */
+  --color-background: var(--color-neutral-50);
+  --color-foreground: var(--color-neutral-900);
+  
+  /* Surface colors */
+  --color-surface-100: #ffffff;
+  --color-surface-200: var(--color-neutral-100);
+  --color-surface-300: var(--color-neutral-200);
+  
+  /* Brand colors */
+  --color-primary: var(--color-primary-600);
+  --color-primary-hover: var(--color-primary-700);
+  --color-primary-focus: var(--color-primary-500);
+  
+  --color-accent: var(--color-accent-600);
+  --color-accent-hover: var(--color-accent-700);
+  --color-accent-focus: var(--color-accent-500);
+  
+  /* Typography */
+  --color-text-primary: var(--color-neutral-900);
+  --color-text-secondary: var(--color-neutral-700);
+  --color-text-tertiary: var(--color-neutral-600);
+  --color-text-inverse: white;
+
+  /* Border */
+  --color-border: var(--color-neutral-300);
+  --color-border-hover: var(--color-neutral-400);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
+  /* Font config */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Dark mode background & foreground */
+    --color-background: #121212;
+    --color-foreground: #f5f5f5;
+    
+    /* Dark mode surface colors */
+    --color-surface-100: #1e1e1e;
+    --color-surface-200: #252525;
+    --color-surface-300: #2e2e2e;
+    
+    /* Dark mode primary palette adjustments */
+    --color-primary: var(--color-primary-500);
+    --color-primary-hover: var(--color-primary-400);
+    --color-primary-focus: var(--color-primary-600);
+
+    /* Dark mode accent palette adjustments */
+    --color-accent: var(--color-accent-500);
+    --color-accent-hover: var(--color-accent-400);
+    --color-accent-focus: var(--color-accent-600);
+    
+    /* Dark mode typography */
+    --color-text-primary: #f5f5f5;
+    --color-text-secondary: #d1d1d1;
+    --color-text-tertiary: #a0a0a0;
+    
+    /* Dark mode border */
+    --color-border: #333333;
+    --color-border-hover: #444444;
+    
+    /* Dark mode shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Typography styles */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-primary);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+p {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* Container responsiveness */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
 }

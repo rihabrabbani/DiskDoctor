@@ -7,15 +7,15 @@ import ServiceFeatures from '@/components/new_components/ServiceFeatures';
 import ServiceProcess from '@/components/new_components/ServiceProcess';
 import ServiceCTA from '@/components/new_components/ServiceCTA';
 
-// Updated interface to match Next.js App Router requirements
+// Updated interface to match Next.js 15 App Router requirements
 type ServiceParams = {
   service: string;
 };
 
-// Correct interface definition to satisfy PageProps constraint
+// Correct interface definition for Next.js 15 - params is now a Promise
 interface ServicePageProps {
-  params: ServiceParams;
-  searchParams?: Record<string, string | string[] | undefined>;
+  params: Promise<ServiceParams>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
 // Generate static params for all services
@@ -25,8 +25,9 @@ export async function generateStaticParams(): Promise<ServiceParams[]> {
   }));
 }
 
-export default function ServicePage({ params }: ServicePageProps) {
-  const { service } = params;
+export default async function ServicePage({ params }: ServicePageProps) {
+  // Await the params since it's now a Promise in Next.js 15
+  const { service } = await params;
   const serviceData = allServices.find(s => s.id === service);
   
   if (!serviceData) {
@@ -150,7 +151,8 @@ export default function ServicePage({ params }: ServicePageProps) {
 
 // Also fix the metadata function with the updated type
 export async function generateMetadata({ params }: ServicePageProps) {
-  const { service } = params;
+  // Await the params since it's now a Promise in Next.js 15
+  const { service } = await params;
   const serviceData = allServices.find(s => s.id === service);
   
   if (!serviceData) {

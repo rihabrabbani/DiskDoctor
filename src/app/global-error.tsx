@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 export default function GlobalError({
-  error,
   reset,
 }: {
   error: Error & { digest?: string };

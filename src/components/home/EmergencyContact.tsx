@@ -63,7 +63,7 @@ export default function EmergencyContact() {
               Need <span className="text-[var(--color-primary)]">Emergency</span> Data Recovery?
             </h2>
             <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] mb-8 leading-relaxed">
-              Don't let data loss stop your business. Contact our emergency recovery team now for immediate assistance.
+              Don&#39;t let data loss stop your business. Contact our emergency recovery team now for immediate assistance.
             </p>
           </motion.div>
           

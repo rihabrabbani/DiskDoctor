@@ -1,16 +1,11 @@
 'use client';
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from "next/image";
 import { caseStudies } from '@/data/caseStudies';
 import CarouselControls from '../ui/CarouselControls';
 
-const slideVariants = {
-  enter: { opacity: 0, x: 100 },
-  center: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: -100 }
-};
 
 const containerVariants = {
   hidden: { opacity: 0 },

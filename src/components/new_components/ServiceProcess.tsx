@@ -45,7 +45,7 @@ export default function ServiceProcess({
   accentColor = 'var(--color-primary)'
 }: ServiceProcessProps) {
   const useDetailedSteps = process.detailedSteps && process.detailedSteps.length > 0;
-  const stepsToShow = useDetailedSteps ? process.detailedSteps! : process.steps.map((step, index) => ({
+  const stepsToShow = useDetailedSteps ? process.detailedSteps! : process.steps.map((step) => ({
     title: step,
     description: '',
     duration: '',

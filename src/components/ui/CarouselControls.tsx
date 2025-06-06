@@ -9,7 +9,6 @@ interface CarouselControlsProps {
 export default function CarouselControls({
   handlePrev,
   handleNext,
-  totalSlides,
   activeSlide,
   displayedSlides
 }: CarouselControlsProps) {

@@ -60,7 +60,7 @@ export function AnimatedSection({
 }: {
   children: React.ReactNode;
   className?: string;
-  variant?: any;
+  variant?: import('framer-motion').Variants;
   delay?: number;
   duration?: number;
 }) {

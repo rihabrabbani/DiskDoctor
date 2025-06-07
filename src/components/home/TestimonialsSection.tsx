@@ -121,7 +121,7 @@ export default function TestimonialsSection() {
           viewport={{ once: true, amount: 0.3 }}
           variants={headerVariants}
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-[var(--color-text-primary)]">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-6 !text-[#212529]">
             Client <span className="text-[var(--color-primary)]">Success Stories</span>
           </h2>
           <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] leading-relaxed">

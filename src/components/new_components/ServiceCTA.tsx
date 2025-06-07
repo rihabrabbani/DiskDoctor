@@ -56,7 +56,7 @@ export default function ServiceCTA({
             </motion.div>
           )}
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--color-text-primary)] mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight !text-[#212529] mb-6">
             {ctaSection.title}
           </h2>
           <p className="text-lg lg:text-xl text-[var(--color-text-secondary)] mb-8 leading-relaxed max-w-3xl mx-auto">

@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { serviceRoutes, mainNavItems } from '@/data/navigation';
 import Image from 'next/image';
-import Logo from '@/../public/images/DiskDoctor_Newlogo.png';
+import Dark_logo from '@/../public/images/Dark_mode.png';
+import Light_logo from '@/../public/images/light_mode.png'
 import { useTheme } from '@/contexts/ThemeContext';
 
 const mobileMenuVariants = {
@@ -99,9 +100,9 @@ export default function Header() {
                   className="flex items-center"
                 >
                   <Image 
-                      src={Logo} 
+                      src={theme === 'dark' ? Dark_logo : Light_logo}
                       alt="Disk Doctor Logo"                   
-                      className="object-contain h-14 w-auto max-w-[180px]"
+                      className="object-contain h-12 w-auto max-w-[180px]"
                       width={180}
                       height={32}
                       priority
@@ -226,7 +227,7 @@ export default function Header() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-                <Link href="/#quote" className="px-2 py-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] w-[calc(50%+10%)] text-white rounded-lg font-medium transition-all duration-300">
+                <Link href="/#quote" className="px-2 py-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-medium text-center transition-all duration-300">
                 FREE QUOTE
                 </Link>
             </motion.div>

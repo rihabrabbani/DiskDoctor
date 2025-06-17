@@ -174,12 +174,26 @@ export default function Header() {
               </AnimatePresence>
             </div>
 
+            {/* Add BLOG navigation item */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
+            >
+              <Link 
+                href="/blog" 
+                className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300"
+              >
+                BLOG
+              </Link>
+            </motion.div>
+
             {mainNavItems.slice(1).map((item, index) => (
               <motion.div
                 key={item.href}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.4 + (index * 0.1) }}
+                transition={{ duration: 0.3, delay: 0.5 + (index * 0.1) }}
               >
                 <Link 
                   href={item.href} 
@@ -303,6 +317,17 @@ export default function Header() {
                       </motion.div>
                     )}
                   </AnimatePresence>
+                </motion.div>
+                
+                {/* Add BLOG to mobile menu */}
+                <motion.div variants={menuItemVariants}>
+                  <Link 
+                    href="/blog" 
+                    className="block text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-surface-200)] transition-colors duration-300 py-3 px-2 rounded-lg"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    BLOG
+                  </Link>
                 </motion.div>
                 
                 {/* Other Navigation Items */}

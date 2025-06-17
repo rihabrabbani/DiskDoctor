@@ -5,11 +5,12 @@ const path = require('path');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const { MongoClient, ServerApiVersion } = require('mongodb');
+require('dotenv').config({ path: './var.env' });
+
 
 const app = express();
 const PORT = 5000;
-const uri = "mongodb+srv://rabbani:6261626a@cluster0.yjsxebt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
+const uri = process.env.MONGODB_URI
 
 // MongoDB Configuration
 

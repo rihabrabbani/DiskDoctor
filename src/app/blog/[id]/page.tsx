@@ -41,7 +41,7 @@ export default function BlogPost({ params }: BlogPostProps) {
 
   const fetchBlog = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/blogs/${id}`);
+      const response = await fetch(`https://diskdoctor.onrender.com/api/blogs/${id}`);
       const data = await response.json();
       
       if (data.success) {

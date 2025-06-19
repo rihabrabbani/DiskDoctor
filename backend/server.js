@@ -5,12 +5,20 @@ const path = require('path');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const { v2: cloudinary } = require('cloudinary');
 require('dotenv').config({ path: './var.env' });
 
 
 const app = express();
 const PORT = 5000;
 const uri = process.env.MONGODB_URI
+
+// Cloudinary Configuration
+cloudinary.config({ 
+  cloud_name: 'dgzsfe5ci', 
+  api_key: '667377418472197', 
+  api_secret: process.env.CLOUDINARY_API_SECRET || 'your_api_secret_here'
+});
 
 // MongoDB Configuration
 
@@ -51,24 +59,9 @@ connectToMongoDB();
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Create uploads directory if it doesn't exist
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
-}
-
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(file.originalname)}`;
-    cb(null, uniqueName);
-  }
-});
+// Configure multer for file uploads (temporary storage)
+const storage = multer.memoryStorage(); // Changed to memory storage instead of disk storage
 
 const upload = multer({ 
   storage,
@@ -83,6 +76,34 @@ const upload = multer({
     fileSize: 10 * 1024 * 1024 // 10MB limit
   }
 });
+
+// Helper function to upload image to Cloudinary
+const uploadToCloudinary = async (fileBuffer, options = {}) => {
+  return new Promise((resolve, reject) => {
+    const uploadOptions = {
+      folder: 'blog_images',
+      resource_type: 'auto',
+      ...options
+    };
+
+    // Convert buffer to data URI for Cloudinary upload
+    const b64 = Buffer.from(fileBuffer).toString('base64');
+    const dataURI = `data:image/jpeg;base64,${b64}`;
+    
+    cloudinary.uploader.upload(
+      dataURI,
+      uploadOptions,
+      (error, result) => {
+        if (error) {
+          console.error('Cloudinary upload error:', error);
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
 
 // Helper functions for MongoDB operations
 const getBlogsCollection = () => {
@@ -174,15 +195,40 @@ app.post('/api/blogs', upload.single('image'), async (req, res) => {
     
     const blogsCollection = getBlogsCollection();
     
+    let imageData = null;
+    
+    // Upload image to Cloudinary if provided
+    if (req.file) {
+      try {
+        const cloudinaryResponse = await uploadToCloudinary(req.file.buffer, {
+          public_id: `blog_${Date.now()}`
+        });
+        
+        imageData = {
+          url: cloudinaryResponse.secure_url,
+          publicId: cloudinaryResponse.public_id,
+          width: cloudinaryResponse.width,
+          height: cloudinaryResponse.height,
+          format: cloudinaryResponse.format,
+          originalFilename: req.file.originalname,
+          size: cloudinaryResponse.bytes
+        };
+      } catch (uploadError) {
+        console.error('Error uploading to Cloudinary:', uploadError);
+        return res.status(500).json({
+          success: false,
+          message: 'Error uploading image'
+        });
+      }
+    }
+    
     const newBlog = {
       id: uuidv4(),
       title: title.trim(),
       content: content.trim(),
       excerpt: excerpt?.trim() || content.substring(0, 150) + '...',
       tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
-      image: req.file ? `/uploads/${req.file.filename}` : null,
-      imageOriginalName: req.file ? req.file.originalname : null,
-      imageSize: req.file ? req.file.size : null,
+      image: imageData,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -242,18 +288,35 @@ app.put('/api/blogs/:id', upload.single('image'), async (req, res) => {
     
     // Handle image update
     if (req.file) {
-      // Delete old image if exists
-      if (existingBlog.image) {
-        const oldImagePath = path.join(__dirname, existingBlog.image);
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);
+      try {
+        // Delete old image from Cloudinary if exists
+        if (existingBlog.image && existingBlog.image.publicId) {
+          await cloudinary.uploader.destroy(existingBlog.image.publicId)
+            .catch(err => console.error('Error deleting image from Cloudinary:', err));
         }
+        
+        // Upload new image to Cloudinary
+        const cloudinaryResponse = await uploadToCloudinary(req.file.buffer, {
+          public_id: `blog_${Date.now()}`
+        });
+        
+        // Add new image info
+        updateData.image = {
+          url: cloudinaryResponse.secure_url,
+          publicId: cloudinaryResponse.public_id,
+          width: cloudinaryResponse.width,
+          height: cloudinaryResponse.height,
+          format: cloudinaryResponse.format,
+          originalFilename: req.file.originalname,
+          size: cloudinaryResponse.bytes
+        };
+      } catch (uploadError) {
+        console.error('Error uploading to Cloudinary:', uploadError);
+        return res.status(500).json({
+          success: false,
+          message: 'Error uploading image'
+        });
       }
-      
-      // Add new image info
-      updateData.image = `/uploads/${req.file.filename}`;
-      updateData.imageOriginalName = req.file.originalname;
-      updateData.imageSize = req.file.size;
     }
     
     const result = await blogsCollection.updateOne(
@@ -301,12 +364,10 @@ app.delete('/api/blogs/:id', async (req, res) => {
       });
     }
     
-    // Delete associated image if exists
-    if (blog.image) {
-      const imagePath = path.join(__dirname, blog.image);
-      if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
-      }
+    // Delete associated image from Cloudinary if exists
+    if (blog.image && blog.image.publicId) {
+      await cloudinary.uploader.destroy(blog.image.publicId)
+        .catch(err => console.error('Error deleting image from Cloudinary:', err));
     }
     
     // Delete blog from database

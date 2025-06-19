@@ -13,7 +13,12 @@ interface Blog {
   content: string;
   excerpt: string;
   tags: string[];
-  image: string | null;
+  image: {
+    url: string;
+    alt: string;
+    width: number;
+    height: number;
+  } | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -176,7 +181,7 @@ export default function BlogPage() {
                   {blog.image && (
                     <div className="relative w-full overflow-hidden">
                       <Image
-                        src={`http://localhost:5000${blog.image}`}
+                        src={`${blog.image.url}`}
                         alt={blog.title}
                         width={0}
                         height={0}

@@ -13,7 +13,12 @@ interface Blog {
   content: string;
   excerpt: string;
   tags: string[];
-  image: string | null;
+  image: {
+    url: string;
+    alt: string;
+    width: number;
+    height: number;
+  } | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -320,7 +325,7 @@ export default function AdminDashboard() {
                         {blog.image && (
                           <div className="flex-shrink-0 w-24 rounded-lg overflow-hidden">
                             <Image
-                              src={`http://localhost:5000${blog.image}`}
+                              src={blog.image.url}
                               alt={blog.title}
                               width={0}
                               height={0}

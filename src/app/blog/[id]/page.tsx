@@ -18,11 +18,15 @@ interface Blog {
   content: string;
   excerpt: string;
   tags: string[];
-  image: string | null;
+  image: {
+    url: string;
+    alt: string;
+    width: number;
+    height: number;
+  } | null;
   createdAt: string;
   updatedAt: string;
 }
-
 export default function BlogPost({ params }: BlogPostProps) {
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
@@ -152,7 +156,7 @@ export default function BlogPost({ params }: BlogPostProps) {
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
                   <Image
-                    src={`http://localhost:5000${blog.image}`}
+                    src={blog.image.url}
                     alt={blog.title}
                     width={0}
                     height={0}

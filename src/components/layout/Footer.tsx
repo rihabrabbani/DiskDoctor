@@ -36,24 +36,73 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {footerSections.map((section) => (
-            <div key={section.title}>
-              <h3 className="font-semibold mb-4 text-[var(--color-text-primary)]">{section.title}</h3>
-              <ul className="space-y-3">
-                {section.links.map((link, index) => (
-                  <li key={`${link.href}-${index}`}>
-                    <Link 
-                      href={link.href} 
-                      className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300 text-sm hover:underline"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          {/* Company Info */}
+          <div>
+            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
+              Disk Doctor
+            </h3>
+            <p className="text-[var(--color-text-secondary)] mb-4">
+              Professional data recovery and computer repair services. We recover your precious data and fix your technology problems.
+            </p>
+          </div>
+
+          {/* Contact Information */}
+          <div>
+            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
+              Contact Us
+            </h3>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <span className="text-[var(--color-primary)]">📞</span>
+                <a href="tel:+15712028529" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors">
+                  +1 (571) 202-8529
+                </a>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-[var(--color-primary)]">✉️</span>
+                <a href="mailto:shah4268@msn.com" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors">
+                  shah4268@msn.com
+                </a>
+              </div>
             </div>
-          ))}
+          </div>
+
+          {/* Service Areas */}
+          <div>
+            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
+              Service Areas
+            </h3>
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <span className="text-[var(--color-primary)]">📍</span>
+                <span className="text-[var(--color-text-secondary)]">Columbia, Maryland</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-[var(--color-primary)]">📍</span>
+                <span className="text-[var(--color-text-secondary)]">Tysons, Virginia</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Links from existing footer sections */}
+          <div>
+            <h3 className="font-semibold mb-4 text-[var(--color-text-primary)]">
+              {footerSections[0]?.title || 'Quick Links'}
+            </h3>
+            <ul className="space-y-3">
+              {(footerSections[0]?.links || []).map((link, index) => (
+                <li key={`${link.href}-${index}`}>
+                  <Link 
+                    href={link.href} 
+                    className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300 text-sm hover:underline"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         
         <div className="pt-8 border-t border-[var(--color-border)] flex flex-col md:flex-row justify-between items-center">

@@ -1875,7 +1875,7 @@ export const allServices: ServicePageData[] = [
     additionalContent: {
       title: 'Comprehensive File Recovery Solutions',
       description: 'Tailored recovery solutions for all file types and storage media, ensuring maximum data recovery and integrity.',
-      image: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?auto=format&fit=crop&w=800&q=80'
+      image: 'https://images.unsplash.com/photo-1569235186275-626cb53b83ce?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     ctaSection: {
       title: 'Professional File Recovery Service',
@@ -2058,7 +2058,7 @@ export const allServices: ServicePageData[] = [
     additionalContent: {
       title: 'Enterprise Virtualization Recovery',
       description: 'Complete virtual infrastructure recovery solutions for enterprise environments with advanced hypervisor support and cloud integration.',
-      image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=800&q=80'
+      image: 'https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     ctaSection: {
       title: 'Virtual Infrastructure Recovery Experts',
@@ -2257,7 +2257,7 @@ export const allServices: ServicePageData[] = [
     title: 'Data Cloning',
     subtitle: 'Professional Data Cloning & Migration',
     description: 'Expert data cloning services for system migration, backup creation, forensic imaging, and secure data transfer with bit-for-bit accuracy.',
-    heroImage: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=1106&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     layoutType: 'hero-left',
     features: [
       'Bit-for-bit Cloning',
@@ -2426,7 +2426,7 @@ export const allServices: ServicePageData[] = [
     additionalContent: {
       title: 'Professional Cloning Technology',
       description: 'State-of-the-art cloning equipment and techniques ensuring perfect data replication for migration, backup, and forensic purposes.',
-      image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=800&q=80'
+      image: 'https://plus.unsplash.com/premium_photo-1661878265739-da90bc1af051?q=80&w=1086&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     ctaSection: {
       title: 'Professional Data Cloning Services',
@@ -2441,7 +2441,7 @@ export const allServices: ServicePageData[] = [
     title: 'Data Duplication',
     subtitle: 'Secure Data Duplication & Backup Solutions',
     description: 'Professional data duplication services for backup creation, disaster recovery planning, and secure data archiving with multiple format options.',
-    heroImage: 'https://images.unsplash.com/photo-1553484771-047a44eee27b?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1640158615573-cd28feb1bf4e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     layoutType: 'hero-split',
     features: [
       'Multi-format Duplication',

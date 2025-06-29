@@ -121,8 +121,8 @@ export default function Hero() {
                 </Link>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="tel:+1-800-DISKDOC" className="px-8 py-4 bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-lg text-[var(--color-text-primary)] font-semibold hover:shadow-[var(--shadow-md)] hover:border-[var(--color-border-hover)] transition-all duration-300 text-center block">
-                  📞 Emergency: 1-800-DISKDOC
+                <Link href="tel:+1 (571) 202-8529" className="px-8 py-4 bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-lg text-[var(--color-text-primary)] font-semibold hover:shadow-[var(--shadow-md)] hover:border-[var(--color-border-hover)] transition-all duration-300 text-center block">
+                  📞 Emergency: +1 (571) 202-8529
                 </Link>
               </motion.div>
             </motion.div>

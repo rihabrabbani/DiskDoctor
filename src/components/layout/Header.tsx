@@ -61,6 +61,34 @@ export default function Header() {
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
+      {/* Contact Info Bar */}
+      <div className="hidden lg:block bg-[var(--color-surface-200)] border-b border-[var(--color-border)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-2 text-sm">
+            <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-2">
+                <span className="text-[var(--color-primary)]">📞</span>
+                <a href="tel:+15712028529" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors">
+                  +1 (571) 202-8529
+                </a>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-[var(--color-primary)]">✉️</span>
+                <a href="mailto:shah4268@msn.com" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors">
+                  shah4268@msn.com
+                </a>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4 text-[var(--color-text-secondary)]">
+              <span className="flex items-center space-x-1">
+                <span className="text-[var(--color-primary)]">📍</span>
+                <span>Columbia, MD | Tysons, VA</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-6">
@@ -235,7 +263,7 @@ export default function Header() {
               </motion.div>
             </motion.button>
             <Link href="tel:+1-800-DISKDOC" className="hidden sm:block font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-300">
-              📞 1-800-DISKDOC
+              📞 +1 (571) 202-8529
             </Link>
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -345,11 +373,11 @@ export default function Header() {
                 
                 <motion.div variants={menuItemVariants}>
                   <Link 
-                    href="tel:+1-800-DISKDOC" 
+                    href="tel:+15712028529" 
                     className="block text-sm font-medium text-[var(--color-primary)] hover:bg-[var(--color-surface-200)] transition-colors duration-300 py-3 px-2 border-t border-[var(--color-border)] mt-3 pt-4 rounded-lg"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    📞 1-800-DISKDOC (Emergency Line)
+                    📞 +1 (571) 202-8529 (Call Now)
                   </Link>
                 </motion.div>
               </motion.nav>

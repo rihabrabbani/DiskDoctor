@@ -34,17 +34,17 @@ export default function EmergencyContact() {
   const contactMethods = [
     {
       title: "24/7 Emergency Line",
-      value: "1-800-DISKDOC",
+      value: "+1 (571) 202-8529",
       icon: "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.836l1.498 4.493a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.493 1.498a1 1 0 01.684.949V17a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
     },
     {
       title: "Email Support",
-      value: "emergency@diskdoctor.com",
+      value: "shah4268@msn.com",
       icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
     },
     {
-      title: "Nationwide Service",
-      value: "Free Pickup Available",
+      title: "Service Areas",
+      value: "Columbia, MD | Tysons, VA",
       icon: "M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z"
     }
   ];
@@ -113,8 +113,8 @@ export default function EmergencyContact() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Link href="tel:+1-800-DISKDOC" className="px-8 py-4 bg-[var(--color-accent-600)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] text-center block">
-                📞 Call Emergency Line
+              <Link href="tel:+15712028529" className="px-8 py-4 bg-[var(--color-accent-600)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] text-center block">
+                📞 Call +1 (571) 202-8529
               </Link>
             </motion.div>
             <motion.div

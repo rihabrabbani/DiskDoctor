@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/components/layout/Header';
@@ -32,12 +32,13 @@ const containerVariants = {
   }
 };
 
-const cardVariants = {
+// Define cardVariants with proper typing
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { 
     opacity: 1, 
     y: 0,
-    transition: { duration: 0.6, ease: "easeOut" }
+    transition: { duration: 0.6, ease: "easeInOut" }
   }
 };
 
@@ -53,7 +54,7 @@ export default function BlogPage() {
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch('https://diskdoctor.onrender.com/api/blogs');
+      const response = await fetch('http://localhost:5000/api/blogs');
       const data = await response.json();
       if (data.success) {
         setBlogs(data.blogs);

@@ -1,10 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const heroVariants = {
+// Define variants with proper typing
+const heroVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { 
     opacity: 1, 
@@ -13,7 +14,7 @@ const heroVariants = {
   }
 };
 
-const imageVariants = {
+const imageVariants: Variants = {
   hidden: { opacity: 0, scale: 0.9 },
   visible: { 
     opacity: 1, 
@@ -22,7 +23,7 @@ const imageVariants = {
   }
 };
 
-const statsVariants = {
+const statsVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
@@ -32,7 +33,7 @@ const statsVariants = {
   }
 };
 
-const statItemVariants = {
+const statItemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
     opacity: 1, 

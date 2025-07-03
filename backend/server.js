@@ -105,6 +105,19 @@ const uploadToCloudinary = async (fileBuffer, options = {}) => {
   });
 };
 
+// Helper function to extract Cloudinary URLs from HTML content
+const extractCloudinaryUrls = (htmlContent) => {
+  const cloudinaryUrls = [];
+  const imgRegex = /<img[^>]+src="([^"]*res\.cloudinary\.com[^"]*)"[^>]*>/g;
+  let match;
+  
+  while ((match = imgRegex.exec(htmlContent)) !== null) {
+    cloudinaryUrls.push(match[1]);
+  }
+  
+  return cloudinaryUrls;
+};
+
 // Helper functions for MongoDB operations
 const getBlogsCollection = () => {
   if (!db) {
@@ -181,65 +194,76 @@ app.get('/api/blogs/:id', async (req, res) => {
   }
 });
 
+// Image upload endpoint
+app.post('/api/upload', upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'No file uploaded' });
+    }
+
+    const cloudinaryResponse = await uploadToCloudinary(req.file.buffer, {
+      public_id: `blog_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    });
+
+    res.json({
+      success: true,
+      secure_url: cloudinaryResponse.secure_url,
+    });
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    res.status(500).json({ success: false, message: 'Error uploading image' });
+  }
+});
+
 // Add new blog
-app.post('/api/blogs', upload.single('image'), async (req, res) => {
+app.post('/api/blogs', upload.array('images', 10), async (req, res) => {
   try {
     const { title, content, excerpt, tags } = req.body;
-    
+
     if (!title || !content) {
       return res.status(400).json({
         success: false,
-        message: 'Title and content are required'
+        message: 'Title and content are required',
       });
     }
-    
+
     const blogsCollection = getBlogsCollection();
+
+    let uploadedImages = [];
     
-    let imageData = null;
-    
-    // Upload image to Cloudinary if provided
-    if (req.file) {
-      try {
-        const cloudinaryResponse = await uploadToCloudinary(req.file.buffer, {
-          public_id: `blog_${Date.now()}`
+    // Extract existing Cloudinary URLs from content (images added via editor)
+    const existingCloudinaryUrls = extractCloudinaryUrls(content);
+    uploadedImages.push(...existingCloudinaryUrls);
+
+    // Upload additional images to Cloudinary (from file input)
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        const cloudinaryResponse = await uploadToCloudinary(file.buffer, {
+          public_id: `blog_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         });
-        
-        imageData = {
-          url: cloudinaryResponse.secure_url,
-          publicId: cloudinaryResponse.public_id,
-          width: cloudinaryResponse.width,
-          height: cloudinaryResponse.height,
-          format: cloudinaryResponse.format,
-          originalFilename: req.file.originalname,
-          size: cloudinaryResponse.bytes
-        };
-      } catch (uploadError) {
-        console.error('Error uploading to Cloudinary:', uploadError);
-        return res.status(500).json({
-          success: false,
-          message: 'Error uploading image'
-        });
+
+        uploadedImages.push(cloudinaryResponse.secure_url);
       }
     }
-    
+
     const newBlog = {
       id: uuidv4(),
       title: title.trim(),
       content: content.trim(),
-      excerpt: excerpt?.trim() || content.substring(0, 150) + '...',
-      tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
-      image: imageData,
+      excerpt: excerpt?.trim() || content.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
+      tags: tags ? tags.split(',').map((tag) => tag.trim()) : [],
+      images: [...new Set(uploadedImages)], // Remove duplicates
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
-    
+
     const result = await blogsCollection.insertOne(newBlog);
-    
+
     if (result.acknowledged) {
       res.status(201).json({
         success: true,
         blog: newBlog,
-        message: 'Blog created successfully'
+        message: 'Blog created successfully',
       });
     } else {
       throw new Error('Failed to insert blog');
@@ -248,13 +272,13 @@ app.post('/api/blogs', upload.single('image'), async (req, res) => {
     console.error('Error creating blog:', error);
     res.status(500).json({
       success: false,
-      message: 'Error creating blog'
+      message: 'Error creating blog',
     });
   }
 });
 
 // Update blog
-app.put('/api/blogs/:id', upload.single('image'), async (req, res) => {
+app.put('/api/blogs/:id', upload.array('images', 10), async (req, res) => {
   try {
     const { title, content, excerpt, tags } = req.body;
     const blogId = req.params.id;
@@ -276,48 +300,33 @@ app.put('/api/blogs/:id', upload.single('image'), async (req, res) => {
         message: 'Blog not found'
       });
     }
+
+    let uploadedImages = [];
+    
+    // Extract existing Cloudinary URLs from content
+    const existingCloudinaryUrls = extractCloudinaryUrls(content);
+    uploadedImages.push(...existingCloudinaryUrls);
+
+    // Upload new additional images
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        const cloudinaryResponse = await uploadToCloudinary(file.buffer, {
+          public_id: `blog_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        });
+
+        uploadedImages.push(cloudinaryResponse.secure_url);
+      }
+    }
     
     // Prepare update data
     const updateData = {
       title: title.trim(),
       content: content.trim(),
-      excerpt: excerpt?.trim() || content.substring(0, 150) + '...',
+      excerpt: excerpt?.trim() || content.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
       tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
+      images: [...new Set(uploadedImages)], // Remove duplicates
       updatedAt: new Date().toISOString()
     };
-    
-    // Handle image update
-    if (req.file) {
-      try {
-        // Delete old image from Cloudinary if exists
-        if (existingBlog.image && existingBlog.image.publicId) {
-          await cloudinary.uploader.destroy(existingBlog.image.publicId)
-            .catch(err => console.error('Error deleting image from Cloudinary:', err));
-        }
-        
-        // Upload new image to Cloudinary
-        const cloudinaryResponse = await uploadToCloudinary(req.file.buffer, {
-          public_id: `blog_${Date.now()}`
-        });
-        
-        // Add new image info
-        updateData.image = {
-          url: cloudinaryResponse.secure_url,
-          publicId: cloudinaryResponse.public_id,
-          width: cloudinaryResponse.width,
-          height: cloudinaryResponse.height,
-          format: cloudinaryResponse.format,
-          originalFilename: req.file.originalname,
-          size: cloudinaryResponse.bytes
-        };
-      } catch (uploadError) {
-        console.error('Error uploading to Cloudinary:', uploadError);
-        return res.status(500).json({
-          success: false,
-          message: 'Error uploading image'
-        });
-      }
-    }
     
     const result = await blogsCollection.updateOne(
       { id: blogId },
@@ -364,10 +373,20 @@ app.delete('/api/blogs/:id', async (req, res) => {
       });
     }
     
-    // Delete associated image from Cloudinary if exists
-    if (blog.image && blog.image.publicId) {
-      await cloudinary.uploader.destroy(blog.image.publicId)
-        .catch(err => console.error('Error deleting image from Cloudinary:', err));
+    // Delete associated images from Cloudinary
+    if (blog.images && Array.isArray(blog.images)) {
+      for (const imageUrl of blog.images) {
+        try {
+          // Extract public_id from Cloudinary URL
+          const publicIdMatch = imageUrl.match(/\/v\d+\/(.+)\./);
+          if (publicIdMatch) {
+            const publicId = publicIdMatch[1];
+            await cloudinary.uploader.destroy(publicId);
+          }
+        } catch (err) {
+          console.error('Error deleting image from Cloudinary:', err);
+        }
+      }
     }
     
     // Delete blog from database

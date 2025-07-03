@@ -1,15 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import Link from 'next/link';
 import { serviceRoutes, mainNavItems } from '@/data/navigation';
 import Image from 'next/image';
 import Dark_logo from '@/../public/images/Dark_mode.png';
-import Light_logo from '@/../public/images/light_mode.png'
+import Light_logo from '@/../public/images/light_mode.png';
 import { useTheme } from '@/contexts/ThemeContext';
 
-const mobileMenuVariants = {
+// Define variants with proper typing
+const mobileMenuVariants: Variants = {
   hidden: { 
     opacity: 0, 
     height: 0,
@@ -22,7 +23,7 @@ const mobileMenuVariants = {
   }
 };
 
-const menuItemVariants = {
+const menuItemVariants: Variants = {
   hidden: { opacity: 0, x: -20 },
   visible: { 
     opacity: 1, 

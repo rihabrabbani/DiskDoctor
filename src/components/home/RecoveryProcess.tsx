@@ -1,10 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
 import { recoverySteps } from '@/data/services';
 
-const containerVariants = {
+// Define variants with proper typing
+const containerVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
@@ -13,7 +14,7 @@ const containerVariants = {
   }
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 50, scale: 0.9 },
   visible: { 
     opacity: 1, 
@@ -28,7 +29,7 @@ const cardVariants = {
   }
 };
 
-const headerVariants = {
+const headerVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { 
     opacity: 1, 
@@ -37,7 +38,7 @@ const headerVariants = {
   }
 };
 
-const progressBarVariants = {
+const progressBarVariants: Variants = {
   hidden: { scaleX: 0 },
   visible: { 
     scaleX: 1,

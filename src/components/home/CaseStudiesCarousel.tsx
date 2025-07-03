@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useEffect, useRef } from "react";
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import Image from "next/image";
 import { caseStudies } from '@/data/caseStudies';
 import CarouselControls from '../ui/CarouselControls';
 
-
-const containerVariants = {
+// Define containerVariants with proper typing
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -17,7 +17,8 @@ const containerVariants = {
   }
 };
 
-const cardVariants = {
+// Define cardVariants with proper typing
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { 
     opacity: 1, 

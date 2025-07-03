@@ -1,10 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
 import { recoveryServices } from '@/data/services';
 
-const containerVariants = {
+// Define variants with proper typing
+const containerVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
@@ -13,7 +14,7 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { 
     opacity: 1, 
@@ -22,7 +23,7 @@ const itemVariants = {
   }
 };
 
-const headerVariants = {
+const headerVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
     opacity: 1, 

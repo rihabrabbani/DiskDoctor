@@ -1,11 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, forwardRef } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import Image from 'next/image';
+
+import dynamic from 'next/dynamic';
+import 'quill/dist/quill.snow.css';
+
+// Create a dynamic import with forwardRef
+const ReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import('react-quill-new');
+    // Explicitly type the forwarded ref component to accept ReactQuill's props
+    return forwardRef<any, any>((props, ref) => <RQ {...props} ref={ref} />);
+  },
+  { ssr: false }
+);
 
 interface Blog {
   id: string;
@@ -13,12 +26,7 @@ interface Blog {
   content: string;
   excerpt: string;
   tags: string[];
-  image: {
-    url: string;
-    alt: string;
-    width: number;
-    height: number;
-  } | null;
+  images: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -32,9 +40,12 @@ export default function AdminDashboard() {
     content: '',
     excerpt: '',
     tags: '',
-    image: null as File | null
+    images: [] as File[],
   });
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const quillRef = useRef<any>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -48,7 +59,7 @@ export default function AdminDashboard() {
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch('https://diskdoctor.onrender.com/api/blogs');
+      const response = await fetch('http://localhost:5000/api/blogs');
       const data = await response.json();
       if (data.success) {
         setBlogs(data.blogs);
@@ -60,35 +71,168 @@ export default function AdminDashboard() {
     }
   };
 
+  // Enhanced Quill modules configuration
+  const quillModules = {
+    toolbar: {
+      container: [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'align': [] }],
+        ['blockquote', 'code-block'],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'indent': '-1'}, { 'indent': '+1' }],
+        ['link', 'image'],
+        ['clean']
+      ],
+      handlers: {
+        image: imageHandler
+      }
+    },
+    clipboard: {
+      matchVisual: false,
+    }
+  };
+
+  const quillFormats = [
+    'header', 'bold', 'italic', 'underline', 'strike',
+    'color', 'background', 'align', 'blockquote', 'code-block',
+    'list', 'indent', 'link', 'image'
+  ];
+
+  // Custom image handler for Quill
+  async function imageHandler() {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (file) {
+        setUploadProgress(10);
+
+        try {
+          const formData = new FormData();
+          formData.append('image', file);
+
+          const response = await fetch('http://localhost:5000/api/upload', {
+            method: 'POST',
+            body: formData,
+          });
+
+          setUploadProgress(70);
+
+          if (!response.ok) {
+            throw new Error('Failed to upload image to Cloudinary');
+          }
+
+          const data = await response.json();
+          const imageUrl = data.secure_url;
+
+          setUploadProgress(90);
+
+          // Insert image into editor
+          const quill = quillRef.current?.getEditor();
+          if (quill) {
+            const range = quill.getSelection();
+            quill.insertEmbed(range ? range.index : 0, 'image', imageUrl);
+          }
+
+          setUploadProgress(100);
+          setTimeout(() => setUploadProgress(0), 500);
+        } catch (error) {
+          console.error('Error uploading image:', error);
+          setUploadProgress(0);
+          alert('Failed to upload image. Please try again.');
+        }
+      }
+    };
+  }
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const newImages = Array.from(files);
+      setFormData((prev) => ({
+        ...prev,
+        images: [...prev.images, ...newImages],
+      }));
+      const newPreviews = newImages.map((file) => URL.createObjectURL(file));
+      setImagePreviews((prev) => [...prev, ...newPreviews]);
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Enhanced submit handler with better error handling and progress tracking
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
-
-    const submitData = new FormData();
-    submitData.append('title', formData.title);
-    submitData.append('content', formData.content);
-    submitData.append('excerpt', formData.excerpt);
-    submitData.append('tags', formData.tags);
-    if (formData.image) {
-      submitData.append('image', formData.image);
+    
+    if (!formData.title.trim() || !formData.content.trim()) {
+      alert('Please fill in all required fields');
+      return;
     }
 
+    setSubmitting(true);
+    setUploadProgress(10);
+
     try {
-      const response = await fetch('https://diskdoctor.onrender.com/api/blogs', {
+      const submitData = new FormData();
+      submitData.append('title', formData.title.trim());
+      submitData.append('content', formData.content);
+      submitData.append('excerpt', formData.excerpt.trim());
+      submitData.append('tags', formData.tags.trim());
+      
+      setUploadProgress(20);
+
+      // Add additional images
+      if (formData.images.length > 0) {
+        formData.images.forEach((image) => {
+          submitData.append('images', image);
+        });
+        setUploadProgress(30);
+      }
+
+      setUploadProgress(50);
+
+      const response = await fetch('http://localhost:5000/api/blogs', {
         method: 'POST',
         body: submitData,
       });
 
+      setUploadProgress(80);
+
       const data = await response.json();
+      
       if (data.success) {
-        setFormData({ title: '', content: '', excerpt: '', tags: '', image: null });
+        setUploadProgress(100);
+        
+        // Reset form
+        setFormData({ title: '', content: '', excerpt: '', tags: '', images: [] });
+        setImagePreviews([]);
         setShowCreateForm(false);
-        fetchBlogs();
+        
+        // Refresh blogs list
+        await fetchBlogs();
+        
+        // Show success message
+        alert('Blog post created successfully!');
+      } else {
+        throw new Error(data.message || 'Failed to create blog post');
       }
     } catch (error) {
       console.error('Error creating blog:', error);
+      alert('Error creating blog post. Please try again.');
     } finally {
       setSubmitting(false);
+      setTimeout(() => setUploadProgress(0), 1000);
     }
   };
 
@@ -96,16 +240,20 @@ export default function AdminDashboard() {
     if (!confirm('Are you sure you want to delete this blog?')) return;
 
     try {
-      const response = await fetch(`https://diskdoctor.onrender.com/api/blogs/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
         method: 'DELETE',
       });
 
       const data = await response.json();
       if (data.success) {
         fetchBlogs();
+        alert('Blog post deleted successfully!');
+      } else {
+        throw new Error(data.message || 'Failed to delete blog post');
       }
     } catch (error) {
       console.error('Error deleting blog:', error);
+      alert('Error deleting blog post. Please try again.');
     }
   };
 
@@ -189,7 +337,7 @@ export default function AdminDashboard() {
               exit={{ opacity: 0 }}
             >
               <motion.div
-                className="bg-[var(--color-surface-100)] rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto"
+                className="bg-[var(--color-surface-100)] rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto"
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
@@ -208,6 +356,26 @@ export default function AdminDashboard() {
                   </button>
                 </div>
 
+                {/* Progress Bar */}
+                {(submitting || uploadProgress > 0) && (
+                  <div className="mb-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm text-[var(--color-text-secondary)]">
+                        {submitting ? 'Publishing...' : 'Processing...'}
+                      </span>
+                      <span className="text-sm text-[var(--color-text-secondary)]">
+                        {uploadProgress}%
+                      </span>
+                    </div>
+                    <div className="w-full bg-[var(--color-surface-200)] rounded-full h-2">
+                      <div 
+                        className="bg-[var(--color-primary)] h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${uploadProgress}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
@@ -219,6 +387,7 @@ export default function AdminDashboard() {
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-[var(--color-border)] rounded-lg bg-[var(--color-surface-100)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-sm sm:text-base"
                       required
+                      disabled={submitting}
                     />
                   </div>
 
@@ -232,6 +401,7 @@ export default function AdminDashboard() {
                       rows={3}
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-[var(--color-border)] rounded-lg bg-[var(--color-surface-100)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-sm sm:text-base"
                       placeholder="Brief description of the blog post..."
+                      disabled={submitting}
                     />
                   </div>
 
@@ -239,14 +409,18 @@ export default function AdminDashboard() {
                     <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
                       Content *
                     </label>
-                    <textarea
-                      value={formData.content}
-                      onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                      rows={8}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-[var(--color-border)] rounded-lg bg-[var(--color-surface-100)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-sm sm:text-base"
-                      placeholder="Write your blog content here..."
-                      required
-                    />
+                    <div className="quill-wrapper">
+                      <ReactQuill
+                        ref={quillRef}
+                        value={formData.content}
+                        onChange={(value: any) => setFormData({ ...formData, content: value })}
+                        modules={quillModules}
+                        formats={quillFormats}
+                        className="bg-white"
+                        readOnly={submitting}
+                        placeholder="Write your blog content here. Use the image button in the toolbar to add images directly to your content."
+                      />
+                    </div>
                   </div>
 
                   <div>
@@ -259,26 +433,17 @@ export default function AdminDashboard() {
                       onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-[var(--color-border)] rounded-lg bg-[var(--color-surface-100)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-sm sm:text-base"
                       placeholder="e.g., data recovery, tips, hardware"
+                      disabled={submitting}
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
-                      Featured Image (Optional)
-                    </label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => setFormData({ ...formData, image: e.target.files?.[0] || null })}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-[var(--color-border)] rounded-lg bg-[var(--color-surface-100)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-sm sm:text-base"
-                    />
-                  </div>
-
+                  
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 sm:space-x-4 sm:gap-0 pt-4 sm:pt-6">
                     <button
                       type="button"
                       onClick={() => setShowCreateForm(false)}
                       className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 border border-[var(--color-border)] text-[var(--color-text-primary)] rounded-lg font-medium hover:bg-[var(--color-surface-200)] transition-colors duration-300 text-sm sm:text-base"
+                      disabled={submitting}
                     >
                       Cancel
                     </button>
@@ -289,7 +454,7 @@ export default function AdminDashboard() {
                       whileHover={{ scale: submitting ? 1 : 1.05 }}
                       whileTap={{ scale: submitting ? 1 : 0.95 }}
                     >
-                      {submitting ? 'Creating...' : 'Create Blog'}
+                      {submitting ? 'Publishing...' : 'Create Blog'}
                     </motion.button>
                   </div>
                 </form>
@@ -323,10 +488,10 @@ export default function AdminDashboard() {
                       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                         <div className="flex flex-col sm:flex-row gap-4 flex-1">
                           {/* Blog Image Preview */}
-                          {blog.image && (
+                          {Array.isArray(blog.images) && blog.images.length > 0 && (
                             <div className="flex-shrink-0 w-full sm:w-20 lg:w-24 rounded-lg overflow-hidden">
                               <Image
-                                src={blog.image.url}
+                                src={blog.images[0]}
                                 alt={blog.title}
                                 width={0}
                                 height={0}

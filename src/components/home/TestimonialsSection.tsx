@@ -1,10 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import Image from "next/image";
 import { testimonials } from "@/data/testimonials";
 
-const containerVariants = {
+// Define variants with proper typing
+const containerVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
@@ -13,7 +14,7 @@ const containerVariants = {
   }
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 60, scale: 0.9 },
   visible: { 
     opacity: 1, 
@@ -28,7 +29,7 @@ const cardVariants = {
   }
 };
 
-const headerVariants = {
+const headerVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { 
     opacity: 1, 
@@ -37,7 +38,7 @@ const headerVariants = {
   }
 };
 
-const quoteVariants = {
+const quoteVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
     opacity: 1, 
@@ -46,7 +47,7 @@ const quoteVariants = {
   }
 };
 
-const avatarVariants = {
+const avatarVariants: Variants = {
   hidden: { opacity: 0, scale: 0 },
   visible: { 
     opacity: 1, 
@@ -60,7 +61,7 @@ const avatarVariants = {
   }
 };
 
-const starsVariants = {
+const starsVariants: Variants = {
   hidden: { opacity: 0, x: -20 },
   visible: { 
     opacity: 1, 
@@ -72,7 +73,7 @@ const starsVariants = {
   }
 };
 
-const starVariants = {
+const starVariants: Variants = {
   hidden: { opacity: 0, scale: 0 },
   visible: { 
     opacity: 1, 

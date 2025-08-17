@@ -240,7 +240,7 @@ export default function AdminDashboard() {
     if (!confirm('Are you sure you want to delete this blog?')) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+      const response = await fetch(`https://diskdoctor.onrender.com/api/blogs/${id}`, {
         method: 'DELETE',
       });
 

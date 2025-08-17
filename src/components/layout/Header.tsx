@@ -270,8 +270,8 @@ export default function Header() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-                <Link href="/#quote" className="px-2 py-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-medium text-center transition-all duration-300">
-                FREE QUOTE
+                <Link href="mailto:shah4268@msn.com" className="px-2 py-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-medium text-center transition-all duration-300">
+                Free Quote
                 </Link>
             </motion.div>
           </motion.div>

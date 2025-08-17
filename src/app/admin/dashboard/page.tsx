@@ -253,7 +253,7 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error('Error deleting blog:', error);
-      alert('Error deleting blog post. Please try again.');
+      alert('Error deleting blog post. Please try again!');
     }
   };
 

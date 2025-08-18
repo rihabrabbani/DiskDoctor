@@ -43,7 +43,9 @@ const menuItemsStagger = {
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isLocationsOpen, setIsLocationsOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileLocationsOpen, setMobileLocationsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   // Group services by category for desktop dropdown
@@ -54,6 +56,24 @@ export default function Header() {
     acc[service.category].push(service);
     return acc;
   }, {} as Record<string, typeof serviceRoutes>);
+
+  // Define locations data
+  const locations = [
+    {
+      name: "Columbia (Head Office)",
+      address: "10015 Old Columbia Rd Suite B 215",
+      city: "Columbia, MD 21046",
+      phone: "(410) 937-7332",
+      href: "tel:+14109377332"
+    },
+    {
+      name: "Tysons",
+      address: "8300 Boone Blvd Suite 513",
+      city: "Tysons, VA 22182", 
+      phone: "(571) 202-8529",
+      href: "tel:+15712028529"
+    }
+  ];
   
   return (
     <motion.header 
@@ -203,6 +223,73 @@ export default function Header() {
               </AnimatePresence>
             </div>
 
+            {/* Locations Dropdown */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setIsLocationsOpen(true)}
+              onMouseLeave={() => setIsLocationsOpen(false)}
+            >
+              <button className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300 flex items-center">
+                LOCATIONS
+                <motion.svg 
+                  className="ml-1 w-4 h-4" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                  animate={{ rotate: isLocationsOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </motion.svg>
+              </button>
+              
+              <AnimatePresence>
+                {isLocationsOpen && (
+                  <motion.div
+                    className="absolute top-full left-0 mt-2 w-[400px] bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-lg shadow-[var(--shadow-lg)] z-50"
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="p-6">
+                      <div className="space-y-4">
+                        {locations.map((location, index) => (
+                          <div key={index} className="p-4 rounded-lg hover:bg-[var(--color-surface-200)] transition-colors duration-200">
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <h4 className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">
+                                  {location.name}
+                                </h4>
+                                <p className="text-sm text-[var(--color-text-secondary)] mb-1">
+                                  {location.address}
+                                </p>
+                                <p className="text-sm text-[var(--color-text-secondary)] mb-2">
+                                  {location.city}
+                                </p>
+                                <Link 
+                                  href={location.href}
+                                  className="text-sm text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] font-medium transition-colors duration-200"
+                                >
+                                  {location.phone}
+                                </Link>
+                              </div>
+                              <div className="ml-3">
+                                <svg className="w-5 h-5 text-[var(--color-text-tertiary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {/* Add BLOG navigation item */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
@@ -340,6 +427,64 @@ export default function Header() {
                                   {service.label}
                                 </Link>
                               ))}
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+                
+                {/* Mobile Locations Section */}
+                <motion.div variants={menuItemVariants}>
+                  <button
+                    onClick={() => setMobileLocationsOpen(!mobileLocationsOpen)}
+                    className="w-full flex items-center justify-between py-3 px-2 text-sm font-semibold text-[var(--color-text-primary)] hover:bg-[var(--color-surface-200)] rounded-lg transition-colors"
+                  >
+                    <span>Locations</span>
+                    <motion.svg 
+                      className="w-4 h-4" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                      animate={{ rotate: mobileLocationsOpen ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </motion.svg>
+                  </button>
+                  
+                  <AnimatePresence>
+                    {mobileLocationsOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pl-4 mt-2 space-y-3">
+                          {locations.map((location, index) => (
+                            <div key={index} className="p-3 rounded-lg hover:bg-[var(--color-surface-200)] transition-colors duration-200">
+                              <h5 className="text-sm font-medium text-[var(--color-text-primary)] mb-2">
+                                {location.name}
+                              </h5>
+                              <p className="text-xs text-[var(--color-text-secondary)] mb-1">
+                                {location.address}
+                              </p>
+                              <p className="text-xs text-[var(--color-text-secondary)] mb-2">
+                                {location.city}
+                              </p>
+                              <Link 
+                                href={location.href}
+                                className="text-sm text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] font-medium transition-colors duration-200"
+                                onClick={() => {
+                                  setIsMobileMenuOpen(false);
+                                  setMobileLocationsOpen(false);
+                                }}
+                              >
+                                {location.phone}
+                              </Link>
                             </div>
                           ))}
                         </div>

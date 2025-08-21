@@ -54,7 +54,7 @@ export default function BlogPage() {
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch('https://diskdoctor.onrender.com/api/blogs');
+      const response = await fetch('/api/blogs');
       const data = await response.json();
       if (data.success) {
         setBlogs(data.blogs);

@@ -59,7 +59,7 @@ export default function AdminDashboard() {
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch('https://diskdoctor.onrender.com/api/blogs');
+      const response = await fetch('/api/blogs');
       const data = await response.json();
       if (data.success) {
         setBlogs(data.blogs);
@@ -116,7 +116,7 @@ export default function AdminDashboard() {
           const formData = new FormData();
           formData.append('image', file);
 
-          const response = await fetch('https://diskdoctor.onrender.com/api/upload', {
+          const response = await fetch('/api/upload', {
             method: 'POST',
             body: formData,
           });
@@ -202,7 +202,7 @@ export default function AdminDashboard() {
 
       setUploadProgress(50);
 
-      const response = await fetch('https://diskdoctor.onrender.com/api/blogs', {
+      const response = await fetch('/api/blogs', {
         method: 'POST',
         body: submitData,
       });
@@ -240,7 +240,7 @@ export default function AdminDashboard() {
     if (!confirm('Are you sure you want to delete this blog?')) return;
 
     try {
-      const response = await fetch(`https://diskdoctor.onrender.com/api/blogs/${id}`, {
+      const response = await fetch(`/api/blogs/${id}`, {
         method: 'DELETE',
       });
 

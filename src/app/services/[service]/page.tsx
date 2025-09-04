@@ -156,28 +156,81 @@ export async function generateMetadata({ params }: ServicePageProps) {
   
   if (!serviceData) {
     return {
-      title: 'Service Not Found',
+      title: 'Service Not Found | DiskDoctor Data Recovery',
+      description: 'The requested data recovery service page was not found. Browse our comprehensive data recovery services.',
     };
   }
 
+  // SEO-optimized title (50-60 characters)
+  const seoTitle = `${serviceData.title} Services | 95% Success Rate | DiskDoctor`;
+  
+  // SEO-optimized description (150-160 characters)
+  const seoDescription = `${serviceData.description} 95% success rate. Free evaluation. No data, no charge. Call (571) 202-8529 for immediate assistance.`;
+  
+  // Comprehensive keywords
+  const keywords = [
+    serviceData.title.toLowerCase(),
+    `${serviceData.title.toLowerCase()} services`,
+    'data recovery',
+    'professional data recovery',
+    'emergency data recovery',
+    'disk doctor',
+    'data recovery specialists',
+    'Maryland data recovery',
+    'Virginia data recovery',
+    'Washington DC data recovery'
+  ].join(', ');
+
   return {
-    title: `${serviceData.title} - Professional Data Recovery Services | DiskDoctor`,
-    description: `${serviceData.description} Professional ${serviceData.title.toLowerCase()} with 95% success rate. Free evaluation, no data no charge guarantee.`,
-    keywords: `${serviceData.title.toLowerCase()}, data recovery, professional recovery services, emergency data recovery, disk doctor`,
+    title: seoTitle,
+    description: seoDescription,
+    keywords: keywords,
+    authors: [{ name: "DiskDoctor Data Recovery" }],
+    creator: "DiskDoctor Data Recovery",
+    publisher: "DiskDoctor Data Recovery",
     openGraph: {
-      title: `${serviceData.title} - DiskDoctor Data Recovery`,
-      description: serviceData.description,
+      title: seoTitle,
+      description: seoDescription,
       type: 'website',
-      images: [serviceData.heroImage],
+      url: `https://www.diskdoctorsamerica.com/services/${service}`,
+      siteName: 'DiskDoctor Data Recovery',
+      locale: 'en_US',
+      images: [
+        {
+          url: serviceData.heroImage,
+          width: 1200,
+          height: 630,
+          alt: `${serviceData.title} - Professional Data Recovery Services`,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${serviceData.title} - DiskDoctor`,
-      description: serviceData.description,
+      site: '@diskdoctor',
+      creator: '@diskdoctor',
+      title: seoTitle,
+      description: seoDescription,
       images: [serviceData.heroImage],
     },
     alternates: {
-      canonical: `/services/${service}`,
+      canonical: `https://www.diskdoctorsamerica.com/services/${service}`,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    other: {
+      'geo.region': 'US-MD,US-VA,US-DC',
+      'geo.placename': 'Columbia, Maryland; Tysons, Virginia',
+      'business:contact_data:phone_number': '+1-571-202-8529',
+      'business:contact_data:email': 'shah4268@msn.com',
     },
   };
 }

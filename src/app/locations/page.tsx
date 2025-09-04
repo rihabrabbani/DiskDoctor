@@ -4,13 +4,55 @@ import { locations } from '@/data/locations';
 import { MapPin, Phone, Star } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Data Recovery Service Locations | Disk Doctor',
-  description: 'Professional data recovery services across Maryland, Virginia, and Washington DC. Find your nearest Disk Doctor location for expert hard drive, SSD, and RAID recovery services.',
-  keywords: 'data recovery locations, Maryland data recovery, Virginia data recovery, Washington DC data recovery, local data recovery services',
+  title: 'Data Recovery Locations | MD, VA, DC | DiskDoctor',
+  description: 'Professional data recovery services across Maryland, Virginia, and Washington DC. 95% success rate. Free evaluation. Find your nearest location.',
+  keywords: 'data recovery locations, Maryland data recovery, Virginia data recovery, Washington DC data recovery, local data recovery services, Columbia MD data recovery, Baltimore data recovery, Arlington VA data recovery, Alexandria data recovery',
+  authors: [{ name: "DiskDoctor Data Recovery" }],
+  creator: "DiskDoctor Data Recovery",
+  publisher: "DiskDoctor Data Recovery",
   openGraph: {
-    title: 'Data Recovery Service Locations | Disk Doctor',
-    description: 'Professional data recovery services across Maryland, Virginia, and Washington DC. Expert recovery for all storage devices.',
+    title: 'Data Recovery Locations | MD, VA, DC | DiskDoctor',
+    description: 'Professional data recovery services across Maryland, Virginia, and Washington DC. 95% success rate. Free evaluation. Find your nearest location.',
     type: 'website',
+    url: 'https://www.diskdoctorsamerica.com/locations',
+    siteName: 'DiskDoctor Data Recovery',
+    locale: 'en_US',
+    images: [
+      {
+        url: 'https://www.diskdoctorsamerica.com/images/og-locations.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'DiskDoctor Data Recovery Service Locations - Maryland, Virginia, Washington DC',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@diskdoctor',
+    creator: '@diskdoctor',
+    title: 'Data Recovery Locations | MD, VA, DC | DiskDoctor',
+    description: 'Professional data recovery services across Maryland, Virginia, and Washington DC. 95% success rate. Free evaluation.',
+    images: ['https://www.diskdoctorsamerica.com/images/og-locations.jpg'],
+  },
+  alternates: {
+    canonical: 'https://www.diskdoctorsamerica.com/locations',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  other: {
+    'geo.region': 'US-MD,US-VA,US-DC',
+    'geo.placename': 'Maryland, Virginia, Washington DC',
+    'business:contact_data:phone_number': '+1-571-202-8529',
+    'business:contact_data:email': 'shah4268@msn.com',
   },
 };
 

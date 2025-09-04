@@ -68,10 +68,10 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Service Areas */}
+          {/* Office Locations */}
           <div>
             <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
-              Service Areas
+              Office Locations
             </h3>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
@@ -107,7 +107,7 @@ export default function Footer() {
         
         <div className="pt-8 border-t border-[var(--color-border)] flex flex-col md:flex-row justify-between items-center">
           <div className="text-sm text-[var(--color-text-tertiary)] mb-4 md:mb-0">
-            © 2023 DiskDoctor Data Recovery. All rights reserved. | Trusted since 1991
+            © 2025 DiskDoctor Data Recovery. All rights reserved. | Trusted since 1991
           </div>
           <div className="flex flex-wrap justify-center md:justify-end gap-6">
             <Link 

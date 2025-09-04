@@ -118,10 +118,10 @@ export default function LocationsPage() {
           </div>
         )}
 
-        {/* Other Service Areas */}
+        {/* Other Office Locations */}
         <div>
           <h2 className="text-2xl font-bold text-[var(--color-text)] mb-8 text-center">
-            Service Areas
+            Office Locations
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {otherLocations.map((location) => (

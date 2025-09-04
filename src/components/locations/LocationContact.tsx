@@ -83,10 +83,10 @@ export default function LocationContact({ location }: LocationContactProps) {
                       Email Us
                     </h4>
                     <a
-                      href="mailto:info@diskdoctorsamerica.com"
+                      href="mailto:shah4268@msn.com"
                       className="text-lg font-semibold text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] transition-colors"
                     >
-                      info@diskdoctorsamerica.com
+                      shah4268@msn.com
                     </a>
                     <p className="text-sm text-[var(--color-text-secondary)] mt-1">
                       We respond within 30 minutes

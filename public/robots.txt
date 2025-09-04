@@ -1,3 +1,27 @@
+# Allow Googlebot and major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Allow SEO tools and crawlers
+User-agent: SemrushBot
+Allow: /
+
+User-agent: AhrefsBot
+Allow: /
+
+User-agent: MJ12bot
+Allow: /
+
+User-agent: DotBot
+Allow: /
+
+# General rules for all other bots
 User-agent: *
 Allow: /
 
@@ -7,11 +31,19 @@ Sitemap: https://www.diskdoctorsamerica.com/sitemap.xml
 # Crawl-delay for respectful crawling
 Crawl-delay: 1
 
-# Block admin areas
+# Block admin areas and sensitive directories
 Disallow: /admin/
 Disallow: /api/
+Disallow: /_next/
+Disallow: /.env
+Disallow: /.git/
 
-# Allow important pages
+# Block unnecessary file types
+Disallow: /*.json$
+Disallow: /*.log$
+Disallow: /*.tmp$
+
+# Allow important pages and content
 Allow: /blog/
 Allow: /services/
 Allow: /locations/
@@ -28,16 +60,16 @@ Allow: /rockville-md
 Allow: /annapolis-md
 Allow: /frederick-md
 
-# Block unnecessary files
-Disallow: /*.json$
-Disallow: /*.xml$
-Disallow: /_next/
-Disallow: /api/
-
-# Allow search engines to index images
+# Allow search engines to index images and media
 Allow: /images/
 Allow: /*.jpg$
 Allow: /*.jpeg$
 Allow: /*.png$
 Allow: /*.gif$
 Allow: /*.webp$
+Allow: /*.svg$
+Allow: /*.ico$
+
+# Allow CSS and JS for proper rendering
+Allow: /*.css$
+Allow: /*.js$

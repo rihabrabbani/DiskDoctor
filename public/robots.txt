@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.diskdoctorsamerica.com/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Block admin areas
+Disallow: /admin/
+Disallow: /api/
+
+# Allow important pages
+Allow: /blog/
+Allow: /services/
+Allow: /about
+Allow: /contact
+
+# Block unnecessary files
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /_next/
+Disallow: /api/
+
+# Allow search engines to index images
+Allow: /images/
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.gif$
+Allow: /*.webp$

@@ -6,6 +6,7 @@ import ServiceHero from '@/components/new_components/ServiceHero';
 import ServiceFeatures from '@/components/new_components/ServiceFeatures';
 import ServiceProcess from '@/components/new_components/ServiceProcess';
 import ServiceCTA from '@/components/new_components/ServiceCTA';
+import { serviceSchema, breadcrumbSchema } from '@/lib/structuredData';
 
 // Updated interface to match Next.js 15 App Router requirements
 type ServiceParams = {
@@ -59,33 +60,31 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
   const accentColor = getAccentColor(serviceData.id);
 
+  // Breadcrumb data
+  const breadcrumbData = [
+    { name: 'Home', url: 'https://www.diskdoctorsamerica.com' },
+    { name: 'Services', url: 'https://www.diskdoctorsamerica.com/#services' },
+    { name: serviceData.title, url: `https://www.diskdoctorsamerica.com/services/${serviceData.id}` }
+  ];
+
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
       <Header />
       
       <main className="relative">
-        {/* JSON-LD Schema for SEO */}
+        {/* Service Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Service",
-              "name": serviceData.title,
-              "description": serviceData.description,
-              "provider": {
-                "@type": "Organization",
-                "name": "DiskDoctor Data Recovery",
-                "telephone": "1-800-DISKDOC",
-                "url": "https://diskdoctor.com"
-              },
-              "serviceType": "Data Recovery",
-              "availableChannel": {
-                "@type": "ServiceChannel",
-                "servicePhone": "1-800-DISKDOC",
-                "availableLanguage": ["English"]
-              }
-            })
+            __html: JSON.stringify(serviceSchema(serviceData))
+          }}
+        />
+        
+        {/* Breadcrumb Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbSchema(breadcrumbData))
           }}
         />
         

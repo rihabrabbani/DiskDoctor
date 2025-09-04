@@ -251,6 +251,126 @@ export const locations: LocationData[] = [
       'Spring Ridge',
       'Clover Hill'
     ]
+  },
+  {
+    slug: 'mclean-va',
+    city: 'McLean',
+    state: 'Virginia',
+    fullName: 'McLean, VA',
+    phone: '(410) 937-7332',
+    address: 'Serving McLean Metro Area',
+    zipCode: '22101',
+    coordinates: { lat: 38.9343, lng: -77.1775 },
+    metaDescription: 'Professional data recovery services in McLean, VA. Expert recovery from hard drives, SSDs, RAID systems, and mobile devices. Fairfax County specialists. Call (410) 937-7332',
+    heroDescription: 'McLean area professionals trust our advanced data recovery expertise to restore critical business and personal data from any type of storage failure.',
+    localKeywords: [
+      'data recovery McLean VA',
+      'McLean Virginia data recovery',
+      'business data recovery McLean',
+      'SSD recovery McLean VA',
+      'hard drive recovery McLean Virginia',
+      'enterprise data recovery McLean'
+    ],
+    nearbyAreas: [
+      'Tysons Corner',
+      'Great Falls',
+      'Vienna',
+      'Falls Church',
+      'Dunn Loring',
+      'West McLean',
+      'Langley',
+      'Chevy Chase'
+    ]
+  },
+  {
+    slug: 'tysons-va',
+    city: 'Tysons',
+    state: 'Virginia',
+    fullName: 'Tysons, VA',
+    phone: '(410) 937-7332',
+    address: 'Serving Tysons Metro Area',
+    zipCode: '22102',
+    coordinates: { lat: 38.9182, lng: -77.2228 },
+    metaDescription: 'Expert data recovery services in Tysons, VA. Professional recovery from hard drives, SSDs, RAID arrays, and mobile devices. Fairfax County specialists. Call (410) 937-7332',
+    heroDescription: 'Tysons businesses and residents rely on our certified data recovery specialists to restore critical files from failed storage devices and systems.',
+    localKeywords: [
+      'data recovery Tysons VA',
+      'Tysons Corner data recovery',
+      'business data recovery Tysons',
+      'RAID recovery Tysons VA',
+      'enterprise data recovery Tysons',
+      'hard drive recovery Tysons Virginia'
+    ],
+    nearbyAreas: [
+      'Tysons Corner',
+      'McLean',
+      'Vienna',
+      'Falls Church',
+      'Dunn Loring',
+      'West McLean',
+      'Merrifield',
+      'Oakton'
+    ]
+  },
+  {
+    slug: 'great-falls-va',
+    city: 'Great Falls',
+    state: 'Virginia',
+    fullName: 'Great Falls, VA',
+    phone: '(410) 937-7332',
+    address: 'Serving Great Falls Metro Area',
+    zipCode: '22066',
+    coordinates: { lat: 39.0012, lng: -77.2883 },
+    metaDescription: 'Trusted data recovery services in Great Falls, VA. Professional recovery from hard drives, SSDs, and mobile devices. Fairfax County experts. Call (410) 937-7332',
+    heroDescription: 'Great Falls area professionals trust our proven data recovery methods to restore valuable business and personal data from any type of storage failure.',
+    localKeywords: [
+      'data recovery Great Falls VA',
+      'Great Falls Virginia data recovery',
+      'hard drive recovery Great Falls',
+      'SSD recovery Great Falls VA',
+      'business data recovery Great Falls',
+      'laptop data recovery Great Falls'
+    ],
+    nearbyAreas: [
+      'McLean',
+      'Vienna',
+      'Reston',
+      'Herndon',
+      'Sterling',
+      'Potomac Falls',
+      'Lansdowne',
+      'Ashburn'
+    ]
+  },
+  {
+    slug: 'potomac-md',
+    city: 'Potomac',
+    state: 'Maryland',
+    fullName: 'Potomac, MD',
+    phone: '(410) 937-7332',
+    address: 'Serving Potomac Metro Area',
+    zipCode: '20854',
+    coordinates: { lat: 39.0182, lng: -77.2086 },
+    metaDescription: 'Professional data recovery services in Potomac, MD. Expert recovery from hard drives, SSDs, RAID systems, and mobile devices. Montgomery County specialists. Call (410) 937-7332',
+    heroDescription: 'Potomac area businesses and residents count on our advanced data recovery expertise to restore critical files from failed storage devices and systems.',
+    localKeywords: [
+      'data recovery Potomac MD',
+      'Potomac Maryland data recovery',
+      'hard drive recovery Potomac',
+      'RAID recovery Potomac MD',
+      'business data recovery Potomac',
+      'SSD recovery Potomac Maryland'
+    ],
+    nearbyAreas: [
+      'Bethesda',
+      'Rockville',
+      'Gaithersburg',
+      'North Potomac',
+      'Germantown',
+      'Clarksburg',
+      'Boyds',
+      'Poolesville'
+    ]
   }
 ];
 

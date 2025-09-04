@@ -29,6 +29,10 @@ Allow: /arlington-va
 Allow: /rockville-md
 Allow: /annapolis-md
 Allow: /frederick-md
+Allow: /mclean-va
+Allow: /tysons-va
+Allow: /great-falls-va
+Allow: /potomac-md
 
 # Block unnecessary files
 Disallow: /*.json$

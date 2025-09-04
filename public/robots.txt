@@ -14,8 +14,19 @@ Disallow: /api/
 # Allow important pages
 Allow: /blog/
 Allow: /services/
+Allow: /locations/
 Allow: /about
 Allow: /contact
+
+# Allow location-specific pages
+Allow: /columbia-md
+Allow: /baltimore-md
+Allow: /washington-dc
+Allow: /alexandria-va
+Allow: /arlington-va
+Allow: /rockville-md
+Allow: /annapolis-md
+Allow: /frederick-md
 
 # Block unnecessary files
 Disallow: /*.json$

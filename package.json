@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "cloudinary": "^2.7.0",
+    "critters": "^0.0.23",
     "formidable": "^3.5.4",
     "framer-motion": "^12.16.0",
+    "lucide-react": "^0.542.0",
     "mongodb": "^6.17.0",
     "multer": "^2.0.2",
     "next": "15.3.3",

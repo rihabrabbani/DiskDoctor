@@ -6,23 +6,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { Metadata } from 'next';
-import { breadcrumbSchema } from '@/lib/structuredData';
-
-export const metadata: Metadata = {
-  title: 'Data Recovery Blog - Expert Tips & Case Studies',
-  description: 'Expert insights, recovery tips, and industry updates from our data recovery specialists. Learn about data recovery techniques, prevention tips, and success stories.',
-  keywords: 'data recovery blog, recovery tips, data loss prevention, hard drive recovery, SSD recovery, RAID recovery, data recovery case studies',
-  openGraph: {
-    title: 'Data Recovery Blog - Expert Tips & Case Studies | DiskDoctor',
-    description: 'Expert insights, recovery tips, and industry updates from our data recovery specialists.',
-    type: 'website',
-    url: 'https://www.diskdoctorsamerica.com/blog',
-  },
-  alternates: {
-    canonical: '/blog',
-  },
-};
 
 interface Blog {
   id: string;
@@ -115,22 +98,8 @@ export default function BlogPage() {
     );
   }
 
-  // Breadcrumb data
-  const breadcrumbData = [
-    { name: 'Home', url: 'https://www.diskdoctorsamerica.com' },
-    { name: 'Blog', url: 'https://www.diskdoctorsamerica.com/blog' }
-  ];
-
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
-      {/* Breadcrumb Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbSchema(breadcrumbData))
-        }}
-      />
-      
       <Header />
       
       <main className="py-16 lg:py-24">

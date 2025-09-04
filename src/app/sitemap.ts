@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { allServices } from '@/data/allServices'
+import { locations } from '@/data/locations'
 import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -18,6 +19,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/locations`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/about`,
@@ -39,6 +46,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
+  }))
+
+  // Location pages
+  const locationPages = locations.map((location) => ({
+    url: `${baseUrl}/${location.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: location.isHeadOffice ? 0.9 : 0.8,
   }))
 
   // Blog pages
@@ -63,5 +78,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching blogs for sitemap:', error)
   }
 
-  return [...staticPages, ...servicePages, ...blogPages]
+  return [...staticPages, ...servicePages, ...locationPages, ...blogPages]
 }

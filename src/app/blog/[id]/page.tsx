@@ -7,64 +7,9 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { Metadata } from 'next';
-import { blogPostSchema, breadcrumbSchema } from '@/lib/structuredData';
 
 interface BlogPostProps {
   params: Promise<{ id: string }>;
-}
-
-// Generate metadata for individual blog posts
-export async function generateMetadata({ params }: BlogPostProps): Promise<Metadata> {
-  const { id } = await params;
-  
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/blogs/${id}`);
-    const data = await response.json();
-    
-    if (!data.success || !data.blog) {
-      return {
-        title: 'Blog Post Not Found',
-        description: 'The requested blog post could not be found.',
-      };
-    }
-
-    const blog = data.blog;
-    const title = `${blog.title} | DiskDoctor Data Recovery Blog`;
-    const description = blog.excerpt || blog.content.replace(/<[^>]*>/g, '').substring(0, 160) + '...';
-
-    return {
-      title,
-      description,
-      keywords: blog.tags?.join(', ') || 'data recovery, blog',
-      openGraph: {
-        title,
-        description,
-        type: 'article',
-        url: `https://www.diskdoctorsamerica.com/blog/${id}`,
-        images: blog.images?.[0] ? [blog.images[0]] : ['/images/blog-default.jpg'],
-        publishedTime: blog.createdAt,
-        modifiedTime: blog.updatedAt || blog.createdAt,
-        authors: ['DiskDoctor Data Recovery'],
-        section: 'Data Recovery',
-        tags: blog.tags || [],
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title,
-        description,
-        images: blog.images?.[0] ? [blog.images[0]] : ['/images/blog-default.jpg'],
-      },
-      alternates: {
-        canonical: `/blog/${id}`,
-      },
-    };
-  } catch (error) {
-    return {
-      title: 'Blog Post Not Found',
-      description: 'The requested blog post could not be found.',
-    };
-  }
 }
 
 interface Blog {
@@ -139,31 +84,8 @@ export default function BlogPost({ params }: BlogPostProps) {
     notFound();
   }
 
-  // Breadcrumb data
-  const breadcrumbData = [
-    { name: 'Home', url: 'https://www.diskdoctorsamerica.com' },
-    { name: 'Blog', url: 'https://www.diskdoctorsamerica.com/blog' },
-    { name: blog.title, url: `https://www.diskdoctorsamerica.com/blog/${blog.id}` }
-  ];
-
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
-      {/* Blog Post Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(blogPostSchema(blog))
-        }}
-      />
-      
-      {/* Breadcrumb Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbSchema(breadcrumbData))
-        }}
-      />
-      
       <Header />
       
       <main className="py-16 lg:py-24">

@@ -70,8 +70,8 @@ export default function Header() {
       name: "Tysons",
       address: "8300 Boone Blvd Suite 513",
       city: "Tysons, VA 22182", 
-      phone: "(571) 202-8529",
-      href: "tel:+15712028529"
+      phone: "(410) 937-7332",
+      href: "tel:+14109377332"
     }
   ];
   
@@ -89,8 +89,8 @@ export default function Header() {
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-2">
                 <span className="text-[var(--color-primary)]">📞</span>
-                <a href="tel:+15712028529" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors">
-                  +1 (571) 202-8529
+                <a href="tel:+14109377332" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors">
+                  +1 (410) 937-7332
                 </a>
               </div>
               <div className="flex items-center space-x-2">
@@ -350,8 +350,8 @@ export default function Header() {
                 )}
               </motion.div>
             </motion.button>
-            <Link href="tel:+1-800-DISKDOC" className="hidden sm:block font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-300">
-              📞 +1 (571) 202-8529
+            <Link href="tel:+14109377332" className="hidden sm:block font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-300">
+              📞 +1 (410) 937-7332
             </Link>
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -519,11 +519,11 @@ export default function Header() {
                 
                 <motion.div variants={menuItemVariants}>
                   <Link 
-                    href="tel:+15712028529" 
+                    href="tel:+14109377332" 
                     className="block text-sm font-medium text-[var(--color-primary)] hover:bg-[var(--color-surface-200)] transition-colors duration-300 py-3 px-2 border-t border-[var(--color-border)] mt-3 pt-4 rounded-lg"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    📞 +1 (571) 202-8529 (Call Now)
+                    📞 +1 (410) 937-7332 (Call Now)
                   </Link>
                 </motion.div>
               </motion.nav>

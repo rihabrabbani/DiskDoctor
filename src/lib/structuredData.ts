@@ -13,7 +13,7 @@ export const organizationSchema = {
   "contactPoint": [
     {
       "@type": "ContactPoint",
-      "telephone": "+1-571-202-8529",
+      "telephone": "+1-410-937-7332",
       "contactType": "customer service",
       "areaServed": "US",
       "availableLanguage": "English",
@@ -26,7 +26,7 @@ export const organizationSchema = {
     },
     {
       "@type": "ContactPoint",
-      "telephone": "+1-571-202-8529",
+      "telephone": "+1-410-937-7332",
       "contactType": "emergency",
       "areaServed": "US",
       "availableLanguage": "English"
@@ -91,7 +91,7 @@ export const serviceSchema = (service: any) => ({
   },
   "availableChannel": {
     "@type": "ServiceChannel",
-    "servicePhone": "+1-571-202-8529",
+    "servicePhone": "+1-410-937-7332",
     "availableLanguage": ["English"]
   },
   "offers": {
@@ -199,7 +199,7 @@ export const localBusinessSchema = {
   "image": "https://www.diskdoctorsamerica.com/images/logo.png",
   "description": "Professional data recovery services with 95% success rate. Specializing in hard drive, SSD, RAID, and mobile device recovery since 1991.",
   "url": "https://www.diskdoctorsamerica.com",
-  "telephone": "+1-571-202-8529",
+  "telephone": "+1-410-937-7332",
   "email": "shah4268@msn.com",
   "address": [
     {

@@ -80,7 +80,7 @@ export default function SEOHead({
       <meta name="business:contact_data:region" content="Maryland" />
       <meta name="business:contact_data:postal_code" content="21046" />
       <meta name="business:contact_data:country_name" content="United States" />
-      <meta name="business:contact_data:phone_number" content="+1-571-202-8529" />
+      <meta name="business:contact_data:phone_number" content="+1-410-937-7332" />
       <meta name="business:contact_data:email" content="shah4268@msn.com" />
       
       {/* Structured Data */}

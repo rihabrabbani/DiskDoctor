@@ -55,8 +55,8 @@ export default function Footer() {
             <div className="space-y-3">
               <div className="flex items-center space-x-2">
                 <span className="text-[var(--color-primary)]">📞</span>
-                <a href="tel:+15712028529" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors">
-                  +1 (571) 202-8529
+                <a href="tel:+14109377332" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors">
+                  +1 (410) 937-7332
                 </a>
               </div>
               <div className="flex items-center space-x-2">

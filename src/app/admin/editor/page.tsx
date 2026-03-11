@@ -156,12 +156,14 @@ export default function BlogEditorPage() {
             const fd = new FormData();
             fd.append('image', file);
             const response = await fetch('/api/upload', { method: 'POST', body: fd });
-            if (!response.ok) throw new Error('Failed to upload image');
             const data = await response.json();
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Failed to upload image');
+            }
             setFormData(prev => ({ ...prev, featuredImage: data.secure_url }));
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error uploading featured image:', error);
-            alert('Failed to upload featured image.');
+            alert(`Failed to upload featured image: ${error.message}`);
         } finally {
             setUploadingFeatured(false);
         }

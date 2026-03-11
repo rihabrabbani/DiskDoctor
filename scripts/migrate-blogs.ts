@@ -10,7 +10,7 @@
 import { MongoClient } from 'mongodb';
 
 const MONGODB_URI = process.env.MONGODB_URI;
-const DB_NAME = 'diskdoctor';
+const DB_NAME = 'blogDB';
 const COLLECTION_NAME = 'blogs';
 
 if (!MONGODB_URI) {

@@ -150,16 +150,17 @@ export default function BlogPostContent({ blog }: BlogPostContentProps) {
 
                         {/* Blog Content — this HTML is server-rendered, visible to crawlers */}
                         <motion.article
-                            className="prose prose-lg max-w-none"
+                            className="prose prose-lg max-w-none blog-content"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.3 }}
                         >
                             <div
-                                className="text-[var(--color-text-primary)] leading-relaxed"
+                                className="leading-relaxed"
                                 style={{
                                     fontSize: '1.125rem',
-                                    lineHeight: '1.75'
+                                    lineHeight: '1.75',
+                                    color: 'var(--color-text-primary)'
                                 }}
                                 dangerouslySetInnerHTML={{
                                     __html: blog.content.replace(/\n/g, '<br />')
@@ -209,6 +210,48 @@ export default function BlogPostContent({ blog }: BlogPostContentProps) {
             </main>
 
             <Footer />
+
+            {/* Override Quill's inline color styles in dark mode */}
+            <style jsx global>{`
+                .blog-content p,
+                .blog-content span,
+                .blog-content li,
+                .blog-content h1,
+                .blog-content h2,
+                .blog-content h3,
+                .blog-content h4,
+                .blog-content h5,
+                .blog-content h6,
+                .blog-content div,
+                .blog-content strong,
+                .blog-content em,
+                .blog-content u,
+                .blog-content blockquote {
+                    color: var(--color-text-primary) !important;
+                }
+                .blog-content a {
+                    color: var(--color-primary) !important;
+                }
+                .blog-content blockquote {
+                    border-left: 4px solid var(--color-primary);
+                    padding-left: 1rem;
+                    opacity: 0.85;
+                }
+                .blog-content img {
+                    border-radius: 0.75rem;
+                    margin: 1.5rem 0;
+                }
+                .blog-content pre,
+                .blog-content code {
+                    background: var(--color-surface-200) !important;
+                    color: var(--color-text-primary) !important;
+                    border-radius: 0.5rem;
+                    padding: 0.2em 0.4em;
+                }
+                .blog-content pre {
+                    padding: 1rem;
+                }
+            `}</style>
         </div>
     );
 }

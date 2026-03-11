@@ -5,7 +5,7 @@ import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.diskdoctorsamerica.com'
-  
+
   // Static pages
   const staticPages = [
     {
@@ -22,18 +22,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/locations`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/contact`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.8,
@@ -62,7 +50,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const client = await clientPromise
     const db = client.db(DB_NAME)
     const blogsCollection = db.collection(COLLECTION_NAME)
-    
+
     const blogs = await blogsCollection
       .find({})
       .sort({ createdAt: -1 })

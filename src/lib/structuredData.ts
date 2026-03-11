@@ -81,7 +81,7 @@ export const serviceSchema = (service: any) => ({
   "provider": {
     "@type": "Organization",
     "name": "DiskDoctor Data Recovery",
-    "url": "https://diskdoctor.com"
+    "url": "https://www.diskdoctorsamerica.com"
   },
   "serviceType": "Data Recovery",
   "category": service.category || "Data Recovery Services",
@@ -121,18 +121,18 @@ export const blogPostSchema = (blog: any) => ({
   "@type": "BlogPosting",
   "headline": blog.title,
   "description": blog.excerpt,
-  "image": blog.images?.[0] || "https://diskdoctor.com/images/blog-default.jpg",
+  "image": blog.images?.[0] || "https://www.diskdoctorsamerica.com/images/og-blog.jpg",
   "author": {
     "@type": "Organization",
     "name": "DiskDoctor Data Recovery",
-    "url": "https://diskdoctor.com"
+    "url": "https://www.diskdoctorsamerica.com"
   },
   "publisher": {
     "@type": "Organization",
     "name": "DiskDoctor Data Recovery",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://diskdoctor.com/images/logo.png"
+      "url": "https://www.diskdoctorsamerica.com/images/logo.png"
     }
   },
   "datePublished": blog.createdAt,
@@ -163,11 +163,11 @@ export const websiteSchema = {
   "publisher": {
     "@type": "Organization",
     "name": "DiskDoctor Data Recovery",
-    "url": "https://diskdoctor.com"
+    "url": "https://www.diskdoctorsamerica.com"
   }
 }
 
-export const breadcrumbSchema = (items: Array<{name: string, url: string}>) => ({
+export const breadcrumbSchema = (items: Array<{ name: string, url: string }>) => ({
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": items.map((item, index) => ({
@@ -178,7 +178,7 @@ export const breadcrumbSchema = (items: Array<{name: string, url: string}>) => (
   }))
 })
 
-export const faqSchema = (faqs: Array<{question: string, answer: string}>) => ({
+export const faqSchema = (faqs: Array<{ question: string, answer: string }>) => ({
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": faqs.map(faq => ({

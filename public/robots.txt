@@ -17,8 +17,6 @@ Disallow: /_next/
 Allow: /blog/
 Allow: /services/
 Allow: /locations/
-Allow: /about
-Allow: /contact
 
 # Allow location-specific pages
 Allow: /columbia-md
@@ -36,6 +34,7 @@ Allow: /potomac-md
 
 # Block unnecessary files
 Disallow: /*.json$
+Allow: /sitemap.xml
 Disallow: /*.xml$
 
 # Allow search engines to index images

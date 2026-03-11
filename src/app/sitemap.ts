@@ -44,7 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: location.isHeadOffice ? 0.9 : 0.8,
   }))
 
-  // Blog pages
+  // Blog pages (only published, using slugs)
   let blogPages: MetadataRoute.Sitemap = []
   try {
     const client = await clientPromise
@@ -52,12 +52,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const blogsCollection = db.collection(COLLECTION_NAME)
 
     const blogs = await blogsCollection
-      .find({})
+      .find({ status: 'published' })
       .sort({ createdAt: -1 })
       .toArray()
 
     blogPages = blogs.map((blog: any) => ({
-      url: `${baseUrl}/blog/${blog.id}`,
+      url: `${baseUrl}/blog/${blog.slug || blog.id}`,
       lastModified: new Date(blog.updatedAt || blog.createdAt),
       changeFrequency: 'monthly' as const,
       priority: 0.7,

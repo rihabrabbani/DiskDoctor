@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb';
 import { blogPostSchema, breadcrumbSchema } from '@/lib/structuredData';
 import BlogPostContent from './BlogPostContent';
@@ -9,23 +9,40 @@ interface BlogPostProps {
 }
 
 // Helper to fetch blog from MongoDB directly (server-side)
-async function getBlog(id: string) {
+// Looks up by slug first, then falls back to UUID id
+async function getBlog(identifier: string) {
   try {
     const client = await clientPromise;
     const db = client.db(DB_NAME);
     const blogsCollection = db.collection(COLLECTION_NAME);
-    const blog = await blogsCollection.findOne({ id });
-    
+
+    // Try slug first
+    let blog = await blogsCollection.findOne({ slug: identifier });
+
+    // Fall back to UUID id
+    if (!blog) {
+      blog = await blogsCollection.findOne({ id: identifier });
+    }
+
     if (!blog) return null;
-    
-    // Convert MongoDB document to plain object (strip _id ObjectId)
+
+    // Convert MongoDB document to plain object
     return {
       id: blog.id,
+      slug: blog.slug || blog.id,
       title: blog.title,
       content: blog.content,
       excerpt: blog.excerpt,
+      metaDescription: blog.metaDescription || blog.excerpt,
+      focusKeyword: blog.focusKeyword || '',
+      author: blog.author || 'DiskDoctor Team',
+      category: blog.category || '',
       tags: blog.tags || [],
+      featuredImage: blog.featuredImage || null,
       images: blog.images || [],
+      status: blog.status || 'published',
+      readingTime: blog.readingTime || 0,
+      wordCount: blog.wordCount || 0,
       createdAt: blog.createdAt,
       updatedAt: blog.updatedAt || blog.createdAt,
     };
@@ -35,7 +52,7 @@ async function getBlog(id: string) {
   }
 }
 
-// Generate metadata server-side (no API fetch needed)
+// Generate metadata server-side
 export async function generateMetadata({ params }: BlogPostProps): Promise<Metadata> {
   const { id } = await params;
   const blog = await getBlog(id);
@@ -48,49 +65,46 @@ export async function generateMetadata({ params }: BlogPostProps): Promise<Metad
   }
 
   const seoTitle = `${blog.title} | DiskDoctor Data Recovery Blog`;
-  const seoDescription = blog.excerpt.length > 150
-    ? blog.excerpt.substring(0, 147) + '...'
-    : blog.excerpt;
+  const seoDescription = (blog.metaDescription || blog.excerpt).length > 155
+    ? (blog.metaDescription || blog.excerpt).substring(0, 152) + '...'
+    : (blog.metaDescription || blog.excerpt);
 
   const keywords = [
+    ...(blog.focusKeyword ? [blog.focusKeyword] : []),
     ...blog.tags,
     'data recovery',
     'hard drive recovery',
     'SSD recovery',
-    'data protection',
     'disk doctor',
-    'data recovery tips',
-    'data loss prevention'
   ].join(', ');
 
-  const featuredImage = blog.images?.[0] || 'https://www.diskdoctorsamerica.com/images/og-blog.jpg';
+  const featuredImage = blog.featuredImage || blog.images?.[0] || 'https://www.diskdoctorsamerica.com/images/og-blog.jpg';
+  const canonicalUrl = `https://www.diskdoctorsamerica.com/blog/${blog.slug}`;
 
   return {
     title: seoTitle,
     description: seoDescription,
     keywords: keywords,
-    authors: [{ name: "DiskDoctor Data Recovery" }],
-    creator: "DiskDoctor Data Recovery",
+    authors: [{ name: blog.author }],
+    creator: blog.author,
     publisher: "DiskDoctor Data Recovery",
     openGraph: {
       title: seoTitle,
       description: seoDescription,
       type: 'article',
-      url: `https://www.diskdoctorsamerica.com/blog/${id}`,
+      url: canonicalUrl,
       siteName: 'DiskDoctor Data Recovery',
       locale: 'en_US',
       publishedTime: blog.createdAt,
       modifiedTime: blog.updatedAt,
-      authors: ['DiskDoctor Data Recovery'],
+      authors: [blog.author],
       tags: blog.tags,
-      images: [
-        {
-          url: featuredImage,
-          width: 1200,
-          height: 630,
-          alt: blog.title,
-        },
-      ],
+      images: [{
+        url: featuredImage,
+        width: 1200,
+        height: 630,
+        alt: blog.title,
+      }],
     },
     twitter: {
       card: 'summary_large_image',
@@ -101,17 +115,14 @@ export async function generateMetadata({ params }: BlogPostProps): Promise<Metad
       images: [featuredImage],
     },
     alternates: {
-      canonical: `https://www.diskdoctorsamerica.com/blog/${id}`,
+      canonical: canonicalUrl,
     },
     robots: {
       index: true,
       follow: true,
       googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
+        index: true, follow: true,
+        'max-video-preview': -1, 'max-image-preview': 'large', 'max-snippet': -1,
       },
     },
   };
@@ -126,11 +137,21 @@ export default async function BlogPost({ params }: BlogPostProps) {
     notFound();
   }
 
+  // Only show published posts publicly
+  if (blog.status !== 'published') {
+    notFound();
+  }
+
+  // If accessed via old UUID and slug exists, redirect to slug URL
+  if (blog.slug && id !== blog.slug && id === blog.id) {
+    redirect(`/blog/${blog.slug}`);
+  }
+
   // Breadcrumb data
   const breadcrumbData = [
     { name: 'Home', url: 'https://www.diskdoctorsamerica.com' },
     { name: 'Blog', url: 'https://www.diskdoctorsamerica.com/blog' },
-    { name: blog.title, url: `https://www.diskdoctorsamerica.com/blog/${blog.id}` }
+    { name: blog.title, url: `https://www.diskdoctorsamerica.com/blog/${blog.slug}` }
   ];
 
   return (

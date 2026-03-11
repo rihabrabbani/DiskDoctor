@@ -8,11 +8,16 @@ import Footer from '@/components/layout/Footer';
 
 interface Blog {
     id: string;
+    slug?: string;
     title: string;
     content: string;
     excerpt: string;
+    author?: string;
+    category?: string;
     tags: string[];
+    featuredImage?: string | null;
     images: string[];
+    readingTime?: number;
     createdAt: string;
     updatedAt: string;
 }
@@ -30,7 +35,7 @@ export default function BlogPostContent({ blog }: BlogPostContentProps) {
         });
     };
 
-    const featuredImage = blog.images?.[0] || null;
+    const featuredImage = blog.featuredImage || blog.images?.[0] || null;
 
     return (
         <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
@@ -98,16 +103,26 @@ export default function BlogPostContent({ blog }: BlogPostContentProps) {
                             </h1>
 
                             {/* Meta Information */}
-                            <div className="flex items-center text-[var(--color-text-secondary)] mb-8">
-                                <time dateTime={blog.createdAt}>
-                                    Published on {formatDate(blog.createdAt)}
-                                </time>
-                                {blog.updatedAt !== blog.createdAt && (
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[var(--color-text-secondary)] mb-8 text-sm sm:text-base">
+                                {blog.author && (
                                     <>
-                                        <span className="mx-2">•</span>
-                                        <time dateTime={blog.updatedAt}>
-                                            Updated {formatDate(blog.updatedAt)}
-                                        </time>
+                                        <span className="font-medium text-[var(--color-text-primary)]">{blog.author}</span>
+                                        <span>•</span>
+                                    </>
+                                )}
+                                <time dateTime={blog.createdAt}>
+                                    {formatDate(blog.createdAt)}
+                                </time>
+                                {blog.readingTime && blog.readingTime > 0 && (
+                                    <>
+                                        <span>•</span>
+                                        <span>{blog.readingTime} min read</span>
+                                    </>
+                                )}
+                                {blog.category && (
+                                    <>
+                                        <span>•</span>
+                                        <span className="text-[var(--color-primary)]">{blog.category}</span>
                                     </>
                                 )}
                             </div>

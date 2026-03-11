@@ -2,19 +2,37 @@ import { NextRequest, NextResponse } from 'next/server';
 import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb';
 import { uploadToCloudinary, extractCloudinaryUrls } from '@/lib/cloudinary';
 import { v4 as uuidv4 } from 'uuid';
+import { generateUniqueSlug, calculateReadingTime, calculateWordCount } from '@/lib/slugify';
+import { DEFAULT_AUTHOR, BLOG_CATEGORIES } from '@/lib/types';
 
-// GET - Get all blogs
-export async function GET() {
+// GET - Get all blogs (with optional status filtering)
+export async function GET(request: NextRequest) {
   try {
     const client = await clientPromise;
     const db = client.db(DB_NAME);
     const blogsCollection = db.collection(COLLECTION_NAME);
-    
+
+    const { searchParams } = new URL(request.url);
+    const status = searchParams.get('status');
+    const admin = searchParams.get('admin');
+
+    // Build query filter
+    let query: any = {};
+
+    if (status) {
+      // Specific status filter
+      query.status = status;
+    } else if (!admin) {
+      // Public requests: only show published blogs
+      query.status = 'published';
+    }
+    // If admin=true, show all statuses (no filter)
+
     const blogs = await blogsCollection
-      .find({})
+      .find(query)
       .sort({ createdAt: -1 })
       .toArray();
-    
+
     return NextResponse.json({
       success: true,
       blogs: blogs
@@ -35,7 +53,15 @@ export async function POST(request: NextRequest) {
     const title = formData.get('title') as string;
     const content = formData.get('content') as string;
     const excerpt = formData.get('excerpt') as string;
+    const metaDescription = formData.get('metaDescription') as string;
+    const focusKeyword = formData.get('focusKeyword') as string;
+    const author = formData.get('author') as string;
+    const category = formData.get('category') as string;
     const tags = formData.get('tags') as string;
+    const featuredImage = formData.get('featuredImage') as string;
+    const status = (formData.get('status') as string) || 'draft';
+    const scheduledAt = formData.get('scheduledAt') as string;
+    const customSlug = formData.get('slug') as string;
     const images = formData.getAll('images') as File[];
 
     if (!title || !content) {
@@ -49,19 +75,24 @@ export async function POST(request: NextRequest) {
     const db = client.db(DB_NAME);
     const blogsCollection = db.collection(COLLECTION_NAME);
 
+    // Generate unique slug
+    const slug = customSlug
+      ? customSlug.toLowerCase().replace(/[^a-z0-9-]/g, '')
+      : await generateUniqueSlug(title, blogsCollection);
+
     let uploadedImages: string[] = [];
-    
-    // Extract existing Cloudinary URLs from content (images added via editor)
+
+    // Extract existing Cloudinary URLs from content
     const existingCloudinaryUrls = extractCloudinaryUrls(content);
     uploadedImages.push(...existingCloudinaryUrls);
 
-    // Upload additional images to Cloudinary (from file input)
+    // Upload additional images to Cloudinary
     if (images && images.length > 0) {
       for (const image of images) {
         if (image instanceof File && image.size > 0) {
           const bytes = await image.arrayBuffer();
           const buffer = Buffer.from(bytes);
-          
+
           const cloudinaryResponse = await uploadToCloudinary(buffer, {
             public_id: `blog_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
           }) as any;
@@ -71,13 +102,31 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Auto-generate excerpt if not provided
+    const autoExcerpt = excerpt?.trim() ||
+      content.replace(/<[^>]*>/g, '').substring(0, 150).trim() + '...';
+
+    // Auto-generate meta description if not provided
+    const autoMetaDescription = metaDescription?.trim() ||
+      content.replace(/<[^>]*>/g, '').substring(0, 155).trim() + '...';
+
     const newBlog = {
       id: uuidv4(),
+      slug,
       title: title.trim(),
       content: content.trim(),
-      excerpt: excerpt?.trim() || content.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
-      tags: tags ? tags.split(',').map((tag: string) => tag.trim()) : [],
-      images: [...new Set(uploadedImages)], // Remove duplicates
+      excerpt: autoExcerpt,
+      metaDescription: autoMetaDescription,
+      focusKeyword: focusKeyword?.trim() || '',
+      author: author?.trim() || DEFAULT_AUTHOR,
+      category: category?.trim() || 'Data Recovery',
+      tags: tags ? tags.split(',').map((tag: string) => tag.trim()).filter(Boolean) : [],
+      featuredImage: featuredImage?.trim() || uploadedImages[0] || null,
+      images: [...new Set(uploadedImages)],
+      status: status as 'draft' | 'published' | 'scheduled',
+      scheduledAt: status === 'scheduled' && scheduledAt ? scheduledAt : null,
+      readingTime: calculateReadingTime(content),
+      wordCount: calculateWordCount(content),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

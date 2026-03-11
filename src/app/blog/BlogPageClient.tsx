@@ -9,10 +9,14 @@ import Footer from '@/components/layout/Footer';
 
 interface Blog {
   id: string;
+  slug?: string;
   title: string;
   content: string;
   excerpt: string;
   tags: string[];
+  category?: string;
+  readingTime?: number;
+  featuredImage?: string | null;
   image: {
     url: string;
     alt: string;
@@ -35,8 +39,8 @@ const containerVariants = {
 // Define cardVariants with proper typing
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: { duration: 0.6, ease: "easeInOut" }
   }
@@ -68,7 +72,7 @@ export default function BlogPageClient() {
 
   const filteredBlogs = blogs.filter(blog => {
     const matchesSearch = blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         blog.content.toLowerCase().includes(searchTerm.toLowerCase());
+      blog.content.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesTag = !selectedTag || blog.tags.includes(selectedTag);
     return matchesSearch && matchesTag;
   });
@@ -101,11 +105,11 @@ export default function BlogPageClient() {
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
       <Header />
-      
+
       <main className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header Section */}
-          <motion.div 
+          <motion.div
             className="text-center max-w-4xl mx-auto mb-16"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -120,7 +124,7 @@ export default function BlogPageClient() {
           </motion.div>
 
           {/* Search and Filter Section */}
-          <motion.div 
+          <motion.div
             className="mb-12 max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -153,7 +157,7 @@ export default function BlogPageClient() {
 
           {/* Blog Grid */}
           {filteredBlogs.length === 0 ? (
-            <motion.div 
+            <motion.div
               className="text-center py-16"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -166,7 +170,7 @@ export default function BlogPageClient() {
               </p>
             </motion.div>
           ) : (
-            <motion.div 
+            <motion.div
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
               variants={containerVariants}
               initial="hidden"
@@ -192,7 +196,7 @@ export default function BlogPageClient() {
                       />
                     </div>
                   )}
-                  
+
                   <div className="p-6">
                     <div className="flex flex-wrap gap-2 mb-3">
                       {blog.tags.slice(0, 2).map(tag => (
@@ -204,22 +208,22 @@ export default function BlogPageClient() {
                         </span>
                       ))}
                     </div>
-                    
+
                     <h2 className="text-xl font-semibold mb-3 text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors duration-300 line-clamp-2">
                       {blog.title}
                     </h2>
-                    
+
                     <p className="text-[var(--color-text-secondary)] mb-4 line-clamp-3">
                       {blog.excerpt}
                     </p>
-                    
+
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-[var(--color-text-tertiary)]">
                         {formatDate(blog.createdAt)}
                       </span>
-                      
+
                       <Link
-                        href={`/blog/${blog.id}`}
+                        href={`/blog/${blog.slug || blog.id}`}
                         className="inline-flex items-center text-[var(--color-primary)] font-medium hover:underline"
                       >
                         Read More
@@ -235,7 +239,7 @@ export default function BlogPageClient() {
           )}
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );

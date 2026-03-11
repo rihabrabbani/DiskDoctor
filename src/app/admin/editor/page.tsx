@@ -40,6 +40,7 @@ interface BlogFormData {
 export default function BlogEditorPage() {
     const router = useRouter();
     const quillRef = useRef<any>(null);
+    const slugTouched = useRef(false);
     const [saving, setSaving] = useState(false);
     const [lastSaved, setLastSaved] = useState<string | null>(null);
     const [uploadingFeatured, setUploadingFeatured] = useState(false);
@@ -71,9 +72,9 @@ export default function BlogEditorPage() {
         }
     }, [router]);
 
-    // Auto-generate slug from title
+    // Auto-generate slug from title (only if user hasn't manually edited it)
     useEffect(() => {
-        if (formData.title && !formData.slug) {
+        if (formData.title && !slugTouched.current) {
             const autoSlug = formData.title
                 .toLowerCase()
                 .trim()
@@ -397,7 +398,10 @@ export default function BlogEditorPage() {
                                     <input
                                         type="text"
                                         value={formData.slug}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '') }))}
+                                        onChange={(e) => {
+                                            slugTouched.current = true;
+                                            setFormData(prev => ({ ...prev, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '') }));
+                                        }}
                                         placeholder="your-post-slug"
                                         className="flex-1 px-3 py-2 border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
                                     />

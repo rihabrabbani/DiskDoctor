@@ -10,115 +10,155 @@ This document tracks all technical SEO work done on the DiskDoctor website to pr
 
 ---
 
-## What Was Done ✅
+## Phase 1 — Critical SEO Fixes ✅ (commit `a34de3a`)
 
 ### 1. Blog Detail Page — Server-Side Rendering (SSR)
 
-**Problem:** Blog post pages were entirely client-side rendered. Google's crawler saw an empty `<div>` with a loading spinner instead of the actual blog content. The metadata (title, description) was generated server-side, but the article body — the content that actually ranks — was invisible to search engines.
+**Problem:** Blog pages were client-side rendered. Google saw a loading spinner instead of content.
 
-**Fix:**
-- Rewrote `src/app/blog/[id]/page.tsx` as a **Server Component** that fetches blog data directly from MongoDB
-- Blog content is now in the initial HTML response — visible to any crawler
-- Created `BlogPostContent.tsx` as a Client Component for interactive elements (animations, share button)
-- Removed old `BlogPostClient.tsx` which did client-side fetching
-- **Metadata generation no longer depends on `NEXT_PUBLIC_BASE_URL`** — fetches directly from MongoDB
-
-**Files changed:**
-- `src/app/blog/[id]/page.tsx` — complete rewrite
-- `src/app/blog/[id]/BlogPostContent.tsx` — new file
-- `src/app/blog/[id]/BlogPostClient.tsx` — deleted
+**Fix:** Rewrote `src/app/blog/[id]/page.tsx` as a Server Component fetching directly from MongoDB. Created `BlogPostContent.tsx` as a Client Component for interactive elements.
 
 ---
 
 ### 2. BlogPosting + Breadcrumb Structured Data (JSON-LD)
 
-**Problem:** The `structuredData.ts` library had a `blogPostSchema()` function, but it was **never used** on blog detail pages. Google couldn't get BlogPosting schema for any blog posts.
+**Problem:** `blogPostSchema()` existed in `structuredData.ts` but was never used on blog pages.
 
-**Fix:**
-- Added `blogPostSchema` JSON-LD script tag to the blog detail page Server Component
-- Added `breadcrumbSchema` JSON-LD for Home → Blog → Post navigation
-- Added visible breadcrumb navigation in the UI
-
-**Files changed:**
-- `src/app/blog/[id]/page.tsx`
-- `src/app/blog/[id]/BlogPostContent.tsx`
+**Fix:** Added BlogPosting + Breadcrumb JSON-LD to the blog detail page. Added visible breadcrumb navigation.
 
 ---
 
 ### 3. Sitemap — Removed Ghost Pages
 
-**Problem:** `sitemap.ts` included `/about` and `/contact` pages that don't exist in the app. Google was getting 404s when crawling these URLs.
+**Problem:** Sitemap included `/about` and `/contact` which don't exist (404s).
 
-**Fix:** Removed `/about` and `/contact` entries from the static pages array in `sitemap.ts`.
-
-**Files changed:**
-- `src/app/sitemap.ts`
+**Fix:** Removed ghost entries from `sitemap.ts`.
 
 ---
 
 ### 4. robots.txt — Allowed Sitemap Access
 
-**Problem:** Line `Disallow: /*.xml$` was blocking ALL XML files, including the sitemap. This contradicted the `Sitemap:` directive at the top of the file.
+**Problem:** `Disallow: /*.xml$` blocked `sitemap.xml`.
 
-**Fix:** Added `Allow: /sitemap.xml` **before** the `Disallow: /*.xml$` line. Also removed `Allow: /about` and `Allow: /contact` since those pages don't exist.
-
-**Files changed:**
-- `public/robots.txt`
+**Fix:** Added `Allow: /sitemap.xml` before the block rule.
 
 ---
 
 ### 5. Structured Data URL Consistency
 
-**Problem:** `structuredData.ts` and `SEOHead.tsx` had mixed URLs — some referenced `https://diskdoctor.com`, others used `https://www.diskdoctorsamerica.com`. Inconsistent URLs confuse search engines about which domain is authoritative.
+**Problem:** Mixed URLs (`diskdoctor.com` vs `diskdoctorsamerica.com`).
 
-**Fix:** Unified ALL URLs across the codebase to `https://www.diskdoctorsamerica.com`.
-
-**Files changed:**
-- `src/lib/structuredData.ts` — 4 URL fixes (service provider, blog author, blog publisher, website publisher)
-- `src/components/seo/SEOHead.tsx` — 1 URL fix (default ogImage)
+**Fix:** Unified all to `https://www.diskdoctorsamerica.com`.
 
 ---
 
 ### 6. OG Images, Logo & PWA Icons
 
-**Problem:** The code referenced multiple images in `public/images/` that didn't exist:
-- `og-image.jpg` (root layout)
-- `og-blog.jpg` (blog pages)
-- `og-location.jpg` / `og-locations.jpg` (location pages)
-- `logo.png` (JSON-LD Organization + Publisher)
-- `icon-192x192.png` / `icon-512x512.png` (PWA manifest)
+**Problem:** Referenced images didn't exist in `public/images/`.
 
-**Fix:** Generated and placed all missing image assets in `public/images/`.
-
-**Files added:**
-- `public/images/og-image.jpg`
-- `public/images/og-blog.jpg`
-- `public/images/og-location.jpg`
-- `public/images/og-locations.jpg`
-- `public/images/logo.png`
-- `public/images/icon-192x192.png`
-- `public/images/icon-512x512.png`
+**Fix:** Generated and placed all missing assets.
 
 ---
 
-## What's Left (Phase 2) 📋
+## Phase 2 — Blog System Overhaul ✅ (commit `d5e6253`)
+
+### 7. New Blog Schema with SEO Fields
+
+**What:** Added `slug`, `metaDescription`, `focusKeyword`, `author`, `category`, `featuredImage`, `status`, `scheduledAt`, `readingTime`, `wordCount` to blog documents.
+
+**Files created:**
+- `src/lib/types.ts` — BlogPost interface and constants
+- `src/lib/slugify.ts` — slug generation, reading time, word count utilities
+
+---
+
+### 8. Full-Page Blog Editor
+
+**What:** Replaced the old modal editor with a full-page, WordPress-like editor at `/admin/editor`.
+
+Features: large title input, full-height Quill editor, SEO sidebar (focus keyword, meta description, slug, featured image, categories, tags, author), publish/draft/schedule controls, live SEO score.
+
+**Files created:**
+- `src/app/admin/editor/page.tsx` — new post editor
+- `src/app/admin/editor/[id]/page.tsx` — edit existing post
+
+---
+
+### 9. API Upgrade
+
+**What:** Upgraded all blog API routes:
+- `GET /api/blogs` — filters by status (public only sees published, `?admin=true` shows all)
+- `POST /api/blogs` — accepts all new SEO fields, auto-generates slug, calculates reading time/word count
+- `GET/PUT/DELETE /api/blogs/[id]` — supports lookup by slug OR UUID
+- `GET /api/blogs/publish-scheduled` — cron endpoint for scheduled publishing
+
+**Files modified:**
+- `src/app/api/blogs/route.ts`
+- `src/app/api/blogs/[id]/route.ts`
+- `src/app/api/blogs/publish-scheduled/route.ts` (new)
+
+---
+
+### 10. SEO-Friendly Slug URLs
+
+**What:** Blog URLs now use slugs (`/blog/hard-drive-recovery-guide`) instead of UUIDs. Old UUID URLs automatically 301-redirect to the slug URL.
+
+**Files modified:**
+- `src/app/blog/[id]/page.tsx` — slug-first lookup, UUID→slug redirect, status gating
+- `src/app/blog/BlogPageClient.tsx` — links to slug URLs
+- `src/app/sitemap.ts` — uses slugs, published-only filter
+
+---
+
+### 11. Admin Dashboard Upgrade
+
+**What:** Dashboard now shows status filter tabs (All/Published/Drafts/Scheduled), quick stats bar, Edit/View/Delete buttons, status badges, reading time/word count/category display.
+
+**Files modified:**
+- `src/app/admin/dashboard/page.tsx`
+
+---
+
+### 12. Blog Content Display
+
+**What:** Blog post page now shows author name, category badge, and reading time. Dark mode fixed to override Quill's inline black text styles.
+
+**Files modified:**
+- `src/app/blog/[id]/BlogPostContent.tsx`
+
+---
+
+### 13. Migration Script
+
+**What:** One-time script to add slugs and new fields to existing blog documents.
+
+**Run with:** `MONGODB_URI="your-uri" npx tsx scripts/migrate-blogs.ts`
+
+**File:** `scripts/migrate-blogs.ts`
+
+---
+
+### 14. Scheduled Publishing Cron
+
+**What:** External cron job (cron-job.org, every 5 min) hits `/api/blogs/publish-scheduled` to auto-publish scheduled posts.
+
+---
+
+## What's Left 📋
 
 ### High Priority
 | Item | Impact | Effort |
 |---|---|---|
-| **SEO-friendly blog slugs** — Use title-based slugs (`/blog/how-to-recover-data`) instead of UUIDs (`/blog/550e8400-...`) | High — keywords in URL help ranking | Medium — requires DB migration + API changes |
-| **Google Analytics 4** — Add tracking code to measure traffic | High — can't optimize without data | Low — add GA snippet to layout |
-| **Fix social media links** — Footer social links point to `#` | Low — dead links look unprofessional | Low — update `navigation.ts` with real URLs |
+| **Google Analytics 4** | Can't optimize without data | Low |
+| **Fix social media links** | Dead links look unprofessional | Low |
 
 ### Lower Priority
 | Item | Impact | Effort |
 |---|---|---|
 | Copyright year hardcoded to 2025 | Cosmetic | Trivial |
-| Privacy Policy / Terms of Service pages | Legal/trust signal | Medium |
-| Google/Yandex/Yahoo verification codes are placeholders | Minor | Low |
-| Blog listing page is also CSR (less critical than detail pages) | Minor | Medium |
-| Hardcoded admin credentials | Security risk (not SEO) | Medium |
-| `typescript.ignoreBuildErrors: true` in next.config.ts | Build safety (not SEO) | Variable |
+| Privacy Policy / Terms of Service | Trust signal | Medium |
+| Verification codes are placeholders | Minor | Low |
+| Hardcoded admin credentials | Security risk | Medium |
 
 ---
 
@@ -126,14 +166,19 @@ This document tracks all technical SEO work done on the DiskDoctor website to pr
 
 | Commit | Description | Date |
 |---|---|---|
-| `a34de3a` | Fix critical SEO issues for blog ranking readiness | Mar 11, 2026 |
+| `904bf0a` | Fix slug auto-generation bug | Mar 11, 2026 |
+| `548cad6` | Fix dark mode blog text color | Mar 11, 2026 |
+| `adfd117` | Fix migration script DB name | Mar 11, 2026 |
+| `d5e6253` | Complete blog system overhaul | Mar 11, 2026 |
+| `a34de3a` | Critical SEO fixes | Mar 11, 2026 |
 
 ---
 
 ## Architecture Notes
 
-- **Sitemap:** Dynamically generated via `src/app/sitemap.ts`, fetches blog posts from MongoDB
+- **Sitemap:** Dynamically generated via `src/app/sitemap.ts`, fetches published blogs from MongoDB, uses slug URLs
 - **Structured Data:** Generated by `src/lib/structuredData.ts` — Organization, Service, BlogPosting, Website, FAQ, LocalBusiness, Breadcrumb schemas
-- **Blog Storage:** MongoDB (collection: `blogs`, DB: `diskdoctor`)
-- **Image Hosting:** Cloudinary (blog images uploaded via admin panel)
+- **Blog Storage:** MongoDB (database: `blogDB`, collection: `blogs`)
+- **Image Hosting:** Cloudinary (blog images uploaded via admin editor)
 - **Hosting:** Vercel (free tier), auto-deploys from GitHub `main` branch
+- **Scheduled Publishing:** cron-job.org → `/api/blogs/publish-scheduled` every 5 minutes

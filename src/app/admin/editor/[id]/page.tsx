@@ -72,6 +72,22 @@ export default function EditBlogPage() {
         fetchBlog();
     }, [router, blogId]);
 
+    // Convert UTC ISO string to local datetime-local format (YYYY-MM-DDTHH:MM)
+    const toLocalDateTimeString = (isoString: string): string => {
+        const d = new Date(isoString);
+        const pad = (n: number) => String(n).padStart(2, '0');
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    };
+
+    // Round minutes to nearest 5-minute interval
+    const roundToFiveMinutes = (dateStr: string): string => {
+        const d = new Date(dateStr);
+        const minutes = Math.round(d.getMinutes() / 5) * 5;
+        d.setMinutes(minutes, 0, 0);
+        const pad = (n: number) => String(n).padStart(2, '0');
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    };
+
     const fetchBlog = async () => {
         try {
             const response = await fetch(`/api/blogs/${blogId}`);
@@ -90,7 +106,7 @@ export default function EditBlogPage() {
                     slug: blog.slug || '',
                     featuredImage: blog.featuredImage || '',
                     status: blog.status || 'draft',
-                    scheduledAt: blog.scheduledAt ? new Date(blog.scheduledAt).toISOString().slice(0, 16) : '',
+                    scheduledAt: blog.scheduledAt ? roundToFiveMinutes(toLocalDateTimeString(blog.scheduledAt)) : '',
                 });
             } else {
                 alert('Blog not found');
@@ -367,9 +383,31 @@ export default function EditBlogPage() {
                                     <input
                                         type="datetime-local"
                                         value={formData.scheduledAt}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, scheduledAt: e.target.value }))}
+                                        onChange={(e) => {
+                                            // Snap to nearest 5-minute interval
+                                            const val = e.target.value;
+                                            if (val) {
+                                                const d = new Date(val);
+                                                const minutes = Math.round(d.getMinutes() / 5) * 5;
+                                                d.setMinutes(minutes, 0, 0);
+                                                const pad = (n: number) => String(n).padStart(2, '0');
+                                                const snapped = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+                                                setFormData(prev => ({ ...prev, scheduledAt: snapped }));
+                                            } else {
+                                                setFormData(prev => ({ ...prev, scheduledAt: '' }));
+                                            }
+                                        }}
+                                        step="300"
+                                        min={(() => {
+                                            const now = new Date();
+                                            const minutes = Math.ceil(now.getMinutes() / 5) * 5;
+                                            now.setMinutes(minutes, 0, 0);
+                                            const pad = (n: number) => String(n).padStart(2, '0');
+                                            return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+                                        })()}
                                         className="w-full px-3 py-2 border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
                                     />
+                                    <p className="text-xs text-[var(--color-text-tertiary)] mt-1">Times are in 5-minute intervals (your local timezone). Cron checks every 5 minutes.</p>
                                 </div>
                             )}
 

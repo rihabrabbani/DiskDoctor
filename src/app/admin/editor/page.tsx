@@ -337,9 +337,31 @@ export default function BlogEditorPage() {
                                     <input
                                         type="datetime-local"
                                         value={formData.scheduledAt}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, scheduledAt: e.target.value }))}
+                                        onChange={(e) => {
+                                            // Snap to nearest 5-minute interval
+                                            const val = e.target.value;
+                                            if (val) {
+                                                const d = new Date(val);
+                                                const minutes = Math.round(d.getMinutes() / 5) * 5;
+                                                d.setMinutes(minutes, 0, 0);
+                                                const pad = (n: number) => String(n).padStart(2, '0');
+                                                const snapped = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+                                                setFormData(prev => ({ ...prev, scheduledAt: snapped }));
+                                            } else {
+                                                setFormData(prev => ({ ...prev, scheduledAt: '' }));
+                                            }
+                                        }}
+                                        step="300"
+                                        min={(() => {
+                                            const now = new Date();
+                                            const minutes = Math.ceil(now.getMinutes() / 5) * 5;
+                                            now.setMinutes(minutes, 0, 0);
+                                            const pad = (n: number) => String(n).padStart(2, '0');
+                                            return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+                                        })()}
                                         className="w-full px-3 py-2 border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
                                     />
+                                    <p className="text-xs text-[var(--color-text-tertiary)] mt-1">Times are in 5-minute intervals (your local timezone). Cron checks every 5 minutes.</p>
                                 </div>
                             )}
 

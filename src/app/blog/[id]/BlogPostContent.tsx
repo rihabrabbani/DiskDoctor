@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/components/layout/Header';
@@ -105,6 +106,8 @@ const CTA_DESIGNS = [
 ];
 
 export default function BlogPostContent({ blog }: BlogPostContentProps) {
+    const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -313,11 +316,49 @@ export default function BlogPostContent({ blog }: BlogPostContentProps) {
                                 {blog.faqs && blog.faqs.length > 0 && (
                                     <div className="mt-16 pt-12 border-t border-[var(--color-border)] clear-both">
                                         <h2 className="text-3xl font-bold mb-8 text-[var(--color-text-primary)] mt-0">Frequently Asked Questions</h2>
-                                        <div className="space-y-6">
+                                        <div className="space-y-4">
                                             {blog.faqs.map((faq, index) => (
-                                                <div key={index} className="bg-[var(--color-surface-100)] rounded-xl p-6 border border-[var(--color-border)]">
-                                                    <h3 className="text-xl font-semibold mb-3 text-[var(--color-text-primary)] !mt-0">{faq.question}</h3>
-                                                    <p className="text-[var(--color-text-secondary)] !mb-0">{faq.answer}</p>
+                                                <div key={index} className="bg-[var(--color-surface-100)] rounded-xl border border-[var(--color-border)] overflow-hidden">
+                                                    <div className="flex items-center justify-between gap-4 p-5 sm:p-6">
+                                                        <h3 className="text-lg sm:text-xl font-semibold text-[var(--color-text-primary)] !mt-0 !mb-0">
+                                                            {faq.question}
+                                                        </h3>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
+                                                            className="flex-shrink-0 w-10 h-10 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-200)] hover:bg-[var(--color-surface-300)] text-[var(--color-text-primary)] transition-colors flex items-center justify-center"
+                                                            aria-label={openFaqIndex === index ? 'Collapse FAQ answer' : 'Expand FAQ answer'}
+                                                            aria-expanded={openFaqIndex === index}
+                                                        >
+                                                            <motion.svg
+                                                                className="w-5 h-5"
+                                                                fill="none"
+                                                                viewBox="0 0 24 24"
+                                                                stroke="currentColor"
+                                                                animate={{ rotate: openFaqIndex === index ? 180 : 0 }}
+                                                                transition={{ duration: 0.2, ease: 'easeOut' }}
+                                                            >
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                                            </motion.svg>
+                                                        </button>
+                                                    </div>
+
+                                                    <AnimatePresence initial={false}>
+                                                        {openFaqIndex === index && (
+                                                            <motion.div
+                                                                initial={{ height: 0, opacity: 0 }}
+                                                                animate={{ height: 'auto', opacity: 1 }}
+                                                                exit={{ height: 0, opacity: 0 }}
+                                                                transition={{ duration: 0.25, ease: 'easeOut' }}
+                                                            >
+                                                                <div className="px-5 sm:px-6 pb-5 sm:pb-6 border-t border-[var(--color-border)]">
+                                                                    <p className="pt-4 text-[var(--color-text-secondary)] !mb-0 leading-relaxed">
+                                                                        {faq.answer}
+                                                                    </p>
+                                                                </div>
+                                                            </motion.div>
+                                                        )}
+                                                    </AnimatePresence>
                                                 </div>
                                             ))}
                                         </div>

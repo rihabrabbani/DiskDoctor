@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb';
-import { blogPostSchema, breadcrumbSchema } from '@/lib/structuredData';
+import { blogPostSchema, breadcrumbSchema, faqSchema } from '@/lib/structuredData';
 import BlogPostContent from './BlogPostContent';
 
 interface BlogPostProps {
@@ -62,12 +62,12 @@ export async function generateMetadata({ params }: BlogPostProps): Promise<Metad
 
   if (!blog) {
     return {
-      title: 'Blog Post Not Found | DiskDoctor Data Recovery',
+      title: 'Blog Post Not Found',
       description: 'The requested blog post was not found. Browse our data recovery blog for expert tips and insights.',
     };
   }
 
-  const seoTitle = `${blog.title} | DiskDoctor Data Recovery Blog`;
+  const seoTitle = `${blog.title} | DiskDoctor Blog`;
   const seoDescription = (blog.metaDescription || blog.excerpt).length > 155
     ? (blog.metaDescription || blog.excerpt).substring(0, 152) + '...'
     : (blog.metaDescription || blog.excerpt);
@@ -85,7 +85,7 @@ export async function generateMetadata({ params }: BlogPostProps): Promise<Metad
   const canonicalUrl = `https://www.diskdoctorsamerica.com/blog/${blog.slug}`;
 
   return {
-    title: seoTitle,
+    title: blog.title,
     description: seoDescription,
     keywords: keywords,
     authors: [{ name: blog.author }],
@@ -173,6 +173,21 @@ export default async function BlogPost({ params }: BlogPostProps) {
           __html: JSON.stringify(breadcrumbSchema(breadcrumbData))
         }}
       />
+      {/* FAQ Structured Data (when FAQs exist) */}
+      {blog.faqs?.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              faqSchema(
+                blog.faqs
+                  .filter((faq: any) => faq?.question?.trim() && faq?.answer?.trim())
+                  .map((faq: any) => ({ question: faq.question.trim(), answer: faq.answer.trim() }))
+              )
+            )
+          }}
+        />
+      )}
       <BlogPostContent blog={blog} />
     </>
   );

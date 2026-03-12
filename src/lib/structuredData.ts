@@ -116,12 +116,30 @@ export const serviceSchema = (service: any) => ({
   }
 })
 
-export const blogPostSchema = (blog: any) => ({
+export const blogPostSchema = (blog: any) => {
+  const canonicalPath = blog.slug || blog.id;
+  const featuredImage =
+    blog.featuredImage ||
+    blog.images?.[0] ||
+    blog.sections?.find((section: any) => section?.image)?.image ||
+    "https://www.diskdoctorsamerica.com/images/og-blog.jpg";
+
+  const sectionText = Array.isArray(blog.sections)
+    ? blog.sections
+        .map((section: any) => `${section?.heading || ''} ${section?.content || ''}`)
+        .join(' ')
+    : '';
+
+  const sourceText = blog.content || sectionText || '';
+  const plainText = sourceText.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  const computedWordCount = plainText ? plainText.split(' ').length : 0;
+
+  return {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": blog.title,
-  "description": blog.excerpt,
-  "image": blog.images?.[0] || "https://www.diskdoctorsamerica.com/images/og-blog.jpg",
+  "description": blog.metaDescription || blog.excerpt,
+  "image": featuredImage,
   "author": {
     "@type": "Organization",
     "name": "DiskDoctor Data Recovery",
@@ -139,12 +157,13 @@ export const blogPostSchema = (blog: any) => ({
   "dateModified": blog.updatedAt || blog.createdAt,
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": `https://www.diskdoctorsamerica.com/blog/${blog.id}`
+    "@id": `https://www.diskdoctorsamerica.com/blog/${canonicalPath}`
   },
   "keywords": blog.tags?.join(", ") || "data recovery, blog",
-  "articleSection": "Data Recovery",
-  "wordCount": blog.content?.replace(/<[^>]*>/g, '').split(' ').length || 0
-})
+  "articleSection": blog.category || "Data Recovery",
+  "wordCount": blog.wordCount || computedWordCount
+  }
+}
 
 export const websiteSchema = {
   "@context": "https://schema.org",

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/components/layout/Header';
@@ -343,22 +343,22 @@ export default function BlogPostContent({ blog }: BlogPostContentProps) {
                                                         </button>
                                                     </div>
 
-                                                    <AnimatePresence initial={false}>
-                                                        {openFaqIndex === index && (
-                                                            <motion.div
-                                                                initial={{ height: 0, opacity: 0 }}
-                                                                animate={{ height: 'auto', opacity: 1 }}
-                                                                exit={{ height: 0, opacity: 0 }}
-                                                                transition={{ duration: 0.25, ease: 'easeOut' }}
-                                                            >
-                                                                <div className="px-5 sm:px-6 pb-5 sm:pb-6 border-t border-[var(--color-border)]">
-                                                                    <p className="pt-4 text-[var(--color-text-secondary)] !mb-0 leading-relaxed">
-                                                                        {faq.answer}
-                                                                    </p>
-                                                                </div>
-                                                            </motion.div>
-                                                        )}
-                                                    </AnimatePresence>
+                                                    <motion.div
+                                                        initial={false}
+                                                        animate={{
+                                                            height: openFaqIndex === index ? 'auto' : 0,
+                                                            opacity: openFaqIndex === index ? 1 : 0,
+                                                        }}
+                                                        transition={{ duration: 0.25, ease: 'easeOut' }}
+                                                        className="overflow-hidden"
+                                                        aria-hidden={openFaqIndex !== index}
+                                                    >
+                                                        <div className="px-5 sm:px-6 pb-5 sm:pb-6 border-t border-[var(--color-border)]">
+                                                            <p className="pt-4 text-[var(--color-text-secondary)] !mb-0 leading-relaxed">
+                                                                {faq.answer}
+                                                            </p>
+                                                        </div>
+                                                    </motion.div>
                                                 </div>
                                             ))}
                                         </div>

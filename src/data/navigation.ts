@@ -41,7 +41,7 @@ export const serviceRoutes: ServiceRoute[] = [
 export const mainNavItems = [
   { href: "/", label: "HOME" },
   { href: "/#about", label: "ABOUT" },
-  { href: "/#contact", label: "CONTACT" }
+  { href: "/contact", label: "CONTACT" }
 ];
 
 export const footerSections: FooterSection[] = [
@@ -82,7 +82,7 @@ export const footerSections: FooterSection[] = [
       { label: '1-800-DISKDOC', href: 'tel:+1-800-DISKDOC' },
       { label: 'Emergency Service', href: '/#emergency' },
       { label: 'Free Evaluation', href: '/#quote' },
-      { label: 'Get Support', href: '/#contact' }
+      { label: 'Get Support', href: '/contact' }
     ]
   }
 ];

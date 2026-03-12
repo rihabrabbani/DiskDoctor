@@ -211,3 +211,86 @@ p {
   color: var(--color-text-primary);
   font-weight: 700;
 }
+
+/* HubSpot form dark-mode overrides */
+html.dark .hs-form,
+html.dark .hs-form label,
+html.dark .hs-form legend,
+html.dark .hs-form .hs-richtext,
+html.dark .hs-form .hs-error-msg,
+html.dark .hs-form .hs-main-font-element {
+  color: var(--color-text-primary) !important;
+}
+
+html.dark .hs-form input,
+html.dark .hs-form textarea,
+html.dark .hs-form select {
+  color: var(--color-text-primary) !important;
+  background-color: var(--color-surface-200) !important;
+  border-color: var(--color-border) !important;
+}
+
+html.dark .hs-form input::placeholder,
+html.dark .hs-form textarea::placeholder {
+  color: var(--color-text-tertiary) !important;
+  opacity: 1;
+}
+
+/* HubSpot Forms v3 (hsfc-*) dark-mode token overrides */
+html.dark #hubspot-contact-form {
+  --hsf-global__color: var(--color-text-primary);
+  --hsf-field-label__color: var(--color-text-primary);
+  --hsf-field-input__color: var(--color-text-primary);
+  --hsf-field-input__background-color: var(--color-surface-200);
+  --hsf-field-input__border-color: var(--color-border);
+  --hsf-field-input__placeholder-color: var(--color-text-tertiary);
+  --hsf-field-input__border-radius: 8px;
+}
+
+html.dark #hubspot-contact-form .hsfc-FieldLabel,
+html.dark #hubspot-contact-form .hsfc-RichText,
+html.dark #hubspot-contact-form .hsfc-RichText p,
+html.dark #hubspot-contact-form .hsfc-RichText span,
+html.dark #hubspot-contact-form .hsfc-Form__Disclaimer,
+html.dark #hubspot-contact-form .hsfc-Text,
+html.dark #hubspot-contact-form .hsfc-Heading {
+  color: var(--color-text-primary) !important;
+}
+
+html.dark #hubspot-contact-form .hsfc-TextInput,
+html.dark #hubspot-contact-form .hsfc-Select__Input,
+html.dark #hubspot-contact-form .hsfc-Textarea {
+  color: var(--color-text-primary) !important;
+  background-color: var(--color-surface-200) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* Force HubSpot form to stay light in both themes */
+#hubspot-contact-form,
+#hubspot-contact-form .hsfc-Form,
+#hubspot-contact-form .hs-form {
+  background: #ffffff !important;
+}
+
+#hubspot-contact-form .hsfc-FieldLabel,
+#hubspot-contact-form .hsfc-RichText,
+#hubspot-contact-form .hsfc-RichText p,
+#hubspot-contact-form .hsfc-RichText span,
+#hubspot-contact-form .hsfc-Form__Disclaimer,
+#hubspot-contact-form .hsfc-Text,
+#hubspot-contact-form .hsfc-Heading,
+#hubspot-contact-form .hs-form label,
+#hubspot-contact-form .hs-form legend {
+  color: #0f172a !important;
+}
+
+#hubspot-contact-form .hsfc-TextInput,
+#hubspot-contact-form .hsfc-Select__Input,
+#hubspot-contact-form .hsfc-Textarea,
+#hubspot-contact-form .hs-form input,
+#hubspot-contact-form .hs-form textarea,
+#hubspot-contact-form .hs-form select {
+  color: #0f172a !important;
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+}

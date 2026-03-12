@@ -15,12 +15,13 @@ export function middleware(request: NextRequest) {
   // Content Security Policy
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://js-na2.hsforms.net https://js.hsforms.net https://js.hscollectedforms.net https://js.hubspot.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: https: blob:",
     "font-src 'self' https://fonts.gstatic.com",
-    "connect-src 'self' https://api.cloudinary.com https://*.mongodb.net",
+    "connect-src 'self' https://api.cloudinary.com https://*.mongodb.net https://forms-na2.hsforms.com https://forms.hsforms.com https://api.hsforms.com https://*.hubapi.com https://*.hsforms.com https://*.hsforms.net",
     "media-src 'self' https:",
+    "frame-src 'self' https://forms-na2.hsforms.com https://forms.hsforms.com https://js-na2.hsforms.net https://*.hsforms.net https://*.hsforms.com https://*.hubspot.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

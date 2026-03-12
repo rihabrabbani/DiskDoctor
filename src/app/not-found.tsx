@@ -37,7 +37,7 @@ export default function NotFound() {
               <Link href="/services/windows-recovery" className="text-[var(--color-primary)] hover:underline">
                 Services
               </Link>
-              <Link href="/#contact" className="text-[var(--color-primary)] hover:underline">
+              <Link href="/contact" className="text-[var(--color-primary)] hover:underline">
                 Contact
               </Link>
             </div>

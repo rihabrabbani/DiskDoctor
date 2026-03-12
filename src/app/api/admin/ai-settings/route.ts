@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
                 success: true,
                 settings: {
                     apiKey: '',
-                    model: 'gpt-4o',
+                    model: 'gpt-4o-mini',
                     imageModel: 'dall-e-3',
                 }
             });
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
             success: true,
             settings: {
                 apiKey: settings.apiKey,
-                model: settings.model || 'gpt-4o',
+                model: settings.model || 'gpt-4o-mini',
                 imageModel: settings.imageModel || 'dall-e-3',
             }
         });

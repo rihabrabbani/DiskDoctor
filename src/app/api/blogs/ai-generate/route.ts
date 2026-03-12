@@ -22,74 +22,122 @@ export async function POST(request: NextRequest) {
         const existingBlogs = await blogsCollection.find({}, { projection: { title: 1 } }).toArray();
         const existingTitles = existingBlogs.map(b => b.title);
 
-        let finalTopic = topic;
-        let finalNotes = notes;
+        const encoder = new TextEncoder();
 
-        // MagicAI mode: suggest a unique topic first
-        if (mode === 'magic') {
-            const suggestion = await analyzeBlogsAndSuggestTopic(
-                settings.apiKey,
-                settings.model || 'gpt-4o',
-                existingTitles
-            );
-            
-            finalTopic = suggestion.title;
-            finalNotes = suggestion.focusKeyword; // use focus keyword as guidance
-        } else if (!finalTopic) {
-            return NextResponse.json({ success: false, message: 'Topic is required for guided mode' }, { status: 400 });
-        }
+        const stream = new ReadableStream({
+            async start(controller) {
+                const sendUpdate = (step: number, message: string, blog?: any) => {
+                    const data = JSON.stringify({ step, message, blog });
+                    controller.enqueue(encoder.encode(`data: ${data}\n\n`));
+                };
 
-        // Generate Text Content
-        const generatedBlog = await generateBlogContent(
-            settings.apiKey,
-            settings.model || 'gpt-4o',
-            {
-                mode,
-                topic: finalTopic,
-                notes: finalNotes,
-                targetWordCount: targetWordCount || 1200,
-                existingTitles
-            }
-        );
+                try {
+                    let finalTopic = topic;
+                    let finalNotes = notes;
 
-        console.log(`[AI Gen] Generated blog titled "${generatedBlog.title}". Section count: ${generatedBlog.sections.length}.`);
+                    // Step 1: Ideation (MagicAI mode)
+                    if (mode === 'magic') {
+                        sendUpdate(1, "Analyzing existing blogs and ideating a highly-ranking topic...");
+                        const suggestion = await analyzeBlogsAndSuggestTopic(
+                            settings.apiKey,
+                            settings.model || 'gpt-4o',
+                            existingTitles
+                        );
+                        finalTopic = suggestion.title;
+                        finalNotes = suggestion.focusKeyword; 
+                    } else if (!finalTopic) {
+                        throw new Error('Topic is required for guided mode');
+                    }
 
-        // Generate Slug
-        const slug = await generateUniqueSlug(generatedBlog.title, blogsCollection);
+                    // Step 2 & 3: Research and Drafting
+                    const generatedBlog = await generateBlogContent(
+                        settings.apiKey,
+                        settings.model || 'gpt-4o',
+                        {
+                            mode,
+                            topic: finalTopic,
+                            notes: finalNotes,
+                            targetWordCount: targetWordCount || 1200,
+                            existingTitles,
+                            onProgress: (step: number, message: string) => {
+                                sendUpdate(step, message);
+                            }
+                        }
+                    );
 
-        // Generate Image using DALL-E 3
-        let featuredImage = '';
-        try {
-            featuredImage = await generateFeaturedImage(
-                settings.apiKey,
-                settings.imageModel || 'dall-e-3',
-                generatedBlog.title,
-                generatedBlog.excerpt
-            );
-        } catch (imgError: any) {
-            console.error('Error generating image:', imgError?.message || imgError);
-            console.error('Cloudinary vars:', {
-                cloudName: process.env.CLOUDINARY_CLOUD_NAME ? 'set' : 'missing',
-                apiKey: process.env.CLOUDINARY_API_KEY ? 'set' : 'missing',
-                apiSecret: process.env.CLOUDINARY_API_SECRET ? 'set' : 'missing'
-            });
-            // We just leave featuredImage empty if it fails
-        }
+                    console.log(`[AI Gen] Generated blog titled "${generatedBlog.title}". Section count: ${generatedBlog.sections.length}.`);
 
-        return NextResponse.json({
-            success: true,
-            blog: {
-                ...generatedBlog,
-                slug,
-                featuredImage
+                    // Generate Slug
+                    const slug = await generateUniqueSlug(generatedBlog.title, blogsCollection);
+
+                    // Step 4: Concurrent Media Generation
+                    sendUpdate(4, "Generating highly-detailed media assets in parallel...");
+                    let featuredImage = '';
+                    
+                    try {
+                        const imagePromises: Promise<void>[] = [];
+                        
+                        // 1. Queue Featured Image
+                        const featuredPromise = generateFeaturedImage(
+                            settings.apiKey,
+                            settings.imageModel || 'dall-e-3',
+                            generatedBlog.title,
+                            generatedBlog.excerpt
+                        ).then(url => { featuredImage = url; }).catch(e => console.error('Featured Img Error:', e));
+                        
+                        imagePromises.push(featuredPromise);
+                        
+                        // 2. Queue Inline Images
+                        let inlineCount = 0;
+                        for (const section of generatedBlog.sections) {
+                            if (section.imagePrompt && inlineCount < 2) {
+                                const p = generateFeaturedImage(
+                                    settings.apiKey,
+                                    settings.imageModel || 'dall-e-3',
+                                    "Inline Blog Image",
+                                    section.imagePrompt,
+                                    true
+                                ).then(url => { section.image = url; }).catch(e => console.error('Inline Img Error:', e));
+                                imagePromises.push(p);
+                                inlineCount++;
+                            }
+                        }
+                        
+                        // Execute all image generations at the exact same time
+                        await Promise.all(imagePromises);
+                    } catch (mediaError: any) {
+                        console.error('Error during concurrent media generation:', mediaError);
+                    }
+
+                    // Step 5: Finalizing
+                    sendUpdate(5, "Finalizing assets...", {
+                        ...generatedBlog,
+                        slug,
+                        featuredImage
+                    });
+                    
+                } catch (streamError: any) {
+                    console.error('Error in streaming AI blog generation:', streamError);
+                    controller.enqueue(encoder.encode(`data: ${JSON.stringify({ error: streamError?.message || 'Failed to generate blog content' })}\n\n`));
+                } finally {
+                    controller.close();
+                }
             }
         });
 
+        return new Response(stream, {
+            headers: {
+                'Content-Type': 'text/event-stream',
+                'Cache-Control': 'no-cache',
+                'Connection': 'keep-alive',
+            },
+        });
+
     } catch (error: any) {
-        console.error('Error in AI blog generation:', error);
+        console.error('Error parsing request:', error);
         return NextResponse.json({ 
             success: false, 
-            message: error?.message || 'Failed to generate blog content' 
-        }, { status: 500 });
+            message: error?.message || 'Bad Request' 
+        }, { status: 400 });
     }
 }

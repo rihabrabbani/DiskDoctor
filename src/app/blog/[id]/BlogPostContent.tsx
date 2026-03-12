@@ -47,13 +47,13 @@ const CTA_DESIGNS = [
     (cta: any, key: number) => (
         <div key={`cta-${key}`} className="my-10 clear-both relative bg-[#0f172a] rounded-2xl border border-slate-800 shadow-xl overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-primary)] rounded-full filter blur-[60px] opacity-10 transform translate-x-1/2 -translate-y-1/2"></div>
-            
+
             <div className="relative p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex-1 text-center md:text-left">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-semibold tracking-wide mb-3 border border-[var(--color-primary)]/20 uppercase">
                         <span className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-primary)] opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-primary)]"></span>
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-primary)] opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-primary)]"></span>
                         </span>
                         24/7 Priority Service
                     </div>
@@ -65,8 +65,8 @@ const CTA_DESIGNS = [
                     </p>
                 </div>
                 <div className="flex-shrink-0 w-full md:w-auto mt-4 md:mt-0">
-                    <Link 
-                        href="/contact" 
+                    <Link
+                        href="/contact"
                         className="group flex items-center justify-center gap-2 bg-[var(--color-primary)] text-white !text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#047857] transition-all shadow-md w-full md:w-auto no-underline text-base"
                     >
                         {cta.buttonText}
@@ -92,8 +92,8 @@ const CTA_DESIGNS = [
                     </p>
                 </div>
                 <div className="flex-shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
-                    <Link 
-                        href="/contact" 
+                    <Link
+                        href="/contact"
                         className="inline-block flex items-center justify-center bg-red-600 text-white !text-white font-semibold px-6 py-3 rounded-lg hover:bg-red-700 transition-colors shadow-sm w-full no-underline text-sm uppercase tracking-wider"
                     >
                         {cta.buttonText}
@@ -228,22 +228,22 @@ export default function BlogPostContent({ blog }: BlogPostContentProps) {
 
                         {/* Fallback for legacy monolithic blogs */}
                         {blog.content && (!blog.sections || blog.sections.length === 0) && (
-                            <motion.article 
+                            <motion.article
                                 className="prose prose-lg max-w-none"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.3 }}
                             >
-                                <div 
+                                <div
                                     className="leading-relaxed blog-content"
-                                    dangerouslySetInnerHTML={{ __html: blog.content.replace(/<p>\s*<\/p>/g, '') }} 
+                                    dangerouslySetInnerHTML={{ __html: blog.content.replace(/<p>\s*<\/p>/g, '') }}
                                 />
                             </motion.article>
                         )}
 
                         {/* Modern Block-based Rendering */}
                         {blog.sections && blog.sections.length > 0 && (
-                            <motion.article 
+                            <motion.article
                                 className="prose prose-lg max-w-none"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -265,15 +265,15 @@ export default function BlogPostContent({ blog }: BlogPostContentProps) {
 
                                 {(() => {
                                     let ctaRenderCount = 0;
-                                    
+
                                     return blog.sections.map((section, index) => {
                                         const isRight = index % 2 === 0;
                                         const floatClass = isRight ? 'sm:float-right sm:ml-8' : 'sm:float-left sm:mr-8';
-                                        
+
                                         let ctaComponent = null;
                                         const midPoint = Math.floor((blog.sections?.length || 0) / 2);
                                         const shouldShowCta = ctaRenderCount < 2 && (section.insertCtaAfter || index === midPoint || (index === 0 && blog.sections!.length < 3));
-                                        
+
                                         if (shouldShowCta) {
                                             const designIndex = ctaRenderCount;
                                             ctaComponent = CTA_DESIGNS[designIndex](CTA_CONTENT[designIndex], index);
@@ -283,7 +283,7 @@ export default function BlogPostContent({ blog }: BlogPostContentProps) {
                                         return (
                                             <div key={index} className="mb-10">
                                                 {section.heading && <h2 className="text-3xl font-bold mb-6 text-[var(--color-text-primary)] mt-12 clear-both">{section.heading}</h2>}
-                                                
+
                                                 {section.image && (
                                                     <figure className={`mb-6 mt-2 ${floatClass} w-full sm:w-[45%] lg:w-[40%] clear-none rounded-xl overflow-hidden shadow-[var(--shadow-lg)] border border-[var(--color-border)]`} style={{ display: 'block' }}>
                                                         <Image
@@ -295,11 +295,11 @@ export default function BlogPostContent({ blog }: BlogPostContentProps) {
                                                         />
                                                     </figure>
                                                 )}
-                                                
-                                                <div 
+
+                                                <div
                                                     className="leading-relaxed blog-content"
                                                     style={{ fontSize: '1.125rem', lineHeight: '1.75' }}
-                                                    dangerouslySetInnerHTML={{ __html: section.content }} 
+                                                    dangerouslySetInnerHTML={{ __html: section.content }}
                                                 />
 
                                                 {/* Injected Unique CTA Banner */}
@@ -325,7 +325,7 @@ export default function BlogPostContent({ blog }: BlogPostContentProps) {
                                 )}
                             </motion.article>
                         )}
-                        
+
                         {/* Share Section */}
                         <motion.footer
                             className="mt-12 pt-8 border-t border-[var(--color-border)]"

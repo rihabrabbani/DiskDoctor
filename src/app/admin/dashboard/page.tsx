@@ -38,7 +38,7 @@ export default function AdminDashboard() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isMagicOpen, setIsMagicOpen] = useState(false);
   const [aiApiKey, setAiApiKey] = useState('');
-  const [aiModel, setAiModel] = useState('gpt-4o');
+  const [aiModel, setAiModel] = useState('gpt-4o-mini');
   const [aiImageModel, setAiImageModel] = useState('dall-e-3');
   const [isTestingKey, setIsTestingKey] = useState(false);
   const [isSavingSettings, setIsSavingSettings] = useState(false);
@@ -49,6 +49,7 @@ export default function AdminDashboard() {
   const [magicWordCount, setMagicWordCount] = useState(1200);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStep, setGenerationStep] = useState('');
+  const [currentStepIndex, setCurrentStepIndex] = useState(1);
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
@@ -80,7 +81,7 @@ export default function AdminDashboard() {
       const data = await response.json();
       if (data.success && data.settings) {
         setAiApiKey(data.settings.apiKey);
-        setAiModel(data.settings.model || 'gpt-4o');
+        setAiModel(data.settings.model || 'gpt-4o-mini');
         setAiImageModel(data.settings.imageModel || 'dall-e-3');
       }
     } catch (error) {
@@ -129,7 +130,8 @@ export default function AdminDashboard() {
     }
 
     setIsGenerating(true);
-    setGenerationStep('Analyzing and generating content (this takes a minute)...');
+    setGenerationStep('Initializing AI engines...');
+    setCurrentStepIndex(1);
 
     try {
       const response = await fetch('/api/blogs/ai-generate', {
@@ -143,13 +145,52 @@ export default function AdminDashboard() {
         })
       });
 
-      const data = await response.json();
-      if (data.success) {
-        // Store in sessionStorage to pass to editor
-        sessionStorage.setItem('aiGeneratedBlog', JSON.stringify(data.blog));
-        router.push('/admin/editor?ai=true');
-      } else {
-        throw new Error(data.message || 'Failed to generate blog');
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.message || 'Failed to start AI generation');
+      }
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      
+      if (!reader) throw new Error('No stream available');
+      
+      let done = false;
+      let buffer = '';
+
+      while (!done) {
+        const { value, done: streamDone } = await reader.read();
+        done = streamDone;
+        
+        if (value) {
+          buffer += decoder.decode(value, { stream: true });
+          const parts = buffer.split('\n\n');
+          buffer = parts.pop() || '';
+          
+          for (const part of parts) {
+            if (part.startsWith('data: ')) {
+               try {
+                 const data = JSON.parse(part.slice(6));
+                 if (data.error) throw new Error(data.error);
+                 
+                 if (data.step) {
+                   setCurrentStepIndex(data.step);
+                   if (data.message) setGenerationStep(data.message);
+                 }
+                 
+                 if (data.blog) {
+                    sessionStorage.setItem('aiGeneratedBlog', JSON.stringify(data.blog));
+                    router.push('/admin/editor?ai=true');
+                    return; // Successfully finished
+                 }
+               } catch (e: any) {
+                 if (!e.message.includes('Unexpected end of JSON')) {
+                     console.error('SSE parse error:', e);
+                 }
+               }
+            }
+          }
+        }
       }
     } catch (error: any) {
       alert(error.message || 'Error generating blog.');
@@ -226,6 +267,14 @@ export default function AdminDashboard() {
       </div>
     );
   }
+
+  const generationStepsList = [
+    { id: 1, title: 'Ideation & Topic Selection' },
+    { id: 2, title: 'Deep Web Research' },
+    { id: 3, title: 'Drafting Content & SEO' },
+    { id: 4, title: 'Generating Media & Images' },
+    { id: 5, title: 'Finalizing Assets' },
+  ];
 
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] relative">
@@ -535,18 +584,38 @@ export default function AdminDashboard() {
               </div>
               
               {isGenerating ? (
-                <div className="p-12 flex flex-col items-center justify-center text-center space-y-6">
-                  <div className="relative w-20 h-20">
-                    <div className="absolute inset-0 rounded-full border-t-2 border-purple-500 animate-spin"></div>
-                    <div className="absolute inset-2 rounded-full border-r-2 border-indigo-400 animate-[spin_1.5s_linear_infinite_reverse]"></div>
-                    <div className="absolute inset-4 rounded-full border-b-2 border-pink-400 animate-spin"></div>
+                <div className="p-8 flex flex-col items-center w-full">
+                  <h3 className="text-2xl font-bold text-white mb-2">Generating Blog Post</h3>
+                  <p className="text-[var(--color-primary)] font-medium mb-8 text-center">{generationStep}</p>
+                  
+                  <div className="w-full max-w-sm space-y-4">
+                    {generationStepsList.map((step) => {
+                      const isActive = currentStepIndex === step.id;
+                      const isPast = currentStepIndex > step.id;
+                      const isFuture = currentStepIndex < step.id;
+                      
+                      return (
+                        <div key={step.id} className={`flex items-center gap-4 p-3 rounded-xl border transition-all duration-300 ${isActive ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/50 shadow-[0_0_15px_rgba(var(--color-primary-rgb),0.2)]' : isPast ? 'bg-green-500/5 border-green-500/20' : 'bg-[var(--color-surface-200)] border-transparent opacity-50'}`}>
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${isActive ? 'bg-[var(--color-primary)] text-white shadow-[0_0_10px_var(--color-primary)]' : isPast ? 'bg-green-500 text-white' : 'bg-[var(--color-surface-300)] text-[var(--color-text-secondary)]'}`}>
+                            {isPast ? (
+                              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                            ) : (
+                                step.id
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <h4 className={`font-semibold ${isActive ? 'text-[var(--color-primary)]' : isPast ? 'text-green-400' : 'text-[var(--color-text-secondary)]'}`}>{step.title}</h4>
+                          </div>
+                          {isActive && (
+                            <div className="w-5 h-5 rounded-full border-2 border-[var(--color-primary)] border-t-transparent animate-spin"></div>
+                          )}
+                        </div>
+                      )
+                    })}
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-white mb-2">Generating Blog Post...</h3>
-                    <p className="text-[var(--color-text-secondary)]">{generationStep}</p>
-                  </div>
-                  <p className="text-xs text-[var(--color-text-tertiary)] max-w-sm mt-4">
-                    GPT is analyzing topics, writing content, optimizing SEO, and generating a DALL-E 3 featured image. Please don't close this window.
+                  
+                  <p className="text-xs text-[var(--color-text-tertiary)] max-w-sm mt-8 text-center leading-relaxed">
+                    Please don't close this window.<br/>MagicAI is orchestrating multiple agents in the background.
                   </p>
                 </div>
               ) : (

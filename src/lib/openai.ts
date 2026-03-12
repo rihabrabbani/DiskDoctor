@@ -33,7 +33,7 @@ export async function saveAISettings(data: {
                 type: 'ai_config',
                 provider: 'openai',
                 apiKey: data.apiKey,
-                model: data.model,
+                model: data.model || 'gpt-4o-mini',
                 imageModel: data.imageModel || 'dall-e-3',
                 updatedAt: new Date().toISOString(),
             }
@@ -99,6 +99,7 @@ interface GenerateBlogParams {
     notes?: string;
     targetWordCount?: number;
     existingTitles?: string[];
+    onProgress?: (step: number, message: string) => void;
 }
 
 interface GeneratedBlog {
@@ -190,6 +191,8 @@ Target approximately ${wordCount} words.`;
         userPrompt += `\n\nExisting blog posts (for context, avoid repeating their content):\n${params.existingTitles.slice(0, 15).map(t => `- ${t}`).join('\n')}`;
     }
 
+    params.onProgress?.(2, "Generating highly specific Wikipedia search queries...");
+
     // --- DEEP RESEARCH STEP 1: GENERATE DATA-DRIVEN QUERIES ---
     const queryPrompt = `You are a Senior SEO Researcher. To write an authoritative, factual article about "${params.topic}", you need hard data.
 Do NOT search for broad topics. You must search for specific, highly-citable data points that would exist in an encyclopedia.
@@ -214,6 +217,7 @@ Return in exact JSON format:
         // --- DEEP RESEARCH STEP 2: EXECUTE SEARCHES ---
         if (queryObj.queries && Array.isArray(queryObj.queries)) {
             console.log(`[Deep Research] Executing searches:`, queryObj.queries);
+            params.onProgress?.(2, `Executing Deep Web Research for citations...`);
             const searchPromises = queryObj.queries.map((q: string) => performWebSearch(q, 3));
             const resultsNested = await Promise.all(searchPromises);
             const flatResults = resultsNested.flat();
@@ -277,11 +281,13 @@ Respond in this exact JSON format:
   ],
   "faqs": [
     {
-      "question": "Common user question related to keyword?",
-      "answer": "Clear, concise answer (2-3 sentences max)."
+        "question": "Common user question related to keyword?",
+        "answer": "Clear, concise answer (2-3 sentences max)."
     }
-  ]
+  ] // Generate between 3 and 5 FAQs
 }`;
+
+    params.onProgress?.(3, "Drafting SEO-optimized content, layout, and takeaways. This may take a minute...");
 
     const response = await client.chat.completions.create({
         model,
@@ -305,21 +311,8 @@ Respond in this exact JSON format:
             // Assign a unique ID for React rendering
             section.id = 'sec_' + Date.now() + '_' + i;
             
-            // If the AI requested an image for this section, generate it now
-            if (section.imagePrompt && imageCount < 3) {
-                console.log(`[Deep Research] Generating inline image for section ${i+1}: ${section.imagePrompt}`);
-                try {
-                    const inlineImageUrl = await generateFeaturedImage(apiKey, '', "Inline Blog Image", section.imagePrompt, true);
-                    section.image = inlineImageUrl;
-                    imageCount++;
-                    console.log(`[Deep Research] Successfully generated inline image: ${inlineImageUrl}`);
-                } catch (e) {
-                    console.error('[Deep Research] Failed to generate inline image:', e);
-                }
-            }
+            // We now leave inline image generation up to the API route to handle concurrently via Promise.all
             
-            // Key Takeaways are now handled natively by the frontend, so we no longer inject them here.
-
             // Inject one statistic at the end of the section if available
             if (result.statistics && Array.isArray(result.statistics) && i < result.statistics.length) {
                 const stat = result.statistics[i];

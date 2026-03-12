@@ -1,0 +1,394 @@
+/**
+ * OpenAI integration for AI blog generation.
+ * Uses GPT-4o for text generation and DALL-E 3 for featured images.
+ */
+
+import OpenAI from 'openai';
+import clientPromise, { DB_NAME } from './mongodb';
+import { uploadImageToDB } from './storage';
+import { performWebSearch } from './search';
+
+const SETTINGS_COLLECTION = 'settings';
+
+// ─── Settings helpers ───
+
+export async function getAISettings() {
+    const client = await clientPromise;
+    const db = client.db(DB_NAME);
+    const settings = await db.collection(SETTINGS_COLLECTION).findOne({ type: 'ai_config' });
+    return settings;
+}
+
+export async function saveAISettings(data: {
+    apiKey: string;
+    model: string;
+    imageModel: string;
+}) {
+    const client = await clientPromise;
+    const db = client.db(DB_NAME);
+    await db.collection(SETTINGS_COLLECTION).updateOne(
+        { type: 'ai_config' },
+        {
+            $set: {
+                type: 'ai_config',
+                provider: 'openai',
+                apiKey: data.apiKey,
+                model: data.model,
+                imageModel: data.imageModel || 'dall-e-3',
+                updatedAt: new Date().toISOString(),
+            }
+        },
+        { upsert: true }
+    );
+}
+
+// ─── OpenAI client ───
+
+export function getOpenAIClient(apiKey: string) {
+    return new OpenAI({ apiKey });
+}
+
+export async function testConnection(apiKey: string): Promise<boolean> {
+    try {
+        const client = getOpenAIClient(apiKey);
+        await client.models.list();
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+// ─── Blog Generation ───
+
+const SYSTEM_PROMPT = `You are a professional SEO blog writer for DiskDoctor Data Recovery (diskdoctorsamerica.com).
+
+DiskDoctor is a data recovery company based in Columbia, Maryland and Tysons, Virginia. They specialize in:
+- Hard drive recovery (HDD, SSD, NVMe)
+- RAID array recovery
+- Mobile device data recovery (iPhone, Android)
+- Server and enterprise recovery
+- Forensic data recovery
+- Flash drive and memory card recovery
+
+They have a 95% success rate, offer free evaluations, and have been operating since 1991.
+
+WRITING GUIDELINES:
+- Write in a professional but accessible tone
+- Target 1000-1500 words unless told otherwise
+- Use proper HTML formatting: <h2> for sections, <h3> for subsections, <p> for paragraphs, <ul>/<ol> for lists, <strong> for emphasis
+- Wrap EVERY text block in <p> tags. DO NOT use raw text or \n spacing.
+- Keep paragraphs extremely short (2-3 sentences max) for high readability.
+- Use bullet points and bold text frequently to make the content scannable.
+
+REQUIRED BLOG STRUCTURE:
+1. Compelling Introduction: Hook the reader and introduce the problem.
+2. The Core Issue: Explain the "Why/What" simply.
+3. Actionable Steps/Guide: The main body, heavily utilizing H2/H3 headings and bulleted lists.
+4. Prevention & Tips: Give extra value to the reader.
+5. Conclusion & Call-to-Action: Summarize, and advise them to contact DiskDoctor for a free evaluation if they need professional help.
+
+SEO GUIDELINES:
+- Include the focus keyword in the first 100 words
+- Use the focus keyword 3-5 times naturally throughout
+- Structure with H2 → H3 heading hierarchy
+- Use bullet points and numbered lists for readability`;
+
+interface GenerateBlogParams {
+    mode: 'guided' | 'magic';
+    topic?: string;
+    notes?: string;
+    targetWordCount?: number;
+    existingTitles?: string[];
+}
+
+interface GeneratedBlog {
+    title: string;
+    excerpt: string;
+    sections: any[];
+    faqs: any[];
+    keyTakeaways?: string[];
+    metaDescription: string;
+    focusKeyword: string;
+    category: string;
+    tags: string[];
+}
+
+export async function analyzeBlogsAndSuggestTopic(
+    apiKey: string,
+    model: string,
+    existingTitles: string[]
+): Promise<{ title: string; focusKeyword: string; reasoning: string }> {
+    const client = getOpenAIClient(apiKey);
+
+    const existingList = existingTitles.length > 0
+        ? existingTitles.map((t, i) => `${i + 1}. ${t}`).join('\n')
+        : 'No existing blog posts yet.';
+
+    const response = await client.chat.completions.create({
+        model,
+        messages: [
+            {
+                role: 'system',
+                content: `You are an SEO content strategist for DiskDoctor Data Recovery. Your job is to suggest the BEST next blog post topic.
+
+Consider:
+- What topics would attract people searching for data recovery help
+- High-intent keywords (people actively needing recovery services)
+- Problem-aware keywords (people experiencing data loss symptoms)  
+- Educational content that builds authority
+- Local SEO opportunities (Maryland, Virginia, DC area)
+- Current trends in data recovery, cybersecurity, and digital storage
+
+IMPORTANT: The topic must be DIFFERENT from all existing blog posts listed below.`
+            },
+            {
+                role: 'user',
+                content: `Here are our existing blog posts:\n\n${existingList}\n\nSuggest the single best next blog post topic. Consider what's missing, what would be valuable for our audience, and what has good search potential.
+
+Respond in this exact JSON format:
+{
+  "title": "The suggested blog post title (50-60 chars, compelling, keyword-rich)",
+  "focusKeyword": "the primary SEO keyword to target (2-4 words)",
+  "reasoning": "Brief explanation of why this topic (1-2 sentences)"
+}`
+            }
+        ],
+        temperature: 0.8,
+        response_format: { type: 'json_object' },
+    });
+
+    const result = JSON.parse(response.choices[0].message.content || '{}');
+    return {
+        title: result.title || 'Untitled',
+        focusKeyword: result.focusKeyword || '',
+        reasoning: result.reasoning || '',
+    };
+}
+
+export async function generateBlogContent(
+    apiKey: string,
+    model: string,
+    params: GenerateBlogParams
+): Promise<GeneratedBlog> {
+    const client = getOpenAIClient(apiKey);
+
+    const wordCount = params.targetWordCount || 1200;
+
+    let userPrompt = '';
+
+    if (params.mode === 'guided') {
+        userPrompt = `Write a blog post about: "${params.topic}"
+${params.notes ? `Additional instructions: ${params.notes}` : ''}
+Target approximately ${wordCount} words.`;
+    } else {
+        userPrompt = `Write a blog post with the title: "${params.topic}"
+Focus keyword: "${params.notes || ''}"
+Target approximately ${wordCount} words.`;
+    }
+
+    if (params.existingTitles && params.existingTitles.length > 0) {
+        userPrompt += `\n\nExisting blog posts (for context, avoid repeating their content):\n${params.existingTitles.slice(0, 15).map(t => `- ${t}`).join('\n')}`;
+    }
+
+    // --- DEEP RESEARCH STEP 1: GENERATE DATA-DRIVEN QUERIES ---
+    const queryPrompt = `You are a Senior SEO Researcher. To write an authoritative, factual article about "${params.topic}", you need hard data.
+Do NOT search for broad topics. You must search for specific, highly-citable data points that would exist in an encyclopedia.
+Return exactly 3 highly specific Wikipedia search queries. Examples:
+- "Hard disk drive failure rates"
+- "Ransomware statistics timeline"
+- "Data recovery forensic methods"
+
+Return in exact JSON format:
+{ "queries": ["query 1", "query 2", "query 3"] }`;
+
+    let searchResultsContext = '';
+    try {
+        const queryResponse = await client.chat.completions.create({
+            model,
+            messages: [{ role: 'system', content: queryPrompt }],
+            temperature: 0.5,
+            response_format: { type: 'json_object' }
+        });
+        const queryObj = JSON.parse(queryResponse.choices[0].message.content || '{}');
+        
+        // --- DEEP RESEARCH STEP 2: EXECUTE SEARCHES ---
+        if (queryObj.queries && Array.isArray(queryObj.queries)) {
+            console.log(`[Deep Research] Executing searches:`, queryObj.queries);
+            const searchPromises = queryObj.queries.map((q: string) => performWebSearch(q, 3));
+            const resultsNested = await Promise.all(searchPromises);
+            const flatResults = resultsNested.flat();
+            
+            if (flatResults.length > 0) {
+                searchResultsContext = `\n\nLIVE WEB RESEARCH CONTEXT (Use this to cite facts, statistics, and align with competitor content):\n`;
+                flatResults.forEach((res, i) => {
+                    searchResultsContext += `Source ${i+1}: ${res.title}\nURL: ${res.url}\nExcerpt: ${res.snippet}\n\n`;
+                });
+                console.log(`[Deep Research] Gathered ${flatResults.length} live snippets.`);
+            }
+        }
+    } catch (error) {
+        console.error('[Deep Research] Failed to perform web search phase:', error);
+    }
+    
+    userPrompt += searchResultsContext;
+
+    userPrompt += `\n\nCRITICAL INSTRUCTION: You must strictly output the response in the exact JSON format below. DO NOT output raw text.
+    
+    INLINE IMAGES: In at least 2 of your sections, you MUST provide an "imagePrompt" string describing a contextual photo for that section. Example: "A highly detailed close-up of a scratched HDD platter". We will generate an AI image from this prompt and place it at the beginning of the section.
+    
+    STATISTICS & QUOTES: You MUST extract at least 2 specific statistics or direct quotes from the LIVE WEB RESEARCH CONTEXT. Put these in the top-level "statistics" JSON array. We will format them automatically. Do NOT put them in the section content.
+
+    INTERNAL LINKS: You MUST also organically include at least 2 internal HTML <a> hyperlinks in your "sections.content" pointing to DiskDoctor services (e.g., <a href="/services/hard-drive-recovery">hard drive recovery</a>, <a href="/services/raid-recovery">RAID data recovery</a>, <a href="/services/ssd-recovery">SSD recovery</a>, <a href="/services/mac-recovery">Mac recovery</a>).`;
+
+    userPrompt += `\n\nCRITICAL INSTRUCTION: You must strictly output the response in the exact JSON format below. DO NOT output raw text.
+    
+Respond in this exact JSON format:
+{
+  "title": "Blog post title (50-60 chars, compelling)",
+  "excerpt": "150-160 char excerpt for the blog listing page",
+  "metaDescription": "120-155 char meta description for search results, include a CTA",
+  "focusKeyword": "Primary SEO keyword (2-4 words)",
+  "category": "One of: Data Recovery, Tips & Guides, Technology, Business, News, Case Studies",
+  "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
+  "keyTakeaways": [
+    "Most important point 1 (1 sentence)",
+    "Most important point 2 (1 sentence)",
+    "Most important point 3 (1 sentence)"
+  ],
+  "sections": [
+    {
+      "heading": "Introduction (Or a catchy hook title)",
+      "content": "Full section content in HTML (use <p>, <ul>, <strong> tags. Keep paragraphs to 2-3 sentences max.)",
+      "imagePrompt": "Optional detailed prompt for a photo (include in exactly 2 sections of the blog)",
+      "insertCtaAfter": false
+    },
+    {
+      "heading": "Next Structural Heading...",
+      "content": "...",
+      "insertCtaAfter": true
+    }
+  ],
+  "statistics": [
+      {
+          "quote": "Direct quote or statistic extracted from research",
+          "sourceName": "Name of the website",
+          "sourceUrl": "https://exact.url.from.context"
+      }
+  ],
+  "faqs": [
+    {
+      "question": "Common user question related to keyword?",
+      "answer": "Clear, concise answer (2-3 sentences max)."
+    }
+  ]
+}`;
+
+    const response = await client.chat.completions.create({
+        model,
+        messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            { role: 'user', content: userPrompt },
+        ],
+        temperature: 0.7,
+        max_tokens: 4096,
+        response_format: { type: 'json_object' },
+    });
+
+    const result = JSON.parse(response.choices[0].message.content || '{}');
+
+    // 1. Process Sections & Generate Inline Images natively within the JSON array
+    if (result.sections && Array.isArray(result.sections)) {
+        let imageCount = 0;
+        for (let i = 0; i < result.sections.length; i++) {
+            const section = result.sections[i];
+            
+            // Assign a unique ID for React rendering
+            section.id = 'sec_' + Date.now() + '_' + i;
+            
+            // If the AI requested an image for this section, generate it now
+            if (section.imagePrompt && imageCount < 3) {
+                console.log(`[Deep Research] Generating inline image for section ${i+1}: ${section.imagePrompt}`);
+                try {
+                    const inlineImageUrl = await generateFeaturedImage(apiKey, '', "Inline Blog Image", section.imagePrompt, true);
+                    section.image = inlineImageUrl;
+                    imageCount++;
+                    console.log(`[Deep Research] Successfully generated inline image: ${inlineImageUrl}`);
+                } catch (e) {
+                    console.error('[Deep Research] Failed to generate inline image:', e);
+                }
+            }
+            
+            // Key Takeaways are now handled natively by the frontend, so we no longer inject them here.
+
+            // Inject one statistic at the end of the section if available
+            if (result.statistics && Array.isArray(result.statistics) && i < result.statistics.length) {
+                const stat = result.statistics[i];
+                 if (stat.quote && stat.sourceUrl) {
+                    const statHtml = `\n<blockquote class="p-6 my-8 border-l-4 border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-900 dark:text-indigo-100 rounded-lg shadow-sm font-medium italic">\n"${stat.quote}"\n<br><span class="text-sm font-normal text-indigo-600 dark:text-indigo-400 mt-2 block">— <a href="${stat.sourceUrl}" target="_blank" rel="noopener noreferrer" class="underline hover:text-indigo-800">${stat.sourceName || 'Source'}</a></span>\n</blockquote>\n\n`;
+                    section.content = section.content + statHtml;
+                 }
+            }
+        }
+    }
+
+    // 2. Process FAQs natively
+    if (result.faqs && Array.isArray(result.faqs)) {
+        for (let i = 0; i < result.faqs.length; i++) {
+           result.faqs[i].id = 'faq_' + Date.now() + '_' + i;
+        }
+    }
+
+    return {
+        title: result.title || params.topic || 'Untitled',
+        excerpt: result.excerpt || '',
+        sections: result.sections || [],
+        faqs: result.faqs || [],
+        keyTakeaways: result.keyTakeaways || [],
+        metaDescription: result.metaDescription || '',
+        focusKeyword: result.focusKeyword || '',
+        category: result.category || 'Data Recovery',
+        tags: Array.isArray(result.tags) ? result.tags : [],
+    };
+}
+
+// ─── Image Generation ───
+
+export async function generateFeaturedImage(
+    apiKey: string,
+    model: string,
+    title: string,
+    excerpt: string,
+    isInline: boolean = false
+): Promise<string> {
+    const client = getOpenAIClient(apiKey);
+
+    let prompt = '';
+    
+    if (isInline) {
+        prompt = `A hyper-realistic, high-end product photograph of: ${excerpt}. The subject MUST be completely isolated on a pure, solid white background layer. Clean, minimalist studio lighting, extreme detail. Absolutely no text, words, watermarks, or logos in the image.`;
+    } else {
+        prompt = `A highly realistic, premium editorial photograph representing the concept of: "${title}". Context: ${excerpt}. Cinematic lighting, shallow depth of field, high-end corporate technology photography style. Realistic textures and natural colors. Absolutely no text, words, watermarks, or logos in the image.`;
+    }
+
+    const response = await client.images.generate({
+        model: model || 'dall-e-3',
+        prompt,
+        n: 1,
+        quality: 'hd',
+        style: 'natural',
+        size: isInline ? '1024x1024' : '1792x1024',
+        response_format: 'b64_json',
+    });
+
+    const b64Json = response.data?.[0]?.b64_json;
+    if (!b64Json) {
+        throw new Error('No image returned from OpenAI');
+    }
+
+    const buffer = Buffer.from(b64Json, 'base64');
+    
+    const filename = `blog_ai_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.png`;
+    const imageUrl = await uploadImageToDB(buffer, 'image/png', filename);
+
+    return imageUrl;
+}

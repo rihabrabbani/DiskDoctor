@@ -11,7 +11,8 @@ interface Blog {
   id: string;
   slug?: string;
   title: string;
-  content: string;
+  content?: string;
+  sections?: { heading: string; content: string }[];
   excerpt: string;
   tags: string[];
   category?: string;
@@ -71,8 +72,10 @@ export default function BlogPageClient() {
   };
 
   const filteredBlogs = blogs.filter(blog => {
-    const matchesSearch = blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.content.toLowerCase().includes(searchTerm.toLowerCase());
+    const searchLower = searchTerm.toLowerCase();
+    const contentMatch = blog.content ? blog.content.toLowerCase().includes(searchLower) : false;
+    const sectionsMatch = blog.sections ? blog.sections.some(s => s.heading.toLowerCase().includes(searchLower) || s.content.toLowerCase().includes(searchLower)) : false;
+    const matchesSearch = blog.title.toLowerCase().includes(searchLower) || contentMatch || sectionsMatch;
     const matchesTag = !selectedTag || blog.tags.includes(selectedTag);
     return matchesSearch && matchesTag;
   });

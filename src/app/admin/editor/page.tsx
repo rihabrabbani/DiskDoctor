@@ -1,17 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef, forwardRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
-import 'quill/dist/quill.snow.css';
-
-const ReactQuill = dynamic(
-    async () => {
-        const { default: RQ } = await import('react-quill-new');
-        return forwardRef<any, any>((props, ref) => <RQ {...props} ref={ref} />);
-    },
-    { ssr: false }
-);
 
 const CATEGORIES = [
     'Data Recovery',
@@ -24,7 +14,9 @@ const CATEGORIES = [
 
 interface BlogFormData {
     title: string;
-    content: string;
+    sections: { heading: string; content: string; imagePrompt?: string; image?: string; id?: string }[];
+    faqs: { question: string; answer: string; id?: string }[];
+    keyTakeaways: string[];
     excerpt: string;
     metaDescription: string;
     focusKeyword: string;
@@ -39,12 +31,12 @@ interface BlogFormData {
 
 export default function BlogEditorPage() {
     const router = useRouter();
-    const quillRef = useRef<any>(null);
     const slugTouched = useRef(false);
     const [saving, setSaving] = useState(false);
     const [lastSaved, setLastSaved] = useState<string | null>(null);
     const [uploadingFeatured, setUploadingFeatured] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
+    const [isInitialized, setIsInitialized] = useState(false);
     const [seoOpen, setSeoOpen] = useState(true);
     const [featuredOpen, setFeaturedOpen] = useState(true);
     const [categoryOpen, setCategoryOpen] = useState(true);
@@ -52,7 +44,9 @@ export default function BlogEditorPage() {
 
     const [formData, setFormData] = useState<BlogFormData>({
         title: '',
-        content: '',
+        sections: [{ heading: '', content: '' }],
+        faqs: [],
+        keyTakeaways: [],
         excerpt: '',
         metaDescription: '',
         focusKeyword: '',
@@ -65,11 +59,48 @@ export default function BlogEditorPage() {
         scheduledAt: '',
     });
 
+    const [isAIGenerated, setIsAIGenerated] = useState(false);
+
     useEffect(() => {
         const token = localStorage.getItem('adminToken');
         if (!token) {
             router.push('/admin/login');
         }
+
+        // Check for AI generated content from MagicAI
+        if (typeof window !== 'undefined' && window.location.search.includes('ai=true')) {
+            const aiData = sessionStorage.getItem('aiGeneratedBlog');
+            if (aiData) {
+                try {
+                    const parsed = JSON.parse(aiData);
+                    console.log('--- AI GENERATED DATA RECOVERED ---');
+                    console.log('Title:', parsed.title);
+                    console.log('Content Length:', parsed.content?.length);
+                    console.log('Content Snippet:', parsed.content?.substring(0, 200));
+                    
+                    setFormData(prev => ({
+                        ...prev,
+                        title: parsed.title || prev.title,
+                        sections: parsed.sections && parsed.sections.length > 0 ? parsed.sections : prev.sections,
+                        faqs: parsed.faqs || prev.faqs,
+                        keyTakeaways: parsed.keyTakeaways || prev.keyTakeaways,
+                        excerpt: parsed.excerpt || prev.excerpt,
+                        metaDescription: parsed.metaDescription || prev.metaDescription,
+                        focusKeyword: parsed.focusKeyword || prev.focusKeyword,
+                        category: parsed.category || prev.category,
+                        tags: parsed.tags ? parsed.tags.join(', ') : prev.tags,
+                        slug: parsed.slug || prev.slug,
+                        featuredImage: parsed.featuredImage || prev.featuredImage,
+                    }));
+                    slugTouched.current = !!parsed.slug;
+                    setIsAIGenerated(true);
+                    sessionStorage.removeItem('aiGeneratedBlog');
+                } catch (e) {
+                    console.error('Failed to parse AI data:', e);
+                }
+            }
+        }
+        setIsInitialized(true);
     }, [router]);
 
     // Auto-generate slug from title (only if user hasn't manually edited it)
@@ -88,64 +119,28 @@ export default function BlogEditorPage() {
         }
     }, [formData.title]);
 
-    const quillModules = {
-        toolbar: {
-            container: [
-                [{ header: [2, 3, 4, false] }],
-                ['bold', 'italic', 'underline', 'strike'],
-                [{ color: [] }, { background: [] }],
-                [{ align: [] }],
-                ['blockquote', 'code-block'],
-                [{ list: 'ordered' }, { list: 'bullet' }],
-                [{ indent: '-1' }, { indent: '+1' }],
-                ['link', 'image'],
-                ['clean'],
-            ],
-            handlers: {
-                image: imageHandler,
-            },
-        },
-        clipboard: { matchVisual: false },
+    // Helper functions to manage the dynamic arrays
+    const addSection = () => setFormData(prev => ({ ...prev, sections: [...prev.sections, { heading: '', content: '' }] }));
+    const updateSection = (index: number, field: string, value: string) => {
+        const newSections = [...formData.sections];
+        newSections[index] = { ...newSections[index], [field]: value };
+        setFormData(prev => ({ ...prev, sections: newSections }));
+    };
+    const removeSection = (index: number) => {
+        const newSections = formData.sections.filter((_, i) => i !== index);
+        setFormData(prev => ({ ...prev, sections: newSections }));
     };
 
-    const quillFormats = [
-        'header', 'bold', 'italic', 'underline', 'strike',
-        'color', 'background', 'align', 'blockquote', 'code-block',
-        'list', 'indent', 'link', 'image',
-    ];
-
-    async function imageHandler() {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
-        input.click();
-
-        input.onchange = async () => {
-            const file = input.files?.[0];
-            if (file) {
-                setUploadProgress(30);
-                try {
-                    const fd = new FormData();
-                    fd.append('image', file);
-                    const response = await fetch('/api/upload', { method: 'POST', body: fd });
-                    setUploadProgress(80);
-                    if (!response.ok) throw new Error('Failed to upload image');
-                    const data = await response.json();
-                    const quill = quillRef.current?.getEditor();
-                    if (quill) {
-                        const range = quill.getSelection();
-                        quill.insertEmbed(range ? range.index : 0, 'image', data.secure_url);
-                    }
-                    setUploadProgress(100);
-                    setTimeout(() => setUploadProgress(0), 500);
-                } catch (error) {
-                    console.error('Error uploading image:', error);
-                    setUploadProgress(0);
-                    alert('Failed to upload image. Please try again.');
-                }
-            }
-        };
-    }
+    const addFAQ = () => setFormData(prev => ({ ...prev, faqs: [...prev.faqs, { question: '', answer: '' }] }));
+    const updateFAQ = (index: number, field: string, value: string) => {
+        const newFaqs = [...formData.faqs];
+        newFaqs[index] = { ...newFaqs[index], [field]: value };
+        setFormData(prev => ({ ...prev, faqs: newFaqs }));
+    };
+    const removeFAQ = (index: number) => {
+        const newFaqs = formData.faqs.filter((_, i) => i !== index);
+        setFormData(prev => ({ ...prev, faqs: newFaqs }));
+    };
 
     const handleFeaturedImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -172,8 +167,8 @@ export default function BlogEditorPage() {
     const handleSave = async (publishStatus?: 'draft' | 'published' | 'scheduled') => {
         const status = publishStatus || formData.status;
 
-        if (!formData.title.trim() || !formData.content.trim()) {
-            alert('Please fill in the title and content.');
+        if (!formData.title.trim() || formData.sections.length === 0 || !formData.sections[0].heading.trim()) {
+            alert('Please fill in the title and at least one section heading.');
             return;
         }
 
@@ -186,7 +181,9 @@ export default function BlogEditorPage() {
         try {
             const submitData = new FormData();
             submitData.append('title', formData.title.trim());
-            submitData.append('content', formData.content);
+            submitData.append('sections', JSON.stringify(formData.sections));
+            submitData.append('faqs', JSON.stringify(formData.faqs));
+            submitData.append('keyTakeaways', JSON.stringify(formData.keyTakeaways));
             submitData.append('excerpt', formData.excerpt.trim());
             submitData.append('metaDescription', formData.metaDescription.trim());
             submitData.append('focusKeyword', formData.focusKeyword.trim());
@@ -223,6 +220,17 @@ export default function BlogEditorPage() {
     };
 
     const seoScore = calculateSeoScore(formData);
+
+    if (!isInitialized) {
+        return (
+            <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center">
+                <div className="text-center">
+                    <div className="w-12 h-12 border-4 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                    <p className="text-[var(--color-text-secondary)]">Loading editor...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
@@ -277,6 +285,19 @@ export default function BlogEditorPage() {
                 </div>
             )}
 
+            {/* AI Generated Banner */}
+            {isAIGenerated && (
+                <div className="bg-purple-500/10 border-b border-purple-500/20 px-4 sm:px-6 py-3 flex justify-between items-center">
+                    <div className="flex items-center gap-2 text-indigo-400 font-medium text-sm">
+                        <span>✨</span>
+                        <span>AI-Generated Content — Please review, edit, and adjust formatting before publishing.</span>
+                    </div>
+                    <button onClick={() => setIsAIGenerated(false)} className="text-indigo-400/70 hover:text-indigo-400 text-sm font-medium">
+                        Discuss
+                    </button>
+                </div>
+            )}
+
             {/* Main Content */}
             <div className="max-w-[1600px] mx-auto flex flex-col lg:flex-row">
                 {/* Editor Area */}
@@ -299,18 +320,95 @@ export default function BlogEditorPage() {
                         className="w-full text-lg bg-transparent border-none outline-none text-[var(--color-text-secondary)] placeholder-[var(--color-text-tertiary)] mb-8 resize-none"
                     />
 
-                    {/* Rich Text Editor */}
-                    <div className="editor-wrapper" style={{ minHeight: '500px' }}>
-                        <ReactQuill
-                            ref={quillRef}
-                            value={formData.content}
-                            onChange={(value: any) => setFormData(prev => ({ ...prev, content: value }))}
-                            modules={quillModules}
-                            formats={quillFormats}
-                            className="bg-[var(--color-surface-100)] rounded-xl"
-                            placeholder="Start writing your blog post..."
-                            style={{ minHeight: '450px' }}
-                        />
+                    {/* Visual Section Builder */}
+                    <div className="space-y-6">
+                        <div className="flex items-center justify-between mb-4 mt-8">
+                            <h2 className="text-xl font-semibold text-[var(--color-text-primary)]">Blog Sections</h2>
+                            <button
+                                onClick={addSection}
+                                className="flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)]/10 text-[var(--color-primary)] hover:bg-[var(--color-primary)]/20 rounded-lg text-sm font-medium transition-colors"
+                            >
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                                Add Section
+                            </button>
+                        </div>
+                        
+                        {formData.sections.map((section, index) => (
+                            <div key={index} className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-5 sm:p-6 transition-all shadow-sm hover:shadow-md">
+                                <div className="flex justify-between items-center mb-4">
+                                    <span className="inline-flex items-center space-x-2">
+                                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[var(--color-primary)]/20 text-[var(--color-primary)] text-xs font-bold">{index + 1}</span>
+                                        <span className="font-medium text-[var(--color-text-secondary)] text-sm">Section</span>
+                                    </span>
+                                    <button onClick={() => removeSection(index)} className="text-red-400 hover:text-red-500 hover:bg-red-400/10 p-2 rounded-lg transition-colors">
+                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                    </button>
+                                </div>
+                                <input
+                                    type="text"
+                                    value={section.heading}
+                                    onChange={(e) => updateSection(index, 'heading', e.target.value)}
+                                    placeholder="Section Heading (e.g. Common Causes of Data Loss)"
+                                    className="w-full text-xl font-bold bg-transparent border-none outline-none text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] mb-4"
+                                />
+                                <div className="relative">
+                                    <textarea
+                                        value={section.content}
+                                        onChange={(e) => updateSection(index, 'content', e.target.value)}
+                                        placeholder="Write the paragraph content for this section. You can use standard HTML like <strong> or <ul>..."
+                                        rows={6}
+                                        className="w-full bg-[var(--color-background)] border border-[var(--color-border)] rounded-xl p-4 text-[var(--color-text-secondary)] placeholder-[var(--color-text-tertiary)] outline-none focus:border-[var(--color-primary)]/50 focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all resize-y font-mono text-sm leading-relaxed"
+                                    />
+                                    {section.imagePrompt && (
+                                        <div className="mt-3 p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-lg flex items-start gap-3">
+                                            <span className="text-indigo-400 mt-0.5">📸</span>
+                                            <div>
+                                                <div className="text-xs font-semibold text-indigo-400 uppercase tracking-wide">AI Image Prompt Attached</div>
+                                                <div className="text-sm text-indigo-300/80 mt-1 italic">"{section.imagePrompt}"</div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Visual FAQ Builder */}
+                    <div className="space-y-4 mt-12 mb-8">
+                        <div className="flex items-center justify-between mb-4">
+                            <h2 className="text-xl font-semibold text-[var(--color-text-primary)]">Frequently Asked Questions</h2>
+                            <button
+                                onClick={addFAQ}
+                                className="flex items-center gap-2 px-4 py-2 bg-[var(--color-surface-200)] text-[var(--color-text-primary)] hover:bg-[var(--color-border)] rounded-lg text-sm font-medium transition-colors"
+                            >
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                                Add FAQ
+                            </button>
+                        </div>
+                        
+                        {formData.faqs.map((faq, index) => (
+                            <div key={`faq_${index}`} className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-xl p-4 relative group">
+                                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button onClick={() => removeFAQ(index)} className="text-red-400 hover:text-red-500 p-1">
+                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                                    </button>
+                                </div>
+                                <input
+                                    type="text"
+                                    value={faq.question}
+                                    onChange={(e) => updateFAQ(index, 'question', e.target.value)}
+                                    placeholder="Question..."
+                                    className="w-full font-semibold bg-transparent border-none outline-none text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] mb-2 pr-8"
+                                />
+                                <textarea
+                                    value={faq.answer}
+                                    onChange={(e) => updateFAQ(index, 'answer', e.target.value)}
+                                    placeholder="Answer..."
+                                    rows={2}
+                                    className="w-full text-sm bg-transparent border-none outline-none text-[var(--color-text-secondary)] placeholder-[var(--color-text-tertiary)] resize-none"
+                                />
+                            </div>
+                        ))}
                     </div>
                 </div>
 
@@ -522,56 +620,6 @@ export default function BlogEditorPage() {
 
                 </div>
             </div>
-
-            {/* Editor Styles */}
-            <style jsx global>{`
-        .editor-wrapper .ql-container {
-          min-height: 450px;
-          font-size: 1.1rem;
-          line-height: 1.8;
-          border: none;
-          border-radius: 0 0 0.75rem 0.75rem;
-        }
-        .editor-wrapper .ql-toolbar {
-          border: none;
-          border-bottom: 1px solid var(--color-border);
-          border-radius: 0.75rem 0.75rem 0 0;
-          background: var(--color-surface-200);
-          position: sticky;
-          top: 57px;
-          z-index: 10;
-        }
-        .editor-wrapper .ql-editor {
-          min-height: 450px;
-          padding: 2rem;
-          color: var(--color-text-primary);
-        }
-        .editor-wrapper .ql-editor.ql-blank::before {
-          color: var(--color-text-tertiary);
-          font-style: normal;
-        }
-        .editor-wrapper .ql-toolbar .ql-stroke {
-          stroke: var(--color-text-secondary);
-        }
-        .editor-wrapper .ql-toolbar .ql-fill {
-          fill: var(--color-text-secondary);
-        }
-        .editor-wrapper .ql-toolbar .ql-picker-label {
-          color: var(--color-text-secondary);
-        }
-        .editor-wrapper .ql-toolbar button:hover .ql-stroke {
-          stroke: var(--color-primary);
-        }
-        .editor-wrapper .ql-toolbar button:hover .ql-fill {
-          fill: var(--color-primary);
-        }
-        .editor-wrapper .ql-toolbar button.ql-active .ql-stroke {
-          stroke: var(--color-primary);
-        }
-        .editor-wrapper .ql-toolbar button.ql-active .ql-fill {
-          fill: var(--color-primary);
-        }
-      `}</style>
         </div>
     );
 }
@@ -621,7 +669,8 @@ function calculateSeoScore(data: BlogFormData): number {
         score++; // Has focus keyword
         if (data.title.toLowerCase().includes(data.focusKeyword.toLowerCase())) score++; // Keyword in title
         if (data.metaDescription.toLowerCase().includes(data.focusKeyword.toLowerCase())) score++; // Keyword in meta desc
-        if (data.content.toLowerCase().includes(data.focusKeyword.toLowerCase())) score++; // Keyword in content
+        const totalContent = data.sections.map(s => s.heading + ' ' + s.content).join(' ').toLowerCase();
+        if (totalContent.includes(data.focusKeyword.toLowerCase())) score++; // Keyword in content
     }
     if (data.metaDescription.length >= 120 && data.metaDescription.length <= 160) score++; // Good meta desc length
     return score;

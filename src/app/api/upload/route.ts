@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { uploadToCloudinary } from '@/lib/cloudinary';
+import { uploadImageToDB } from '@/lib/storage';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,13 +35,12 @@ export async function POST(request: NextRequest) {
     const bytes = await image.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const cloudinaryResponse = await uploadToCloudinary(buffer, {
-      public_id: `blog_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-    });
+    const filename = `blog_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const imageUrl = await uploadImageToDB(buffer, image.type, filename);
 
     return NextResponse.json({
       success: true,
-      secure_url: (cloudinaryResponse as any).secure_url,
+      secure_url: imageUrl,
     });
   } catch (error: any) {
     console.error('Error uploading image:', error?.message || error);

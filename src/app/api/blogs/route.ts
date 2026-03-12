@@ -1,7 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb';
-import { uploadToCloudinary, extractCloudinaryUrls } from '@/lib/cloudinary';
+import { uploadImageToDB } from '@/lib/storage';
 import { v4 as uuidv4 } from 'uuid';
+
+// Helper function to extract our local image URLs from HTML content
+const extractLocalImageUrls = (htmlContent: string) => {
+  const urls: string[] = [];
+  const imgRegex = /<img[^>]+src="([^"]*\/api\/images\/[^"]*)"[^>]*>/g;
+  let match;
+  
+  while ((match = imgRegex.exec(htmlContent)) !== null) {
+    urls.push(match[1]);
+  }
+  
+  return urls;
+};
 import { generateUniqueSlug, calculateReadingTime, calculateWordCount } from '@/lib/slugify';
 import { DEFAULT_AUTHOR, BLOG_CATEGORIES } from '@/lib/types';
 
@@ -51,7 +64,9 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const title = formData.get('title') as string;
-    const content = formData.get('content') as string;
+    const sectionsRaw = formData.get('sections') as string;
+    const faqsRaw = formData.get('faqs') as string;
+    const keyTakeawaysRaw = formData.get('keyTakeaways') as string;
     const excerpt = formData.get('excerpt') as string;
     const metaDescription = formData.get('metaDescription') as string;
     const focusKeyword = formData.get('focusKeyword') as string;
@@ -64,12 +79,26 @@ export async function POST(request: NextRequest) {
     const customSlug = formData.get('slug') as string;
     const images = formData.getAll('images') as File[];
 
-    if (!title || !content) {
+    if (!title || !sectionsRaw) {
       return NextResponse.json({
         success: false,
-        message: 'Title and content are required',
+        message: 'Title and content sections are required',
       }, { status: 400 });
     }
+
+    let parsedSections = [];
+    let parsedFaqs = [];
+    let parsedKeyTakeaways = [];
+    try {
+        parsedSections = JSON.parse(sectionsRaw || '[]');
+        parsedFaqs = JSON.parse(faqsRaw || '[]');
+        parsedKeyTakeaways = JSON.parse(keyTakeawaysRaw || '[]');
+    } catch(e) {
+        console.error("Error parsing abstract JSON arrays:", e);
+    }
+    
+    // Concatenate all text to generate an accurate word count and excerpt 
+    const fullTextContent = parsedSections.map((s: any) => `${s.heading} ${s.content}`).join(' ');
 
     const client = await clientPromise;
     const db = client.db(DB_NAME);
@@ -82,39 +111,39 @@ export async function POST(request: NextRequest) {
 
     let uploadedImages: string[] = [];
 
-    // Extract existing Cloudinary URLs from content
-    const existingCloudinaryUrls = extractCloudinaryUrls(content);
-    uploadedImages.push(...existingCloudinaryUrls);
+    // Extract existing local URLs from content
+    const existingImageUrls = extractLocalImageUrls(fullTextContent);
+    uploadedImages.push(...existingImageUrls);
 
-    // Upload additional images to Cloudinary
+    // Upload additional images to MongoDB
     if (images && images.length > 0) {
       for (const image of images) {
         if (image instanceof File && image.size > 0) {
           const bytes = await image.arrayBuffer();
           const buffer = Buffer.from(bytes);
+          const filename = `blog_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-          const cloudinaryResponse = await uploadToCloudinary(buffer, {
-            public_id: `blog_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-          }) as any;
-
-          uploadedImages.push(cloudinaryResponse.secure_url);
+          const imageUrl = await uploadImageToDB(buffer, image.type, filename);
+          uploadedImages.push(imageUrl);
         }
       }
     }
 
     // Auto-generate excerpt if not provided
     const autoExcerpt = excerpt?.trim() ||
-      content.replace(/<[^>]*>/g, '').substring(0, 150).trim() + '...';
+      fullTextContent.replace(/<[^>]*>/g, '').substring(0, 150).trim() + '...';
 
     // Auto-generate meta description if not provided
     const autoMetaDescription = metaDescription?.trim() ||
-      content.replace(/<[^>]*>/g, '').substring(0, 155).trim() + '...';
+      fullTextContent.replace(/<[^>]*>/g, '').substring(0, 155).trim() + '...';
 
     const newBlog = {
       id: uuidv4(),
       slug,
       title: title.trim(),
-      content: content.trim(),
+      sections: parsedSections,
+      faqs: parsedFaqs,
+      keyTakeaways: parsedKeyTakeaways,
       excerpt: autoExcerpt,
       metaDescription: autoMetaDescription,
       focusKeyword: focusKeyword?.trim() || '',
@@ -125,8 +154,8 @@ export async function POST(request: NextRequest) {
       images: [...new Set(uploadedImages)],
       status: status as 'draft' | 'published' | 'scheduled',
       scheduledAt: status === 'scheduled' && scheduledAt ? scheduledAt : null,
-      readingTime: calculateReadingTime(content),
-      wordCount: calculateWordCount(content),
+      readingTime: calculateReadingTime(fullTextContent),
+      wordCount: calculateWordCount(fullTextContent),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

@@ -296,3 +296,23 @@ html.dark #hubspot-contact-form .hsfc-Textarea {
   background-color: #f8fafc !important;
   border-color: #cbd5e1 !important;
 }
+
+/* HubSpot form spacing normalization (prevents oversized gap below custom heading) */
+#hubspot-contact-form .hsfc-Form,
+#hubspot-contact-form .hs-form,
+#hubspot-contact-form form {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+#hubspot-contact-form .hsfc-Form__Body,
+#hubspot-contact-form .hs-form > fieldset {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+#hubspot-contact-form .hsfc-FieldGroup:first-child,
+#hubspot-contact-form .hs-form .hs-form-field:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}

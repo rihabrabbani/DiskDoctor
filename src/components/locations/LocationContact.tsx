@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { LocationData } from '@/data/locations';
-import { Phone, Mail, MapPin, Clock, MessageSquare } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import HubspotContactForm from '@/components/contact/HubspotContactForm';
 
 interface LocationContactProps {
   location: LocationData;
@@ -157,111 +158,14 @@ export default function LocationContact({ location }: LocationContactProps) {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <div className="bg-[var(--color-surface-100)] rounded-2xl p-8">
-                <h3 className="text-2xl font-bold text-[var(--color-text-primary)] mb-6">
+              <div className="bg-white border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-[var(--shadow-md)]">
+                <h3 className="text-2xl font-bold text-[var(--color-neutral-900)] mb-6">
                   Get Your Free Evaluation
                 </h3>
-                
-                <form className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label htmlFor="firstName" className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
-                        First Name *
-                      </label>
-                      <input
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        required
-                        className="w-full px-4 py-3 border border-[var(--color-border)] rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-all duration-200 bg-[var(--color-surface-100)]"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="lastName" className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
-                        Last Name *
-                      </label>
-                      <input
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        required
-                        className="w-full px-4 py-3 border border-[var(--color-border)] rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-all duration-200 bg-[var(--color-surface-100)]"
-                      />
-                    </div>
-                  </div>
 
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-[var(--color-text)] mb-2">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      required
-                      className="w-full px-4 py-3 border border-[var(--color-border)] rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-all duration-200 bg-[var(--color-surface-100)]"
-                    />
-                  </div>
+                <HubspotContactForm />
 
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-[var(--color-text)] mb-2">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      className="w-full px-4 py-3 border border-[var(--color-border)] rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-all duration-200 bg-[var(--color-surface-100)]"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="deviceType" className="block text-sm font-medium text-[var(--color-text)] mb-2">
-                      Device Type
-                    </label>
-                    <select
-                      id="deviceType"
-                      name="deviceType"
-                      className="w-full px-4 py-3 border border-[var(--color-border)] rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-all duration-200 bg-[var(--color-surface-100)]"
-                    >
-                      <option value="">Select device type...</option>
-                      <option value="hard-drive">Hard Drive</option>
-                      <option value="ssd">SSD</option>
-                      <option value="raid">RAID Array</option>
-                      <option value="laptop">Laptop</option>
-                      <option value="desktop">Desktop Computer</option>
-                      <option value="mobile">Mobile Device</option>
-                      <option value="server">Server</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-[var(--color-text)] mb-2">
-                      Describe Your Data Loss Situation *
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows={4}
-                      required
-                      placeholder="Please describe what happened to your device and what type of data you need recovered..."
-                      className="w-full px-4 py-3 border border-[var(--color-border)] rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-all duration-200 bg-[var(--color-surface-100)] resize-none"
-                    ></textarea>
-                  </div>
-
-                  <motion.button
-                    type="submit"
-                    className="w-full bg-[var(--color-primary)] text-[var(--color-text-inverse)] font-semibold py-4 px-6 rounded-lg hover:bg-[var(--color-primary-hover)] transition-all duration-300 shadow-lg hover:shadow-xl"
-                    whileHover={{ y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <MessageSquare className="h-5 w-5 inline mr-2" />
-                    Get Free Evaluation
-                  </motion.button>
-                </form>
-
-                <p className="text-sm text-[var(--color-text-light)] mt-4 text-center">
+                <p className="text-sm text-[var(--color-neutral-700)] mt-4 text-center">
                   We'll contact you within 30 minutes during business hours
                 </p>
               </div>

@@ -98,12 +98,9 @@ export default function LocationFAQ({ location }: LocationFAQProps) {
                       <HelpCircle className="h-5 w-5 text-[var(--color-text-inverse)]" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-[var(--color-text)] mb-1">
+                      <h3 className="text-lg font-semibold text-[var(--color-text)]">
                         {faq.question}
                       </h3>
-                      <span className="text-sm text-[var(--color-accent)] font-medium">
-                        {faq.category}
-                      </span>
                     </div>
                   </div>
                   <motion.div

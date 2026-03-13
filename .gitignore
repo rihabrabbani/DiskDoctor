@@ -41,3 +41,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local reports/docs kept outside repo tracking
+/diskdoctorsamerica.com-Coverage-2026-03-11/
+/docs/

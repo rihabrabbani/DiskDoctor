@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import Link from 'next/link';
 import { serviceRoutes, mainNavItems } from '@/data/navigation';
+import { locations as allLocations } from '@/data/locations';
 import Image from 'next/image';
 import Dark_logo from '@/../public/images/Dark_mode.png';
 import Light_logo from '@/../public/images/light_mode.png';
@@ -57,23 +58,22 @@ export default function Header() {
     return acc;
   }, {} as Record<string, typeof serviceRoutes>);
 
-  // Define locations data
-  const locations = [
-    {
-      name: "Columbia (Head Office)",
-      address: "10015 Old Columbia Rd Suite B 215",
-      city: "Columbia, MD 21046",
-      phone: "(410) 937-7332",
-      href: "tel:+14109377332"
-    },
-    {
-      name: "Tysons",
-      address: "8300 Boone Blvd Suite 513",
-      city: "Tysons, VA 22182", 
-      phone: "(410) 937-7332",
-      href: "tel:+14109377332"
+  const headOffice = allLocations.find((location) => location.isHeadOffice);
+  const sortedLocations = headOffice
+    ? [headOffice, ...allLocations.filter((location) => location.slug !== headOffice.slug)]
+    : allLocations;
+
+  const groupedLocations = sortedLocations.reduce((acc, location) => {
+    if (!acc[location.state]) {
+      acc[location.state] = [];
     }
-  ];
+    acc[location.state].push(location);
+    return acc;
+  }, {} as Record<string, typeof allLocations>);
+  const otherLocations = sortedLocations.filter((location) => !location.isHeadOffice);
+  const midpoint = Math.ceil(otherLocations.length / 2);
+  const otherLocationsCol1 = otherLocations.slice(0, midpoint);
+  const otherLocationsCol2 = otherLocations.slice(midpoint);
   
   return (
     <motion.header 
@@ -168,6 +168,19 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.35 }}
+            >
+              <Link 
+                href="/" 
+                className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300"
+              >
+                HOME
+              </Link>
+            </motion.div>
+
             {/* Services Dropdown */}
             <div 
               className="relative"
@@ -229,7 +242,7 @@ export default function Header() {
               onMouseEnter={() => setIsLocationsOpen(true)}
               onMouseLeave={() => setIsLocationsOpen(false)}
             >
-              <button className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300 flex items-center">
+              <Link href="/locations" className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300 flex items-center">
                 LOCATIONS
                 <motion.svg 
                   className="ml-1 w-4 h-4" 
@@ -241,48 +254,71 @@ export default function Header() {
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </motion.svg>
-              </button>
+              </Link>
               
               <AnimatePresence>
                 {isLocationsOpen && (
                   <motion.div
-                    className="absolute top-full left-0 mt-2 w-[400px] bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-lg shadow-[var(--shadow-lg)] z-50"
+                    className="absolute top-full left-0 mt-2 w-[680px] bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-lg shadow-[var(--shadow-lg)] z-50"
                     initial={{ opacity: 0, y: -10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <div className="p-6">
-                      <div className="space-y-4">
-                        {locations.map((location, index) => (
-                          <div key={index} className="p-4 rounded-lg hover:bg-[var(--color-surface-200)] transition-colors duration-200">
-                            <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <h4 className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">
-                                  {location.name}
-                                </h4>
-                                <p className="text-sm text-[var(--color-text-secondary)] mb-1">
-                                  {location.address}
-                                </p>
-                                <p className="text-sm text-[var(--color-text-secondary)] mb-2">
-                                  {location.city}
-                                </p>
-                                <Link 
-                                  href={location.href}
-                                  className="text-sm text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] font-medium transition-colors duration-200"
+                    <div className="p-6 space-y-6">
+                      <div>
+                        <h4 className="text-xs font-semibold text-[var(--color-text-tertiary)] uppercase tracking-wide mb-3 border-b border-[var(--color-border)] pb-2">
+                          Head Office
+                        </h4>
+                        {headOffice ? (
+                          <Link
+                            href={`/${headOffice.slug}`}
+                            className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-200 block py-1 px-2 rounded hover:bg-[var(--color-surface-200)]"
+                          >
+                            {headOffice.fullName}
+                          </Link>
+                        ) : null}
+                      </div>
+
+                      <div className="pt-2 border-t border-[var(--color-border)]">
+                        <h4 className="text-xs font-semibold text-[var(--color-text-tertiary)] uppercase tracking-wide mb-3 border-b border-[var(--color-border)] pb-2">
+                          Other Locations
+                        </h4>
+                        <div className="grid grid-cols-2 gap-4">
+                          <ul className="space-y-2">
+                            {otherLocationsCol1.map((location) => (
+                              <li key={location.slug}>
+                                <Link
+                                  href={`/${location.slug}`}
+                                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-200 block py-1 px-2 rounded hover:bg-[var(--color-surface-200)]"
                                 >
-                                  {location.phone}
+                                  {location.fullName}
                                 </Link>
-                              </div>
-                              <div className="ml-3">
-                                <svg className="w-5 h-5 text-[var(--color-text-tertiary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
+                              </li>
+                            ))}
+                          </ul>
+                          <ul className="space-y-2">
+                            {otherLocationsCol2.map((location) => (
+                              <li key={location.slug}>
+                                <Link
+                                  href={`/${location.slug}`}
+                                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-200 block py-1 px-2 rounded hover:bg-[var(--color-surface-200)]"
+                                >
+                                  {location.fullName}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+
+                      <div className="pt-3 border-t border-[var(--color-border)]">
+                        <Link
+                          href="/locations"
+                          className="text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)]"
+                        >
+                          View All Locations →
+                        </Link>
                       </div>
                     </div>
                   </motion.div>
@@ -290,26 +326,12 @@ export default function Header() {
               </AnimatePresence>
             </div>
 
-            {/* Add BLOG navigation item */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.4 }}
-            >
-              <Link 
-                href="/blog" 
-                className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300"
-              >
-                BLOG
-              </Link>
-            </motion.div>
-
-            {mainNavItems.slice(1).map((item, index) => (
+            {mainNavItems.filter((item) => item.href !== '/').map((item, index) => (
               <motion.div
                 key={item.href}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.5 + (index * 0.1) }}
+                transition={{ duration: 0.3, delay: 0.4 + (index * 0.1) }}
               >
                 <Link 
                   href={item.href} 
@@ -319,6 +341,20 @@ export default function Header() {
                 </Link>
               </motion.div>
             ))}
+
+            {/* Add BLOG navigation item */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.6 }}
+            >
+              <Link 
+                href="/blog" 
+                className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300"
+              >
+                BLOGS
+              </Link>
+            </motion.div>
           </motion.nav>
           
           <motion.div 
@@ -464,27 +500,34 @@ export default function Header() {
                         className="overflow-hidden"
                       >
                         <div className="pl-4 mt-2 space-y-3">
-                          {locations.map((location, index) => (
-                            <div key={index} className="p-3 rounded-lg hover:bg-[var(--color-surface-200)] transition-colors duration-200">
-                              <h5 className="text-sm font-medium text-[var(--color-text-primary)] mb-2">
-                                {location.name}
+                          <Link
+                            href="/locations"
+                            className="block text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-200 py-1 px-2 rounded hover:bg-[var(--color-surface-200)]"
+                            onClick={() => {
+                              setIsMobileMenuOpen(false);
+                              setMobileLocationsOpen(false);
+                            }}
+                          >
+                            View All Locations
+                          </Link>
+                          {Object.entries(groupedLocations).map(([state, stateLocations]) => (
+                            <div key={state} className="mb-3">
+                              <h5 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wide mb-2">
+                                {state}
                               </h5>
-                              <p className="text-xs text-[var(--color-text-secondary)] mb-1">
-                                {location.address}
-                              </p>
-                              <p className="text-xs text-[var(--color-text-secondary)] mb-2">
-                                {location.city}
-                              </p>
-                              <Link 
-                                href={location.href}
-                                className="text-sm text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] font-medium transition-colors duration-200"
-                                onClick={() => {
-                                  setIsMobileMenuOpen(false);
-                                  setMobileLocationsOpen(false);
-                                }}
-                              >
-                                {location.phone}
-                              </Link>
+                              {stateLocations.map((location) => (
+                                <Link
+                                  key={location.slug}
+                                  href={`/${location.slug}`}
+                                  className="block text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-200 py-1 px-2 rounded hover:bg-[var(--color-surface-200)]"
+                                  onClick={() => {
+                                    setIsMobileMenuOpen(false);
+                                    setMobileLocationsOpen(false);
+                                  }}
+                                >
+                                  {location.fullName}{location.isHeadOffice ? ' (Head Office)' : ''}
+                                </Link>
+                              ))}
                             </div>
                           ))}
                         </div>
@@ -496,16 +539,26 @@ export default function Header() {
                 {/* Add BLOG to mobile menu */}
                 <motion.div variants={menuItemVariants}>
                   <Link 
+                    href="/" 
+                    className="block text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-surface-200)] transition-colors duration-300 py-3 px-2 rounded-lg"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    HOME
+                  </Link>
+                </motion.div>
+
+                <motion.div variants={menuItemVariants}>
+                  <Link 
                     href="/blog" 
                     className="block text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-surface-200)] transition-colors duration-300 py-3 px-2 rounded-lg"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    BLOG
+                    BLOGS
                   </Link>
                 </motion.div>
                 
                 {/* Other Navigation Items */}
-                {mainNavItems.slice(1).map((item) => (
+                {mainNavItems.filter((item) => item.href !== '/').map((item) => (
                   <motion.div key={item.href} variants={menuItemVariants}>
                     <Link 
                       href={item.href} 

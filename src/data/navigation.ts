@@ -40,7 +40,6 @@ export const serviceRoutes: ServiceRoute[] = [
 // Main navigation items (only existing pages)
 export const mainNavItems = [
   { href: "/", label: "HOME" },
-  { href: "/#about", label: "ABOUT" },
   { href: "/contact", label: "CONTACT" }
 ];
 

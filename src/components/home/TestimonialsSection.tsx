@@ -125,7 +125,7 @@ export default function TestimonialsSection() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-6 !text-[#212529]">
             Client <span className="text-[var(--color-primary)]">Success Stories</span>
           </h2>
-          <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] leading-relaxed">
+          <p className="text-lg sm:text-xl text-[var(--color-neutral-800)] leading-relaxed">
             Real stories from clients who trusted DiskDoctor with their most critical data recovery needs.
           </p>
         </motion.div>

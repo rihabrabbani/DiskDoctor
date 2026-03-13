@@ -165,7 +165,7 @@ export default function LocationFAQ({ location }: LocationFAQProps) {
               </motion.a>
               
               <motion.a
-                href="#contact"
+                href="/contact"
                 className="inline-flex items-center px-8 py-4 bg-[var(--color-text-inverse)]/20 backdrop-blur-sm text-[var(--color-text-inverse)] font-semibold rounded-lg hover:bg-[var(--color-text-inverse)]/30 transition-all duration-300 border border-[var(--color-text-inverse)]/30"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}

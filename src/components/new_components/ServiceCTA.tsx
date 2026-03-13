@@ -59,13 +59,13 @@ export default function ServiceCTA({
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight !text-[#212529] mb-6">
             {ctaSection.title}
           </h2>
-          <p className="text-lg lg:text-xl text-[var(--color-text-secondary)] mb-8 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-lg lg:text-xl text-[var(--color-neutral-800)] mb-8 leading-relaxed max-w-3xl mx-auto">
             {ctaSection.description}
           </p>
           
           {/* Trust indicators */}
           <motion.div 
-            className="flex flex-wrap justify-center gap-6 mb-10 text-sm text-[var(--color-text-secondary)]"
+            className="flex flex-wrap justify-center gap-6 mb-10 text-sm text-[var(--color-neutral-800)]"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
@@ -97,7 +97,7 @@ export default function ServiceCTA({
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link 
-                href="#quote" 
+                href="/contact" 
                 className="px-8 py-4 text-white rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] text-center block group relative overflow-hidden"
                 style={{ backgroundColor: accentColor }}
               >
@@ -110,7 +110,7 @@ export default function ServiceCTA({
             </motion.div>
             {ctaSection.secondaryButton && (
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="#contact" className="px-8 py-4 bg-[var(--color-surface-100)] border-2 border-[var(--color-border)] rounded-lg text-[var(--color-text-primary)] font-semibold hover:shadow-[var(--shadow-md)] hover:border-[var(--color-border-hover)] transition-all duration-300 text-center block">
+                <Link href="/contact" className="px-8 py-4 bg-[var(--color-surface-100)] border-2 border-[var(--color-border)] rounded-lg text-[var(--color-text-primary)] font-semibold hover:shadow-[var(--shadow-md)] hover:border-[var(--color-border-hover)] transition-all duration-300 text-center block">
                   {ctaSection.secondaryButton}
                 </Link>
               </motion.div>
@@ -119,13 +119,13 @@ export default function ServiceCTA({
 
           {/* Contact info */}
           <motion.div 
-            className="text-center text-[var(--color-text-secondary)]"
+            className="text-center text-[var(--color-neutral-800)]"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            <p className="text-sm mb-2">Available 24/7 for Emergency Recovery</p>
-            <p className="text-xs">Average response time: Under 30 minutes</p>
+            <p className="text-sm mb-2 text-[var(--color-neutral-800)]">Available 24/7 for Emergency Recovery</p>
+            <p className="text-xs text-[var(--color-neutral-800)]">Average response time: Under 30 minutes</p>
           </motion.div>
         </motion.div>
       </div>

@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { locations } from '@/data/locations';
 import { MapPin, Phone, Star } from 'lucide-react';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
   title: 'Data Recovery Locations | MD, VA, DC | DiskDoctor',
@@ -61,13 +63,16 @@ export default function LocationsPage() {
   const otherLocations = locations.filter(loc => !loc.isHeadOffice);
 
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-[var(--color-surface-100)]">
+    <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] font-[var(--font-sans)]">
+      <Header />
+
+      <main className="pt-24 pb-16 bg-[var(--color-surface-100)]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-[var(--color-text)] mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] mb-6">
             Our Service Locations
           </h1>
-          <p className="text-xl text-[var(--color-text-light)] max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-[var(--color-text-secondary)] max-w-3xl mx-auto leading-relaxed">
             Professional data recovery services across Maryland, Virginia, and Washington DC. 
             Find your nearest location for expert data recovery assistance.
           </p>
@@ -76,7 +81,7 @@ export default function LocationsPage() {
         {/* Head Office */}
         {headOffice && (
           <div className="mb-12">
-            <h2 className="text-2xl font-bold text-[var(--color-text)] mb-6 text-center">
+            <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-6 text-center">
               Head Office
             </h2>
             <div className="max-w-2xl mx-auto">
@@ -90,17 +95,17 @@ export default function LocationsPage() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-2xl font-bold text-[var(--color-text)]">
+                        <h3 className="text-2xl font-bold text-[var(--color-neutral-900)]">
                           {headOffice.fullName}
                         </h3>
                         <span className="px-3 py-1 bg-[var(--color-accent)] text-white text-sm font-medium rounded-full">
                           Head Office
                         </span>
                       </div>
-                      <p className="text-[var(--color-text-light)] mb-4">
+                      <p className="text-[var(--color-neutral-600)] mb-4">
                         {headOffice.address}
                       </p>
-                      <div className="flex items-center gap-6 text-sm">
+                      <div className="flex items-center gap-6 text-sm text-[var(--color-neutral-700)]">
                         <div className="flex items-center">
                           <Phone className="h-4 w-4 text-[var(--color-accent)] mr-2" />
                           <span className="font-medium">{headOffice.phone}</span>
@@ -120,7 +125,7 @@ export default function LocationsPage() {
 
         {/* Other Office Locations */}
         <div>
-          <h2 className="text-2xl font-bold text-[var(--color-text)] mb-8 text-center">
+          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-8 text-center">
             Office Locations
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -134,13 +139,13 @@ export default function LocationsPage() {
                       </div>
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-[var(--color-text)] mb-2">
+                      <h3 className="text-xl font-bold text-[var(--color-neutral-900)] mb-2">
                         {location.fullName}
                       </h3>
-                      <p className="text-[var(--color-text-light)] text-sm mb-4 line-clamp-2">
+                      <p className="text-[var(--color-neutral-600)] text-sm mb-4 line-clamp-2">
                         {location.heroDescription}
                       </p>
-                      <div className="space-y-2 text-sm">
+                      <div className="space-y-2 text-sm text-[var(--color-neutral-700)]">
                         <div className="flex items-center">
                           <Phone className="h-4 w-4 text-[var(--color-accent)] mr-2" />
                           <span className="font-medium">{location.phone}</span>
@@ -149,21 +154,16 @@ export default function LocationsPage() {
                       
                       {/* Nearby Areas */}
                       <div className="mt-4 pt-4 border-t border-[var(--color-border)]">
-                        <p className="text-xs text-[var(--color-text-light)] mb-2">Also serving:</p>
+                        <p className="text-xs text-[var(--color-neutral-600)] mb-2">Also serving:</p>
                         <div className="flex flex-wrap gap-1">
                           {location.nearbyAreas.slice(0, 3).map((area, index) => (
                             <span
                               key={index}
-                              className="px-2 py-1 bg-[var(--color-surface-200)] text-[var(--color-text-light)] rounded text-xs"
+                              className="px-2 py-1 bg-[var(--color-neutral-800)] text-white rounded text-xs"
                             >
-                              {area}
+                              {area === 'Old Town Alexandria' ? 'OT Alexandria' : area}
                             </span>
                           ))}
-                          {location.nearbyAreas.length > 3 && (
-                            <span className="px-2 py-1 bg-[var(--color-surface-200)] text-[var(--color-text-light)] rounded text-xs">
-                              +{location.nearbyAreas.length - 3} more
-                            </span>
-                          )}
                         </div>
                       </div>
                     </div>
@@ -176,25 +176,25 @@ export default function LocationsPage() {
 
         {/* Service Information */}
         <div className="mt-16 bg-white rounded-2xl p-8 shadow-[var(--shadow-md)]">
-          <h2 className="text-2xl font-bold text-[var(--color-text)] mb-6 text-center">
+          <h2 className="text-2xl font-bold text-[var(--color-neutral-900)] mb-6 text-center">
             Comprehensive Data Recovery Services
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="text-center">
-              <h3 className="font-semibold text-[var(--color-text)] mb-2">Hard Drive Recovery</h3>
-              <p className="text-sm text-[var(--color-text-light)]">Mechanical and electronic failures</p>
+              <h3 className="font-semibold text-[var(--color-neutral-900)] mb-2">Hard Drive Recovery</h3>
+              <p className="text-sm text-[var(--color-neutral-600)]">Mechanical and electronic failures</p>
             </div>
             <div className="text-center">
-              <h3 className="font-semibold text-[var(--color-text)] mb-2">SSD Recovery</h3>
-              <p className="text-sm text-[var(--color-text-light)]">Solid state drive failures</p>
+              <h3 className="font-semibold text-[var(--color-neutral-900)] mb-2">SSD Recovery</h3>
+              <p className="text-sm text-[var(--color-neutral-600)]">Solid state drive failures</p>
             </div>
             <div className="text-center">
-              <h3 className="font-semibold text-[var(--color-text)] mb-2">RAID Recovery</h3>
-              <p className="text-sm text-[var(--color-text-light)]">Server and NAS systems</p>
+              <h3 className="font-semibold text-[var(--color-neutral-900)] mb-2">RAID Recovery</h3>
+              <p className="text-sm text-[var(--color-neutral-600)]">Server and NAS systems</p>
             </div>
             <div className="text-center">
-              <h3 className="font-semibold text-[var(--color-text)] mb-2">Mobile Recovery</h3>
-              <p className="text-sm text-[var(--color-text-light)]">Smartphones and tablets</p>
+              <h3 className="font-semibold text-[var(--color-neutral-900)] mb-2">Mobile Recovery</h3>
+              <p className="text-sm text-[var(--color-neutral-600)]">Smartphones and tablets</p>
             </div>
           </div>
         </div>
@@ -216,6 +216,9 @@ export default function LocationsPage() {
           </a>
         </div>
       </div>
+      </main>
+
+      <Footer />
     </div>
   );
 }

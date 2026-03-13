@@ -37,8 +37,11 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
   // SEO-optimized title (50-60 characters)
   const seoTitle = `Data Recovery ${location.fullName} | 95% Success | DiskDoctor`;
   
-  // SEO-optimized description (150-160 characters) 
-  const seoDescription = `${location.metaDescription} 95% success rate. Free evaluation. Call ${location.phone} for immediate assistance.`;
+  // SEO-optimized description (trimmed close to snippet-friendly length)
+  const seoDescriptionBase = `${location.metaDescription} 95% success rate. Free evaluation. Call ${location.phone} for immediate assistance.`;
+  const seoDescription = seoDescriptionBase.length > 165
+    ? `${seoDescriptionBase.slice(0, 162).trimEnd()}...`
+    : seoDescriptionBase;
   
   // Enhanced keywords including local terms
   const keywords = [
@@ -55,6 +58,11 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
   ].join(', ');
 
   const canonical = `https://www.diskdoctorsamerica.com/${location.slug}`;
+  const stateToRegion: Record<string, string> = {
+    Maryland: 'US-MD',
+    Virginia: 'US-VA',
+    DC: 'US-DC',
+  };
 
   return {
     title: seoTitle,
@@ -102,7 +110,7 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
       },
     },
     other: {
-      'geo.region': location.state === 'DC' ? 'US-DC' : `US-${location.state.substring(0, 2)}`,
+      'geo.region': stateToRegion[location.state] || 'US',
       'geo.placename': location.city,
       'geo.position': `${location.coordinates.lat};${location.coordinates.lng}`,
       'ICBM': `${location.coordinates.lat}, ${location.coordinates.lng}`,
@@ -125,6 +133,45 @@ export default async function LocationPage({ params }: LocationPageProps) {
     notFound();
   }
 
+  const locationFaqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: `How much does data recovery cost in ${location.fullName}?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Pricing depends on device type and damage severity. We provide a free evaluation and fixed quote before work begins. With our No Data, No Charge policy, you only pay for successful recovery.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: `How long does data recovery take in ${location.fullName}?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Most recoveries are completed in 3-5 business days. Expedited and emergency options are available for urgent cases, including same-day service when feasible.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'What devices can you recover data from?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'We recover data from hard drives, SSDs, RAID arrays, laptops, desktops, servers, phones, tablets, USB drives, and memory cards, including both logical and physical failures.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Is my data secure during recovery?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. We use strict chain-of-custody procedures, controlled access, and secure handling throughout the recovery process to protect confidentiality and data integrity.'
+        }
+      }
+    ]
+  };
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -139,7 +186,7 @@ export default async function LocationPage({ params }: LocationPageProps) {
       "addressCountry": "US"
     },
     "telephone": location.phone,
-    "url": `https://diskdoctorsamerica.com/${location.slug}`,
+    "url": `https://www.diskdoctorsamerica.com/${location.slug}`,
     "geo": {
       "@type": "GeoCoordinates",
       "latitude": location.coordinates.lat,
@@ -192,6 +239,7 @@ export default async function LocationPage({ params }: LocationPageProps) {
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] font-[var(--font-sans)]">
       <JsonLd data={structuredData} />
+      <JsonLd data={locationFaqSchema} />
       <Header />
       <main>
         <LocationHero location={location} />

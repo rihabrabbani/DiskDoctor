@@ -156,7 +156,7 @@ export default function CaseStudiesCarousel() {
                       Discover how our advanced recovery techniques and expert technicians successfully restored critical data when others said it was impossible.
                     </p>
                     <motion.a 
-                      href="#" 
+                      href="/contact" 
                       className="inline-flex items-center text-sm font-medium text-[var(--color-primary)] hover:underline"
                       whileHover={{ x: 5 }}
                       transition={{ duration: 0.2 }}

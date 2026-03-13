@@ -84,7 +84,7 @@ export default function ServicesSection() {
                 {service.description}
               </p>
               <motion.a 
-                href="#" 
+                href="/contact" 
                 className="inline-flex items-center text-[var(--color-primary)] font-medium hover:underline"
                 whileHover={{ x: 5 }}
                 transition={{ duration: 0.2 }}
@@ -109,7 +109,7 @@ export default function ServicesSection() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Link href="#contact" className="px-8 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[var(--color-text-inverse)] rounded-lg transition-all duration-300 inline-flex items-center font-medium shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)]">
+            <Link href="/contact" className="px-8 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[var(--color-text-inverse)] rounded-lg transition-all duration-300 inline-flex items-center font-medium shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)]">
               <span>Start Your Recovery</span>
               <svg className="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />

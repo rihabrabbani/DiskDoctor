@@ -150,7 +150,7 @@ export default function ServiceHero({
             </motion.p>
             
             <motion.p 
-              className="text-lg text-[var(--color-text-secondary)] mb-8 leading-relaxed max-w-lg"
+              className="text-lg text-[var(--color-neutral-800)] mb-8 leading-relaxed max-w-lg"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
@@ -188,7 +188,7 @@ export default function ServiceHero({
             >
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link 
-                  href="#quote" 
+                  href="/contact" 
                   className="px-8 py-4 text-white rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] hover:brightness-110 text-center block relative overflow-hidden group"
                   style={{ backgroundColor: accentColor }}
                 >
@@ -211,7 +211,7 @@ export default function ServiceHero({
             {/* Urgency text */}
             {ctaSection.urgencyText && (
               <motion.p
-                className="mt-4 text-sm text-[var(--color-text-secondary)] font-medium"
+                className="mt-4 text-sm text-[var(--color-neutral-800)] font-medium"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}

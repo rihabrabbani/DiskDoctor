@@ -7,6 +7,8 @@ import OpenAI from 'openai';
 import clientPromise, { DB_NAME } from './mongodb';
 import { uploadImageToDB } from './storage';
 import { performWebSearch } from './search';
+import { serviceRoutes } from '../data/navigation';
+import { locations } from '../data/locations';
 
 const SETTINGS_COLLECTION = 'settings';
 
@@ -23,6 +25,7 @@ export async function saveAISettings(data: {
     apiKey: string;
     model: string;
     imageModel: string;
+    tavilyApiKey?: string;
 }) {
     const client = await clientPromise;
     const db = client.db(DB_NAME);
@@ -35,6 +38,7 @@ export async function saveAISettings(data: {
                 apiKey: data.apiKey,
                 model: data.model || 'gpt-4o-mini',
                 imageModel: data.imageModel || 'dall-e-3',
+                tavilyApiKey: data.tavilyApiKey || '',
                 updatedAt: new Date().toISOString(),
             }
         },
@@ -59,6 +63,42 @@ export async function testConnection(apiKey: string): Promise<boolean> {
 }
 
 // ─── Blog Generation ───
+
+const INTERNAL_LINK_MAP: Record<string, string> = {
+    'Contact DiskDoctor': '/contact',
+    'All Locations': '/locations',
+    'DiskDoctor Blog': '/blog',
+    ...Object.fromEntries(serviceRoutes.map((route) => [route.label, route.href])),
+    ...Object.fromEntries(locations.map((location) => [`Data Recovery ${location.fullName}`, `/${location.slug}`])),
+};
+
+const INTERNAL_LINK_MAP_STRING = Object.entries(INTERNAL_LINK_MAP)
+    .map(([label, url]) => `- "${label}" => ${url}`)
+    .join('\n');
+
+const APPROVED_INTERNAL_URLS = new Set(Object.values(INTERNAL_LINK_MAP));
+
+function sanitizeInternalLinks(html: string): { content: string; removed: number } {
+    let removed = 0;
+    const content = html.replace(
+        /<a\b([^>]*?)href=(['"])(.*?)\2([^>]*)>([\s\S]*?)<\/a>/gi,
+        (fullMatch, preAttrs, quote, href, postAttrs, innerHtml) => {
+            const normalizedHref = String(href || '').split('#')[0].split('?')[0];
+
+            // Only police internal relative paths.
+            if (normalizedHref.startsWith('/')) {
+                if (!APPROVED_INTERNAL_URLS.has(normalizedHref)) {
+                    removed += 1;
+                    return innerHtml; // keep visible text, remove bad link wrapper
+                }
+            }
+
+            return fullMatch;
+        }
+    );
+
+    return { content, removed };
+}
 
 const SYSTEM_PROMPT = `You are a professional SEO blog writer for DiskDoctor Data Recovery (diskdoctorsamerica.com).
 
@@ -91,7 +131,15 @@ SEO GUIDELINES:
 - Include the focus keyword in the first 100 words
 - Use the focus keyword 3-5 times naturally throughout
 - Structure with H2 → H3 heading hierarchy
-- Use bullet points and numbered lists for readability`;
+- Use bullet points and numbered lists for readability
+
+INTERNAL LINKING (CRITICAL):
+- When writing internal HTML <a> links, you MUST ONLY use the URLs from the approved link map below.
+- NEVER invent, modify, or guess internal URLs.
+- NEVER use full domain URLs for internal links; use relative paths exactly as listed.
+
+APPROVED INTERNAL LINK MAP:
+${INTERNAL_LINK_MAP_STRING}`;
 
 interface GenerateBlogParams {
     mode: 'guided' | 'magic';
@@ -99,6 +147,7 @@ interface GenerateBlogParams {
     notes?: string;
     targetWordCount?: number;
     existingTitles?: string[];
+    tavilyApiKey?: string;
     onProgress?: (step: number, message: string) => void;
 }
 
@@ -218,7 +267,9 @@ Return in exact JSON format:
         if (queryObj.queries && Array.isArray(queryObj.queries)) {
             console.log(`[Deep Research] Executing searches:`, queryObj.queries);
             params.onProgress?.(2, `Executing Deep Web Research for citations...`);
-            const searchPromises = queryObj.queries.map((q: string) => performWebSearch(q, 3));
+            const searchPromises = queryObj.queries.map((q: string) =>
+                performWebSearch(params.tavilyApiKey || '', q, 5)
+            );
             const resultsNested = await Promise.all(searchPromises);
             const flatResults = resultsNested.flat();
             
@@ -236,56 +287,17 @@ Return in exact JSON format:
     
     userPrompt += searchResultsContext;
 
-    userPrompt += `\n\nCRITICAL INSTRUCTION: You must strictly output the response in the exact JSON format below. DO NOT output raw text.
-    
+        userPrompt += `\n\nCRITICAL INSTRUCTION:
     INLINE IMAGES: In at least 2 of your sections, you MUST provide an "imagePrompt" string describing a contextual photo for that section. Example: "A highly detailed close-up of a scratched HDD platter". We will generate an AI image from this prompt and place it at the beginning of the section.
     
     STATISTICS & QUOTES: You MUST extract at least 2 specific statistics or direct quotes from the LIVE WEB RESEARCH CONTEXT. Put these in the top-level "statistics" JSON array. We will format them automatically. Do NOT put them in the section content.
 
-    INTERNAL LINKS: You MUST also organically include at least 2 internal HTML <a> hyperlinks in your "sections.content" pointing to DiskDoctor services (e.g., <a href="/services/hard-drive-recovery">hard drive recovery</a>, <a href="/services/raid-recovery">RAID data recovery</a>, <a href="/services/ssd-recovery">SSD recovery</a>, <a href="/services/mac-recovery">Mac recovery</a>).`;
-
-    userPrompt += `\n\nCRITICAL INSTRUCTION: You must strictly output the response in the exact JSON format below. DO NOT output raw text.
-    
-Respond in this exact JSON format:
-{
-  "title": "Blog post title (50-60 chars, compelling)",
-  "excerpt": "150-160 char excerpt for the blog listing page",
-  "metaDescription": "120-155 char meta description for search results, include a CTA",
-  "focusKeyword": "Primary SEO keyword (2-4 words)",
-  "category": "One of: Data Recovery, Tips & Guides, Technology, Business, News, Case Studies",
-  "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
-  "keyTakeaways": [
-    "Most important point 1 (1 sentence)",
-    "Most important point 2 (1 sentence)",
-    "Most important point 3 (1 sentence)"
-  ],
-  "sections": [
-    {
-      "heading": "Introduction (Or a catchy hook title)",
-      "content": "Full section content in HTML (use <p>, <ul>, <strong> tags. Keep paragraphs to 2-3 sentences max.)",
-      "imagePrompt": "Optional detailed prompt for a photo (include in exactly 2 sections of the blog)",
-      "insertCtaAfter": false
-    },
-    {
-      "heading": "Next Structural Heading...",
-      "content": "...",
-      "insertCtaAfter": true
-    }
-  ],
-  "statistics": [
-      {
-          "quote": "Direct quote or statistic extracted from research",
-          "sourceName": "Name of the website",
-          "sourceUrl": "https://exact.url.from.context"
-      }
-  ],
-  "faqs": [
-    {
-        "question": "Common user question related to keyword?",
-        "answer": "Clear, concise answer (2-3 sentences max)."
-    }
-  ] // Generate between 3 and 5 FAQs
-}`;
+    INTERNAL LINKS: You MUST organically include at least 2 internal HTML <a> hyperlinks in your "sections.content".
+    You are STRICTLY FORBIDDEN from inventing URLs.
+    You MUST ONLY use URLs from this approved internal link map:
+    ${INTERNAL_LINK_MAP_STRING}
+    Correct example: <a href="/services/raid-recovery">RAID data recovery</a>
+    Wrong example (NEVER): <a href="/services/my-custom-recovery-url">...</a>`;
 
     params.onProgress?.(3, "Drafting SEO-optimized content, layout, and takeaways. This may take a minute...");
 
@@ -296,8 +308,89 @@ Respond in this exact JSON format:
             { role: 'user', content: userPrompt },
         ],
         temperature: 0.7,
-        max_tokens: 4096,
-        response_format: { type: 'json_object' },
+        max_tokens: 8192,
+        response_format: {
+            type: 'json_schema',
+            json_schema: {
+                name: 'blog_payload',
+                strict: true,
+                schema: {
+                    type: 'object',
+                    additionalProperties: false,
+                    properties: {
+                        title: { type: 'string' },
+                        excerpt: { type: 'string' },
+                        metaDescription: { type: 'string' },
+                        focusKeyword: { type: 'string' },
+                        category: {
+                            type: 'string',
+                            enum: ['Data Recovery', 'Tips & Guides', 'Technology', 'Business', 'News', 'Case Studies'],
+                        },
+                        tags: {
+                            type: 'array',
+                            items: { type: 'string' },
+                        },
+                        keyTakeaways: {
+                            type: 'array',
+                            items: { type: 'string' },
+                        },
+                        sections: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                additionalProperties: false,
+                                properties: {
+                                    heading: { type: 'string' },
+                                    content: { type: 'string' },
+                                    imagePrompt: {
+                                        anyOf: [{ type: 'string' }, { type: 'null' }],
+                                    },
+                                    insertCtaAfter: { type: 'boolean' },
+                                },
+                                required: ['heading', 'content', 'imagePrompt', 'insertCtaAfter'],
+                            },
+                        },
+                        statistics: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                additionalProperties: false,
+                                properties: {
+                                    quote: { type: 'string' },
+                                    sourceName: { type: 'string' },
+                                    sourceUrl: { type: 'string' },
+                                },
+                                required: ['quote', 'sourceName', 'sourceUrl'],
+                            },
+                        },
+                        faqs: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                additionalProperties: false,
+                                properties: {
+                                    question: { type: 'string' },
+                                    answer: { type: 'string' },
+                                },
+                                required: ['question', 'answer'],
+                            },
+                        },
+                    },
+                    required: [
+                        'title',
+                        'excerpt',
+                        'metaDescription',
+                        'focusKeyword',
+                        'category',
+                        'tags',
+                        'keyTakeaways',
+                        'sections',
+                        'statistics',
+                        'faqs',
+                    ],
+                },
+            },
+        },
     });
 
     const result = JSON.parse(response.choices[0].message.content || '{}');
@@ -310,6 +403,15 @@ Respond in this exact JSON format:
             
             // Assign a unique ID for React rendering
             section.id = 'sec_' + Date.now() + '_' + i;
+
+            // Enforce zero-hallucination internal links (only allow approved map URLs)
+            if (typeof section.content === 'string' && section.content.length > 0) {
+                const sanitized = sanitizeInternalLinks(section.content);
+                section.content = sanitized.content;
+                if (sanitized.removed > 0) {
+                    console.warn(`[Internal Link Guard] Removed ${sanitized.removed} invalid internal link(s) from section ${i + 1}.`);
+                }
+            }
             
             // We now leave inline image generation up to the API route to handle concurrently via Promise.all
             

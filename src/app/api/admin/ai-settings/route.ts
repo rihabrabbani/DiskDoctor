@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
                     apiKey: '',
                     model: 'gpt-4o-mini',
                     imageModel: 'dall-e-3',
+                    tavilyApiKey: '',
                 }
             });
         }
@@ -20,6 +21,7 @@ export async function GET(request: NextRequest) {
                 apiKey: settings.apiKey,
                 model: settings.model || 'gpt-4o-mini',
                 imageModel: settings.imageModel || 'dall-e-3',
+                tavilyApiKey: settings.tavilyApiKey || '',
             }
         });
     } catch (error) {
@@ -31,7 +33,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { apiKey, model, imageModel } = body;
+        const { apiKey, model, imageModel, tavilyApiKey } = body;
 
         if (!apiKey) {
             return NextResponse.json({ success: false, message: 'API Key is required' }, { status: 400 });
@@ -44,7 +46,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Save settings
-        await saveAISettings({ apiKey, model, imageModel });
+        await saveAISettings({ apiKey, model, imageModel, tavilyApiKey });
 
         return NextResponse.json({
             success: true,

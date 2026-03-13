@@ -40,6 +40,7 @@ export default function AdminDashboard() {
   const [aiApiKey, setAiApiKey] = useState('');
   const [aiModel, setAiModel] = useState('gpt-4o-mini');
   const [aiImageModel, setAiImageModel] = useState('dall-e-3');
+  const [aiTavilyKey, setAiTavilyKey] = useState('');
   const [isTestingKey, setIsTestingKey] = useState(false);
   const [isSavingSettings, setIsSavingSettings] = useState(false);
   
@@ -83,6 +84,7 @@ export default function AdminDashboard() {
         setAiApiKey(data.settings.apiKey);
         setAiModel(data.settings.model || 'gpt-4o-mini');
         setAiImageModel(data.settings.imageModel || 'dall-e-3');
+        setAiTavilyKey(data.settings.tavilyApiKey || '');
       }
     } catch (error) {
       console.error('Error fetching AI settings:', error);
@@ -100,7 +102,12 @@ export default function AdminDashboard() {
       const response = await fetch('/api/admin/ai-settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ apiKey: aiApiKey, model: aiModel, imageModel: aiImageModel })
+        body: JSON.stringify({
+          apiKey: aiApiKey,
+          model: aiModel,
+          imageModel: aiImageModel,
+          tavilyApiKey: aiTavilyKey,
+        })
       });
       const data = await response.json();
       if (data.success) {
@@ -178,11 +185,10 @@ export default function AdminDashboard() {
                    if (data.message) setGenerationStep(data.message);
                  }
                  
-                 if (data.blog) {
-                    sessionStorage.setItem('aiGeneratedBlog', JSON.stringify(data.blog));
-                    router.push('/admin/editor?ai=true');
+                  if (data.draftId) {
+                    router.push(`/admin/editor?id=${data.draftId}`);
                     return; // Successfully finished
-                 }
+                  }
                } catch (e: any) {
                  if (!e.message.includes('Unexpected end of JSON')) {
                      console.error('SSE parse error:', e);
@@ -539,6 +545,28 @@ export default function AdminDashboard() {
                     <option value="dall-e-3">DALL-E 3 (High Quality)</option>
                     <option value="dall-e-2">DALL-E 2 (Faster, cheaper)</option>
                   </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">
+                    Tavily Search API Key
+                    <a
+                      href="https://app.tavily.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ml-2 text-xs text-[var(--color-primary)] underline"
+                    >
+                      Get free key (1,000/mo)
+                    </a>
+                  </label>
+                  <input
+                    type="password"
+                    value={aiTavilyKey}
+                    onChange={e => setAiTavilyKey(e.target.value)}
+                    placeholder="tvly-..."
+                    className="w-full px-4 py-2.5 border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none"
+                  />
+                  <p className="text-xs text-[var(--color-text-tertiary)] mt-1.5">Used for live SERP research. If empty, system falls back to Wikipedia.</p>
                 </div>
               </div>
               

@@ -60,43 +60,83 @@ export default function BlogEditorPage() {
     });
 
     const [isAIGenerated, setIsAIGenerated] = useState(false);
+    const [editingDraftId, setEditingDraftId] = useState<string | null>(null);
 
     useEffect(() => {
         const token = localStorage.getItem('adminToken');
         if (!token) {
             router.push('/admin/login');
+            return;
         }
 
-        // Check for AI generated content from MagicAI
-        if (typeof window !== 'undefined' && window.location.search.includes('ai=true')) {
-            const aiData = sessionStorage.getItem('aiGeneratedBlog');
-            if (aiData) {
-                try {
-                    const parsed = JSON.parse(aiData);
-                    console.log('--- AI GENERATED DATA RECOVERED ---');
-                    console.log('Title:', parsed.title);
-                    console.log('Content Length:', parsed.content?.length);
-                    console.log('Content Snippet:', parsed.content?.substring(0, 200));
-                    
-                    setFormData(prev => ({
-                        ...prev,
-                        title: parsed.title || prev.title,
-                        sections: parsed.sections && parsed.sections.length > 0 ? parsed.sections : prev.sections,
-                        faqs: parsed.faqs || prev.faqs,
-                        keyTakeaways: parsed.keyTakeaways || prev.keyTakeaways,
-                        excerpt: parsed.excerpt || prev.excerpt,
-                        metaDescription: parsed.metaDescription || prev.metaDescription,
-                        focusKeyword: parsed.focusKeyword || prev.focusKeyword,
-                        category: parsed.category || prev.category,
-                        tags: parsed.tags ? parsed.tags.join(', ') : prev.tags,
-                        slug: parsed.slug || prev.slug,
-                        featuredImage: parsed.featuredImage || prev.featuredImage,
-                    }));
-                    slugTouched.current = !!parsed.slug;
-                    setIsAIGenerated(true);
-                    sessionStorage.removeItem('aiGeneratedBlog');
-                } catch (e) {
-                    console.error('Failed to parse AI data:', e);
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            const draftId = params.get('id');
+
+            // New flow: load auto-saved AI draft directly from database
+            if (draftId) {
+                fetch(`/api/blogs/${draftId}`)
+                    .then((res) => res.json())
+                    .then((data) => {
+                        if (data.success && data.blog) {
+                            const blog = data.blog;
+                            setFormData(prev => ({
+                                ...prev,
+                                title: blog.title || prev.title,
+                                sections: blog.sections && blog.sections.length > 0 ? blog.sections : prev.sections,
+                                faqs: blog.faqs || prev.faqs,
+                                keyTakeaways: blog.keyTakeaways || prev.keyTakeaways,
+                                excerpt: blog.excerpt || prev.excerpt,
+                                metaDescription: blog.metaDescription || prev.metaDescription,
+                                focusKeyword: blog.focusKeyword || prev.focusKeyword,
+                                category: blog.category || prev.category,
+                                tags: Array.isArray(blog.tags) ? blog.tags.join(', ') : prev.tags,
+                                slug: blog.slug || prev.slug,
+                                featuredImage: blog.featuredImage || prev.featuredImage,
+                                status: blog.status || prev.status,
+                                scheduledAt: blog.scheduledAt || prev.scheduledAt,
+                            }));
+                            slugTouched.current = !!blog.slug;
+                            setIsAIGenerated(true);
+                            setEditingDraftId(draftId);
+                        } else {
+                            console.error('Failed to load AI draft by id:', draftId);
+                        }
+                    })
+                    .catch((e) => {
+                        console.error('Failed to fetch AI draft:', e);
+                    })
+                    .finally(() => setIsInitialized(true));
+
+                return;
+            }
+
+            // Legacy flow: sessionStorage payload fallback
+            if (window.location.search.includes('ai=true')) {
+                const aiData = sessionStorage.getItem('aiGeneratedBlog');
+                if (aiData) {
+                    try {
+                        const parsed = JSON.parse(aiData);
+                        setFormData(prev => ({
+                            ...prev,
+                            title: parsed.title || prev.title,
+                            sections: parsed.sections && parsed.sections.length > 0 ? parsed.sections : prev.sections,
+                            faqs: parsed.faqs || prev.faqs,
+                            keyTakeaways: parsed.keyTakeaways || prev.keyTakeaways,
+                            excerpt: parsed.excerpt || prev.excerpt,
+                            metaDescription: parsed.metaDescription || prev.metaDescription,
+                            focusKeyword: parsed.focusKeyword || prev.focusKeyword,
+                            category: parsed.category || prev.category,
+                            tags: parsed.tags ? parsed.tags.join(', ') : prev.tags,
+                            slug: parsed.slug || prev.slug,
+                            featuredImage: parsed.featuredImage || prev.featuredImage,
+                        }));
+                        slugTouched.current = !!parsed.slug;
+                        setIsAIGenerated(true);
+                        sessionStorage.removeItem('aiGeneratedBlog');
+                    } catch (e) {
+                        console.error('Failed to parse AI data:', e);
+                    }
                 }
             }
         }
@@ -197,14 +237,18 @@ export default function BlogEditorPage() {
                 submitData.append('scheduledAt', new Date(formData.scheduledAt).toISOString());
             }
 
-            const response = await fetch('/api/blogs', {
-                method: 'POST',
-                body: submitData,
-            });
+            const response = await fetch(
+                editingDraftId ? `/api/blogs/${editingDraftId}` : '/api/blogs',
+                {
+                    method: editingDraftId ? 'PUT' : 'POST',
+                    body: submitData,
+                }
+            );
 
             const data = await response.json();
             if (data.success) {
                 setLastSaved(new Date().toLocaleTimeString());
+                setEditingDraftId(null);
                 const statusLabel = status === 'published' ? 'Published' : status === 'scheduled' ? 'Scheduled' : 'Draft saved';
                 alert(`${statusLabel} successfully!`);
                 router.push('/admin/dashboard');

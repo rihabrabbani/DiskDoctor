@@ -63,6 +63,7 @@ export interface AISettings {
     apiKey: string;
     model: string;
     imageModel: string;
+    tavilyApiKey?: string;
     updatedAt: string;
 }
 

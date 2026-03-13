@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAISettings, analyzeBlogsAndSuggestTopic, generateBlogContent, generateFeaturedImage } from '@/lib/openai';
 import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb';
 import { AIGenerateRequest } from '@/lib/types';
-import { generateUniqueSlug } from '@/lib/slugify';
+import { generateUniqueSlug, calculateReadingTime, calculateWordCount } from '@/lib/slugify';
+import { DEFAULT_AUTHOR } from '@/lib/types';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(request: NextRequest) {
     try {
@@ -26,8 +28,11 @@ export async function POST(request: NextRequest) {
 
         const stream = new ReadableStream({
             async start(controller) {
-                const sendUpdate = (step: number, message: string, blog?: any) => {
-                    const data = JSON.stringify({ step, message, blog });
+                const sendUpdate = (step: number, message: string, blog?: any, draftId?: string) => {
+                    const payload: Record<string, any> = { step, message };
+                    if (blog) payload.blog = blog;
+                    if (draftId) payload.draftId = draftId;
+                    const data = JSON.stringify(payload);
                     controller.enqueue(encoder.encode(`data: ${data}\n\n`));
                 };
 
@@ -59,6 +64,7 @@ export async function POST(request: NextRequest) {
                             notes: finalNotes,
                             targetWordCount: targetWordCount || 1200,
                             existingTitles,
+                            tavilyApiKey: settings.tavilyApiKey || '',
                             onProgress: (step: number, message: string) => {
                                 sendUpdate(step, message);
                             }
@@ -109,12 +115,47 @@ export async function POST(request: NextRequest) {
                         console.error('Error during concurrent media generation:', mediaError);
                     }
 
-                    // Step 5: Finalizing
-                    sendUpdate(5, "Finalizing assets...", {
-                        ...generatedBlog,
+                    // Step 5: Finalizing and auto-saving draft to MongoDB
+                    sendUpdate(5, "Finalizing assets and saving draft...");
+
+                    const fullTextContent = generatedBlog.sections
+                        .map((section: any) => `${section.heading || ''} ${(section.content || '').replace(/<[^>]*>/g, ' ')}`)
+                        .join(' ')
+                        .replace(/\s+/g, ' ')
+                        .trim();
+
+                    const inlineImages = generatedBlog.sections
+                        .map((section: any) => section?.image)
+                        .filter((img: any): img is string => typeof img === 'string' && img.length > 0);
+
+                    const draftBlog = {
+                        id: uuidv4(),
                         slug,
-                        featuredImage
-                    });
+                        title: generatedBlog.title,
+                        sections: generatedBlog.sections,
+                        faqs: generatedBlog.faqs,
+                        keyTakeaways: generatedBlog.keyTakeaways || [],
+                        excerpt: generatedBlog.excerpt,
+                        metaDescription: generatedBlog.metaDescription,
+                        focusKeyword: generatedBlog.focusKeyword,
+                        author: DEFAULT_AUTHOR,
+                        category: generatedBlog.category || 'Data Recovery',
+                        tags: generatedBlog.tags || [],
+                        featuredImage: featuredImage || null,
+                        images: [...new Set(inlineImages)],
+                        status: 'draft' as const,
+                        scheduledAt: null,
+                        readingTime: calculateReadingTime(fullTextContent),
+                        wordCount: calculateWordCount(fullTextContent),
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString(),
+                    };
+
+                    await blogsCollection.insertOne(draftBlog);
+                    console.log(`[AI Gen] Draft auto-saved with id: ${draftBlog.id}`);
+
+                    // Send only draft id (not full payload) to prevent client-side loss and large SSE payloads
+                    sendUpdate(5, "Draft saved. Opening editor...", undefined, draftBlog.id);
                     
                 } catch (streamError: any) {
                     console.error('Error in streaming AI blog generation:', streamError);

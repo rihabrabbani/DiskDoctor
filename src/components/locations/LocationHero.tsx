@@ -34,7 +34,15 @@ export default function LocationHero({ location }: LocationHeroProps) {
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--color-text-inverse)] mb-6 leading-tight">
               Data Recovery Services in{' '}
-              <span className="text-[var(--color-accent)]">{location.city}</span>
+              <span className="relative inline-block">
+                <span className="relative z-10 text-[var(--color-text-inverse)]">{location.city}</span>
+                <motion.span 
+                  className="absolute bottom-1 left-0 h-4 md:h-6 bg-red-600/85 -rotate-1 rounded-sm -z-0"
+                  initial={{ width: 0 }}
+                  animate={{ width: '100%' }}
+                  transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+                />
+              </span>
               {location.state !== 'DC' && `, ${location.state}`}
             </h1>
             

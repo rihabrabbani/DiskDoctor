@@ -80,8 +80,8 @@ export default function ServiceFeatures({
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Enhanced Features with detailed features */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          {/* Service Features */}
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -107,29 +107,33 @@ export default function ServiceFeatures({
               </div>
             </motion.div>
 
-            {/* Detailed Features - if available */}
             {detailedFeatures && detailedFeatures.length > 0 ? (
-              <motion.div className="space-y-6" variants={containerVariants}>
+              <motion.div className="flex flex-col gap-6" variants={containerVariants}>
                 {detailedFeatures.map((feature, index) => (
                   <motion.div 
                     key={index}
-                    className="p-6 bg-[var(--color-surface-200)] rounded-lg hover:shadow-[var(--shadow-md)] transition-all duration-300 group"
+                    className="p-6 bg-gradient-to-br from-[var(--color-surface-200)] to-[var(--color-surface-100)] rounded-lg border border-[var(--color-border)] hover:shadow-[var(--shadow-lg)] transition-all duration-200 group min-h-[160px] flex flex-col justify-center cursor-pointer"
                     variants={itemVariants}
-                    whileHover={{ x: 5, scale: 1.02 }}
+                    whileHover={{ 
+                      y: -5, 
+                      borderColor: accentColor, 
+                      scale: 1.02,
+                      transition: { duration: 0.2, ease: "easeOut" }
+                    }}
                   >
                     <div className="flex items-start">
                       <motion.div 
                         className="text-3xl mr-4 flex-shrink-0"
-                        whileHover={{ scale: 1.2, rotate: 15 }}
-                        transition={{ duration: 0.3 }}
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ duration: 0.2 }}
                       >
                         {feature.icon}
                       </motion.div>
                       <div>
-                        <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">
+                        <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-2 group-hover:text-[var(--color-text-primary)] transition-colors">
                           {feature.title}
                         </h4>
-                        <p className="text-[var(--color-text-secondary)] leading-relaxed">
+                        <p className="text-[var(--color-text-secondary)] leading-relaxed text-sm">
                           {feature.description}
                         </p>
                       </div>
@@ -138,42 +142,35 @@ export default function ServiceFeatures({
                 ))}
               </motion.div>
             ) : (
-              // Fallback to basic features
-              <motion.div className="space-y-4" variants={containerVariants}>
+              <motion.div className="flex flex-col gap-4" variants={containerVariants}>
                 {features.map((feature, index) => (
                   <motion.div 
                     key={index}
-                    className="flex items-start p-4 bg-[var(--color-surface-200)] rounded-lg hover:shadow-[var(--shadow-md)] transition-all duration-300 group"
+                    className="flex items-start p-5 bg-[var(--color-surface-200)] rounded-lg border border-transparent hover:border-[var(--color-border)] hover:shadow-[var(--shadow-md)] transition-all duration-200 group cursor-pointer"
                     variants={itemVariants}
-                    whileHover={{ x: 5, scale: 1.02 }}
+                    whileHover={{ 
+                      x: 8, 
+                      backgroundColor: 'var(--color-surface-100)',
+                      transition: { duration: 0.2, ease: "easeOut" } 
+                    }}
                   >
                     <motion.div 
                       className="w-6 h-6 rounded-full flex items-center justify-center mr-4 mt-0.5 flex-shrink-0"
                       style={{ backgroundColor: `${accentColor}20` }}
-                      whileHover={{ scale: 1.2, rotate: 360 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.2 }}
                     >
-                      <svg 
-                        className="w-3 h-3" 
-                        style={{ color: accentColor }}
-                        fill="currentColor" 
-                        viewBox="0 0 20 20"
-                      >
+                      <svg className="w-3 h-3" style={{ color: accentColor }} fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
                     </motion.div>
-                    <div>
-                      <p className="text-[var(--color-text-primary)] font-medium group-hover:text-[var(--color-text-primary)] leading-relaxed">
-                        {feature}
-                      </p>
-                    </div>
+                    <p className="text-[var(--color-text-primary)] font-medium leading-relaxed">{feature}</p>
                   </motion.div>
                 ))}
               </motion.div>
             )}
           </motion.div>
 
-          {/* Enhanced Benefits with detailed benefits */}
+          {/* Key Benefits */}
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -199,46 +196,53 @@ export default function ServiceFeatures({
               </div>
             </motion.div>
 
-            {/* Detailed Benefits - if available */}
             {detailedBenefits && detailedBenefits.length > 0 ? (
-              <motion.div className="space-y-6" variants={containerVariants}>
+              <motion.div className="flex flex-col gap-6" variants={containerVariants}>
                 {detailedBenefits.map((benefit, index) => (
                   <motion.div 
                     key={index}
-                    className="p-6 bg-gradient-to-r from-[var(--color-surface-200)] to-[var(--color-surface-100)] rounded-lg border border-[var(--color-border)] hover:shadow-[var(--shadow-lg)] transition-all duration-300 group"
+                    className="p-6 bg-gradient-to-br from-[var(--color-surface-200)] to-[var(--color-surface-100)] rounded-lg border border-[var(--color-border)] hover:shadow-[var(--shadow-lg)] transition-all duration-200 group min-h-[160px] flex flex-col justify-center cursor-pointer"
                     variants={itemVariants}
-                    whileHover={{ y: -3, borderColor: accentColor, scale: 1.02 }}
+                    whileHover={{ 
+                      y: -5, 
+                      borderColor: accentColor, 
+                      scale: 1.02,
+                      transition: { duration: 0.2, ease: "easeOut" }
+                    }}
                   >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">
+                    <div className="flex flex-col h-full">
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="text-lg font-semibold text-[var(--color-text-primary)] group-hover:text-[var(--color-text-primary)] transition-colors">
                           {benefit.title}
                         </h4>
-                        <p className="text-[var(--color-text-secondary)] leading-relaxed mb-3">
-                          {benefit.description}
-                        </p>
                         <motion.div 
-                          className="inline-block px-3 py-1 rounded-full text-sm font-semibold text-white"
+                          className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider text-white flex-shrink-0 ml-4"
                           style={{ backgroundColor: accentColor }}
                         >
                           {benefit.metric}
                         </motion.div>
                       </div>
+                      <p className="text-[var(--color-text-secondary)] leading-relaxed text-sm">
+                        {benefit.description}
+                      </p>
                     </div>
                   </motion.div>
                 ))}
               </motion.div>
             ) : (
-              // Fallback to basic benefits
-              <motion.div className="space-y-4" variants={containerVariants}>
+              <motion.div className="flex flex-col gap-4" variants={containerVariants}>
                 {benefits.map((benefit, index) => (
                   <motion.div 
                     key={index}
-                    className="p-6 bg-gradient-to-r from-[var(--color-surface-200)] to-[var(--color-surface-100)] rounded-lg border border-[var(--color-border)] hover:shadow-[var(--shadow-lg)] transition-all duration-300 group"
+                    className="p-5 bg-[var(--color-surface-200)] rounded-lg border border-transparent hover:border-[var(--color-border)] hover:shadow-[var(--shadow-md)] transition-all duration-200 cursor-pointer"
                     variants={itemVariants}
-                    whileHover={{ y: -3, borderColor: accentColor, scale: 1.02 }}
+                    whileHover={{ 
+                      x: -8, 
+                      backgroundColor: 'var(--color-surface-100)',
+                      transition: { duration: 0.2, ease: "easeOut" }
+                    }}
                   >
-                    {/* ...existing basic benefit content... */}
+                    <p className="text-[var(--color-text-primary)] font-medium leading-relaxed">{benefit}</p>
                   </motion.div>
                 ))}
               </motion.div>

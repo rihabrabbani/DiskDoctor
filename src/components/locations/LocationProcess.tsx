@@ -55,62 +55,71 @@ export default function LocationProcess({ location }: LocationProcessProps) {
           </p>
         </motion.div>
 
-        <div className="max-w-6xl mx-auto">
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10"
+          initial="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
           {processSteps.map((step, index) => (
             <motion.div
               key={index}
-              className="relative mb-12 last:mb-0"
-              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
+              className="flex flex-col items-center text-center group h-full"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.15 }}
               viewport={{ once: true }}
             >
-              <div className={`flex items-center gap-8 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'} max-lg:flex-col`}>
-                {/* Content */}
-                <div className="flex-1 bg-[var(--color-surface-100)] rounded-2xl p-8">
-                  <div className="flex items-start gap-6">
-                    <div className="flex-shrink-0">
-                      <div className="h-16 w-16 bg-[var(--color-primary)] rounded-xl flex items-center justify-center shadow-lg">
-                        <step.icon className="h-8 w-8 text-[var(--color-text-inverse)]" />
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="h-8 w-8 bg-[var(--color-accent)] rounded-full flex items-center justify-center">
-                          <span className="text-[var(--color-text-inverse)] font-bold text-sm">{index + 1}</span>
-                        </div>
-                        <h3 className="text-2xl font-bold text-[var(--color-text-primary)]">
-                          {step.title}
-                        </h3>
-                      </div>
-                      <p className="text-lg text-[var(--color-text-secondary)] mb-6 leading-relaxed">
-                        {step.description}
-                      </p>
-                      <div className="grid sm:grid-cols-2 gap-3">
-                        {step.details.map((detail, detailIndex) => (
-                          <div key={detailIndex} className="flex items-center text-sm text-[var(--color-text-secondary)]">
-                            <div className="h-2 w-2 bg-[var(--color-accent)] rounded-full mr-3 flex-shrink-0" />
-                            {detail}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+              <div className="flex-1 flex flex-col items-center">
+                {/* Icon Circle with Step Number */}
+                <motion.div 
+                  className="relative w-24 h-24 rounded-2xl bg-gradient-to-br from-[var(--color-surface-200)] to-[var(--color-surface-100)] border border-[var(--color-border)] flex items-center justify-center mb-8 shadow-sm group-hover:shadow-md transition-all duration-300 z-10"
+                  whileHover={{ scale: 1.05, borderColor: 'var(--color-primary)' }}
+                >
+                  <step.icon className="h-10 w-10 text-[var(--color-primary)]" />
+                  <div className="absolute -top-3 -right-3 h-8 w-8 bg-[var(--color-accent)] rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md border-2 border-[var(--color-surface-100)]">
+                    {index + 1}
                   </div>
-                </div>
 
-                {/* Connector Line */}
-                {index < processSteps.length - 1 && (
+                  {/* Connector line with Arrow (Desktop only) */}
+                  {index < processSteps.length - 1 && (
+                    <div className="hidden lg:block absolute left-[120%] top-1/2 w-16 h-0.5 -translate-y-1/2 z-0">
+                      <motion.div 
+                        className="w-full h-full relative"
+                        style={{ backgroundColor: 'var(--color-border)', originX: 0 }}
+                        initial={{ scaleX: 0 }}
+                        whileInView={{ scaleX: 1 }}
+                        transition={{ duration: 0.8, delay: 0.5 + index * 0.2 }}
+                      >
+                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 border-[var(--color-border)] rotate-45" />
+                      </motion.div>
+                    </div>
+                  )}
+                </motion.div>
+
+                <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-4 min-h-[56px] flex items-center group-hover:text-[var(--color-primary)] transition-colors">
+                  {step.title}
+                </h3>
+                
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-8 px-2 max-w-[240px]">
+                  {step.description}
+                </p>
+              </div>
+
+              {/* Detail Pills */}
+              <div className="mt-auto w-full space-y-2">
+                {step.details.slice(0, 2).map((detail, dIndex) => (
                   <div 
-                    className="hidden lg:block absolute left-1/2 top-full w-0.5 h-8 bg-gradient-to-b from-[var(--color-primary)] via-[var(--color-primary-300)] to-transparent transform -translate-x-1/2"
-                    style={{
-                      background: `linear-gradient(to bottom, var(--color-primary), var(--color-primary-300), transparent)`
-                    }}
-                  />
-                )}
+                    key={dIndex} 
+                    className="py-2 px-3 bg-[var(--color-surface-200)] rounded-lg text-[11px] text-[var(--color-text-secondary)] border border-transparent group-hover:border-[var(--color-border)] transition-all flex items-center justify-center"
+                  >
+                    <div className="w-1 h-1 bg-[var(--color-accent)] rounded-full mr-2" />
+                    {detail}
+                  </div>
+                ))}
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Emergency Service Highlight */}
         <motion.div

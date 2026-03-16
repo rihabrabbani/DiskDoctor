@@ -28,8 +28,8 @@ export const locations: LocationData[] = [
     zipCode: '21046',
     coordinates: { lat: 39.2037, lng: -76.8610 },
     isHeadOffice: true,
-    metaDescription: 'Professional data recovery services in Columbia, MD. 20+ years experience recovering data from hard drives, SSDs, RAID arrays, and mobile devices. Call (410) 937-7332',
-    heroDescription: 'When you lose critical data in Columbia, Maryland, trust our expert team with 20+ years of experience to recover your valuable files from any storage device.',
+    metaDescription: "Offering top-notch IT services in Columbia, MD, near the Merriweather Post Pavilion. Customized solutions for businesses in Howard County.",
+    heroDescription: "Discover unparalleled IT services in Columbia, MD, just moments from the scenic Merriweather Post Pavilion and vibrant Lakefront District. Experience tailored solutions to elevate your business in the heart of Howard County.",
     localKeywords: [
       'data recovery Columbia MD',
       'hard drive recovery Columbia Maryland',
@@ -58,8 +58,8 @@ export const locations: LocationData[] = [
     address: 'Serving Baltimore Metro Area',
     zipCode: '21201',
     coordinates: { lat: 39.2904, lng: -76.6122 },
-    metaDescription: 'Expert data recovery services in Baltimore, MD. Recover lost data from crashed hard drives, corrupted SSDs, and damaged devices. Free evaluation. Call (410) 937-7332',
-    heroDescription: 'Baltimore businesses and residents trust our certified data recovery specialists to restore critical files from failed storage devices with industry-leading success rates.',
+    metaDescription: "Experience Baltimore, MD, where history meets modernity at Fort McHenry and Inner Harbor. Dive into the local culture and taste iconic flavors at Lexington Market.",
+    heroDescription: "Explore the vibrant culture of Baltimore, MD, with its rich history at Fort McHenry and a stunning harbor view. Discover local flavors at Lexington Market while soaking in the urban charm.",
     localKeywords: [
       'data recovery Baltimore MD',
       'hard drive recovery Baltimore Maryland',
@@ -87,8 +87,8 @@ export const locations: LocationData[] = [
     address: 'Serving Washington DC Metro Area',
     zipCode: '20001',
     coordinates: { lat: 38.9072, lng: -77.0369 },
-    metaDescription: 'Professional data recovery services in Washington DC. Recover data from hard drives, SSDs, smartphones, and servers. Government & business specialists. Call (410) 937-7332',
-    heroDescription: 'Washington DC organizations rely on our secure, certified data recovery services to restore mission-critical data from any storage device or system.',
+    metaDescription: "Explore Washington, DC, a city of history and innovation, where monumental landmarks and vibrant neighborhoods form a dynamic cultural mosaic.",
+    heroDescription: "Discover Washington, DC's vibrant culture, from the iconic National Mall's monuments to the historic charm of Georgetown's cobblestone streets. Experience the city's dynamic blend of politics and cultural heritage in every corner.",
     localKeywords: [
       'data recovery Washington DC',
       'government data recovery DC',
@@ -116,8 +116,8 @@ export const locations: LocationData[] = [
     address: 'Serving Alexandria Metro Area',
     zipCode: '22301',
     coordinates: { lat: 38.8048, lng: -77.0469 },
-    metaDescription: 'Trusted data recovery services in Alexandria, VA. Expert recovery from hard drives, RAIDs, and mobile devices. Serving Northern Virginia. Call (410) 937-7332',
-    heroDescription: 'Alexandria residents and businesses count on our proven data recovery expertise to restore valuable data from failed drives and corrupted storage systems.',
+    metaDescription: "Explore Alexandria, VA with its historic Old Town and vibrant Torpedo Factory Art Center, offering unique sights by the Potomac River.",
+    heroDescription: "Discover the charm of Alexandria, VA, where the historic streets of Old Town meet the scenic beauty of the Potomac River, offering endless exploration. From the majestic George Washington Masonic National Memorial to the vibrant Torpedo Factory Art Center, adventure awaits at every corner.",
     localKeywords: [
       'data recovery Alexandria VA',
       'Northern Virginia data recovery',
@@ -145,8 +145,8 @@ export const locations: LocationData[] = [
     address: 'Serving Arlington Metro Area',
     zipCode: '22201',
     coordinates: { lat: 38.8816, lng: -77.0910 },
-    metaDescription: 'Professional data recovery services in Arlington, VA. Recover lost files from crashed drives, corrupted SSDs, and damaged devices. Free consultation. Call (410) 937-7332',
-    heroDescription: 'Arlington professionals trust our advanced data recovery techniques to restore critical business and personal data from any type of storage failure.',
+    metaDescription: "Explore Arlington, VA, home to iconic sites such as Arlington National Cemetery and the modern Rosslyn skyline, offering diverse attractions for all.",
+    heroDescription: "Discover the vibrant community of Arlington, VA, where historic landmarks like the Arlington National Cemetery and the futuristic Rosslyn skyline create a captivating blend of past and present. From scenic parks to lively shopping venues, Arlington offers a rich tapestry of experiences for every visitor.",
     localKeywords: [
       'data recovery Arlington VA',
       'Arlington Virginia data recovery',
@@ -174,8 +174,8 @@ export const locations: LocationData[] = [
     address: 'Serving Rockville Metro Area',
     zipCode: '20850',
     coordinates: { lat: 39.0840, lng: -77.1528 },
-    metaDescription: 'Expert data recovery services in Rockville, MD. Recover data from hard drives, SSDs, RAID systems, and mobile devices. Montgomery County specialists. Call (410) 937-7332',
-    heroDescription: 'Rockville area businesses and residents rely on our certified data recovery specialists to restore critical files from failed storage devices and systems.',
+    metaDescription: "Explore Rockville, MD's thriving culture and scenic beauty at Rock Creek Regional Park, combining local charm with urban convenience for an unforgettable experience.",
+    heroDescription: "Discover the vibrant community of Rockville, MD, nestled near the stunning Rock Creek Regional Park. Experience a blend of history and modernity in the heart of Montgomery County.",
     localKeywords: [
       'data recovery Rockville MD',
       'Montgomery County data recovery',
@@ -203,8 +203,8 @@ export const locations: LocationData[] = [
     address: 'Serving Annapolis Metro Area',
     zipCode: '21401',
     coordinates: { lat: 39.1612, lng: -76.5197 },
-    metaDescription: 'Trusted data recovery services in Annapolis, MD. Professional recovery from hard drives, SSDs, and mobile devices. Anne Arundel County experts. Call (410) 937-7332',
-    heroDescription: 'Annapolis area professionals trust our proven data recovery methods to restore valuable business and personal data from any type of storage failure.',
+    metaDescription: "Boost your Annapolis, MD presence with tailored SEO strategies. From State House to City Dock, engage more with optimized local content.",
+    heroDescription: "Explore the charm of Annapolis from the iconic Chesapeake Bay to the historic Naval Academy grounds. Discover the vibrant harbor life in this picturesque capital city.",
     localKeywords: [
       'data recovery Annapolis MD',
       'Anne Arundel County data recovery',
@@ -232,8 +232,8 @@ export const locations: LocationData[] = [
     address: 'Serving Frederick Metro Area',
     zipCode: '21701',
     coordinates: { lat: 39.4143, lng: -77.4105 },
-    metaDescription: 'Professional data recovery services in Frederick, MD. Recover lost data from crashed hard drives, corrupted SSDs, and damaged devices. Frederick County specialists. Call (410) 937-7332',
-    heroDescription: 'Frederick County businesses and residents count on our advanced data recovery expertise to restore critical files from failed storage devices and systems.',
+    metaDescription: "Discover Frederick, MD's charm with its iconic Clustered Spires and scenic Carroll Creek Park, a haven for history enthusiasts and nature lovers alike.",
+    heroDescription: "Explore Frederick, MD, where the historic Clustered Spires of the Monocacy River beckon alongside the vibrant charm of Carroll Creek Urban Park. Dive into the rich tapestry of culture and history in every corner of this lively city.",
     localKeywords: [
       'data recovery Frederick MD',
       'Frederick County data recovery',
@@ -261,8 +261,8 @@ export const locations: LocationData[] = [
     address: 'Serving McLean Metro Area',
     zipCode: '22101',
     coordinates: { lat: 38.9343, lng: -77.1775 },
-    metaDescription: 'Professional data recovery services in McLean, VA. Expert recovery from hard drives, SSDs, RAID systems, and mobile devices. Fairfax County specialists. Call (410) 937-7332',
-    heroDescription: 'McLean area professionals trust our advanced data recovery expertise to restore critical business and personal data from any type of storage failure.',
+    metaDescription: "Discover McLean, VA's vibrant lifestyle near Tysons Corner & Great Falls Park. Experience suburban charm with urban convenience and scenic beauty.",
+    heroDescription: "Explore McLean, VA - a charming community nestled near the scenic Great Falls Park and the iconic Tysons Corner Center. Discover a blend of suburban tranquility and vibrant urban amenities.",
     localKeywords: [
       'data recovery McLean VA',
       'McLean Virginia data recovery',
@@ -291,8 +291,8 @@ export const locations: LocationData[] = [
     address: 'Serving Tysons Metro Area',
     zipCode: '22102',
     coordinates: { lat: 38.9182, lng: -77.2228 },
-    metaDescription: 'Expert data recovery services in Tysons, VA. Professional recovery from hard drives, SSDs, RAID arrays, and mobile devices. Fairfax County specialists. Call (410) 937-7332',
-    heroDescription: 'Tysons businesses and residents rely on our certified data recovery specialists to restore critical files from failed storage devices and systems.',
+    metaDescription: "Explore Tysons, VA's dynamic blend of shopping at Tysons Corner Center and nature at Scotts Run, offering a unique local experience in Virginia.",
+    heroDescription: "Discover the vibrant energy of Tysons, VA, where the iconic Tysons Corner Center meets the lush tranquility of Scotts Run Nature Preserve. Explore the perfect balance of urban excitement and serene natural beauty.",
     localKeywords: [
       'data recovery Tysons VA',
       'Tysons Corner data recovery',
@@ -321,8 +321,8 @@ export const locations: LocationData[] = [
     address: 'Serving Great Falls Metro Area',
     zipCode: '22066',
     coordinates: { lat: 39.0012, lng: -77.2883 },
-    metaDescription: 'Trusted data recovery services in Great Falls, VA. Professional recovery from hard drives, SSDs, and mobile devices. Fairfax County experts. Call (410) 937-7332',
-    heroDescription: 'Great Falls area professionals trust our proven data recovery methods to restore valuable business and personal data from any type of storage failure.',
+    metaDescription: "Discover Great Falls, VA: enjoy scenic trails at Great Falls Park and delve into the past at Colvin Run Mill. Perfect for nature lovers and history buffs alike.",
+    heroDescription: "Explore the serene beauty of Great Falls, VA, with its breathtaking views at Great Falls Park and the historic charm of Colvin Run Mill. Dive into a world where nature meets history and adventure awaits.",
     localKeywords: [
       'data recovery Great Falls VA',
       'Great Falls Virginia data recovery',
@@ -351,8 +351,8 @@ export const locations: LocationData[] = [
     address: 'Serving Potomac Metro Area',
     zipCode: '20854',
     coordinates: { lat: 39.0182, lng: -77.2086 },
-    metaDescription: 'Professional data recovery services in Potomac, MD. Expert recovery from hard drives, SSDs, RAID systems, and mobile devices. Montgomery County specialists. Call (410) 937-7332',
-    heroDescription: 'Potomac area businesses and residents count on our advanced data recovery expertise to restore critical files from failed storage devices and systems.',
+    metaDescription: "Discover Potomac, MD, a vibrant community nestled by the Potomac River, with beautiful parks and local gems like the Great Falls Tavern. Explore today!",
+    heroDescription: "Explore the charm of Potomac, MD, with its scenic views of the Potomac River and the historic Great Falls Tavern. Immerse yourself in the tranquility of the surrounding lush parks and trails.",
     localKeywords: [
       'data recovery Potomac MD',
       'Potomac Maryland data recovery',
@@ -374,14 +374,10 @@ export const locations: LocationData[] = [
   }
 ];
 
-export const getLocationBySlug = (slug: string): LocationData | undefined => {
+export const getLocationBySlug = (slug: string) => {
   return locations.find(location => location.slug === slug);
 };
 
-export const getAllLocationSlugs = (): string[] => {
+export const getAllLocationSlugs = () => {
   return locations.map(location => location.slug);
-};
-
-export const getHeadOffice = (): LocationData => {
-  return locations.find(location => location.isHeadOffice) || locations[0];
 };

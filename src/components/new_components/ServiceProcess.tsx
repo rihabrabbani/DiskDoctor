@@ -97,65 +97,77 @@ export default function ServiceProcess({
           {stepsToShow.map((step, index) => (
             <motion.div 
               key={index}
-              className="text-center group"
+              className="text-center group flex flex-col h-full"
               variants={stepVariants}
               whileHover={{ y: -5 }}
             >
-              <motion.div 
-                className="relative w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl shadow-lg"
-                style={{ backgroundColor: accentColor }}
-                whileHover={{ scale: 1.1, rotate: 360 }}
-                transition={{ duration: 0.5 }}
-              >
-                {useDetailedSteps && step.icon ? (
-                  <span className="text-2xl">{step.icon}</span>
-                ) : (
-                  String(index + 1).padStart(2, '0')
-                )}
-                {index < stepsToShow.length - 1 && (
-                  <motion.div 
-                    className="hidden lg:block absolute left-full top-1/2 w-8 h-0.5 -translate-y-1/2 ml-4"
-                    style={{ backgroundColor: accentColor }}
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    transition={{ duration: 0.8, delay: index * 0.2 }}
-                  />
-                )}
-              </motion.div>
-              
-              <h3 className="font-semibold text-lg mb-3 text-[var(--color-text-primary)]">
-                {step.title}
-              </h3>
-              
-              {useDetailedSteps && step.description && (
-                <p className="text-sm text-[var(--color-text-secondary)] mb-3 leading-relaxed">
-                  {step.description}
-                </p>
-              )}
-              
-              {useDetailedSteps && step.duration && (
+              <div className="flex-1 flex flex-col items-center">
                 <motion.div 
-                  className="inline-block px-2 py-1 rounded-full text-xs font-medium text-white"
-                  style={{ backgroundColor: `${accentColor}80` }}
-                >
-                  {step.duration}
-                </motion.div>
-              )}
-              
-              <motion.div 
-                className="w-full h-1 rounded-full bg-[var(--color-border)] overflow-hidden mt-4"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <motion.div 
-                  className="h-full rounded-full"
+                  className="relative w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl shadow-lg z-20"
                   style={{ backgroundColor: accentColor }}
-                  initial={{ width: 0 }}
-                  whileInView={{ width: '100%' }}
-                  transition={{ duration: 1, delay: index * 0.2 }}
-                />
-              </motion.div>
+                  whileHover={{ scale: 1.1, rotate: 360 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {useDetailedSteps && step.icon ? (
+                    <span className="text-2xl">{step.icon}</span>
+                  ) : (
+                    String(index + 1).padStart(2, '0')
+                  )}
+                  {index < stepsToShow.length - 1 && (
+                    <div className="hidden lg:block absolute left-[110%] top-1/2 w-16 h-0.5 -translate-y-1/2">
+                      <motion.div 
+                        className="w-full h-full relative"
+                        style={{ backgroundColor: `${accentColor}40`, originX: 0 }}
+                        initial={{ scaleX: 0 }}
+                        whileInView={{ scaleX: 1 }}
+                        transition={{ duration: 0.8, delay: index * 0.2 }}
+                      >
+                        {/* Arrow head */}
+                        <div 
+                          className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 rotate-45"
+                          style={{ borderColor: `${accentColor}40` }}
+                        />
+                      </motion.div>
+                    </div>
+                  )}
+                </motion.div>
+                
+                <h3 className="font-semibold text-lg mb-3 text-[var(--color-text-primary)] min-h-[56px] flex items-center justify-center px-2">
+                  {step.title}
+                </h3>
+                
+                {useDetailedSteps && step.description && (
+                  <p className="text-sm text-[var(--color-text-secondary)] mb-6 leading-relaxed px-2 min-h-[80px]">
+                    {step.description}
+                  </p>
+                )}
+              </div>
+              
+              <div className="mt-auto pt-4">
+                {useDetailedSteps && step.duration && (
+                  <motion.div 
+                    className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white mb-6"
+                    style={{ backgroundColor: accentColor }}
+                  >
+                    {step.duration}
+                  </motion.div>
+                )}
+                
+                <motion.div 
+                  className="w-full h-1.5 rounded-full bg-[var(--color-border)] overflow-hidden"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <motion.div 
+                    className="h-full rounded-full"
+                    style={{ backgroundColor: accentColor }}
+                    initial={{ width: 0 }}
+                    whileInView={{ width: '100%' }}
+                    transition={{ duration: 1, delay: index * 0.2 }}
+                  />
+                </motion.div>
+              </div>
             </motion.div>
           ))}
         </motion.div>
@@ -182,16 +194,6 @@ export default function ServiceProcess({
                 <p className="text-[var(--color-text-secondary)] leading-relaxed text-lg">
                   {additionalContent.description}
                 </p>
-                <motion.div 
-                  className="mt-6 flex items-center text-sm"
-                  style={{ color: accentColor }}
-                  whileHover={{ x: 5 }}
-                >
-                  <span className="mr-2">Learn more about our process</span>
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </motion.div>
               </div>
               <div className="relative group">
                 <div className="relative h-64 lg:h-80 rounded-xl overflow-hidden shadow-lg">

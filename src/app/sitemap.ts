@@ -45,7 +45,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${baseUrl}/services/${service.id}`,
     lastModified: generatedAt,
     changeFrequency: 'weekly' as const,
-    priority: 0.8,
+    priority: 0.9,
   }))
 
   // Location pages

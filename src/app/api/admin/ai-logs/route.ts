@@ -49,16 +49,17 @@ export async function GET(request: Request) {
 
             if (imgOutputTokens > 0) {
                 // Token-based pricing (gpt-image models log actual tokens)
+                // Official OpenAI rates (verified March 2025):
                 if (log.imageModel === 'gpt-image-1-mini') {
-                    logCost += (imgInputTokens / 1_000_000) * 0.15;  // $0.15 / 1M text input
-                    logCost += (imgOutputTokens / 1_000_000) * 40.00; // $40.00 / 1M image output
+                    logCost += (imgInputTokens / 1_000_000) * 2.00;   // $2.00 / 1M text input
+                    logCost += (imgOutputTokens / 1_000_000) * 8.00;  // $8.00 / 1M image output
                 } else if (log.imageModel === 'gpt-image-1') {
-                    logCost += (imgInputTokens / 1_000_000) * 5.00;  // $5.00 / 1M text input
-                    logCost += (imgOutputTokens / 1_000_000) * 40.00; // $40.00 / 1M image output
+                    logCost += (imgInputTokens / 1_000_000) * 8.00;   // $8.00 / 1M text input
+                    logCost += (imgOutputTokens / 1_000_000) * 32.00; // $32.00 / 1M image output
                 } else {
-                    // Fallback token-based estimate
-                    logCost += (imgInputTokens / 1_000_000) * 5.00;
-                    logCost += (imgOutputTokens / 1_000_000) * 40.00;
+                    // Fallback token-based estimate (gpt-image-1 rates)
+                    logCost += (imgInputTokens / 1_000_000) * 8.00;
+                    logCost += (imgOutputTokens / 1_000_000) * 32.00;
                 }
             } else {
                 // Legacy per-image pricing (DALL-E logs without token data)

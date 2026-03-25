@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
                 settings: {
                     apiKey: '',
                     model: 'gpt-4o-mini',
-                    imageModel: 'dall-e-3',
+                    imageModel: 'gpt-image-1-mini',
                     tavilyApiKey: '',
                 }
             });
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
             settings: {
                 apiKey: settings.apiKey,
                 model: settings.model || 'gpt-4o-mini',
-                imageModel: settings.imageModel || 'dall-e-3',
+                imageModel: settings.imageModel || 'gpt-image-1-mini',
                 tavilyApiKey: settings.tavilyApiKey || '',
             }
         });

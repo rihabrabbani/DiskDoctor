@@ -61,6 +61,7 @@ export async function PUT(
   try {
     const formData = await request.formData();
     const title = formData.get('title') as string;
+    const content = formData.get('content') as string;
     const sectionsRaw = formData.get('sections') as string;
     const faqsRaw = formData.get('faqs') as string;
     const keyTakeawaysRaw = formData.get('keyTakeaways') as string;
@@ -76,10 +77,10 @@ export async function PUT(
     const customSlug = formData.get('slug') as string;
     const images = formData.getAll('images') as File[];
 
-    if (!title || !sectionsRaw) {
+    if (!title || (!sectionsRaw && !content)) {
       return NextResponse.json({
         success: false,
-        message: 'Title and content sections are required'
+        message: 'Title and content are required'
       }, { status: 400 });
     }
 
@@ -87,25 +88,25 @@ export async function PUT(
     let parsedFaqs = [];
     let parsedKeyTakeaways = [];
     try {
-        parsedSections = JSON.parse(sectionsRaw || '[]');
-        parsedFaqs = JSON.parse(faqsRaw || '[]');
-        parsedKeyTakeaways = JSON.parse(keyTakeawaysRaw || '[]');
+        if (sectionsRaw) parsedSections = JSON.parse(sectionsRaw);
+        if (faqsRaw) parsedFaqs = JSON.parse(faqsRaw);
+        if (keyTakeawaysRaw) parsedKeyTakeaways = JSON.parse(keyTakeawaysRaw);
     } catch(e) {
         console.error("Error parsing abstract JSON arrays:", e);
     }
     
     // Concatenate all text to generate an accurate word count and excerpt 
-    const fullTextContent = parsedSections.map((s: any) => `${s.heading} ${s.content}`).join(' ');
+    const fullTextContent = content ? content : parsedSections.map((s: any) => `${s.heading} ${s.content}`).join(' ');
 
     const client = await clientPromise;
     const db = client.db(DB_NAME);
     const blogsCollection = db.collection(COLLECTION_NAME);
 
     // Find existing blog by id or slug
-    const { id } = await params;
-    let existingBlog = await blogsCollection.findOne({ id });
+    const { id: blogIdParam } = await params;
+    let existingBlog = await blogsCollection.findOne({ id: blogIdParam });
     if (!existingBlog) {
-      existingBlog = await blogsCollection.findOne({ slug: id });
+      existingBlog = await blogsCollection.findOne({ slug: blogIdParam });
     }
 
     if (!existingBlog) {
@@ -147,9 +148,6 @@ export async function PUT(
     const updateData: any = {
       slug,
       title: title.trim(),
-      sections: parsedSections,
-      faqs: parsedFaqs,
-      keyTakeaways: parsedKeyTakeaways,
       excerpt: excerpt?.trim() || fullTextContent.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
       metaDescription: metaDescription?.trim() || fullTextContent.replace(/<[^>]*>/g, '').substring(0, 155) + '...',
       focusKeyword: focusKeyword?.trim() || existingBlog.focusKeyword || '',
@@ -162,6 +160,11 @@ export async function PUT(
       wordCount: calculateWordCount(fullTextContent),
       updatedAt: new Date().toISOString(),
     };
+
+    if (content) updateData.content = content;
+    if (sectionsRaw) updateData.sections = parsedSections;
+    if (faqsRaw) updateData.faqs = parsedFaqs;
+    if (keyTakeawaysRaw) updateData.keyTakeaways = parsedKeyTakeaways;
 
     // Only update status fields if provided
     if (status) {

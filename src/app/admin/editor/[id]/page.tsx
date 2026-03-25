@@ -94,9 +94,29 @@ export default function EditBlogPage() {
             const data = await response.json();
             if (data.success && data.blog) {
                 const blog = data.blog;
+                
+                let synthesizedContent = blog.content || '';
+                
+                // If it's an AI Draft without monolithic content, build it from sections
+                if (!synthesizedContent && blog.sections && Array.isArray(blog.sections)) {
+                    synthesizedContent = blog.sections.map((sec: any) => {
+                        let html = `<h2>${sec.heading}</h2>\n`;
+                        if (sec.image) {
+                            html += `<p><img src="${sec.image}" alt="${sec.heading}" /></p>\n`;
+                        }
+                        html += `${sec.content}\n`;
+                        return html;
+                    }).join('\n<br>\n');
+                    
+                    if (blog.faqs && Array.isArray(blog.faqs) && blog.faqs.length > 0) {
+                        synthesizedContent += `\n<h2>Frequently Asked Questions</h2>\n`;
+                        synthesizedContent += blog.faqs.map((faq: any) => `<h3>${faq.question}</h3>\n<p>${faq.answer}</p>\n`).join('\n');
+                    }
+                }
+
                 setFormData({
                     title: blog.title || '',
-                    content: blog.content || '',
+                    content: synthesizedContent,
                     excerpt: blog.excerpt || '',
                     metaDescription: blog.metaDescription || '',
                     focusKeyword: blog.focusKeyword || '',

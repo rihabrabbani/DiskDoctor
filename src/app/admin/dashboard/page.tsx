@@ -12,6 +12,7 @@ interface Blog {
   slug?: string;
   title: string;
   content: string;
+  sections?: any[];
   excerpt: string;
   tags: string[];
   images: string[];
@@ -34,24 +35,6 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<FilterTab>('all');
   const router = useRouter();
 
-  // AI State
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isMagicOpen, setIsMagicOpen] = useState(false);
-  const [aiApiKey, setAiApiKey] = useState('');
-  const [aiModel, setAiModel] = useState('gpt-4o-mini');
-  const [aiImageModel, setAiImageModel] = useState('dall-e-3');
-  const [aiTavilyKey, setAiTavilyKey] = useState('');
-  const [isTestingKey, setIsTestingKey] = useState(false);
-  const [isSavingSettings, setIsSavingSettings] = useState(false);
-  
-  const [magicMode, setMagicMode] = useState<'guided' | 'magic'>('magic');
-  const [magicTopic, setMagicTopic] = useState('');
-  const [magicNotes, setMagicNotes] = useState('');
-  const [magicWordCount, setMagicWordCount] = useState(1200);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generationStep, setGenerationStep] = useState('');
-  const [currentStepIndex, setCurrentStepIndex] = useState(1);
-
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
     if (!token) {
@@ -59,7 +42,6 @@ export default function AdminDashboard() {
       return;
     }
     fetchBlogs();
-    fetchAISettings();
   }, [router]);
 
   const fetchBlogs = async () => {
@@ -73,134 +55,6 @@ export default function AdminDashboard() {
       console.error('Error fetching blogs:', error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchAISettings = async () => {
-    try {
-      const response = await fetch('/api/admin/ai-settings');
-      const data = await response.json();
-      if (data.success && data.settings) {
-        setAiApiKey(data.settings.apiKey);
-        setAiModel(data.settings.model || 'gpt-4o-mini');
-        setAiImageModel(data.settings.imageModel || 'dall-e-3');
-        setAiTavilyKey(data.settings.tavilyApiKey || '');
-      }
-    } catch (error) {
-      console.error('Error fetching AI settings:', error);
-    }
-  };
-
-  const handleSaveSettings = async () => {
-    if (!aiApiKey) {
-      alert('API Key is required');
-      return;
-    }
-    setIsTestingKey(true);
-    setIsSavingSettings(true);
-    try {
-      const response = await fetch('/api/admin/ai-settings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          apiKey: aiApiKey,
-          model: aiModel,
-          imageModel: aiImageModel,
-          tavilyApiKey: aiTavilyKey,
-        })
-      });
-      const data = await response.json();
-      if (data.success) {
-        alert('Settings saved successfully!');
-        setIsSettingsOpen(false);
-      } else {
-        alert(data.message || 'Failed to save settings. Check your API key.');
-      }
-    } catch (error) {
-      alert('Error testing API key.');
-    } finally {
-      setIsTestingKey(false);
-      setIsSavingSettings(false);
-    }
-  };
-
-  const handleGenerate = async () => {
-    if (!aiApiKey) {
-      alert('Please configure your OpenAI API Key in settings first.');
-      setIsMagicOpen(false);
-      setIsSettingsOpen(true);
-      return;
-    }
-    if (magicMode === 'guided' && !magicTopic.trim()) {
-      alert('Please enter a topic.');
-      return;
-    }
-
-    setIsGenerating(true);
-    setGenerationStep('Initializing AI engines...');
-    setCurrentStepIndex(1);
-
-    try {
-      const response = await fetch('/api/blogs/ai-generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          mode: magicMode,
-          topic: magicMode === 'guided' ? magicTopic : undefined,
-          notes: magicNotes,
-          targetWordCount: magicWordCount
-        })
-      });
-
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.message || 'Failed to start AI generation');
-      }
-
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      
-      if (!reader) throw new Error('No stream available');
-      
-      let done = false;
-      let buffer = '';
-
-      while (!done) {
-        const { value, done: streamDone } = await reader.read();
-        done = streamDone;
-        
-        if (value) {
-          buffer += decoder.decode(value, { stream: true });
-          const parts = buffer.split('\n\n');
-          buffer = parts.pop() || '';
-          
-          for (const part of parts) {
-            if (part.startsWith('data: ')) {
-               try {
-                 const data = JSON.parse(part.slice(6));
-                 if (data.error) throw new Error(data.error);
-                 
-                 if (data.step) {
-                   setCurrentStepIndex(data.step);
-                   if (data.message) setGenerationStep(data.message);
-                 }
-                 
-                  if (data.draftId) {
-                    router.push(`/admin/editor?id=${data.draftId}`);
-                    return; // Successfully finished
-                  }
-               } catch (e: any) {
-                 if (!e.message.includes('Unexpected end of JSON')) {
-                     console.error('SSE parse error:', e);
-                 }
-               }
-            }
-          }
-        }
-      }
-    } catch (error: any) {
-      alert(error.message || 'Error generating blog.');
-      setIsGenerating(false);
     }
   };
 
@@ -306,17 +160,10 @@ export default function AdminDashboard() {
 
             <div className="flex flex-wrap items-center gap-3">
               <button
-                onClick={() => setIsSettingsOpen(true)}
-                className="px-4 py-3 bg-[var(--color-surface-200)] text-[var(--color-text-primary)] rounded-lg font-medium hover:bg-[var(--color-surface-300)] transition-colors text-sm border border-[var(--color-border)] flex items-center gap-2"
-              >
-                ⚙️ AI Settings
-              </button>
-
-              <button
-                onClick={() => setIsMagicOpen(true)}
+                onClick={() => router.push('/admin/aiblog')}
                 className="px-4 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-medium hover:opacity-90 transition-opacity text-sm shadow-md flex items-center gap-2"
               >
-                🪄 MagicAI
+                🪄 AI Portal
               </button>
 
               <button
@@ -456,7 +303,13 @@ export default function AdminDashboard() {
 
                         <div className="flex flex-row sm:flex-col lg:flex-row items-stretch sm:items-end lg:items-center gap-2 flex-shrink-0 mt-4 sm:mt-0">
                           <button
-                            onClick={() => router.push(`/admin/editor/${blog.id}`)}
+                            onClick={() => {
+                                if (blog.sections && blog.sections.length > 0) {
+                                    router.push(`/admin/editor?id=${blog.id}`);
+                                } else {
+                                    router.push(`/admin/editor/${blog.id}`);
+                                }
+                            }}
                             className="flex-1 sm:flex-none px-4 py-2 text-sm border border-[var(--color-primary)] text-[var(--color-primary)] rounded-lg hover:bg-[var(--color-primary)] hover:text-white transition-colors text-center font-medium"
                           >
                             Edit
@@ -487,259 +340,6 @@ export default function AdminDashboard() {
       </main>
 
       <Footer />
-
-      {/* --- Modals --- */}
-      
-      {/* AI Settings Modal */}
-      <AnimatePresence>
-        {isSettingsOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl w-full max-w-md shadow-2xl overflow-hidden"
-            >
-              <div className="p-6 border-b border-[var(--color-border)] flex justify-between items-center">
-                <h2 className="text-xl font-bold text-[var(--color-text-primary)] flex items-center gap-2">
-                  ⚙️ AI Settings
-                </h2>
-                <button onClick={() => setIsSettingsOpen(false)} className="text-[var(--color-text-tertiary)] hover:text-white transition-colors">
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
-              </div>
-              
-              <div className="p-6 space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">OpenAI API Key</label>
-                  <input
-                    type="password"
-                    value={aiApiKey}
-                    onChange={e => setAiApiKey(e.target.value)}
-                    placeholder="sk-..."
-                    className="w-full px-4 py-2.5 border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none"
-                  />
-                  <p className="text-xs text-[var(--color-text-tertiary)] mt-1.5">Your key is stored in MongoDB. Needed for MagicAI features.</p>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Text Model</label>
-                  <select
-                    value={aiModel}
-                    onChange={e => setAiModel(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none"
-                  >
-                    <option value="gpt-4o">GPT-4o (Recommended)</option>
-                    <option value="gpt-4o-mini">GPT-4o Mini (Cheaper)</option>
-                    <option value="gpt-4-turbo">GPT-4 Turbo</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Image Model</label>
-                  <select
-                    value={aiImageModel}
-                    onChange={e => setAiImageModel(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none"
-                  >
-                    <option value="dall-e-3">DALL-E 3 (High Quality)</option>
-                    <option value="dall-e-2">DALL-E 2 (Faster, cheaper)</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">
-                    Tavily Search API Key
-                    <a
-                      href="https://app.tavily.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="ml-2 text-xs text-[var(--color-primary)] underline"
-                    >
-                      Get free key (1,000/mo)
-                    </a>
-                  </label>
-                  <input
-                    type="password"
-                    value={aiTavilyKey}
-                    onChange={e => setAiTavilyKey(e.target.value)}
-                    placeholder="tvly-..."
-                    className="w-full px-4 py-2.5 border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none"
-                  />
-                  <p className="text-xs text-[var(--color-text-tertiary)] mt-1.5">Used for live SERP research. If empty, system falls back to Wikipedia.</p>
-                </div>
-              </div>
-              
-              <div className="p-6 border-t border-[var(--color-border)] bg-[var(--color-surface-50)] flex justify-end gap-3">
-                <button
-                  onClick={() => setIsSettingsOpen(false)}
-                  className="px-4 py-2 rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-200)] transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSaveSettings}
-                  disabled={isSavingSettings}
-                  className="px-6 py-2 bg-[var(--color-primary)] text-white rounded-lg text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50"
-                >
-                  {isTestingKey ? 'Testing Connection...' : isSavingSettings ? 'Saving...' : 'Save & Verify'}
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* MagicAI Modal */}
-      <AnimatePresence>
-        {isMagicOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
-            >
-              <div className="p-6 border-b border-[var(--color-border)] flex justify-between items-center bg-gradient-to-r from-purple-900/20 to-indigo-900/20">
-                <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                  🪄 AI Blog Generator
-                </h2>
-                {!isGenerating && (
-                  <button onClick={() => setIsMagicOpen(false)} className="text-[var(--color-text-tertiary)] hover:text-white transition-colors">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                  </button>
-                )}
-              </div>
-              
-              {isGenerating ? (
-                <div className="p-8 flex flex-col items-center w-full">
-                  <h3 className="text-2xl font-bold text-white mb-2">Generating Blog Post</h3>
-                  <p className="text-[var(--color-primary)] font-medium mb-8 text-center">{generationStep}</p>
-                  
-                  <div className="w-full max-w-sm space-y-4">
-                    {generationStepsList.map((step) => {
-                      const isActive = currentStepIndex === step.id;
-                      const isPast = currentStepIndex > step.id;
-                      const isFuture = currentStepIndex < step.id;
-                      
-                      return (
-                        <div key={step.id} className={`flex items-center gap-4 p-3 rounded-xl border transition-all duration-300 ${isActive ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/50 shadow-[0_0_15px_rgba(var(--color-primary-rgb),0.2)]' : isPast ? 'bg-green-500/5 border-green-500/20' : 'bg-[var(--color-surface-200)] border-transparent opacity-50'}`}>
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${isActive ? 'bg-[var(--color-primary)] text-white shadow-[0_0_10px_var(--color-primary)]' : isPast ? 'bg-green-500 text-white' : 'bg-[var(--color-surface-300)] text-[var(--color-text-secondary)]'}`}>
-                            {isPast ? (
-                              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-                            ) : (
-                                step.id
-                            )}
-                          </div>
-                          <div className="flex-1">
-                            <h4 className={`font-semibold ${isActive ? 'text-[var(--color-primary)]' : isPast ? 'text-green-400' : 'text-[var(--color-text-secondary)]'}`}>{step.title}</h4>
-                          </div>
-                          {isActive && (
-                            <div className="w-5 h-5 rounded-full border-2 border-[var(--color-primary)] border-t-transparent animate-spin"></div>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
-                  
-                  <p className="text-xs text-[var(--color-text-tertiary)] max-w-sm mt-8 text-center leading-relaxed">
-                    Please don't close this window.<br/>MagicAI is orchestrating multiple agents in the background.
-                  </p>
-                </div>
-              ) : (
-                <>
-                  <div className="flex border-b border-[var(--color-border)]">
-                    <button
-                      className={`flex-1 py-3 text-sm font-medium transition-colors ${magicMode === 'magic' ? 'border-b-2 border-purple-500 text-purple-400' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}
-                      onClick={() => setMagicMode('magic')}
-                    >
-                      ✨ Auto (MagicAI)
-                    </button>
-                    <button
-                      className={`flex-1 py-3 text-sm font-medium transition-colors ${magicMode === 'guided' ? 'border-b-2 border-indigo-500 text-indigo-400' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}
-                      onClick={() => setMagicMode('guided')}
-                    >
-                      ✍️ Guided
-                    </button>
-                  </div>
-
-                  <div className="p-6 overflow-y-auto space-y-5">
-                    {magicMode === 'magic' ? (
-                      <div className="bg-purple-500/10 border border-purple-500/20 rounded-xl p-4">
-                        <h4 className="font-semibold text-purple-300 flex items-center gap-2 mb-2">
-                          How MagicAI works
-                        </h4>
-                        <ul className="text-sm text-[var(--color-text-secondary)] space-y-2 list-inside list-disc">
-                          <li>Analyzes your existing blog posts</li>
-                          <li>Identifies missing keywords and trending topics</li>
-                          <li>Generates a full 1,200+ word SEO-optimized article</li>
-                          <li>Creates a custom featured image using DALL-E 3</li>
-                        </ul>
-                      </div>
-                    ) : (
-                      <>
-                        <div>
-                          <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Topic or specific title *</label>
-                          <input
-                            type="text"
-                            value={magicTopic}
-                            onChange={e => setMagicTopic(e.target.value)}
-                            placeholder="e.g. Signs your SSD is failing"
-                            className="w-full px-4 py-2.5 border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)] focus:ring-2 focus:ring-indigo-500 outline-none"
-                          />
-                        </div>
-                      </>
-                    )}
-
-                    <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Focus Keyword / Notes (Optional)</label>
-                      <textarea
-                        value={magicNotes}
-                        onChange={e => setMagicNotes(e.target.value)}
-                        placeholder="e.g. Include a section about M.2 NVMe drives"
-                        rows={3}
-                        className="w-full px-4 py-2.5 border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)] focus:ring-2 focus:ring-purple-500 outline-none resize-none"
-                      />
-                    </div>
-                    
-                    <div>
-                      <div className="flex justify-between items-center mb-1.5">
-                        <label className="block text-sm font-medium text-[var(--color-text-secondary)]">Target Word Count</label>
-                        <span className="text-xs text-[var(--color-text-tertiary)]">{magicWordCount} words</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="500"
-                        max="2500"
-                        step="100"
-                        value={magicWordCount}
-                        onChange={(e) => setMagicWordCount(parseInt(e.target.value))}
-                        className="w-full accent-purple-500"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="p-6 border-t border-[var(--color-border)] bg-[var(--color-surface-50)] flex justify-end gap-3">
-                    <button
-                      onClick={() => setIsMagicOpen(false)}
-                      className="px-4 py-2 rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-200)] transition-colors"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleGenerate}
-                      className="px-6 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity shadow-md"
-                    >
-                      ✨ Generate Now
-                    </button>
-                  </div>
-                </>
-              )}
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
     </div>
   );
 }

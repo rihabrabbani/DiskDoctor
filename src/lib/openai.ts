@@ -161,13 +161,14 @@ interface GeneratedBlog {
     focusKeyword: string;
     category: string;
     tags: string[];
+    usage: { promptTokens: number; completionTokens: number; totalTokens: number };
 }
 
 export async function analyzeBlogsAndSuggestTopic(
     apiKey: string,
     model: string,
     existingTitles: string[]
-): Promise<{ title: string; focusKeyword: string; reasoning: string }> {
+): Promise<{ title: string; focusKeyword: string; reasoning: string; usage: { promptTokens: number; completionTokens: number; totalTokens: number } }> {
     const client = getOpenAIClient(apiKey);
 
     const existingList = existingTitles.length > 0
@@ -207,11 +208,17 @@ Respond in this exact JSON format:
         response_format: { type: 'json_object' },
     });
 
+    const ideationUsage = response.usage || { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 };
     const result = JSON.parse(response.choices[0].message.content || '{}');
     return {
         title: result.title || 'Untitled',
         focusKeyword: result.focusKeyword || '',
         reasoning: result.reasoning || '',
+        usage: {
+            promptTokens: ideationUsage.prompt_tokens,
+            completionTokens: ideationUsage.completion_tokens,
+            totalTokens: ideationUsage.total_tokens,
+        },
     };
 }
 
@@ -253,6 +260,8 @@ Return exactly 3 highly specific Wikipedia search queries. Examples:
 Return in exact JSON format:
 { "queries": ["query 1", "query 2", "query 3"] }`;
 
+    let accumulatedUsage = { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
+
     let searchResultsContext = '';
     try {
         const queryResponse = await client.chat.completions.create({
@@ -261,6 +270,15 @@ Return in exact JSON format:
             temperature: 0.5,
             response_format: { type: 'json_object' }
         });
+        
+        // Accumulate query generation tokens
+        const queryUsage = queryResponse.usage;
+        if (queryUsage) {
+            accumulatedUsage.promptTokens += queryUsage.prompt_tokens;
+            accumulatedUsage.completionTokens += queryUsage.completion_tokens;
+            accumulatedUsage.totalTokens += queryUsage.total_tokens;
+        }
+        
         const queryObj = JSON.parse(queryResponse.choices[0].message.content || '{}');
         
         // --- DEEP RESEARCH STEP 2: EXECUTE SEARCHES ---
@@ -433,6 +451,13 @@ Return in exact JSON format:
         }
     }
 
+    const usage = response.usage || { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 };
+    
+    // Add the main generation tokens to the accumulated total
+    accumulatedUsage.promptTokens += usage.prompt_tokens;
+    accumulatedUsage.completionTokens += usage.completion_tokens;
+    accumulatedUsage.totalTokens += usage.total_tokens;
+
     return {
         title: result.title || params.topic || 'Untitled',
         excerpt: result.excerpt || '',
@@ -443,10 +468,16 @@ Return in exact JSON format:
         focusKeyword: result.focusKeyword || '',
         category: result.category || 'Data Recovery',
         tags: Array.isArray(result.tags) ? result.tags : [],
+        usage: accumulatedUsage,
     };
 }
 
 // ─── Image Generation ───
+
+export interface ImageGenResult {
+    url: string;
+    usage: { inputTokens: number; outputTokens: number };
+}
 
 export async function generateFeaturedImage(
     apiKey: string,
@@ -454,7 +485,7 @@ export async function generateFeaturedImage(
     title: string,
     excerpt: string,
     isInline: boolean = false
-): Promise<string> {
+): Promise<ImageGenResult> {
     const client = getOpenAIClient(apiKey);
 
     let prompt = '';
@@ -465,25 +496,46 @@ export async function generateFeaturedImage(
         prompt = `A highly realistic, premium editorial photograph representing the concept of: "${title}". Context: ${excerpt}. Cinematic lighting, shallow depth of field, high-end corporate technology photography style. Realistic textures and natural colors. Absolutely no text, words, watermarks, or logos in the image.`;
     }
 
-    const response = await client.images.generate({
-        model: model || 'dall-e-3',
+    const isGptImageModel = model.startsWith('gpt-image');
+
+    const requestParams: any = {
+        model: model || 'gpt-image-1-mini',
         prompt,
         n: 1,
-        quality: 'hd',
-        style: 'natural',
-        size: isInline ? '1024x1024' : '1792x1024',
-        response_format: 'b64_json',
-    });
+        size: isInline ? '1024x1024' : '1536x1024',
+    };
 
-    const b64Json = response.data?.[0]?.b64_json;
-    if (!b64Json) {
+    if (isGptImageModel) {
+        requestParams.quality = 'medium';
+    } else {
+        requestParams.quality = 'hd';
+        requestParams.style = 'natural';
+        requestParams.size = isInline ? '1024x1024' : '1792x1024';
+    }
+
+    const response: any = await client.images.generate(requestParams);
+
+    // Extract token usage from gpt-image models (DALL-E doesn't return this)
+    const imgUsage = {
+        inputTokens: response.usage?.input_tokens || 0,
+        outputTokens: response.usage?.output_tokens || 0,
+    };
+
+    const imageData = response.data?.[0];
+    let buffer: Buffer;
+
+    if (imageData?.b64_json) {
+        buffer = Buffer.from(imageData.b64_json, 'base64');
+    } else if (imageData?.url) {
+        const imgResponse = await fetch(imageData.url);
+        const arrayBuffer = await imgResponse.arrayBuffer();
+        buffer = Buffer.from(arrayBuffer);
+    } else {
         throw new Error('No image returned from OpenAI');
     }
 
-    const buffer = Buffer.from(b64Json, 'base64');
-    
     const filename = `blog_ai_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.png`;
     const imageUrl = await uploadImageToDB(buffer, 'image/png', filename);
 
-    return imageUrl;
+    return { url: imageUrl, usage: imgUsage };
 }

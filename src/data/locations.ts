@@ -11,6 +11,7 @@ export interface LocationData {
     lng: number;
   };
   isHeadOffice?: boolean;
+  isAppointmentOnly?: boolean;
   metaDescription: string;
   heroDescription: string;
   localKeywords: string[];
@@ -288,9 +289,10 @@ export const locations: LocationData[] = [
     state: 'Virginia',
     fullName: 'Tysons, VA',
     phone: '(410) 937-7332',
-    address: 'Serving Tysons Metro Area',
-    zipCode: '22102',
+    address: '8300 Boone Blvd Suite 513, Tysons, VA 22182',
+    zipCode: '22182',
     coordinates: { lat: 38.9182, lng: -77.2228 },
+    isAppointmentOnly: true,
     metaDescription: "Explore Tysons, VA's dynamic blend of shopping at Tysons Corner Center and nature at Scotts Run, offering a unique local experience in Virginia.",
     heroDescription: "Discover the vibrant energy of Tysons, VA, where the iconic Tysons Corner Center meets the lush tranquility of Scotts Run Nature Preserve. Explore the perfect balance of urban excitement and serene natural beauty.",
     localKeywords: [

@@ -108,11 +108,20 @@ export default function LocationContact({ location }: LocationContactProps) {
                   </div>
                   <div className="flex-1">
                     <h4 className="text-lg font-semibold text-[var(--color-text)] mb-2">
-                      {location.isHeadOffice ? 'Head Office Location' : 'Service Area'}
+                      {location.isHeadOffice
+                        ? 'Head Office Location'
+                        : location.address.startsWith('Serving')
+                        ? 'Service Area'
+                        : 'Office Location'}
                     </h4>
                     <p className="text-[var(--color-text-light)] leading-relaxed">
                       {location.address}
                     </p>
+                    {location.isAppointmentOnly && (
+                      <p className="text-sm text-red-600 font-semibold mt-2 flex items-center gap-1.5">
+                        <span>⚠️</span> By Appointment Only (Staff not always present)
+                      </p>
+                    )}
                     {location.isHeadOffice && (
                       <p className="text-sm text-[var(--color-text-light)] mt-2">
                         Serving {location.city} and surrounding areas

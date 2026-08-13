@@ -4,32 +4,32 @@ export interface Testimonial {
   author: string;
   position: string;
   company: string;
-  avatar: string;
+  source: string;
+  date?: string;
+  location?: string;
 }
 
 export const testimonials: Testimonial[] = [
   {
     id: 1,
-    quote: "DiskDoctor saved our law firm when our main server crashed during a major case. They recovered 100% of our client files within 48 hours. Absolutely professional and reliable service.",
-    author: "Robert Chen",
-    position: "Managing Partner",
-    company: "Chen & Associates Legal",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=128&q=80"
+    quote:
+      'I called and took the CPU to the facility and described what had happened and that my PC wouldn\'t even try to Boot-Up any longer. Shahid called later that day and explained what he could do and how much it would cost. When he called 2 days later and said it was done, I was elated. All of my data and documents were backed-up on an external hard drive and he even repaired my hard drive.',
+    author: 'Frank O.',
+    position: 'Customer',
+    company: 'Angi',
+    source: 'Angi',
+    date: 'Feb 2019',
+    location: 'Columbia, MD',
   },
   {
     id: 2,
-    quote: "After our accounting department's drive failed, we thought we lost years of financial records. DiskDoctor's forensic team recovered everything, even files we thought were permanently deleted.",
-    author: "Maria Rodriguez",
-    position: "CFO",
-    company: "TechStart Innovations",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=128&q=80"
+    quote:
+      'Data fully recovered from a dead drive. Turnaround as stated; rush jobs offered as an option. Great professional customer support with someone always answering the phone and answering emails quickly. Very expensive but that\'s the going rate. Hope to never need their services again but feel very lucky to have found them.',
+    author: 'Yelp reviewer',
+    position: 'Customer',
+    company: 'Columbia, MD',
+    source: 'Yelp (Disk Doctors, Columbia, MD)',
+    date: 'c. 2016',
+    location: 'Columbia, MD',
   },
-  {
-    id: 3,
-    quote: "The photographers' nightmare - a corrupted memory card with an entire wedding shoot. DiskDoctor recovered every single photo. They literally saved my business and reputation.",
-    author: "James Thompson",
-    position: "Professional Photographer",
-    company: "Thompson Photography Studio",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=128&q=80"
-  }
 ];

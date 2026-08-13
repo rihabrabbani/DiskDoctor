@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -47,29 +47,16 @@ const cardVariants: Variants = {
   }
 };
 
-export default function BlogPageClient() {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+export default function BlogPageClient({
+  initialBlogs,
+  initialSearch = '',
+}: {
+  initialBlogs: Blog[];
+  initialSearch?: string;
+}) {
+  const [blogs] = useState<Blog[]>(initialBlogs);
+  const [searchTerm, setSearchTerm] = useState(initialSearch);
   const [selectedTag, setSelectedTag] = useState('');
-
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
-
-  const fetchBlogs = async () => {
-    try {
-      const response = await fetch('/api/blogs');
-      const data = await response.json();
-      if (data.success) {
-        setBlogs(data.blogs);
-      }
-    } catch (error) {
-      console.error('Error fetching blogs:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filteredBlogs = blogs.filter(blog => {
     const searchLower = searchTerm.toLowerCase();
@@ -89,21 +76,6 @@ export default function BlogPageClient() {
       day: 'numeric'
     });
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
-        <Header />
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center">
-            <div className="w-16 h-16 border-4 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-[var(--color-text-secondary)]">Loading blogs...</p>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">

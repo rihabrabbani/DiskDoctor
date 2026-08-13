@@ -44,7 +44,7 @@ export default function ServicesSection() {
           variants={headerVariants}
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-[var(--color-text-primary)]">
-            Professional <span className="text-[var(--color-primary)]">Data Recovery</span> Services
+            All <span className="text-[var(--color-primary)]">data recovery</span> services
           </h2>
           <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] leading-relaxed">
             Comprehensive data recovery solutions for individuals, businesses, and government agencies.
@@ -83,17 +83,15 @@ export default function ServicesSection() {
               <p className="text-[var(--color-text-secondary)] leading-relaxed mb-6">
                 {service.description}
               </p>
-              <motion.a 
-                href="/contact" 
+              <Link
+                href={service.href}
                 className="inline-flex items-center text-[var(--color-primary)] font-medium hover:underline"
-                whileHover={{ x: 5 }}
-                transition={{ duration: 0.2 }}
               >
-                Learn more
+                {service.title}
                 <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
-              </motion.a>
+              </Link>
             </motion.div>
           ))}
         </motion.div>

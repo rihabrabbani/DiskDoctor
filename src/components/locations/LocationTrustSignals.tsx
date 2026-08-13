@@ -2,8 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { LocationData } from '@/data/locations';
-import { Shield, Award, Clock, Users, Star, CheckCircle } from 'lucide-react';
-import Image from 'next/image';
+import { Shield, Award, Clock, Users, CheckCircle } from 'lucide-react';
+import { telHref } from '@/lib/site';
 
 interface LocationTrustSignalsProps {
   location: LocationData;
@@ -24,9 +24,9 @@ const trustSignals = [
   },
   {
     icon: Shield,
-    title: 'ISO Certified Cleanroom',
-    description: 'Class 10 cleanroom facility for safe recovery',
-    highlight: 'ISO'
+    title: 'Cleanroom imaging',
+    description: 'Open-drive work is done in a controlled lab, not on a shop counter',
+    highlight: 'Lab'
   },
   {
     icon: Award,
@@ -37,10 +37,10 @@ const trustSignals = [
 ];
 
 const certifications = [
-  { name: 'Better Business Bureau A+', logo: '/images/certifications/bbb.png' },
-  { name: 'ISO 9001 Certified', logo: '/images/certifications/iso.png' },
-  { name: 'NAID AAA Certified', logo: '/images/certifications/naid.png' },
-  { name: 'Data Recovery Certified', logo: '/images/certifications/cert.png' }
+  { name: 'Free evaluation', logo: '' },
+  { name: 'No data, no charge', logo: '' },
+  { name: 'Columbia MD laboratory', logo: '' },
+  { name: 'Tysons by appointment', logo: '' }
 ];
 
 const features = [
@@ -100,7 +100,6 @@ export default function LocationTrustSignals({ location }: LocationTrustSignalsP
           ))}
         </div>
 
-        {/* Customer Rating */}
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
@@ -109,14 +108,9 @@ export default function LocationTrustSignals({ location }: LocationTrustSignalsP
           viewport={{ once: true }}
         >
           <div className="inline-flex items-center bg-[var(--color-surface-100)] rounded-full px-8 py-4 shadow-[var(--shadow-md)]">
-            <div className="flex items-center mr-6">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-6 w-6 text-yellow-400 fill-current" />
-              ))}
-            </div>
             <div className="text-left">
-              <div className="text-2xl font-bold text-[var(--color-text-primary)]">4.9/5 Rating</div>
-              <div className="text-sm text-[var(--color-text-secondary)]">Based on 39 customer reviews</div>
+              <div className="text-2xl font-bold text-[var(--color-text-primary)]">Public Angi review</div>
+              <div className="text-sm text-[var(--color-text-secondary)]">Frank O. · Feb 2019 · 5.0 from 1 Angi review on-page</div>
             </div>
           </div>
         </motion.div>
@@ -186,7 +180,7 @@ export default function LocationTrustSignals({ location }: LocationTrustSignalsP
             we understand the unique data recovery needs of {location.city} businesses and residents.
           </p>
           <a
-            href={`tel:${location.phone}`}
+            href={telHref(location.phone)}
             className="inline-flex items-center px-8 py-4 bg-[var(--color-accent)] text-[var(--color-text-inverse)] font-semibold rounded-lg hover:bg-[var(--color-accent-hover)] transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             Get Expert Help: {location.phone}

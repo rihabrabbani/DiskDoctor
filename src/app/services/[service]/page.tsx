@@ -1,236 +1,165 @@
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import { allServices } from '@/data/allServices';
+import { serviceLongform } from '@/data/serviceLongform';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ServiceHero from '@/components/new_components/ServiceHero';
 import ServiceFeatures from '@/components/new_components/ServiceFeatures';
 import ServiceProcess from '@/components/new_components/ServiceProcess';
 import ServiceCTA from '@/components/new_components/ServiceCTA';
-import { serviceSchema, breadcrumbSchema } from '@/lib/structuredData';
+import ServiceFAQ from '@/components/new_components/ServiceFAQ';
+import HubspotContactForm from '@/components/contact/HubspotContactForm';
+import { serviceSchema, breadcrumbSchema, faqSchema } from '@/lib/structuredData';
+import { SITE_URL } from '@/lib/site';
 
-// Updated interface to match Next.js 15 App Router requirements
-type ServiceParams = {
-  service: string;
-};
+export const dynamicParams = false;
 
-// Correct interface definition for Next.js 15 - params is now a Promise
+type ServiceParams = { service: string };
+
 interface ServicePageProps {
   params: Promise<ServiceParams>;
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
-// Generate static params for all services
 export async function generateStaticParams(): Promise<ServiceParams[]> {
-  return allServices.map((service) => ({
-    service: service.id,
-  }));
+  return allServices.map((service) => ({ service: service.id }));
 }
 
-export default async function ServicePage({ params }: ServicePageProps) {
-  // Await the params since it's now a Promise in Next.js 15
+export async function generateMetadata({ params }: ServicePageProps) {
   const { service } = await params;
-  const serviceData = allServices.find(s => s.id === service);
-  
+  const serviceData = allServices.find((s) => s.id === service);
+
   if (!serviceData) {
     notFound();
   }
 
-  // Enhanced accent color mapping with the new services
-  const getAccentColor = (id: string) => {
-    const colorMap: Record<string, string> = {
-      'windows-recovery': '#0078d4',
-      'mac-recovery': '#007aff',
-      'linux-recovery': '#ff6600',
-      'unix-recovery': '#8b4513',
-      'photo-recovery': '#ff6b35',
-      'mobile-recovery': '#34c759',
-      'raid-recovery': '#af52de',
-      'email-recovery': '#ff3b30',
-      'file-recovery': '#007acc',
-      'virtual-recovery': '#5856d6',
-      'remote-recovery': '#00d4aa',
-      'data-cloning': '#ff9500',
-      'data-duplication': '#32d74b',
-      'data-security': '#ff2d92',
-      'email-security': '#dc3545',
-      'data-backup': '#28a745',
-    };
-    return colorMap[id] || 'var(--color-primary)';
+  const seoTitle = `${serviceData.title} | No Data No Charge`;
+  const seoDescription = `${serviceData.description} Free evaluation in Columbia MD. No data, no charge. Call (410) 937-7332.`.slice(0, 160);
+
+  return {
+    title: seoTitle,
+    description: seoDescription,
+    openGraph: {
+      title: seoTitle,
+      description: seoDescription,
+      type: 'website',
+      url: `${SITE_URL}/services/${service}`,
+    },
+    alternates: {
+      canonical: `${SITE_URL}/services/${service}`,
+    },
+    robots: { index: true, follow: true },
   };
+}
 
-  const accentColor = getAccentColor(serviceData.id);
+export default async function ServicePage({ params }: ServicePageProps) {
+  const { service } = await params;
+  const serviceData = allServices.find((s) => s.id === service);
 
-  // Breadcrumb data
+  if (!serviceData) {
+    notFound();
+  }
+
+  const longform = serviceLongform[serviceData.id];
+  const faqs = longform?.faqs || serviceData.faq || [];
+  const relatedLocations = [
+    { slug: 'columbia-md', name: 'Columbia, MD lab' },
+    { slug: 'tysons-va', name: 'Tysons, VA (appointment)' },
+    { slug: 'baltimore-md', name: 'Baltimore service area' },
+    { slug: 'washington-dc', name: 'Washington DC service area' },
+  ];
+
   const breadcrumbData = [
-    { name: 'Home', url: 'https://www.diskdoctorsamerica.com' },
-    { name: 'Services', url: 'https://www.diskdoctorsamerica.com/#services' },
-    { name: serviceData.title, url: `https://www.diskdoctorsamerica.com/services/${serviceData.id}` }
+    { name: 'Home', url: SITE_URL },
+    { name: 'Services', url: `${SITE_URL}/#services` },
+    { name: serviceData.title, url: `${SITE_URL}/services/${serviceData.id}` },
   ];
 
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
       <Header />
-      
       <main className="relative">
-        {/* Service Structured Data */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(serviceSchema(serviceData))
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema(serviceData)) }}
         />
-        
-        {/* Breadcrumb Structured Data */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(breadcrumbSchema(breadcrumbData))
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbData)) }}
         />
-        
+        {faqs.length > 0 && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(faqs)) }}
+          />
+        )}
 
         <ServiceHero
           title={serviceData.title}
           subtitle={serviceData.subtitle}
-          description={serviceData.description}
+          description={longform ? longform.paragraphs[0] : serviceData.description}
           heroImage={serviceData.heroImage}
           layoutType={serviceData.layoutType}
           ctaSection={serviceData.ctaSection}
-          accentColor={accentColor}
         />
-        
+
+        {longform && (
+          <section className="py-16">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl space-y-5 text-lg text-[var(--color-text-secondary)] leading-relaxed">
+              {longform.paragraphs.map((p) => (
+                <p key={p.slice(0, 32)}>{p}</p>
+              ))}
+            </div>
+          </section>
+        )}
+
         <ServiceFeatures
           features={serviceData.features}
           benefits={serviceData.benefits}
           detailedFeatures={serviceData.detailedFeatures}
           detailedBenefits={serviceData.detailedBenefits}
-          accentColor={accentColor}
         />
-        
+
         <ServiceProcess
           process={serviceData.process}
           additionalContent={serviceData.additionalContent}
-          accentColor={accentColor}
         />
-        
-        {/* Trust indicators section */}
-        <section className="py-12 bg-[var(--color-surface-200)]">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              <div>
-                <div className="text-3xl font-bold" style={{ color: accentColor }}>95%</div>
-                <div className="text-sm text-[var(--color-text-secondary)]">Success Rate</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold" style={{ color: accentColor }}>24/7</div>
-                <div className="text-sm text-[var(--color-text-secondary)]">Emergency Service</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold" style={{ color: accentColor }}>ISO</div>
-                <div className="text-sm text-[var(--color-text-secondary)]">9001 Certified</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold" style={{ color: accentColor }}>15+</div>
-                <div className="text-sm text-[var(--color-text-secondary)]">Years Experience</div>
-              </div>
+
+        <ServiceFAQ faqs={faqs} />
+
+        <section className="py-12">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4">Labs and service areas</h2>
+            <p className="text-[var(--color-text-secondary)] mb-4">
+              {relatedLocations.map((loc, i) => (
+                <span key={loc.slug}>
+                  {i > 0 ? ' · ' : ''}
+                  <Link href={`/${loc.slug}`} className="text-[var(--color-primary)] hover:underline">
+                    {loc.name}
+                  </Link>
+                </span>
+              ))}
+            </p>
+          </div>
+        </section>
+
+        <section className="py-16 bg-[var(--color-surface-100)]">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+            <h2 className="text-3xl font-bold text-[var(--color-text-primary)] mb-4 text-center">
+              Free evaluation
+            </h2>
+            <p className="text-center text-[var(--color-text-secondary)] mb-8">
+              No data, no charge. Tell us what failed.
+            </p>
+            <div className="bg-white border border-[var(--color-border)] rounded-2xl p-6 sm:p-8">
+              <HubspotContactForm />
             </div>
           </div>
         </section>
-        
-        <ServiceCTA
-          ctaSection={serviceData.ctaSection}
-          accentColor={accentColor}
-        />
+
+        <ServiceCTA ctaSection={serviceData.ctaSection} />
       </main>
-      
       <Footer />
     </div>
   );
-}
-
-// Also fix the metadata function with the updated type
-export async function generateMetadata({ params }: ServicePageProps) {
-  // Await the params since it's now a Promise in Next.js 15
-  const { service } = await params;
-  const serviceData = allServices.find(s => s.id === service);
-  
-  if (!serviceData) {
-    return {
-      title: 'Service Not Found | DiskDoctor Data Recovery',
-      description: 'The requested data recovery service page was not found. Browse our comprehensive data recovery services.',
-    };
-  }
-
-  // SEO-optimized title (50-60 characters)
-  const seoTitle = `${serviceData.title} Services | 95% Success Rate | DiskDoctor`;
-  
-  // SEO-optimized description (150-160 characters)
-  const seoDescription = `${serviceData.description} 95% success rate. Free evaluation. No data, no charge. Call (571) 202-8529 for immediate assistance.`;
-  
-  // Comprehensive keywords
-  const keywords = [
-    serviceData.title.toLowerCase(),
-    `${serviceData.title.toLowerCase()} services`,
-    'data recovery',
-    'professional data recovery',
-    'emergency data recovery',
-    'disk doctor',
-    'data recovery specialists',
-    'Maryland data recovery',
-    'Virginia data recovery',
-    'Washington DC data recovery'
-  ].join(', ');
-
-  return {
-    title: seoTitle,
-    description: seoDescription,
-    keywords: keywords,
-    authors: [{ name: "DiskDoctor Data Recovery" }],
-    creator: "DiskDoctor Data Recovery",
-    publisher: "DiskDoctor Data Recovery",
-    openGraph: {
-      title: seoTitle,
-      description: seoDescription,
-      type: 'website',
-      url: `https://www.diskdoctorsamerica.com/services/${service}`,
-      siteName: 'DiskDoctor Data Recovery',
-      locale: 'en_US',
-      images: [
-        {
-          url: serviceData.heroImage,
-          width: 1200,
-          height: 630,
-          alt: `${serviceData.title} - Professional Data Recovery Services`,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      site: '@diskdoctor',
-      creator: '@diskdoctor',
-      title: seoTitle,
-      description: seoDescription,
-      images: [serviceData.heroImage],
-    },
-    alternates: {
-      canonical: `https://www.diskdoctorsamerica.com/services/${service}`,
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
-    other: {
-      'geo.region': 'US-MD,US-VA,US-DC',
-      'geo.placename': 'Columbia, Maryland; Tysons, Virginia',
-      'business:contact_data:phone_number': '+1-410-937-7332',
-      'business:contact_data:email': 'shah4268@msn.com',
-    },
-  };
 }

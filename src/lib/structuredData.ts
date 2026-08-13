@@ -51,26 +51,13 @@ export const organizationSchema = {
     }
   ],
   "email": "shah4268@msn.com",
-  "sameAs": [
-    "https://www.facebook.com/diskdoctor",
-    "https://www.twitter.com/diskdoctor",
-    "https://www.linkedin.com/company/diskdoctor",
-    "https://www.youtube.com/diskdoctor"
-  ],
   "hasCredential": [
     {
       "@type": "EducationalOccupationalCredential",
       "name": "ISO 9001 Certified",
       "credentialCategory": "certification"
     }
-  ],
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.9",
-    "reviewCount": "150",
-    "bestRating": "5",
-    "worstRating": "1"
-  }
+  ]
 }
 
 export const serviceSchema = (service: any) => ({
@@ -253,9 +240,9 @@ export const localBusinessSchema = {
   "openingHoursSpecification": [
     {
       "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      "opens": "00:00",
-      "closes": "23:59"
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "08:30",
+      "closes": "17:00"
     }
   ],
   "priceRange": "$$",

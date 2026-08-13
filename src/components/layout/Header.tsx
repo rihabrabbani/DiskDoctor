@@ -9,6 +9,7 @@ import Image from 'next/image';
 import Dark_logo from '@/../public/images/Dark_mode.png';
 import Light_logo from '@/../public/images/light_mode.png';
 import { useTheme } from '@/contexts/ThemeContext';
+import { EMAIL, PHONE_DISPLAY, PHONE_TEL } from '@/lib/site';
 
 // Define variants with proper typing
 const mobileMenuVariants: Variants = {
@@ -89,14 +90,14 @@ export default function Header() {
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-2">
                 <span className="text-[var(--color-primary)]">📞</span>
-                <a href="tel:+14109377332" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors">
-                  +1 (410) 937-7332
+                <a href={PHONE_TEL} className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors">
+                  {PHONE_DISPLAY}
                 </a>
               </div>
               <div className="flex items-center space-x-2">
                 <span className="text-[var(--color-primary)]">✉️</span>
-                <a href="mailto:shah4268@msn.com" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors">
-                  shah4268@msn.com
+                <a href={`mailto:${EMAIL}`} className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors">
+                  {EMAIL}
                 </a>
               </div>
             </div>
@@ -386,14 +387,14 @@ export default function Header() {
                 )}
               </motion.div>
             </motion.button>
-            <Link href="tel:+14109377332" className="hidden sm:block font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-300">
-              📞 +1 (410) 937-7332
-            </Link>
+            <a href={PHONE_TEL} className="hidden sm:block font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-300">
+              {PHONE_DISPLAY}
+            </a>
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-                <Link href="mailto:shah4268@msn.com" className="px-2 py-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-medium text-center transition-all duration-300">
+                <Link href="/contact" className="px-2 py-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-medium text-center transition-all duration-300">
                 Free Quote
                 </Link>
             </motion.div>
@@ -572,11 +573,11 @@ export default function Header() {
                 
                 <motion.div variants={menuItemVariants}>
                   <Link 
-                    href="tel:+14109377332" 
+                    href={PHONE_TEL} 
                     className="block text-sm font-medium text-[var(--color-primary)] hover:bg-[var(--color-surface-200)] transition-colors duration-300 py-3 px-2 border-t border-[var(--color-border)] mt-3 pt-4 rounded-lg"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    📞 +1 (410) 937-7332 (Call Now)
+                    Call {PHONE_DISPLAY} (Call Now)
                   </Link>
                 </motion.div>
               </motion.nav>

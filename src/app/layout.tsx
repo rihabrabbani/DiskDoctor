@@ -1,41 +1,31 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { organizationSchema, websiteSchema, localBusinessSchema } from "@/lib/structuredData";
+import AnalyticsClicks from "@/components/analytics/AnalyticsClicks";
+import StickyMobileBar from "@/components/layout/StickyMobileBar";
+import { SITE_URL, SITE_URL_SLASH } from "@/lib/site";
+
+const gtmId = "GTM-K5DVZQX4";
 
 export const metadata: Metadata = {
   title: {
-    default: "DiskDoctor - Professional Data Recovery Services | 95% Success Rate",
-    template: "%s | DiskDoctor Data Recovery"
+    default: "Data Recovery Services in MD, VA & DC | DiskDoctor",
+    template: "%s | DiskDoctor"
   },
-  description: "Professional data recovery from hard drives, SSDs, RAID systems, and all digital media. Trusted since 1991 with a 95% success rate. Free evaluation, no data no charge guarantee.",
-  keywords: [
-    "data recovery",
-    "hard drive recovery", 
-    "SSD recovery",
-    "RAID recovery",
-    "file recovery",
-    "photo recovery",
-    "mobile recovery",
-    "data security",
-    "professional data recovery",
-    "emergency data recovery",
-    "Columbia Maryland",
-    "Tysons Virginia",
-    "disk doctor",
-    "data recovery specialists"
-  ],
+  description: "Hard drive, SSD, RAID, and phone data recovery in Columbia MD and Tysons VA. Free evaluation. No data, no charge. Call (410) 937-7332.",
   authors: [{ name: "DiskDoctor Data Recovery" }],
   creator: "DiskDoctor Data Recovery",
   publisher: "DiskDoctor Data Recovery",
   formatDetection: {
     email: false,
     address: false,
-    telephone: false,
+    telephone: true,
   },
-  metadataBase: new URL('https://www.diskdoctorsamerica.com'),
+  metadataBase: new URL(SITE_URL),
   alternates: {
-    canonical: '/',
+    canonical: SITE_URL_SLASH,
   },
   icons: {
     icon: [
@@ -48,10 +38,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://www.diskdoctorsamerica.com',
+    url: SITE_URL_SLASH,
     siteName: 'DiskDoctor Data Recovery',
-    title: 'DiskDoctor - Professional Data Recovery Services | 95% Success Rate',
-    description: 'Professional data recovery from hard drives, SSDs, RAID systems, and all digital media. Trusted since 1991 with a 95% success rate.',
+    title: 'Data Recovery Services in MD, VA & DC | DiskDoctor',
+    description: 'Hard drive, SSD, RAID, and phone data recovery in Columbia MD and Tysons VA. Free evaluation. No data, no charge.',
     images: [
       {
         url: '/images/og-image.jpg',
@@ -63,10 +53,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@diskdoctor',
-    creator: '@diskdoctor',
-    title: 'DiskDoctor - Professional Data Recovery Services',
-    description: 'Professional data recovery from hard drives, SSDs, RAID systems, and all digital media. Trusted since 1991 with a 95% success rate.',
+    title: 'Data Recovery Services in MD, VA & DC | DiskDoctor',
+    description: 'Hard drive, SSD, RAID, and phone data recovery. Free evaluation. No data, no charge.',
     images: ['/images/og-image.jpg'],
   },
   robots: {
@@ -80,11 +68,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'your-google-verification-code',
-    yandex: 'your-yandex-verification-code',
-    yahoo: 'your-yahoo-verification-code',
-  },
 };
 
 export default function RootLayout({
@@ -95,7 +78,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -115,8 +97,32 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>
-        <ThemeProvider>{children}</ThemeProvider>
+      <body className="pb-16 lg:pb-0">
+        {gtmId ? (
+          <>
+            <Script id="gtm" strategy="afterInteractive">
+              {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${gtmId}');`}
+            </Script>
+            <noscript>
+              <iframe
+                src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+                height="0"
+                width="0"
+                style={{ display: 'none', visibility: 'hidden' }}
+                title="Google Tag Manager"
+              />
+            </noscript>
+          </>
+        ) : null}
+        <ThemeProvider>
+          <AnalyticsClicks />
+          {children}
+          <StickyMobileBar />
+        </ThemeProvider>
       </body>
     </html>
   );

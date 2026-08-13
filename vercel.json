@@ -1,2 +1,10 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "diskdoctorsamerica.com" }],
+      "destination": "https://www.diskdoctorsamerica.com/:path*",
+      "permanent": true
+    }
+  ]
 }

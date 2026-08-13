@@ -3,6 +3,7 @@
 import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { PHONE_DISPLAY, PHONE_TEL } from '@/lib/site';
 
 // Define variants with proper typing
 const heroVariants: Variants = {
@@ -98,7 +99,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              Your Data is <span className="text-[var(--color-primary)]">Recoverable</span>
+              Data recovery in Columbia, MD
             </motion.h1>
             
             <motion.p 
@@ -107,7 +108,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              Professional data recovery from hard drives, SSDs, RAID systems, and all digital media. When your data matters, trust the experts with over 30 years of experience.
+              Professional hard drive, SSD, RAID, and phone recovery at our Columbia lab. Stop using the failed device. Free evaluation. No data, no charge.
             </motion.p>
             
             <motion.div 
@@ -122,8 +123,8 @@ export default function Hero() {
                 </Link>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="tel:+14109377332" className="px-8 py-4 bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-lg text-[var(--color-text-primary)] font-semibold hover:shadow-[var(--shadow-md)] hover:border-[var(--color-border-hover)] transition-all duration-300 text-center block">
-                  📞 Emergency: +1 (410) 937-7332
+                <Link href={PHONE_TEL} className="px-8 py-4 bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-lg text-[var(--color-text-primary)] font-semibold hover:shadow-[var(--shadow-md)] hover:border-[var(--color-border-hover)] transition-all duration-300 text-center block">
+                  Emergency: {PHONE_DISPLAY}
                 </Link>
               </motion.div>
             </motion.div>

@@ -1,0 +1,4 @@
+date,impressions,clicks,ctr,organic_clicks_month,hubspot_form_fills,tel_clicks,mailto_clicks,gbp_sessions,top10_queries,notes
+2026-08-10,23621,42,0.0018,26,2.75,,,unknown,6,Audit baseline (Jul 2026 GSC month; fills are 4-month average)
+2026-08-13,pending_gsc_export,pending,pending,26,pending_hubspot_export,,,unknown,6,Code execution start; GSC/HubSpot CSVs still needed from portals
+2026-08-13-phase5,pending_gsc_export,pending,pending,~26,pending_until_gtm_live,,,unknown,6,Repo complete; rank grid unchanged (rank-grid-day14.csv); tracking live only after NEXT_PUBLIC_GTM_ID on Vercel

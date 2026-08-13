@@ -2,6 +2,7 @@
 
 import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
+import { PHONE_DISPLAY, PHONE_TEL } from '@/lib/site';
 
 // Define headerVariants with proper typing
 const headerVariants: Variants = {
@@ -37,7 +38,7 @@ export default function EmergencyContact() {
   const contactMethods = [
     {
       title: "24/7 Emergency Line",
-      value: "+1 (410) 937-7332",
+      value: PHONE_DISPLAY,
       icon: "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.836l1.498 4.493a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.493 1.498a1 1 0 01.684.949V17a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
     },
     {
@@ -116,16 +117,16 @@ export default function EmergencyContact() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Link href="tel:+14109377332" className="px-8 py-4 bg-[var(--color-accent-600)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] text-center block">
-                📞 Call +1 (410) 937-7332
+              <Link href={PHONE_TEL} className="px-8 py-4 bg-[var(--color-accent-600)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] text-center block">
+                Call {PHONE_DISPLAY}
               </Link>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-                <Link href="mailto:shah4268@msn.com" className="px-8 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[var(--color-text-inverse)] rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] text-center block">
-                Email Us
+                <Link href="/contact" className="px-8 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[var(--color-text-inverse)] rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] text-center block">
+                Free Evaluation
                 </Link>
             </motion.div>
           </motion.div>

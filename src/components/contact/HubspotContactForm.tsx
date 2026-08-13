@@ -1,23 +1,61 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import FormFallback from './FormFallback';
+import {
+  EMAIL,
+  HUBSPOT_FORM_ID,
+  HUBSPOT_PORTAL_ID,
+  HUBSPOT_REGION,
+  PHONE_DISPLAY,
+  PHONE_TEL,
+} from '@/lib/site';
 
 declare global {
   interface Window {
+    dataLayer?: Record<string, unknown>[];
+    gtag?: (...args: unknown[]) => void;
     hbspt?: {
       forms: {
-        create: (config: {
-          region: string;
-          portalId: string;
-          formId: string;
-          target: string;
-        }) => void;
+        create: (config: Record<string, unknown>) => void;
       };
     };
   }
 }
 
 const SCRIPT_ID = 'hubspot-forms-v2-script';
+
+function trackFormSubmit() {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: 'hubspot_form_submit', event_category: 'lead', method: 'hubspot' });
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'generate_lead', { method: 'hubspot' });
+    window.gtag('event', 'hubspot_form_submit', { method: 'hubspot' });
+  }
+}
+
+function forceUsPhoneCountry(root: HTMLElement) {
+  const countrySelects = root.querySelectorAll<HTMLSelectElement>('select');
+  countrySelects.forEach((select) => {
+    const name = (select.name || select.id || '').toLowerCase();
+    if (name.includes('country') || name.includes('phone_ext')) {
+      const us = Array.from(select.options).find((opt) =>
+        /united states|^us$|^usa$|\+1/.test(opt.text.toLowerCase() + opt.value.toLowerCase())
+      );
+      if (us) {
+        select.value = us.value;
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+  });
+
+  const flag = root.querySelector<HTMLElement>('.iti__selected-flag, .hs-selected-flag');
+  if (flag && !/us|united states/i.test(flag.getAttribute('title') || flag.getAttribute('aria-label') || '')) {
+    flag.click();
+    const usItem = root.querySelector<HTMLElement>('[data-country-code="us"], li[data-country-code="us"]');
+    usItem?.click();
+  }
+}
 
 export default function HubspotContactForm() {
   const [failed, setFailed] = useState(false);
@@ -49,7 +87,6 @@ export default function HubspotContactForm() {
         el.style.setProperty('background-color', 'var(--color-surface-200)', 'important');
         el.style.setProperty('border-color', 'var(--color-border)', 'important');
       });
-
     };
 
     const mountForm = () => {
@@ -57,7 +94,6 @@ export default function HubspotContactForm() {
         const target = document.getElementById('hubspot-contact-form');
         if (!target || !window.hbspt?.forms?.create) return;
 
-        // Prevent duplicate embeds (React StrictMode/dev effects + client transitions).
         if (
           hasMountedFormRef.current ||
           target.dataset.hubspotMounted === 'true' ||
@@ -68,19 +104,31 @@ export default function HubspotContactForm() {
 
         hasMountedFormRef.current = true;
         target.dataset.hubspotMounted = 'true';
-
-        // Prevent duplicate embeds during Fast Refresh.
         target.innerHTML = '';
 
         window.hbspt.forms.create({
-          region: 'na2',
-          portalId: '245521023',
-          formId: 'a6b03a7f-4f8f-402a-93f0-d755bee55cdc',
+          region: HUBSPOT_REGION,
+          portalId: HUBSPOT_PORTAL_ID,
+          formId: HUBSPOT_FORM_ID,
           target: '#hubspot-contact-form',
+          locale: 'en',
+          onFormReady: ($form: HTMLElement) => {
+            const root = document.getElementById('hubspot-contact-form');
+            if (root) {
+              forceUsPhoneCountry(root);
+              setTimeout(() => forceUsPhoneCountry(root), 400);
+            }
+            if ($form) forceUsPhoneCountry($form);
+          },
+          onFormSubmitted: () => {
+            trackFormSubmit();
+          },
         });
 
-        // HubSpot injects form markup asynchronously; style after mount and on any later mutations.
-        observer = new MutationObserver(() => applyDarkModeStyles(target));
+        observer = new MutationObserver(() => {
+          applyDarkModeStyles(target);
+          forceUsPhoneCountry(target);
+        });
         observer.observe(target, { childList: true, subtree: true });
         setTimeout(() => applyDarkModeStyles(target), 300);
         setTimeout(() => applyDarkModeStyles(target), 1200);
@@ -124,19 +172,19 @@ export default function HubspotContactForm() {
   }, []);
 
   if (failed) {
-    return (
-      <div className="text-center p-6 rounded-xl bg-[var(--color-surface-200)] border border-[var(--color-border)]">
-        <p className="text-[var(--color-text-primary)] font-medium mb-2">Form failed to load.</p>
-        <p className="text-[var(--color-text-secondary)] mb-4">Please call us now for immediate help.</p>
-        <a
-          href="tel:+14109377332"
-          className="inline-block px-5 py-2.5 bg-[var(--color-primary)] text-white rounded-lg font-medium hover:bg-[var(--color-primary-hover)] transition-colors"
-        >
-          Call +1 (410) 937-7332
-        </a>
-      </div>
-    );
+    return <FormFallback />;
   }
 
-  return <div id="hubspot-contact-form" className="min-h-[520px]" />;
+  return (
+    <div>
+      <div id="hubspot-contact-form" className="min-h-[520px]" />
+      <noscript>
+        <p>
+          JavaScript is required for the form. Call{' '}
+          <a href={PHONE_TEL}>{PHONE_DISPLAY}</a> or email{' '}
+          <a href={`mailto:${EMAIL}`}>{EMAIL}</a> for a free evaluation.
+        </p>
+      </noscript>
+    </div>
+  );
 }

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { LocationData } from '@/data/locations';
 import { Phone, Truck, Search, FileCheck } from 'lucide-react';
+import { telHref } from '@/lib/site';
 
 interface LocationProcessProps {
   location: LocationData;
@@ -143,7 +144,7 @@ export default function LocationProcess({ location }: LocationProcessProps) {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a
-                  href={`tel:${location.phone}`}
+                      href={telHref(location.phone)}
           className="inline-flex items-center px-6 py-3 bg-[var(--color-accent)] text-[var(--color-text-inverse)] font-semibold rounded-lg hover:bg-[var(--color-accent-hover)] transition-all duration-300"
                 >
                   Emergency Hotline: {location.phone}

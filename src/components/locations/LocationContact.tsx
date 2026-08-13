@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { LocationData } from '@/data/locations';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import HubspotContactForm from '@/components/contact/HubspotContactForm';
+import { telHref } from '@/lib/site';
 
 interface LocationContactProps {
   location: LocationData;
@@ -57,7 +58,7 @@ export default function LocationContact({ location }: LocationContactProps) {
                       Call for Immediate Help
                     </h4>
                     <a
-                      href={`tel:${location.phone}`}
+                      href={telHref(location.phone)}
                       className="text-2xl font-bold text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] transition-colors"
                     >
                       {location.phone}
@@ -197,7 +198,7 @@ export default function LocationContact({ location }: LocationContactProps) {
             Don't wait! The sooner you contact us, the better your chances of successful data recovery.
           </p>
           <motion.a
-            href={`tel:${location.phone}`}
+            href={telHref(location.phone)}
             className="inline-flex items-center px-8 py-4 bg-[var(--color-surface-100)] text-[var(--color-primary)] font-bold rounded-lg hover:bg-[var(--color-surface-200)] transition-all duration-300 shadow-lg hover:shadow-xl text-xl"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}

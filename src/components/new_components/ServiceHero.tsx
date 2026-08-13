@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { PHONE_TEL } from '@/lib/site';
 
 interface ServiceHeroProps {
   title: string;
@@ -126,17 +127,7 @@ export default function ServiceHero({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              {title.split(' ').map((word, index) => (
-                <motion.span
-                  key={index}
-                  className="inline-block mr-3"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                >
-                  {word}
-                </motion.span>
-              ))}
+              {title}
             </motion.h1>
             
             <motion.p 
@@ -201,7 +192,7 @@ export default function ServiceHero({
               </motion.div>
               {ctaSection.secondaryButton && (
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link href="tel:+1-800-DISKDOC" className="px-8 py-4 bg-[var(--color-surface-100)] border-2 border-[var(--color-border)] rounded-lg text-[var(--color-text-primary)] font-semibold hover:shadow-[var(--shadow-md)] hover:border-[var(--color-border-hover)] transition-all duration-300 text-center block">
+                  <Link href={PHONE_TEL} className="px-8 py-4 bg-[var(--color-surface-100)] border-2 border-[var(--color-border)] rounded-lg text-[var(--color-text-primary)] font-semibold hover:shadow-[var(--shadow-md)] hover:border-[var(--color-border-hover)] transition-all duration-300 text-center block">
                     {ctaSection.secondaryButton}
                   </Link>
                 </motion.div>

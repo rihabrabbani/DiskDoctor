@@ -2,111 +2,65 @@
 
 import { motion } from 'framer-motion';
 import { LocationData } from '@/data/locations';
+import { LocationCopy } from '@/data/locationCopy';
 import { Phone, Mail, MapPin } from 'lucide-react';
+import { PHONE_TEL, telHref } from '@/lib/site';
 
 interface LocationHeroProps {
   location: LocationData;
+  copy: LocationCopy;
 }
 
-export default function LocationHero({ location }: LocationHeroProps) {
+export default function LocationHero({ location, copy }: LocationHeroProps) {
   return (
-    <section className="relative pt-24 pb-16 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-800)] overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='7' cy='7' r='7'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
-      </div>
-
+    <section className="relative pt-24 pb-16 bg-[var(--color-primary-800)] overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            {location.isHeadOffice && (
-              <div className="inline-flex items-center px-4 py-2 bg-[var(--color-text-inverse)]/20 backdrop-blur-sm rounded-full text-[var(--color-text-inverse)] text-sm font-medium mb-6">
-                <MapPin className="h-4 w-4 mr-2" />
-                Head Office Location
-              </div>
-            )}
-            
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--color-text-inverse)] mb-6 leading-tight">
-              Data Recovery Services in{' '}
-              <span className="relative inline-block">
-                <span className="relative z-10 text-[var(--color-text-inverse)]">{location.city}</span>
-                <motion.span 
-                  className="absolute bottom-1 left-0 h-4 md:h-6 bg-red-600/85 -rotate-1 rounded-sm -z-0"
-                  initial={{ width: 0 }}
-                  animate={{ width: '100%' }}
-                  transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-                />
-              </span>
-              {location.state !== 'DC' && `, ${location.state}`}
-            </h1>
-            
-            <p className="text-xl md:text-2xl text-[var(--color-text-inverse)]/90 mb-8 leading-relaxed max-w-3xl mx-auto">
-              {location.heroDescription}
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <motion.a
-                href={`tel:${location.phone}`}
-                className="inline-flex items-center px-8 py-4 bg-[var(--color-accent)] text-[var(--color-text-inverse)] font-semibold rounded-lg hover:bg-[var(--color-accent-hover)] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Phone className="h-5 w-5 mr-3" />
-                Call Now: {location.phone}
-              </motion.a>
-              
-              <motion.a
-                href="/contact"
-                className="inline-flex items-center px-8 py-4 bg-[var(--color-text-inverse)]/20 backdrop-blur-sm text-[var(--color-text-inverse)] font-semibold rounded-lg hover:bg-[var(--color-text-inverse)]/30 transition-all duration-300 border border-[var(--color-text-inverse)]/30"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Mail className="h-5 w-5 mr-3" />
-                Get Free Quote
-              </motion.a>
+          {location.isHeadOffice && (
+            <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-white text-sm font-medium mb-6">
+              <MapPin className="h-4 w-4 mr-2" />
+              Head office laboratory
             </div>
+          )}
+          {location.isAppointmentOnly && (
+            <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-white text-sm font-medium mb-6">
+              By appointment only
+            </div>
+          )}
+          {copy.kind === 'service-area' && (
+            <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-white text-sm font-medium mb-6">
+              Service area — lab in Columbia, MD
+            </div>
+          )}
 
-            {/* Trust Indicators */}
-            <motion.div
-              className="flex flex-wrap justify-center items-center gap-8 text-[var(--color-text-inverse)]/80"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+            Data recovery in {location.fullName}
+          </h1>
+
+          <p className="text-lg md:text-xl text-white/95 mb-6 leading-relaxed max-w-3xl mx-auto">
+            {copy.directAnswer}
+          </p>
+          <p className="text-base text-white/85 mb-8 leading-relaxed max-w-3xl mx-auto">
+            {copy.heroDescription}
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a
+              href={telHref(location.phone) || PHONE_TEL}
+              className="inline-flex items-center px-8 py-4 bg-[var(--color-accent-700)] text-white font-semibold rounded-lg"
             >
-              <div className="flex items-center">
-                <div className="h-8 w-8 bg-[var(--color-accent)] rounded-full flex items-center justify-center mr-3">
-                  <span className="text-[var(--color-text-inverse)] font-bold text-sm">20+</span>
-                </div>
-                <span className="text-sm">Years Experience</span>
-              </div>
-              <div className="flex items-center">
-                <div className="h-8 w-8 bg-[var(--color-accent)] rounded-full flex items-center justify-center mr-3">
-                  <span className="text-[var(--color-text-inverse)] font-bold text-sm">4.9</span>
-                </div>
-                <span className="text-sm">Rating (39 Reviews)</span>
-              </div>
-              <div className="flex items-center">
-                <div className="h-8 w-8 bg-[var(--color-accent)] rounded-full flex items-center justify-center mr-3">
-                  <span className="text-[var(--color-text-inverse)] font-bold text-sm">24/7</span>
-                </div>
-                <span className="text-sm">Emergency Service</span>
-              </div>
-            </motion.div>
-          </motion.div>
+              <Phone className="h-5 w-5 mr-3" />
+              Call {location.phone}
+            </a>
+            <a
+              href="/contact"
+              className="inline-flex items-center px-8 py-4 bg-white/20 text-white font-semibold rounded-lg border border-white/30"
+            >
+              <Mail className="h-5 w-5 mr-3" />
+              Free evaluation
+            </a>
+          </div>
         </div>
-      </div>
-
-      {/* Bottom Wave */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg className="w-full h-12 fill-[var(--color-surface-100)]" viewBox="0 0 1200 120" preserveAspectRatio="none">
-          <path d="M1200 120L0 16.48L0 120z" />
-        </svg>
       </div>
     </section>
   );

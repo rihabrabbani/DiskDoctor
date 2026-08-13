@@ -4,55 +4,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { LocationData } from '@/data/locations';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { useState } from 'react';
+import { telHref } from '@/lib/site';
 
 interface LocationFAQProps {
   location: LocationData;
+  faqs: { question: string; answer: string }[];
 }
 
-const faqs = [
-  {
-    question: 'How much does data recovery cost?',
-    answer: 'Data recovery costs vary depending on the type of device, extent of damage, and complexity of recovery. We offer free evaluations and provide fixed-price quotes before starting any work. Our "No Data, No Charge" policy means you only pay if we successfully recover your data.',
-    category: 'Pricing'
-  },
-  {
-    question: 'How long does data recovery take?',
-    answer: 'Most recoveries are completed within 3-5 business days. Emergency and expedited services are available for critical situations, with same-day recovery possible in many cases. The timeline depends on the type of device and extent of damage.',
-    category: 'Timeline'
-  },
-  {
-    question: 'What types of devices can you recover data from?',
-    answer: 'We recover data from all types of storage devices including hard drives, SSDs, RAID arrays, laptops, desktops, servers, smartphones, tablets, USB drives, memory cards, and more. Our certified technicians handle both logical and physical failures.',
-    category: 'Devices'
-  },
-  {
-    question: 'Is my data secure during the recovery process?',
-    answer: 'Absolutely. We follow strict security protocols including chain of custody procedures, confidentiality agreements, and secure data handling. All work is performed in our certified cleanroom facility with restricted access.',
-    category: 'Security'
-  },
-  {
-    question: 'What should I do if my device fails?',
-    answer: 'Stop using the device immediately to prevent further damage. Do not attempt DIY recovery software as it can worsen the situation. Power down the device and contact us for professional guidance. The sooner you call, the better your chances of successful recovery.',
-    category: 'Emergency'
-  },
-  {
-    question: 'Do you offer pickup and delivery services?',
-    answer: 'Yes, we provide free pickup and delivery services within the metro area. For locations outside our standard service area, we can arrange secure shipping with full insurance coverage. We also offer on-site consultation for critical business situations.',
-    category: 'Service'
-  },
-  {
-    question: 'What if other companies said my data is unrecoverable?',
-    answer: 'We often succeed where others fail. Our advanced equipment and 20+ years of experience allow us to handle cases that other companies cannot. We offer second opinion evaluations and have successfully recovered data from devices declared "impossible" by competitors.',
-    category: 'Recovery'
-  },
-  {
-    question: 'Can you recover deleted files?',
-    answer: 'Yes, we can recover deleted files in many cases, especially if the device has not been used extensively after deletion. Quick action is important as new data can overwrite deleted files. We use advanced techniques to recover files from formatted drives and corrupted file systems.',
-    category: 'Recovery'
-  }
-];
-
-export default function LocationFAQ({ location }: LocationFAQProps) {
+export default function LocationFAQ({ location, faqs }: LocationFAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggleFAQ = (index: number) => {
@@ -153,7 +112,7 @@ export default function LocationFAQ({ location }: LocationFAQProps) {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
-                href={`tel:${location.phone}`}
+                href={telHref(location.phone)}
                 className="inline-flex items-center px-8 py-4 bg-[var(--color-accent)] text-[var(--color-text-inverse)] font-semibold rounded-lg hover:bg-[var(--color-accent-hover)] transition-all duration-300 shadow-lg hover:shadow-xl"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}

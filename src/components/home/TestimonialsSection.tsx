@@ -1,7 +1,6 @@
 'use client';
 
 import { motion, Variants } from 'framer-motion';
-import Image from "next/image";
 import { testimonials } from "@/data/testimonials";
 
 // Define variants with proper typing
@@ -148,42 +147,23 @@ export default function TestimonialsSection() {
                 transition: { duration: 0.3, ease: "easeOut" }
               }}
             >
-              <motion.div 
+              <motion.div
                 className="flex items-center mb-6"
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <motion.div 
-                  className="relative h-14 w-14 rounded-full overflow-hidden mr-4 border-2 border-[var(--color-primary-100)] group-hover:border-[var(--color-primary-200)] transition-colors duration-300"
-                  variants={avatarVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 + 0.2 }}
-                  whileHover={{ 
-                    scale: 1.1,
-                    rotate: 5,
-                    transition: { duration: 0.3 }
-                  }}
-                >
-                  <Image
-                    src={testimonial.avatar}
-                    alt={testimonial.author}
-                    fill
-                    className="object-cover"
-                  />
-                </motion.div>
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 + 0.3 }}
                 >
                   <div className="font-semibold text-[var(--color-text-primary)]">{testimonial.author}</div>
                   <div className="text-sm text-[var(--color-text-secondary)]">{testimonial.position}</div>
-                  <div className="text-sm text-[var(--color-primary)]">{testimonial.company}</div>
+                  <div className="text-sm text-[var(--color-primary)]">
+                    {testimonial.source}{testimonial.date ? ` · ${testimonial.date}` : ''}
+                  </div>
                 </motion.div>
               </motion.div>
 

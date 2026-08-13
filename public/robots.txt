@@ -1,77 +1,33 @@
-# Apply to all bots
 User-agent: *
 Allow: /
-
-# Sitemap
-Sitemap: https://www.diskdoctorsamerica.com/sitemap.xml
-
-# Crawl-delay for respectful crawling
-Crawl-delay: 1
-
-# Block admin areas
 Disallow: /admin/
 Disallow: /api/
-Disallow: /_next/
 
-# Allow important pages
-Allow: /blog/
-Allow: /services/
-Allow: /locations/
+Sitemap: https://www.diskdoctorsamerica.com/sitemap.xml
 
-# Allow location-specific pages
-Allow: /columbia-md
-Allow: /baltimore-md
-Allow: /washington-dc
-Allow: /alexandria-va
-Allow: /arlington-va
-Allow: /rockville-md
-Allow: /annapolis-md
-Allow: /frederick-md
-Allow: /mclean-va
-Allow: /tysons-va
-Allow: /great-falls-va
-Allow: /potomac-md
-
-# Block unnecessary files
-Disallow: /*.json$
-Allow: /sitemap.xml
-Disallow: /*.xml$
-
-# Allow search engines to index images
-Allow: /images/
-Allow: /*.jpg$
-Allow: /*.jpeg$
-Allow: /*.png$
-Allow: /*.gif$
-Allow: /*.webp$
-
-# --- Explicit allowances for major search engine bots ---
-User-agent: Googlebot
+User-agent: GPTBot
 Allow: /
 
-User-agent: Bingbot
+User-agent: OAI-SearchBot
 Allow: /
 
-User-agent: Slurp   # Yahoo
+User-agent: ChatGPT-User
 Allow: /
 
-User-agent: DuckDuckBot
+User-agent: PerplexityBot
 Allow: /
 
-User-agent: Baiduspider
+User-agent: ClaudeBot
 Allow: /
 
-User-agent: YandexBot
+User-agent: anthropic-ai
 Allow: /
 
-User-agent: SemrushBot
+User-agent: CCBot
 Allow: /
 
-User-agent: AhrefsBot
+User-agent: Google-Extended
 Allow: /
 
-User-agent: MJ12bot
-Allow: /
-
-User-agent: Applebot
+User-agent: Applebot-Extended
 Allow: /

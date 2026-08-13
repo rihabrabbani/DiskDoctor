@@ -49,9 +49,9 @@
   --color-surface-300: var(--color-neutral-200);
   
   /* Brand colors */
-  --color-primary: var(--color-primary-600);
-  --color-primary-hover: var(--color-primary-700);
-  --color-primary-focus: var(--color-primary-500);
+  --color-primary: var(--color-primary-800);
+  --color-primary-hover: var(--color-primary-900);
+  --color-primary-focus: var(--color-primary-700);
   
   --color-accent: var(--color-accent-600);
   --color-accent-hover: var(--color-accent-700);
@@ -60,7 +60,7 @@
   /* Typography */
   --color-text-primary: var(--color-neutral-900);
   --color-text-secondary: var(--color-neutral-700);
-  --color-text-tertiary: var(--color-neutral-600);
+  --color-text-tertiary: var(--color-neutral-700);
   --color-text-inverse: white;
 
   /* Border */

@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
+import { getStaticBlog } from '@/data/staticBlogPosts';
 import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb';
 import { blogPostSchema, breadcrumbSchema, faqSchema } from '@/lib/structuredData';
 import BlogPostContent from './BlogPostContent';
@@ -11,6 +12,9 @@ interface BlogPostProps {
 // Helper to fetch blog from MongoDB directly (server-side)
 // Looks up by slug first, then falls back to UUID id
 async function getBlog(identifier: string) {
+  const staticPost = getStaticBlog(identifier);
+  if (staticPost) return staticPost;
+
   try {
     const client = await clientPromise;
     const db = client.db(DB_NAME);
@@ -67,7 +71,7 @@ export async function generateMetadata({ params }: BlogPostProps): Promise<Metad
     };
   }
 
-  const seoTitle = `${blog.title} | DiskDoctor Blog`;
+  const seoTitle = blog.title;
   const seoDescription = (blog.metaDescription || blog.excerpt).length > 155
     ? (blog.metaDescription || blog.excerpt).substring(0, 152) + '...'
     : (blog.metaDescription || blog.excerpt);

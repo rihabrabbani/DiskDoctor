@@ -1,24 +1,45 @@
 import { MetadataRoute } from 'next'
 import { allServices } from '@/data/allServices'
+import { staticBlogPosts } from '@/data/staticBlogPosts'
 import { locations } from '@/data/locations'
 import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb'
+
+export const revalidate = 3600 // Revalidate sitemap every hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.diskdoctorsamerica.com'
   const generatedAt = new Date()
 
   const normalizeUrl = (url: string) => {
-    // Keep root as-is; trim trailing slash for all other paths to avoid duplicates
-    return url.endsWith('/') && url !== `${baseUrl}/` ? url.slice(0, -1) : url
+    if (url === baseUrl || url === `${baseUrl}/`) return `${baseUrl}/`
+    return url.endsWith('/') ? url.slice(0, -1) : url
   }
 
   // Static pages
   const staticPages = [
     {
-      url: baseUrl,
+      url: `${baseUrl}/`,
       lastModified: generatedAt,
       changeFrequency: 'weekly' as const,
       priority: 1,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified: generatedAt,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified: generatedAt,
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/terms`,
+      lastModified: generatedAt,
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
     },
     {
       url: `${baseUrl}/blog`,
@@ -68,8 +89,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .sort({ createdAt: -1 })
       .toArray()
 
+    const staticSlugs = new Set(staticBlogPosts.map((b) => b.slug))
     blogPages = blogs
       .filter((blog: any) => Boolean(blog?.slug || blog?.id))
+      .filter((blog: any) => !staticSlugs.has(blog.slug || blog.id))
       .map((blog: any) => {
         const parsedDate = new Date(blog.updatedAt || blog.createdAt || generatedAt)
         const safeDate = Number.isNaN(parsedDate.getTime()) ? generatedAt : parsedDate
@@ -85,7 +108,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching blogs for sitemap:', error)
   }
 
-  const merged = [...staticPages, ...servicePages, ...locationPages, ...blogPages]
+  const staticBlogPages = staticBlogPosts.map((blog) => ({
+    url: `${baseUrl}/blog/${blog.slug}`,
+    lastModified: new Date(blog.updatedAt),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }))
+
+  const merged = [...staticPages, ...servicePages, ...locationPages, ...staticBlogPages, ...blogPages]
   const deduped = new Map<string, MetadataRoute.Sitemap[number]>()
 
   for (const entry of merged) {

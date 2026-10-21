@@ -31,6 +31,11 @@ function trackFormSubmit() {
   if (typeof window.gtag === 'function') {
     window.gtag('event', 'generate_lead', { method: 'hubspot' });
     window.gtag('event', 'hubspot_form_submit', { method: 'hubspot' });
+    window.gtag('event', 'conversion', {
+      send_to: 'AW-16976188859/siYRCM7CyqMdELur8J4_',
+      value: 1.0,
+      currency: 'USD',
+    });
   }
 }
 

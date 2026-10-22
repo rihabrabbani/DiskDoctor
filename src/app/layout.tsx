@@ -10,6 +10,7 @@ import { SITE_URL, SITE_URL_SLASH } from "@/lib/site";
 const gtmId = "GTM-K5DVZQX4";
 const googleAdsTysonsId = "AW-16976188859";
 const googleAdsColumbiaId = "AW-16534646072";
+const googleAdsColumbiaLeadId = "AW-7835970649";
 
 export const metadata: Metadata = {
   title: {
@@ -85,7 +86,8 @@ export default function RootLayout({
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', '${googleAdsTysonsId}');
-gtag('config', '${googleAdsColumbiaId}');`}
+gtag('config', '${googleAdsColumbiaId}');
+gtag('config', '${googleAdsColumbiaLeadId}');`}
         </Script>
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsTysonsId}`}

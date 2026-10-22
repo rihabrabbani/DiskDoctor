@@ -36,6 +36,11 @@ function trackFormSubmit() {
       value: 1.0,
       currency: 'USD',
     });
+    window.gtag('event', 'conversion', {
+      send_to: 'AW-7835970649/qGxRCNnYvZgdELjaqsw9',
+      value: 1.0,
+      currency: 'USD',
+    });
   }
 }
 

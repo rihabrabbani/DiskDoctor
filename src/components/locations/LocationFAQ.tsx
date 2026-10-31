@@ -1,9 +1,8 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { LocationData } from '@/data/locations';
-import { ChevronDown, HelpCircle } from 'lucide-react';
-import { useState } from 'react';
+import { HelpCircle } from 'lucide-react';
 import { telHref } from '@/lib/site';
 
 interface LocationFAQProps {
@@ -12,12 +11,6 @@ interface LocationFAQProps {
 }
 
 export default function LocationFAQ({ location, faqs }: LocationFAQProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
     <section className="py-20 bg-[var(--color-background)]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,47 +40,22 @@ export default function LocationFAQ({ location, faqs }: LocationFAQProps) {
                 transition={{ duration: 0.6, delay: index * 0.05 }}
                 viewport={{ once: true }}
               >
-                <motion.button
-                  className="w-full p-6 text-left flex items-center justify-between hover:bg-[var(--color-surface-200)] transition-colors duration-200"
-                  onClick={() => toggleFAQ(index)}
-                  whileHover={{ backgroundColor: 'var(--color-surface-200)' }}
-                >
+                {/* Answers stay visible: they must match the FAQPage JSON-LD on this page. */}
+                <div className="p-6">
                   <div className="flex items-start gap-4">
                     <div className="flex-shrink-0 h-8 w-8 bg-[var(--color-primary)] rounded-lg flex items-center justify-center mt-1">
                       <HelpCircle className="h-5 w-5 text-[var(--color-text-inverse)]" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-[var(--color-text)]">
+                      <h3 className="text-lg font-semibold text-[var(--color-text)] mb-2">
                         {faq.question}
                       </h3>
+                      <p className="text-[var(--color-text-light)] leading-relaxed">
+                        {faq.answer}
+                      </p>
                     </div>
                   </div>
-                  <motion.div
-                    animate={{ rotate: openIndex === index ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="flex-shrink-0"
-                  >
-                    <ChevronDown className="h-5 w-5 text-[var(--color-text-light)]" />
-                  </motion.div>
-                </motion.button>
-                
-                <AnimatePresence>
-                  {openIndex === index && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-6 pb-6 pl-18">
-                        <p className="text-[var(--color-text-light)] leading-relaxed">
-                          {faq.answer}
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                </div>
               </motion.div>
             ))}
           </div>

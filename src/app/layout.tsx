@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import { organizationSchema, websiteSchema, localBusinessSchema } from "@/lib/structuredData";
+import { organizationSchema, websiteSchema, columbiaLocalBusinessSchema, tysonsLocalBusinessSchema } from "@/lib/structuredData";
 import AnalyticsClicks from "@/components/analytics/AnalyticsClicks";
 import StickyMobileBar from "@/components/layout/StickyMobileBar";
 import { SITE_URL, SITE_URL_SLASH } from "@/lib/site";
@@ -108,7 +108,13 @@ gtag('config', '${googleAdsColumbiaLeadId}');`}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(localBusinessSchema)
+            __html: JSON.stringify(columbiaLocalBusinessSchema)
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(tysonsLocalBusinessSchema)
           }}
         />
       </head>

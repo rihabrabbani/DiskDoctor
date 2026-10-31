@@ -1,20 +1,38 @@
 // Structured Data (JSON-LD) generators for SEO
 
+const SITE = "https://www.diskdoctorsamerica.com"
+
+// Stable entity ids. Service pages point their provider at COLUMBIA_ID.
+export const ORGANIZATION_ID = `${SITE}/#organization`
+export const COLUMBIA_ID = `${SITE}/#columbia`
+export const TYSONS_ID = `${SITE}/#tysons`
+
+const servicesOffered = [
+  { name: "Hard Drive Recovery", path: "/services/hard-drive-recovery" },
+  { name: "SSD & NVMe Recovery", path: "/services/ssd-recovery" },
+  { name: "RAID Recovery", path: "/services/raid-recovery" },
+  { name: "NAS Recovery", path: "/services/nas-recovery" },
+  { name: "Server & Virtual Machine Recovery", path: "/services/server-recovery" },
+]
+
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": ORGANIZATION_ID,
   "name": "DiskDoctor Data Recovery",
   "alternateName": "Disk Doctor",
-  "url": "https://www.diskdoctorsamerica.com",
-  "logo": "https://www.diskdoctorsamerica.com/images/logo.png",
-  "description": "Professional data recovery services with 95% success rate. Specializing in hard drive, SSD, RAID, and mobile device recovery since 1991.",
+  "url": SITE,
+  "logo": `${SITE}/images/logo.png`,
+  "description": "ISO 9001 certified data recovery lab in Columbia, MD, recovering hard drives, SSDs, RAID arrays, NAS units and servers since 1991. 15,000+ cases recovered, 95% success rate.",
   "foundingDate": "1991",
   "slogan": "Your Data is Recoverable",
+  "email": "shah4268@msn.com",
+  "telephone": "+1-410-937-7332",
   "contactPoint": [
     {
       "@type": "ContactPoint",
       "telephone": "+1-410-937-7332",
-      "contactType": "customer service",
+      "contactType": "emergency",
       "areaServed": "US",
       "availableLanguage": "English",
       "hoursAvailable": {
@@ -27,55 +45,125 @@ export const organizationSchema = {
     {
       "@type": "ContactPoint",
       "telephone": "+1-410-937-7332",
-      "contactType": "emergency",
+      "email": "shah4268@msn.com",
+      "contactType": "customer service",
       "areaServed": "US",
       "availableLanguage": "English"
     }
   ],
-  "address": [
-    {
-      "@type": "PostalAddress",
-      "streetAddress": "10015 Old Columbia Rd Suite B 215",
-      "addressLocality": "Columbia",
-      "addressRegion": "Maryland",
-      "postalCode": "21046",
-      "addressCountry": "US"
-    },
-    {
-      "@type": "PostalAddress",
-      "streetAddress": "8300 Boone Blvd Suite 513",
-      "addressLocality": "Tysons",
-      "addressRegion": "Virginia",
-      "postalCode": "22182",
-      "addressCountry": "US"
-    }
-  ],
-  "email": "shah4268@msn.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "10015 Old Columbia Rd Suite B 215",
+    "addressLocality": "Columbia",
+    "addressRegion": "MD",
+    "postalCode": "21046",
+    "addressCountry": "US"
+  },
   "hasCredential": [
     {
       "@type": "EducationalOccupationalCredential",
       "name": "ISO 9001 Certified",
       "credentialCategory": "certification"
     }
-  ]
+  ],
+  "department": [{ "@id": COLUMBIA_ID }, { "@id": TYSONS_ID }]
 }
+
+// Columbia, MD: head office and recovery lab (walk-in hours).
+export const columbiaLocalBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": COLUMBIA_ID,
+  "name": "DiskDoctor Data Recovery — Columbia, MD Lab",
+  "description": "Head office and ISO 9001 certified clean-room recovery lab for hard drives, SSDs, RAID arrays, NAS units and servers. Walk-in Monday to Friday; 24/7 emergency line.",
+  "url": `${SITE}/columbia-md`,
+  "image": `${SITE}/images/logo.png`,
+  "telephone": "+1-410-937-7332",
+  "email": "shah4268@msn.com",
+  "parentOrganization": { "@id": ORGANIZATION_ID },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "10015 Old Columbia Rd Suite B 215",
+    "addressLocality": "Columbia",
+    "addressRegion": "MD",
+    "postalCode": "21046",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 39.2037,
+    "longitude": -76.861
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "08:30",
+      "closes": "17:00"
+    }
+  ],
+  "areaServed": [
+    { "@type": "State", "name": "Maryland" },
+    { "@type": "State", "name": "Virginia" },
+    { "@type": "AdministrativeArea", "name": "District of Columbia" }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Data Recovery Services",
+    "itemListElement": servicesOffered.map((service) => ({
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": service.name,
+        "url": `${SITE}${service.path}`
+      }
+    }))
+  }
+}
+
+// Tysons, VA: office by appointment. No opening hours, because there are no walk-in hours.
+export const tysonsLocalBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": TYSONS_ID,
+  "name": "DiskDoctor Data Recovery — Tysons, VA Office",
+  "description": "Northern Virginia office, by appointment. Recovery work is done at the DiskDoctor lab in Columbia, MD.",
+  "url": `${SITE}/tysons-va`,
+  "image": `${SITE}/images/logo.png`,
+  "telephone": "+1-410-937-7332",
+  "parentOrganization": { "@id": ORGANIZATION_ID },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "8300 Boone Blvd Suite 513",
+    "addressLocality": "Tysons",
+    "addressRegion": "VA",
+    "postalCode": "22182",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 38.9182,
+    "longitude": -77.2228
+  }
+}
+
+const serviceAreaServed = [
+  { "@type": "State", "name": "Maryland" },
+  { "@type": "State", "name": "Virginia" },
+  { "@type": "AdministrativeArea", "name": "District of Columbia" },
+  { "@type": "Country", "name": "United States" }
+]
 
 export const serviceSchema = (service: any) => ({
   "@context": "https://schema.org",
   "@type": "Service",
   "name": service.title,
   "description": service.description,
-  "provider": {
-    "@type": "Organization",
-    "name": "DiskDoctor Data Recovery",
-    "url": "https://www.diskdoctorsamerica.com"
-  },
+  "url": `${SITE}/services/${service.id}`,
+  "provider": { "@id": COLUMBIA_ID },
   "serviceType": "Data Recovery",
   "category": service.category || "Data Recovery Services",
-  "areaServed": {
-    "@type": "Country",
-    "name": "United States"
-  },
+  "areaServed": serviceAreaServed,
   "availableChannel": {
     "@type": "ServiceChannel",
     "servicePhone": "+1-410-937-7332",
@@ -95,15 +183,14 @@ export const serviceSchema = (service: any) => ({
       "@type": "Offer",
       "itemOffered": {
         "@type": "Service",
-        "name": feature.title,
-        "description": feature.description
+        "name": typeof feature === 'string' ? feature : feature.title,
+        "description": typeof feature === 'string' ? undefined : feature.description
       },
       "position": index + 1
     }))
   }
 })
 
-// Service JSON-LD for the core pages (src/data/corePages). The provider points at the Columbia lab entity.
 export const coreServiceSchema = (page: { h1: string; seoDescription: string; path: string }) => ({
   "@context": "https://schema.org",
   "@type": "Service",
@@ -111,13 +198,8 @@ export const coreServiceSchema = (page: { h1: string; seoDescription: string; pa
   "description": page.seoDescription,
   "url": `https://www.diskdoctorsamerica.com${page.path}`,
   "serviceType": "Data Recovery",
-  "provider": { "@id": "https://www.diskdoctorsamerica.com/#columbia" },
-  "areaServed": [
-    { "@type": "State", "name": "Maryland" },
-    { "@type": "State", "name": "Virginia" },
-    { "@type": "AdministrativeArea", "name": "District of Columbia" },
-    { "@type": "Country", "name": "United States" }
-  ],
+  "provider": { "@id": COLUMBIA_ID },
+  "areaServed": serviceAreaServed,
   "availableChannel": {
     "@type": "ServiceChannel",
     "servicePhone": "+1-410-937-7332",
@@ -179,7 +261,7 @@ export const websiteSchema = {
   "@type": "WebSite",
   "name": "DiskDoctor Data Recovery",
   "url": "https://www.diskdoctorsamerica.com",
-  "description": "Professional data recovery services with 95% success rate. Specializing in hard drive, SSD, RAID, and mobile device recovery.",
+  "description": "Data recovery for hard drives, SSDs, RAID arrays, NAS units and servers from an ISO 9001 certified lab in Columbia, MD.",
   "potentialAction": {
     "@type": "SearchAction",
     "target": {
@@ -188,11 +270,7 @@ export const websiteSchema = {
     },
     "query-input": "required name=search_term_string"
   },
-  "publisher": {
-    "@type": "Organization",
-    "name": "DiskDoctor Data Recovery",
-    "url": "https://www.diskdoctorsamerica.com"
-  }
+  "publisher": { "@id": ORGANIZATION_ID }
 }
 
 export const breadcrumbSchema = (items: Array<{ name: string, url: string }>) => ({
@@ -218,98 +296,3 @@ export const faqSchema = (faqs: Array<{ question: string, answer: string }>) => 
     }
   }))
 })
-
-export const localBusinessSchema = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "@id": "https://www.diskdoctorsamerica.com/#localbusiness",
-  "name": "DiskDoctor Data Recovery",
-  "image": "https://www.diskdoctorsamerica.com/images/logo.png",
-  "description": "Professional data recovery services with 95% success rate. Specializing in hard drive, SSD, RAID, and mobile device recovery since 1991.",
-  "url": "https://www.diskdoctorsamerica.com",
-  "telephone": "+1-410-937-7332",
-  "email": "shah4268@msn.com",
-  "address": [
-    {
-      "@type": "PostalAddress",
-      "streetAddress": "10015 Old Columbia Rd Suite B 215",
-      "addressLocality": "Columbia",
-      "addressRegion": "Maryland",
-      "postalCode": "21046",
-      "addressCountry": "US"
-    },
-    {
-      "@type": "PostalAddress",
-      "streetAddress": "8300 Boone Blvd Suite 513",
-      "addressLocality": "Tysons",
-      "addressRegion": "Virginia",
-      "postalCode": "22182",
-      "addressCountry": "US"
-    }
-  ],
-  "geo": [
-    {
-      "@type": "GeoCoordinates",
-      "latitude": "39.2037",
-      "longitude": "-76.8610"
-    },
-    {
-      "@type": "GeoCoordinates",
-      "latitude": "38.9182",
-      "longitude": "-77.2228"
-    }
-  ],
-  "openingHoursSpecification": [
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "08:30",
-      "closes": "17:00"
-    }
-  ],
-  "priceRange": "$$",
-  "paymentAccepted": ["Cash", "Credit Card", "Check"],
-  "currenciesAccepted": "USD",
-  "areaServed": {
-    "@type": "Country",
-    "name": "United States"
-  },
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Data Recovery Services",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Hard Drive Recovery",
-          "description": "Professional hard drive data recovery services"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "SSD Recovery",
-          "description": "Advanced SSD data recovery using specialized tools"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "RAID Recovery",
-          "description": "Enterprise RAID array data recovery services"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Mobile Recovery",
-          "description": "Smartphone and tablet data recovery services"
-        }
-      }
-    ]
-  }
-}

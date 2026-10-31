@@ -12,7 +12,7 @@ import LocationContact from '@/components/locations/LocationContact';
 import LocationTestimonials from '@/components/locations/LocationTestimonials';
 import LocationFAQ from '@/components/locations/LocationFAQ';
 import JsonLd from '@/components/seo/JsonLd';
-import { faqSchema } from '@/lib/structuredData';
+import { COLUMBIA_ID, TYSONS_ID, faqSchema } from '@/lib/structuredData';
 import { SITE_URL, telHref } from '@/lib/site';
 import Link from 'next/link';
 
@@ -63,33 +63,18 @@ export default async function LocationPage({ params }: LocationPageProps) {
   }
 
   const pageUrl = `${SITE_URL}/${location.slug}`;
-  const columbiaId = `${SITE_URL}/columbia-md#localbusiness`;
-
+  // The Columbia and Tysons LocalBusiness entities are defined once in the root layout;
+  // location pages reference them by @id instead of redefining them.
   const structuredData =
     copy.kind === 'lab'
       ? {
           '@context': 'https://schema.org',
-          '@type': 'LocalBusiness',
-          '@id': `${pageUrl}#localbusiness`,
-          name: `DiskDoctor Data Recovery — ${location.fullName}`,
-          description: copy.seoDescription,
+          '@type': 'WebPage',
+          '@id': `${pageUrl}#webpage`,
           url: pageUrl,
-          telephone: '+1-410-937-7332',
-          address: {
-            '@type': 'PostalAddress',
-            streetAddress: location.address.split(',')[0],
-            addressLocality: location.city,
-            addressRegion: location.state,
-            postalCode: location.zipCode,
-            addressCountry: 'US',
-          },
-          geo: {
-            '@type': 'GeoCoordinates',
-            latitude: location.coordinates.lat,
-            longitude: location.coordinates.lng,
-          },
-          openingHours: location.isAppointmentOnly ? undefined : 'Mo-Fr 08:30-17:00',
-          priceRange: '$$',
+          name: copy.seoTitle,
+          description: copy.seoDescription,
+          about: { '@id': location.slug === 'tysons-va' ? TYSONS_ID : COLUMBIA_ID },
         }
       : {
           '@context': 'https://schema.org',
@@ -97,17 +82,11 @@ export default async function LocationPage({ params }: LocationPageProps) {
           name: `Data recovery serving ${location.fullName}`,
           description: copy.directAnswer,
           url: pageUrl,
-          provider: {
-            '@type': 'LocalBusiness',
-            '@id': columbiaId,
-            name: 'DiskDoctor Data Recovery',
-            url: `${SITE_URL}/columbia-md`,
-          },
+          provider: { '@id': COLUMBIA_ID },
           areaServed: {
             '@type': 'City',
             name: location.city,
           },
-          telephone: '+1-410-937-7332',
         };
 
   return (

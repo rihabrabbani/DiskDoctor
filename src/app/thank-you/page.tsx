@@ -38,7 +38,7 @@ export default function ThankYouPage() {
             </p>
             <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 mb-8">
               <p className="text-lg text-[var(--color-text-secondary)] leading-relaxed">
-                <strong className="text-[var(--color-text-primary)]">While you wait:</strong> power the
+                <strong className="text-[var(--color-text-primary)]">While you wait:</strong>{' '}power the
                 device down. Don&apos;t run CHKDSK, Disk Utility First Aid or a RAID rebuild, and keep
                 failed drives in the order they came out of the array.
               </p>

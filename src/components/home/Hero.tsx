@@ -138,8 +138,8 @@ export default function Hero() {
             >
               {[
                 { value: "95%", label: "Success Rate" },
-                { value: "30+", label: "Years Experience" },
-                { value: "50K+", label: "Cases Recovered" },
+                { value: "35+", label: "Years Experience" },
+                { value: "15,000+", label: "Cases Recovered" },
                 { value: "24/7", label: "Emergency Service" }
               ].map((stat, index) => (
                 <motion.div key={index} className="text-center" variants={statItemVariants}>

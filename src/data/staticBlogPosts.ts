@@ -163,7 +163,7 @@ export const staticBlogPosts: BlogPost[] = [
       {
         heading: 'A 20-minute intake that does not make it worse',
         content:
-          '<p>Power down. Photograph the bays. Pull the members only if you can do it without forcing trays. Pad each disk. Write the RAID level if you know it, and whether a rebuild already started. Drop at Columbia or schedule Tysons. Do not buy a replacement NAS and initialize the old disks in it while you wait.</p><p>If the array held VMs, say so on the <a href="/contact">evaluation form</a>. We check VMDK and VHDX after the RAID is assembled, not by installing a hypervisor on the broken members.</p>',
+          '<p>Power down. Photograph the bays. Pull the members only if you can do it without forcing trays. Pad each disk. Write the RAID level if you know it, and whether a rebuild already started. Drop off at the Columbia lab or book a Tysons appointment. Do not buy a replacement NAS and initialize the old disks in it while you wait.</p><p>If the array held VMs, say so on the <a href="/contact">evaluation form</a>. We check VMDK and VHDX after the RAID is assembled, not by installing a hypervisor on the broken members.</p>',
       },
     ],
   },

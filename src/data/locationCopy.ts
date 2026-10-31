@@ -38,7 +38,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       'The lab sits at 10015 Old Columbia Rd Suite B 215, Columbia, MD 21046, in the Oakland Ridge industrial area off Route 175. Howard County businesses, law offices, medical practices, and home users drop devices here during weekday hours (8:30 a.m.–5:00 p.m.). After hours, leave a message or use the form; emergency intake is arranged by phone at (410) 937-7332.',
       'Walk-in: power the device down, do not run CHKDSK, Disk Utility, or RAID rebuilds, and bring any passwords you have. Mail-in: pad the drive, do not send it in a bubble envelope without a box, and include a note with the OS, what failed, and the files that matter. We confirm receipt, diagnose at no charge, and send a fixed quote.',
       'Logical jobs (deleted files, formatted volumes, failed Windows boot with a still-healthy head stack) often finish in 24–48 hours. Physical jobs — clicking ST/WD desktop drives, NVMe controller failure, multi-disk RAID — typically take 3–7 days because every platter or NAND chip is imaged before reconstruction. Same-day is possible when the clone is fast and the filesystem is intact.',
-      'Columbia is the head office for the Tysons appointment location and for service-area pages covering Baltimore, DC, Rockville, and the rest of the corridor. Media from those cities is processed here unless a Tysons drop is scheduled. There is no second cleanroom in Baltimore or DC; claiming otherwise would be a fake office.',
+      'Columbia is the head office for the Tysons appointment location and for service-area pages covering Baltimore, DC, Rockville, and the rest of the corridor. Media from those cities is processed here, including devices brought to a Tysons appointment. There is no second cleanroom in Baltimore or DC; claiming otherwise would be a fake office.',
       'If another shop already started a rebuild or ran recovery software, say so. We can often still image remaining sectors, but every prior write reduces the odds. The “no data, no charge” policy applies to the recovery fee after a successful evaluation, not to shipping or to cases where the customer insists on destructive attempts we advise against.',
       'Neighbors who actually use this lab: Ellicott City accountants with QuickBooks on a dying NAS, Laurel medical offices with imaging studies on RAID 5, Clarksville and Fulton home offices with photo libraries, and Maple Lawn startups whose only copy of source lived on a laptop disk. Howard County is small enough that people drive; they do not need a second pin in the Mall in Columbia.',
       'What evaluation means here: we identify the device, photograph serials, attempt a safe clone, and tell you whether the files you named are present on that clone. You are not buying a “repair.” A repaired original disk is a bonus when the mechanics allow it; the deliverable is your files on new media. If the clone is empty of what you asked for, you do not pay a recovery fee.',
@@ -96,30 +96,30 @@ export const locationCopy: Record<string, LocationCopy> = {
     kind: 'lab',
     seoTitle: 'Data Recovery Tysons VA | By Appointment',
     seoDescription:
-      'Tysons VA data recovery drop at 8300 Boone Blvd Suite 513, by appointment. Media is processed at the Columbia MD lab. Free evaluation. Call (410) 937-7332.',
+      'Tysons VA data recovery office at 8300 Boone Blvd Suite 513, by appointment. Media is processed at the Columbia MD lab. Free evaluation. Call (410) 937-7332.',
     directAnswer:
-      'DiskDoctor’s Tysons location is 8300 Boone Blvd Suite 513, Tysons, VA 22182, by appointment. It is a drop and consult office, not a second 24/7 cleanroom. Failed drives and phones accepted here go to the Columbia, MD lab for imaging. Call (410) 937-7332 to schedule.',
+      'DiskDoctor’s Tysons location is 8300 Boone Blvd Suite 513, Tysons, VA 22182, is our Virginia office, by appointment. Recovery work happens in the Columbia, MD lab: devices you bring to a Tysons appointment are taken there for imaging. Call (410) 937-7332 to schedule.',
     heroDescription:
-      'Northern Virginia drop-off at Tysons Corner, by appointment only. Staff are not always on site. Schedule before you drive. Recovery work is performed at the Columbia laboratory.',
+      'Our Northern Virginia office in Tysons, by appointment. Staff are not always on site. Schedule before you drive. Recovery work is performed at the Columbia laboratory.',
     paragraphs: [
       'Tysons is the Virginia appointment office for DiskDoctor, not a duplicate of the Columbia cleanroom. If you arrive unannounced, the suite may be locked. Call (410) 937-7332, pick a window, and bring the failed media powered down.',
-      'Address: 8300 Boone Blvd Suite 513, Tysons, VA 22182. Parking is in the Boone Boulevard garage. McLean, Vienna, Falls Church, Dunn Loring, and Merrifield clients use this drop to avoid a trip to Howard County.',
-      'What happens after drop-off: the device is logged, transported to Columbia, imaged, and quoted. You can collect recovered files in Tysons on a scheduled return or receive a shipped encrypted drive. Chain of custody is kept for business and legal jobs.',
+      'Address: 8300 Boone Blvd Suite 513, Tysons, VA 22182. Parking is in the Boone Boulevard garage. McLean, Vienna, Falls Church, Dunn Loring, and Merrifield clients book an appointment here to avoid a trip to Howard County.',
+      'What happens after your appointment: the device is logged, transported to Columbia, imaged, and quoted. You can collect recovered files in Tysons on a scheduled return or receive a shipped encrypted drive. Chain of custody is kept for business and legal jobs.',
       'Do not start a RAID rebuild on a Tysons-area NAS while you wait for an appointment. Power the array down. The second disk in a degraded RAID 5 often dies during the rebuild, which is the expensive case.',
       'Emergency phone recovery and clicking-drive intake can still be same-day if Columbia has bench time. The appointment constraint is physical presence at Boone Blvd, not whether the lab will take the job.',
       'How to reach the suite: 8300 Boone Blvd is the office tower next to the Tysons Corner corridor, not a mall kiosk inside Tysons I or II. Suite 513 is upstairs. Bring a photo ID if the building desk asks. Do not leave a drive with a receptionist who is not DiskDoctor staff. If you cannot get in, call (410) 937-7332 from the lobby rather than sliding media under a door.',
-      'Silver Line riders sometimes prefer Tysons to Columbia. That is a logistics choice, not a second laboratory. The clone still happens in Howard County. If you need to watch chain-of-custody paperwork signed, say so when you book; we can meet that at drop-off and again at return.',
+      'Silver Line riders sometimes prefer Tysons to Columbia. That is a logistics choice, not a second laboratory. The clone still happens in Howard County. If you need to watch chain-of-custody paperwork signed, say so when you book; we can do that at your appointment and again at return.',
       'What to bring: the failed disk or phone powered off, every RAID member, any passwords you will share, and a note with the OS and the folders that matter. Do not bring a running NAS that is still rebuilding. Power it down at the office before you drive.',
       'Return of files: encrypted USB or a new SATA/NVMe you approve, pickup in Tysons on a second appointment, or tracked shipping to your office. We do not email archives of recovered patient or legal files. If you want the original media back, say so; some physical jobs cannot reseal a drive that was opened for heads work.',
     ],
     scenarios: [
       {
         title: 'McLean law firm, failed laptop SSD',
-        body: 'An NVMe that vanished from BIOS was dropped at Tysons the same afternoon, imaged in Columbia overnight, and returned as a cloned volume of working documents. No Windows “repair” was run on the original.',
+        body: 'An NVMe that vanished from BIOS was brought to a Tysons appointment the same afternoon, imaged in Columbia overnight, and returned as a cloned volume of working documents. No Windows “repair” was run on the original.',
       },
       {
         title: 'Vienna office, Synology RAID 1 with one click',
-        body: 'They scheduled a Tysons drop, brought both disks, and we cloned the clicking member before it was used in any rebuild. The mirror was rebuilt onto new disks after files were verified.',
+        body: 'They booked a Tysons appointment, brought both disks, and we cloned the clicking member before it was used in any rebuild. The mirror was rebuilt onto new disks after files were verified.',
       },
     ],
     faqs: [
@@ -132,8 +132,8 @@ export const locationCopy: Record<string, LocationCopy> = {
         answer: 'Yes. Staff are not always present. Call (410) 937-7332 before you go.',
       },
       {
-        question: 'Can Northern Virginia RAID jobs be dropped in Tysons?',
-        answer: 'Yes. Bring every array member. Do not rebuild. We transport to Columbia for reconstruction.',
+        question: 'Can I bring a Northern Virginia RAID job to Tysons?',
+        answer: 'Yes, by appointment. Bring every array member. Do not rebuild. We take the disks to the Columbia lab for reconstruction.',
       },
       {
         question: 'What are Tysons hours?',
@@ -231,14 +231,14 @@ export const locationCopy: Record<string, LocationCopy> = {
       'Chain of custody, restricted bench access, and return on encrypted drives are routine for DC law firms and contractors. Put that requirement on the form. We do not mine files for marketing and we do not keep copies longer than the agreed retention after you confirm the delivery disk.',
       'Georgetown, Capitol Hill, Dupont, Foggy Bottom, Navy Yard, and Shaw are service areas, not fake offices. If a directory lists a DC street for DiskDoctor that is not 10015 Old Columbia Rd or the Tysons appointment suite, it is stale or belongs to another entity.',
       'Turnaround: logical 24–48 hours after arrival, physical/RAID 3–7 days, emergency by phone. Evaluation free. No data, no charge on the recovery fee.',
-      'Driving from downtown: I-295 or 395 to the Beltway to 29 north, or 95 if that is moving. Metro does not reach the Columbia suite; Tysons on the Silver Line is the closer drop if you will not drive to Howard County. Book Tysons; do not assume the Boone Blvd suite is staffed.',
+      'Driving from downtown: I-295 or 395 to the Beltway to 29 north, or 95 if that is moving. Metro does not reach the Columbia suite; our Tysons office on the Silver Line is closer, by appointment, if you will not drive to Howard County. Book Tysons; do not assume the Boone Blvd suite is staffed.',
       'Law firms around Judiciary Square and K Street: BitLocker and FileVault volumes are routine. Bring the protector key or password. We will not “break” encryption as a service. If the SSD is not detected in firmware, chip-level work may still return an encrypted blob you can unlock in-house.',
       'Contractors in Navy Yard and Crystal City (the DC side of that commute): RAID 6 and virtual disks on failed members are the expensive cases. Photograph slot order. Do not let a hardware card finish a rebuild overnight “so it is ready in the morning.”',
       'This page is not a guide to the monuments. If a directory still describes DiskDoctor with Mall copy, that is leftover tourism text from an older template. The service is laboratory recovery for failed media that happens to be used by people who work in the District.',
-      'Dupont, Logan, and Shaw offices: a partner laptop that died the night before a filing is the usual rush. Power it down. Do not run Startup Repair overnight. Drop in Columbia in the morning or ship with tracking. Tysons is the closer appointment drop if you will not cross into Maryland.',
+      'Dupont, Logan, and Shaw offices: a partner laptop that died the night before a filing is the usual rush. Power it down. Do not run Startup Repair overnight. Drop in Columbia in the morning or ship with tracking. Our Tysons office is closer, by appointment, if you will not cross into Maryland.',
       'Georgetown and Foggy Bottom: Fusion Drives and failing NVMe modules are common. Disk Utility First Aid on a clicking HDD is a write. Imaging is a read. Bring the machine or the pulled storage.',
       'If a DC IT vendor already started a RAID rebuild “so it would be ready Monday,” stop it and send the members. Partial writes are often still reconstructable. Finishing the rebuild is how the second disk dies.',
-      'Capitol Hill and Judiciary Square filings: a dead laptop the night before a deadline is not a reason to run Startup Repair until 3 a.m. Power it down. Columbia can image in the morning. Tysons can take a scheduled drop if you will not cross into Maryland.',
+      'Capitol Hill and Judiciary Square filings: a dead laptop the night before a deadline is not a reason to run Startup Repair until 3 a.m. Power it down. Columbia can image in the morning. Our Tysons office can see you by appointment if you will not cross into Maryland.',
       'Navy Yard and Southwest contractors: RAID 6 and virtual disks are the usual expensive case. Photograph slot order. Do not let a hardware card import a foreign configuration over a weekend. Unclassified media only unless your contracting officer says otherwise.',
       'Georgetown retailers and restaurants: a POS SSD that vanished from BIOS after a power blip still often clones. Do not reinstall the POS image on the failed module. Ticket history lives on the NAND until you overwrite it.',
       'If a directory lists a National Mall address for DiskDoctor, ignore it. This operation’s streets are 10015 Old Columbia Rd in Columbia and 8300 Boone Blvd in Tysons (appointment). DC is a service area of those two, not a third laboratory.',
@@ -263,7 +263,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     faqs: [
       {
         question: 'Where is DiskDoctor for Washington DC data recovery?',
-        answer: 'The lab is in Columbia, MD. DC is a service area. Drop off in Columbia, schedule Tysons, or ship. There is no Mall kiosk.',
+        answer: 'The lab is in Columbia, MD. DC is a service area. Drop off at the Columbia lab, book a Tysons appointment, or ship. There is no Mall kiosk.',
       },
       {
         question: 'Can you handle legal hold and chain of custody?',
@@ -316,7 +316,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       'Gaithersburg life-science and engineering shops: RAID 1 pairs used for instruments should both travel, even if only one is clicking. The quiet mirror is often next. We clone both before anyone rebuilds.',
       'If Google still shows a Rockville storefront for this lab, it is a leftover citation. The working address is 10015 Old Columbia Rd Suite B 215. Rockville is how you describe the customer, not a second cleanroom.',
       'What to bring from Rockville: powered-down NAS or disks, slot photos, BitLocker key if needed, and the folder names that matter. Montgomery County clinics should say if patient files are on the volume so we apply chain-of-custody.',
-      'What happens next: Columbia evaluates free, quotes, clones, returns files on new media. Drive 29 or 270/495, or overnight the box. Tysons is the wrong drop unless you already booked it and live closer to Boone Blvd than to Oakland Ridge.',
+      'What happens next: Columbia evaluates free, quotes, clones, returns files on new media. Drive 29 or 270/495, or overnight the box. Book a Tysons appointment only if you live closer to Boone Blvd than to Oakland Ridge.',
       'If a Pike District IT person already ran recovery software on the live disks, tell us. Remaining readable sectors can still be cloned. Do not format the original because a partial USB copy exists.',
     ],
     scenarios: [
@@ -356,7 +356,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       },
       {
         question: 'Can I drop a phone in Rockville?',
-        answer: 'Not at a Rockville storefront. Schedule Columbia drop-off or Tysons by appointment, or ship the device powered off.',
+        answer: 'Not at a Rockville storefront. Drop off at the Columbia lab, book a Tysons appointment, or ship the device powered off.',
       },
     ],
     relatedServiceIds: ['raid-recovery', 'file-recovery', 'windows-recovery', 'mobile-recovery'],
@@ -368,14 +368,14 @@ export const locationCopy: Record<string, LocationCopy> = {
     seoDescription:
       'Alexandria VA data recovery via DiskDoctor’s Columbia MD lab. Hard drive, RAID, phone. Free evaluation. Call (410) 937-7332.',
     directAnswer:
-      'Alexandria does not have a DiskDoctor storefront. Old Town, Del Ray, and Eisenhower Valley recoveries are done at the Columbia, MD lab, with optional Tysons appointment drop-off. Free evaluation. Call (410) 937-7332.',
+      'Alexandria does not have a DiskDoctor storefront. Old Town, Del Ray, and Eisenhower Valley recoveries are done at the Columbia, MD lab, with our Tysons office available by appointment. Free evaluation. Call (410) 937-7332.',
     heroDescription:
       'Northern Virginia recovery for Alexandria devices at the Columbia laboratory. Stop using a clicking drive. Do not rebuild a NAS.',
     paragraphs: [
       'Alexandria failures are the usual mix: laptop disks that click on the GW Parkway commute, RAID boxes in home offices, and phones that took a fall on King Street. None of that requires a fake Old Town address. It requires a clone in Columbia.',
-      'Drop at Columbia, schedule Tysons (8300 Boone Blvd, appointment only), or ship. Evaluation free. No data, no charge.',
+      'Drop off at the Columbia lab, book an appointment at our Tysons office (8300 Boone Blvd), or ship. Evaluation free. No data, no charge.',
       'If a local repair shop already opened the drive, tell us. We can still image many of those, but opened HDA work belongs in a lab, not on a counter.',
-      'From Old Town, King Street to 395 to the Beltway to 29 is the usual drive to Columbia. From Eisenhower Avenue and Huntington, the Beltway west toward Tysons is shorter if you booked the Boone Blvd drop. Do not leave a clicking NAS running in a Del Ray office “until Friday.”',
+      'From Old Town, King Street to 395 to the Beltway to 29 is the usual drive to Columbia. From Eisenhower Avenue and Huntington, the Beltway west toward Tysons is shorter if you booked a Boone Blvd appointment. Do not leave a clicking NAS running in a Del Ray office “until Friday.”',
       'Alexandria home offices and small firms often keep QuickBooks and photo archives on a single USB disk. When the enclosure dies, the SATA disk inside may still clone. Bring the whole unit if you are unsure how to open it. Evaluation is free once it reaches Columbia.',
       'Waterfront and marina devices: power them off. Do not charge a wet phone or “dry out” a laptop on a heater. Corrosion continues with power. Chip-level work is in Columbia, not at a King Street counter.',
     ],
@@ -386,8 +386,8 @@ export const locationCopy: Record<string, LocationCopy> = {
       },
     ],
     faqs: [
-      { question: 'Do you have an Alexandria office?', answer: 'No. Columbia lab, optional Tysons appointment drop.' },
-      { question: 'Can Old Town businesses drop RAID disks?', answer: 'Yes — in Columbia or Tysons by appointment. Bring every member.' },
+      { question: 'Do you have an Alexandria office?', answer: 'No. Columbia lab, or our Tysons office by appointment.' },
+      { question: 'Where can Old Town businesses bring RAID disks?', answer: 'Drop them off at the Columbia lab, or book a Tysons appointment. Bring every member.' },
       { question: 'Phone recovery from Alexandria?', answer: 'Chip-level work is in Columbia. Power the phone off and stop charging it if it is wet.' },
       { question: 'Cost?', answer: 'Free evaluation, fixed quote, no data no charge on the recovery fee.' },
     ],
@@ -405,7 +405,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       'Arlington-area drive and phone recovery through Columbia. Contractor and office media welcome with chain-of-custody on request.',
     paragraphs: [
       'Arlington sits next to DC contractor offices and dense apartment NAS setups. When a disk fails, the correct next step is imaging, not another Disk Management “initialize” click.',
-      'Service area of Columbia; Tysons drop by appointment. Evaluation free.',
+      'Service area of Columbia; Tysons office by appointment. Evaluation free.',
       'Rosslyn and Courthouse contractors: BitLocker laptops that vanish from BIOS are chip-level or firmware jobs, not “Startup Repair.” Bring the machine or the NVMe. We will not bypass agency account locks.',
       'Ballston and Virginia Square apartments: USB disks with taxes and photos fail in cheap enclosures. Unplug them. A clone in Columbia is cheaper than another week of Disk Management “initialize.”',
       'Crystal City and Pentagon City offices: RAID members should travel together. Photograph the slots. Do not hot-swap a new disk into a clicking array over a weekend.',
@@ -488,15 +488,15 @@ export const locationCopy: Record<string, LocationCopy> = {
   },
   'mclean-va': {
     kind: 'service-area',
-    seoTitle: 'Data Recovery McLean VA | Tysons Drop',
+    seoTitle: 'Data Recovery McLean VA | Tysons Office',
     seoDescription:
-      'McLean VA data recovery via Tysons appointment drop and Columbia MD lab. Free evaluation. Call (410) 937-7332.',
+      'McLean VA data recovery via our Tysons office (by appointment) and Columbia MD lab. Free evaluation. Call (410) 937-7332.',
     directAnswer:
       'McLean data recovery uses the Tysons appointment office (8300 Boone Blvd Suite 513) and the Columbia lab. No McLean storefront. Call (410) 937-7332 before you drive to Tysons.',
     heroDescription:
-      'McLean and Langley devices drop at Tysons by appointment or go straight to Columbia. Recovery is laboratory work, not a mall kiosk.',
+      'McLean and Langley clients can meet us at the Tysons office by appointment or go straight to the Columbia lab. Recovery is laboratory work, not a mall kiosk.',
     paragraphs: [
-      'McLean is minutes from the Tysons appointment suite. That is a drop, not a cleanroom. Imaging still happens in Columbia. Schedule the drop so the suite is staffed.',
+      'McLean is minutes from the Tysons appointment suite. Imaging still happens in the Columbia lab. Book an appointment so the suite is staffed.',
       'From downtown McLean or Langley, Boone Blvd is a short drive. Call (410) 937-7332 first. An unscheduled visit to suite 513 is how people find a locked door. Columbia remains the laboratory if Tysons cannot meet that day.',
       'McLean household Fusion Drives and iMacs: the HDD side clicks while the SSD side still boots slowly. Do not run Disk Utility First Aid in a loop. Bring the machine or the pulled drives. We clone both parts of the pair.',
       'Professional offices along Chain Bridge and Old Dominion: BitLocker volumes and failing NVMe modules are routine. Bring the key. We return files on new media, not a “repaired” original you should trust as the only copy.',
@@ -520,14 +520,14 @@ export const locationCopy: Record<string, LocationCopy> = {
     kind: 'service-area',
     seoTitle: 'Data Recovery Great Falls VA | Columbia Lab',
     seoDescription:
-      'Great Falls VA data recovery at DiskDoctor’s Columbia lab, Tysons drop by appointment. Free evaluation. Call (410) 937-7332.',
+      'Great Falls VA data recovery at DiskDoctor’s Columbia lab, with a Tysons office by appointment. Free evaluation. Call (410) 937-7332.',
     directAnswer:
-      'Great Falls does not have a DiskDoctor office. Use the Tysons appointment drop or the Columbia lab. Free evaluation. Call (410) 937-7332.',
+      'Great Falls does not have a DiskDoctor office. Book an appointment at our Tysons office or use the Columbia lab. Free evaluation. Call (410) 937-7332.',
     heroDescription:
-      'Great Falls and Reston-area recovery through Columbia, with optional Tysons drop-off. Not a park brochure.',
+      'Great Falls and Reston-area recovery through Columbia, with our Tysons office by appointment. Not a park brochure.',
     paragraphs: [
-      'Home NAS and workstation failures in Great Falls are imaged in Columbia. Schedule Tysons if that is a shorter drop. Power down clicking disks.',
-      'Great Falls, Reston, and Herndon are not a park-brochure service. The work is cloning a clicking 8TB desktop disk or a 4-bay RAID under a home-office desk. Tysons is the closer drop; Columbia is the lab.',
+      'Home NAS and workstation failures in Great Falls are imaged in Columbia. Book a Tysons appointment if that is a shorter drive. Power down clicking disks.',
+      'Great Falls, Reston, and Herndon are not a park-brochure service. The work is cloning a clicking 8TB desktop disk or a 4-bay RAID under a home-office desk. Tysons is the closer office, by appointment; Columbia is the lab.',
       'Photo libraries on a single disk are the usual Great Falls failure. If the disk is clicking, stop the Lightroom catalog on that volume. Every extra spin is a write-adjacent risk. Bring the disk in a padded box.',
       'Mail-in from Great Falls: rigid box, two inches of padding, powered down, note with the folders that matter. We confirm receipt by email.',
       'Reston and Herndon neighbors use the same path: Tysons by appointment or Columbia lab. There is no Great Falls storefront and no park-ranger copy on this page. The job is cloning a failed disk.',
@@ -561,7 +561,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       'From Potomac Village, 189 to 495 to 29 is a common drive to Columbia. Bethesda-adjacent streets can also use Tysons by appointment if that is shorter. There is no Potomac storefront and no “Bethesda lab.”',
       'Video and photo archives on RAID 5 are the expensive Potomac case. One clicking member plus a rebuild is two holes in the stripe. Label the slots. Bring all disks. We reconstruct from clones in Columbia.',
       'Mac desktops and Fusion pairs are common in Potomac households. If Disk Utility cannot repair the volume, stop. First Aid on a clicking HDD is a write. Imaging is a read.',
-      'Bethesda-adjacent streets can drop at Tysons by appointment if that is shorter than Columbia. Call (410) 937-7332 before you drive to Boone Blvd. The suite is not always staffed.',
+      'Bethesda-adjacent clients can book a Tysons appointment if that is shorter than Columbia. Call (410) 937-7332 before you drive to Boone Blvd. The suite is not always staffed.',
     ],
     scenarios: [
       {
@@ -571,7 +571,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     faqs: [
       { question: 'Potomac office?', answer: 'No. Columbia lab.' },
-      { question: 'Bethesda drop?', answer: 'Use Columbia or Tysons by appointment.' },
+      { question: 'Where do Bethesda clients bring a drive?', answer: 'Drop it off at the Columbia lab, or book an appointment at our Tysons office.' },
       { question: 'Timeline?', answer: '24–48 hours logical after arrival; 3–7 days RAID.' },
       { question: 'Cost?', answer: 'Free evaluation. No data, no charge.' },
     ],

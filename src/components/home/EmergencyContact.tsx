@@ -2,7 +2,7 @@
 
 import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
-import { PHONE_DISPLAY, PHONE_TEL } from '@/lib/site';
+import { EMAIL, PHONE_DISPLAY, PHONE_TEL } from '@/lib/site';
 
 // Define headerVariants with proper typing
 const headerVariants: Variants = {
@@ -39,11 +39,13 @@ export default function EmergencyContact() {
     {
       title: "24/7 Emergency Line",
       value: PHONE_DISPLAY,
+      href: PHONE_TEL,
       icon: "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.836l1.498 4.493a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.493 1.498a1 1 0 01.684.949V17a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
     },
     {
       title: "Email Support",
-      value: "shah4268@msn.com",
+      value: EMAIL,
+      href: `mailto:${EMAIL}`,
       icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
     },
     {
@@ -101,7 +103,11 @@ export default function EmergencyContact() {
                   </svg>
                 </motion.div>
                 <h3 className="font-semibold text-[var(--color-text-primary)] mb-2">{method.title}</h3>
-                <p className="text-[var(--color-primary)] font-bold">{method.value}</p>
+                {method.href ? (
+                  <a href={method.href} className="text-[var(--color-primary)] font-bold hover:underline">{method.value}</a>
+                ) : (
+                  <p className="text-[var(--color-primary)] font-bold">{method.value}</p>
+                )}
               </motion.div>
             ))}
           </motion.div>

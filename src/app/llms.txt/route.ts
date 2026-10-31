@@ -4,7 +4,7 @@ export const dynamic = 'force-static';
 
 const body = `# DiskDoctor Data Recovery
 
-Professional data recovery laboratory in Columbia, Maryland (head office) with an appointment-only drop in Tysons, Virginia.
+Professional data recovery laboratory in Columbia, Maryland (head office) with an office in Tysons, Virginia, by appointment.
 
 - Lab: 10015 Old Columbia Rd Suite B 215, Columbia, MD 21046
 - Tysons (appointment only): 8300 Boone Blvd Suite 513, Tysons, VA 22182

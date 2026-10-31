@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     absolute: 'About the Columbia MD Lab | DiskDoctor',
   },
   description:
-    'DiskDoctor Data Recovery operates the Columbia MD laboratory at 10015 Old Columbia Rd and a Tysons VA appointment office. Data recovery since 1991.',
+    'DiskDoctor Data Recovery operates the Columbia MD laboratory at 10015 Old Columbia Rd and a Tysons VA office by appointment. ISO 9001 certified, recovering data since 1991.',
   alternates: { canonical: `${SITE_URL}/about` },
 };
 
@@ -25,13 +25,18 @@ export default function AboutPage() {
           <p>
             This website is the Columbia, Maryland and Tysons, Virginia operation at{' '}
             {COLUMBIA_ADDRESS}. We recover failed hard drives, SSDs, RAID arrays, and phones.
-            The laboratory has been doing that work since 1991.
+            The laboratory has been doing that work since 1991: 35+ years, 15,000+ cases recovered
+            and a 95% success rate.
           </p>
           <p>
-            Head office and cleanroom: {COLUMBIA_ADDRESS}. Weekdays 8:30 a.m.–5:00 p.m., emergency
-            intake by phone at <a className="text-[var(--color-primary)] font-semibold" href={PHONE_TEL}>{PHONE_DISPLAY}</a>.
-            Tysons: {TYSONS_ADDRESS}, by appointment only — staff are not always present. Imaging
-            is performed in Columbia.
+            The Columbia lab is ISO 9001 certified, and open-drive work is done in its clean room.
+          </p>
+          <p>
+            Head office and recovery lab: {COLUMBIA_ADDRESS}. Walk-in weekdays 8:30 a.m.–5:00 p.m.
+            24/7 emergency line:{' '}
+            <a className="text-[var(--color-primary)] font-semibold" href={PHONE_TEL}>{PHONE_DISPLAY}</a>.
+            Tysons: {TYSONS_ADDRESS}, an office by appointment — staff are not always present.
+            Recovery work is performed in the Columbia lab.
           </p>
           <p>
             We do not run extra storefronts in Baltimore, Washington DC, Rockville, or the other

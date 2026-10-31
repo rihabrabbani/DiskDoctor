@@ -682,7 +682,7 @@ export const allServices: ServicePageData[] = [
     {
       title: 'Complete Data Recovery',
       description: 'Recovery of emails, attachments, contacts, calendars, tasks, and notes with full metadata preservation.',
-      metric: '99% Data Recovery Rate'
+      metric: '95% Success Rate'
     },
     {
       title: 'Flexible Output Options',
@@ -1022,7 +1022,7 @@ export const allServices: ServicePageData[] = [
       {
         title: 'Apple Ecosystem Specialists',
         description: 'Our technicians are certified in Apple hardware and software with deep macOS expertise.',
-        metric: '15+ Years Experience'
+        metric: '35+ Years Experience'
       },
       {
         title: 'Latest Mac Support',
@@ -1590,7 +1590,7 @@ export const allServices: ServicePageData[] = [
       {
         title: 'Mission-Critical RAID Recovery',
         description: 'Specialized recovery for mission-critical business systems and enterprise storage.',
-        metric: '99% Success Rate'
+        metric: '95% Success Rate'
       },
       {
         title: 'Comprehensive Service',
@@ -2893,13 +2893,13 @@ export const allServices: ServicePageData[] = [
     detailedBenefits: [
       {
         title: 'Unmatched UNIX Experience',
-        description: 'Over 25 years of experience with enterprise UNIX systems and legacy mainframe environments.',
-        metric: '25+ Years UNIX Expertise'
+        description: 'Recovering data since 1991, including enterprise UNIX systems and legacy mainframe environments.',
+        metric: '35+ Years Experience'
       },
       {
         title: 'Critical System Recovery',
         description: 'Specialized in mission-critical UNIX system recovery for financial, government, and enterprise environments.',
-        metric: '99% Mission-Critical Success'
+        metric: '95% Success Rate'
       },
       {
         title: 'Complete Legacy Support',

@@ -91,7 +91,7 @@ export default function LocationContact({ location }: LocationContactProps) {
                       shah4268@msn.com
                     </a>
                     <p className="text-sm text-[var(--color-text-secondary)] mt-1">
-                      We respond within 30 minutes
+                      We reply within one business day
                     </p>
                   </div>
                 </div>
@@ -153,7 +153,7 @@ export default function LocationContact({ location }: LocationContactProps) {
                       </div>
                       <div className="flex justify-between">
                         <span>Emergency Service:</span>
-                        <span className="font-medium text-[var(--color-accent)]">24/7 Available</span>
+                        <a href={telHref(location.phone)} className="font-medium text-[var(--color-accent)] hover:underline">24/7: {location.phone}</a>
                       </div>
                     </div>
                   </div>
@@ -176,7 +176,7 @@ export default function LocationContact({ location }: LocationContactProps) {
                 <HubspotContactForm />
 
                 <p className="text-sm text-[var(--color-neutral-700)] mt-4 text-center">
-                  We'll contact you within 30 minutes during business hours
+                  We reply within one business day. Emergencies: call our 24/7 line.
                 </p>
               </div>
             </motion.div>

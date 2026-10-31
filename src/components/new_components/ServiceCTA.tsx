@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { PHONE_DISPLAY, PHONE_TEL } from '@/lib/site';
 
 interface ServiceCTAProps {
   ctaSection: {
@@ -80,7 +81,7 @@ export default function ServiceCTA({
             </div>
             <div className="flex items-center">
               <span className="text-green-500 mr-2">✓</span>
-              Class 10 Clean Room
+              Clean Room
             </div>
             <div className="flex items-center">
               <span className="text-green-500 mr-2">✓</span>
@@ -124,8 +125,11 @@ export default function ServiceCTA({
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            <p className="text-sm mb-2 text-[var(--color-neutral-800)]">Available 24/7 for Emergency Recovery</p>
-            <p className="text-xs text-[var(--color-neutral-800)]">Average response time: Under 30 minutes</p>
+            <p className="text-sm mb-2 text-[var(--color-neutral-800)]">
+              24/7 emergency line:{' '}
+              <a href={PHONE_TEL} className="font-semibold hover:underline">{PHONE_DISPLAY}</a>
+            </p>
+            <p className="text-xs text-[var(--color-neutral-800)]">Form enquiries get a reply within one business day</p>
           </motion.div>
         </motion.div>
       </div>

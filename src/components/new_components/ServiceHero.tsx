@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { PHONE_TEL } from '@/lib/site';
+import { PHONE_DISPLAY, PHONE_TEL } from '@/lib/site';
 
 interface ServiceHeroProps {
   title: string;
@@ -162,7 +162,7 @@ export default function ServiceHero({
               </div>
               <div className="flex items-center bg-[var(--color-surface-100)] px-3 py-1 rounded-full">
                 <span className="text-green-500 mr-1">✓</span>
-                24/7 Emergency
+                <a href={PHONE_TEL} className="hover:underline">24/7: {PHONE_DISPLAY}</a>
               </div>
               <div className="flex items-center bg-[var(--color-surface-100)] px-3 py-1 rounded-full">
                 <span className="text-green-500 mr-1">✓</span>
@@ -248,7 +248,7 @@ export default function ServiceHero({
                   transition={{ delay: 1.4, duration: 0.5 }}
                 >
                   <div className="text-sm font-semibold" style={{ color: accentColor }}>
-                    Class 10 Clean Room
+                    Clean Room
                   </div>
                 </motion.div>
               </div>

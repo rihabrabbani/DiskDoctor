@@ -12,15 +12,15 @@ interface LocationTrustSignalsProps {
 const trustSignals = [
   {
     icon: Clock,
-    title: '20+ Years Experience',
-    description: 'Over two decades of data recovery expertise',
-    highlight: '20+'
+    title: '35+ Years Experience',
+    description: 'Recovering data since 1991',
+    highlight: '35+'
   },
   {
     icon: Users,
-    title: '10,000+ Successful Recoveries',
-    description: 'Thousands of satisfied customers nationwide',
-    highlight: '10k+'
+    title: '15,000+ Cases Recovered',
+    description: 'Hard drives, SSDs, RAID arrays and servers',
+    highlight: '15,000+'
   },
   {
     icon: Shield,
@@ -47,7 +47,7 @@ const features = [
   'Free initial consultation and diagnosis',
   'No data, no charge guarantee policy',
   'Secure chain of custody procedures',
-  '24/7 emergency service available',
+  '24/7 emergency line: (410) 937-7332',
   'All major device types supported',
   'Confidentiality agreements available'
 ];

@@ -262,8 +262,8 @@ export const locations: LocationData[] = [
     address: 'Serving McLean Metro Area',
     zipCode: '22101',
     coordinates: { lat: 38.9343, lng: -77.1775 },
-    metaDescription: "McLean VA data recovery via Tysons appointment drop and Columbia MD lab. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "McLean and Langley devices drop at Tysons by appointment or go straight to Columbia. Recovery is laboratory work, not a mall kiosk.",
+    metaDescription: "McLean VA data recovery via our Tysons office (by appointment) and Columbia MD lab. Free evaluation. Call (410) 937-7332.",
+    heroDescription: "McLean and Langley clients can meet us at the Tysons office by appointment or go straight to the Columbia lab. Recovery is laboratory work, not a mall kiosk.",
     localKeywords: [
       'data recovery McLean VA',
       'McLean Virginia data recovery',
@@ -293,8 +293,8 @@ export const locations: LocationData[] = [
     zipCode: '22182',
     coordinates: { lat: 38.9182, lng: -77.2228 },
     isAppointmentOnly: true,
-    metaDescription: "Tysons VA data recovery drop at 8300 Boone Blvd Suite 513, by appointment. Media is processed at the Columbia MD lab. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "Northern Virginia drop-off at Tysons Corner, by appointment only. Staff are not always on site. Schedule before you drive. Recovery work is performed at the Columbia laboratory.",
+    metaDescription: "Tysons VA data recovery office at 8300 Boone Blvd Suite 513, by appointment. Media is processed at the Columbia MD lab. Free evaluation. Call (410) 937-7332.",
+    heroDescription: "Our Northern Virginia office in Tysons, by appointment. Staff are not always on site. Schedule before you drive. Recovery work is performed at the Columbia laboratory.",
     localKeywords: [
       'data recovery Tysons VA',
       'Tysons Corner data recovery',
@@ -323,8 +323,8 @@ export const locations: LocationData[] = [
     address: 'Serving Great Falls Metro Area',
     zipCode: '22066',
     coordinates: { lat: 39.0012, lng: -77.2883 },
-    metaDescription: "Great Falls VA data recovery at DiskDoctor’s Columbia lab, Tysons drop by appointment. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "Great Falls and Reston-area recovery through Columbia, with optional Tysons drop-off. Not a park brochure.",
+    metaDescription: "Great Falls VA data recovery at DiskDoctor’s Columbia lab, with a Tysons office by appointment. Free evaluation. Call (410) 937-7332.",
+    heroDescription: "Great Falls and Reston-area recovery through Columbia, with our Tysons office by appointment. Not a park brochure.",
     localKeywords: [
       'data recovery Great Falls VA',
       'Great Falls Virginia data recovery',

@@ -38,7 +38,7 @@ const CTA_CONTENT = [
     },
     {
         title: "Critical Data Emergency?",
-        description: "Time is critical. Stop using your damaged device immediately to prevent further logical or physical destruction. We offer 24/7 priority service.",
+        description: "Time is critical. Stop using your damaged device immediately to prevent further logical or physical destruction. Our 24/7 emergency line is (410) 937-7332.",
         buttonText: "Request Emergency Assist"
     }
 ];
@@ -56,7 +56,7 @@ const CTA_DESIGNS = [
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-primary)] opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-primary)]"></span>
                         </span>
-                        24/7 Priority Service
+                        24/7: (410) 937-7332
                     </div>
                     <h3 className="text-2xl font-bold mb-3 text-white !text-white !mt-0 leading-snug">
                         {cta.title}

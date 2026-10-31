@@ -4,6 +4,7 @@ import { getStaticBlog } from '@/data/staticBlogPosts';
 import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb';
 import { blogPostSchema, breadcrumbSchema, faqSchema } from '@/lib/structuredData';
 import BlogPostContent from './BlogPostContent';
+import { currentBlogSlug, legacyBlogSlug, relatedServiceForPost } from '@/data/blogSlugs';
 
 interface BlogPostProps {
   params: Promise<{ id: string }>;
@@ -23,6 +24,12 @@ async function getBlog(identifier: string) {
     // Try slug first
     let blog = await blogsCollection.findOne({ slug: identifier });
 
+    // Renamed slug whose MongoDB record still uses the old one
+    const legacySlug = legacyBlogSlug(identifier);
+    if (!blog && legacySlug) {
+      blog = await blogsCollection.findOne({ slug: legacySlug });
+    }
+
     // Fall back to UUID id
     if (!blog) {
       blog = await blogsCollection.findOne({ id: identifier });
@@ -33,7 +40,7 @@ async function getBlog(identifier: string) {
     // Convert MongoDB document to plain object
     return {
       id: blog.id,
-      slug: blog.slug || blog.id,
+      slug: currentBlogSlug(blog.slug || blog.id),
       title: blog.title,
       content: blog.content,
       sections: blog.sections || [],
@@ -192,7 +199,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
           }}
         />
       )}
-      <BlogPostContent blog={blog} />
+      <BlogPostContent blog={blog} relatedService={relatedServiceForPost(blog)} />
     </>
   );
 }

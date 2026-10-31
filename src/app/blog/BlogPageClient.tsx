@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { currentBlogSlug } from '@/data/blogSlugs';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
@@ -198,7 +199,7 @@ export default function BlogPageClient({
                       </span>
 
                       <Link
-                        href={`/blog/${blog.slug || blog.id}`}
+                        href={`/blog/${currentBlogSlug(blog.slug || blog.id)}`}
                         className="inline-flex items-center text-[var(--color-primary)] font-medium hover:underline"
                       >
                         Read More

@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { blogSlugRenames } from "./src/data/blogSlugs";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -80,6 +81,17 @@ const nextConfig: NextConfig = {
         destination: '/',
         permanent: true,
       },
+      // A blog post links here; the service page is /services/mobile-recovery.
+      {
+        source: '/services/mobile-device-recovery',
+        destination: '/services/mobile-recovery',
+        statusCode: 301,
+      },
+      ...Object.entries(blogSlugRenames).map(([oldSlug, newSlug]) => ({
+        source: `/blog/${oldSlug}`,
+        destination: `/blog/${newSlug}`,
+        statusCode: 301 as const,
+      })),
     ];
   },
 };

@@ -28,12 +28,13 @@ interface Blog {
 
 interface BlogPostContentProps {
     blog: Blog;
+    relatedService?: { href: string; label: string; description: string } | null;
 }
 
 const CTA_CONTENT = [
     {
         title: "Need Professional Data Recovery?",
-        description: "Don't risk permanent data loss. Our certified engineers have a 95% success rate recovering critical data from failed hard drives, RAID arrays, and flash media.",
+        description: "Don't risk permanent data loss. Our ISO 9001 certified lab has a 95% success rate recovering critical data from failed hard drives, SSDs and RAID arrays.",
         buttonText: "Get a Free Evaluation"
     },
     {
@@ -105,7 +106,7 @@ const CTA_DESIGNS = [
     )
 ];
 
-export default function BlogPostContent({ blog }: BlogPostContentProps) {
+export default function BlogPostContent({ blog, relatedService }: BlogPostContentProps) {
     const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
     const formatDate = (dateString: string) => {
@@ -311,6 +312,16 @@ export default function BlogPostContent({ blog }: BlogPostContentProps) {
                                         );
                                     });
                                 })()}
+
+                                {relatedService && (
+                                    <aside className="mt-12 p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-100)] clear-both">
+                                        <p className="text-sm font-semibold uppercase tracking-wide text-[var(--color-text-tertiary)] !mb-2 !mt-0">Related service</p>
+                                        <Link href={relatedService.href} className="text-xl font-bold text-[var(--color-primary)] hover:underline no-underline">
+                                            {relatedService.label} →
+                                        </Link>
+                                        <p className="text-[var(--color-text-secondary)] !mt-2 !mb-0">{relatedService.description}</p>
+                                    </aside>
+                                )}
 
                                 {/* FAQs Rendering */}
                                 {blog.faqs && blog.faqs.length > 0 && (

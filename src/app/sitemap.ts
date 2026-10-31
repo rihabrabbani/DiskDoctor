@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import { allServices } from '@/data/allServices'
 import { coreServicePages, dataRecoveryCost } from '@/data/corePages'
 import { staticBlogPosts } from '@/data/staticBlogPosts'
+import { currentBlogSlug } from '@/data/blogSlugs'
 import { locations } from '@/data/locations'
 import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb'
 
@@ -112,7 +113,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const safeDate = Number.isNaN(parsedDate.getTime()) ? generatedAt : parsedDate
 
         return {
-          url: `${baseUrl}/blog/${blog.slug || blog.id}`,
+          url: `${baseUrl}/blog/${currentBlogSlug(blog.slug || blog.id)}`,
           lastModified: safeDate,
           changeFrequency: 'monthly' as const,
           priority: 0.7,

@@ -45,3 +45,6 @@ next-env.d.ts
 # local reports/docs kept outside repo tracking
 /diskdoctorsamerica.com-Coverage-2026-03-11/
 /docs/
+
+# blog-cleanup-2026.mjs backups (original post content)
+blog-cleanup-backup-*.json

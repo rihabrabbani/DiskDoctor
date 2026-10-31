@@ -1,5 +1,7 @@
 // Structured Data (JSON-LD) generators for SEO
 
+import { COLUMBIA_MAPS_URL, TYSONS_MAPS_URL } from "./site"
+
 const SITE = "https://www.diskdoctorsamerica.com"
 
 // Stable entity ids. Service pages point their provider at COLUMBIA_ID.
@@ -77,6 +79,7 @@ export const columbiaLocalBusinessSchema = {
   "name": "DiskDoctor Data Recovery — Columbia, MD Lab",
   "description": "Head office and ISO 9001 certified recovery lab, with a clean room, for hard drives, SSDs, RAID arrays, NAS units and servers. Walk-in Monday to Friday; 24/7 emergency line.",
   "url": `${SITE}/columbia-md`,
+  "hasMap": COLUMBIA_MAPS_URL,
   "image": `${SITE}/images/logo.png`,
   "telephone": "+1-410-937-7332",
   "email": "shah4268@msn.com",
@@ -129,6 +132,7 @@ export const tysonsLocalBusinessSchema = {
   "name": "DiskDoctor Data Recovery — Tysons, VA Office",
   "description": "Northern Virginia office, by appointment. Recovery work is done at the DiskDoctor lab in Columbia, MD.",
   "url": `${SITE}/tysons-va`,
+  "hasMap": TYSONS_MAPS_URL,
   "image": `${SITE}/images/logo.png`,
   "telephone": "+1-410-937-7332",
   "parentOrganization": { "@id": ORGANIZATION_ID },

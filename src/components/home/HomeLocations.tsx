@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { locations } from '@/data/locations';
-import { COLUMBIA_MAPS_URL, PHONE_TEL } from '@/lib/site';
+import { COLUMBIA_MAPS_URL, PHONE_TEL, TYSONS_MAPS_URL } from '@/lib/site';
 
 const serviceAreas = locations.filter((location) => !location.isHeadOffice && !location.isAppointmentOnly);
 
@@ -66,6 +66,14 @@ export default function HomeLocations() {
               >
                 About the office
               </Link>
+              <a
+                href={TYSONS_MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mr-4 text-[var(--color-primary)] font-medium hover:underline"
+              >
+                Directions
+              </a>
               <Link
                 href="/contact"
                 className="inline-block mt-3 px-6 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[var(--color-text-inverse)] rounded-lg font-semibold transition-all"

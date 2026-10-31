@@ -105,7 +105,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              Recovering data since 1991 at our ISO 9001 certified clean-room lab in Columbia, Maryland, with a Virginia office in Tysons by appointment. Free evaluation. No data, no charge.
+              Recovering data since 1991 at our ISO 9001 certified lab and clean room in Columbia, Maryland, with a Virginia office in Tysons by appointment. Free evaluation. No data, no charge.
             </motion.p>
             
             <motion.div 

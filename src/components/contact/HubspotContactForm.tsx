@@ -9,6 +9,7 @@ import {
   HUBSPOT_REGION,
   PHONE_DISPLAY,
   PHONE_TEL,
+  SITE_URL,
 } from '@/lib/site';
 
 declare global {
@@ -25,24 +26,9 @@ declare global {
 
 const SCRIPT_ID = 'hubspot-forms-v2-script';
 
-function trackFormSubmit() {
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event: 'hubspot_form_submit', event_category: 'lead', method: 'hubspot' });
-  if (typeof window.gtag === 'function') {
-    window.gtag('event', 'generate_lead', { method: 'hubspot' });
-    window.gtag('event', 'hubspot_form_submit', { method: 'hubspot' });
-    window.gtag('event', 'conversion', {
-      send_to: 'AW-16976188859/siYRCM7CyqMdELur8J4_',
-      value: 1.0,
-      currency: 'USD',
-    });
-    window.gtag('event', 'conversion', {
-      send_to: 'AW-7835970649/qGxRCNnYvZgdELjaqsw9',
-      value: 1.0,
-      currency: 'USD',
-    });
-  }
-}
+// Lead conversions (GA4 generate_lead + Google Ads) fire from GTM on the /thank-you page view,
+// so they are not sent from here as well.
+const THANK_YOU_URL = `${SITE_URL}/thank-you`;
 
 function forceUsPhoneCountry(root: HTMLElement) {
   const countrySelects = root.querySelectorAll<HTMLSelectElement>('select');
@@ -122,6 +108,7 @@ export default function HubspotContactForm() {
           formId: HUBSPOT_FORM_ID,
           target: '#hubspot-contact-form',
           locale: 'en',
+          redirectUrl: THANK_YOU_URL,
           onFormReady: ($form: HTMLElement) => {
             const root = document.getElementById('hubspot-contact-form');
             if (root) {
@@ -129,9 +116,6 @@ export default function HubspotContactForm() {
               setTimeout(() => forceUsPhoneCountry(root), 400);
             }
             if ($form) forceUsPhoneCountry($form);
-          },
-          onFormSubmitted: () => {
-            trackFormSubmit();
           },
         });
 

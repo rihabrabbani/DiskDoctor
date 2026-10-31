@@ -25,10 +25,41 @@ export default function ContactPage() {
       <main className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
-            <div className="mb-10">
+            <div className="mb-8">
               <h1 className="text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-4">
                 Free data recovery evaluation
               </h1>
+              <p className="text-lg text-[var(--color-text-secondary)] max-w-3xl leading-relaxed">
+                Tell us what failed and we&apos;ll give you a free evaluation and a fixed quote before
+                any paid work. No data, no charge. We reply within one business day; for emergencies
+                call our 24/7 line,{' '}
+                <a href={PHONE_TEL} className="text-[var(--color-primary)] font-semibold">
+                  (410) 937-7332
+                </a>
+                .
+              </p>
+            </div>
+
+            <div className="bg-white border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-[var(--shadow-md)] mb-10">
+              <HubspotContactForm />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+              <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-xl p-5">
+                <p className="text-sm text-[var(--color-text-tertiary)]">Success Rate</p>
+                <p className="text-2xl font-bold text-[var(--color-text-primary)]">95%</p>
+              </div>
+              <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-xl p-5">
+                <p className="text-sm text-[var(--color-text-tertiary)]">In Business Since</p>
+                <p className="text-2xl font-bold text-[var(--color-text-primary)]">1991</p>
+              </div>
+              <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-xl p-5">
+                <p className="text-sm text-[var(--color-text-tertiary)]">Emergency Assistance</p>
+                <p className="text-2xl font-bold text-[var(--color-text-primary)]">24/7</p>
+              </div>
+            </div>
+
+            <div>
               <p className="text-lg text-[var(--color-text-secondary)] max-w-3xl leading-relaxed mb-4">
                 Stop using the failed drive, phone, or RAID. Power it down and tell us what happened.
                 A DiskDoctor specialist at the Columbia, MD lab reviews the case, explains options, and
@@ -48,11 +79,11 @@ export default function ContactPage() {
                 <a href={PHONE_TEL} className="text-[var(--color-primary)] font-semibold">
                   {PHONE_DISPLAY}
                 </a>
-                . Email remains{' '}
+                , or email{' '}
                 <a href={`mailto:${EMAIL}`} className="text-[var(--color-primary)] font-semibold">
                   {EMAIL}
-                </a>{' '}
-                until a branded mailbox is in place.
+                </a>
+                .
               </p>
               <p className="text-lg text-[var(--color-text-secondary)] max-w-3xl leading-relaxed mb-4">
                 What to include in the form: device type (hard drive, SSD, NAS, phone), what failed
@@ -73,25 +104,6 @@ export default function ContactPage() {
                 above. A specialist replies with next steps. You are not buying a repair until you
                 accept a quote.
               </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-xl p-5">
-                <p className="text-sm text-[var(--color-text-tertiary)]">Success Rate</p>
-                <p className="text-2xl font-bold text-[var(--color-text-primary)]">95%</p>
-              </div>
-              <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-xl p-5">
-                <p className="text-sm text-[var(--color-text-tertiary)]">In Business Since</p>
-                <p className="text-2xl font-bold text-[var(--color-text-primary)]">1991</p>
-              </div>
-              <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-xl p-5">
-                <p className="text-sm text-[var(--color-text-tertiary)]">Emergency Assistance</p>
-                <p className="text-2xl font-bold text-[var(--color-text-primary)]">24/7</p>
-              </div>
-            </div>
-
-            <div className="bg-white border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-[var(--shadow-md)]">
-              <HubspotContactForm />
             </div>
           </div>
         </div>

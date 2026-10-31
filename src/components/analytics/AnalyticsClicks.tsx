@@ -9,12 +9,10 @@ declare global {
   }
 }
 
+// Pushes to the dataLayer only; GTM decides which GA4/Ads tags fire, so events are not double-sent via gtag.
 function track(event: string, params?: Record<string, unknown>) {
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ event, ...params });
-  if (typeof window.gtag === 'function') {
-    window.gtag('event', event, params);
-  }
 }
 
 export default function AnalyticsClicks() {
@@ -24,10 +22,11 @@ export default function AnalyticsClicks() {
       const link = target?.closest('a');
       if (!link) return;
       const href = link.getAttribute('href') || '';
+      const linkLocation = window.location.pathname;
       if (href.startsWith('tel:')) {
-        track('tel_click', { event_category: 'lead', method: 'phone', phone: href });
+        track('phone_click', { link_location: linkLocation });
       } else if (href.startsWith('mailto:')) {
-        track('mailto_click', { event_category: 'lead', method: 'email' });
+        track('email_click', { link_location: linkLocation });
       }
     };
     document.addEventListener('click', onClick);

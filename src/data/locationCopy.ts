@@ -98,15 +98,15 @@ export const locationCopy: Record<string, LocationCopy> = {
     seoDescription:
       'Tysons VA data recovery office at 8300 Boone Blvd Suite 513, by appointment. Media is processed at the Columbia MD lab. Free evaluation. Call (410) 937-7332.',
     directAnswer:
-      'DiskDoctor’s Tysons location is 8300 Boone Blvd Suite 513, Tysons, VA 22182, is our Virginia office, by appointment. Recovery work happens in the Columbia, MD lab: devices you bring to a Tysons appointment are taken there for imaging. Call (410) 937-7332 to schedule.',
+      'DiskDoctor’s Tysons office is at 8300 Boone Blvd Suite 513, Tysons, VA 22182, by appointment. Recovery work happens in the Columbia, MD lab: devices you bring to a Tysons appointment are taken there for imaging. Call (410) 937-7332 to schedule.',
     heroDescription:
-      'Our Northern Virginia office in Tysons, by appointment. Staff are not always on site. Schedule before you drive. Recovery work is performed at the Columbia laboratory.',
+      'Our Northern Virginia office in Tysons, by appointment. Staff are not always on site, so book before you drive. Recovery work is performed at the Columbia lab.',
     paragraphs: [
-      'Tysons is the Virginia appointment office for DiskDoctor, not a duplicate of the Columbia cleanroom. If you arrive unannounced, the suite may be locked. Call (410) 937-7332, pick a window, and bring the failed media powered down.',
+      'Tysons is DiskDoctor’s Virginia office, by appointment. Recovery work happens in the Columbia lab, not in Tysons. If you arrive unannounced, the suite may be locked. Call (410) 937-7332, pick a window, and bring the failed media powered down.',
       'Address: 8300 Boone Blvd Suite 513, Tysons, VA 22182. Parking is in the Boone Boulevard garage. McLean, Vienna, Falls Church, Dunn Loring, and Merrifield clients book an appointment here to avoid a trip to Howard County.',
       'What happens after your appointment: the device is logged, transported to Columbia, imaged, and quoted. You can collect recovered files in Tysons on a scheduled return or receive a shipped encrypted drive. Chain of custody is kept for business and legal jobs.',
       'Do not start a RAID rebuild on a Tysons-area NAS while you wait for an appointment. Power the array down. The second disk in a degraded RAID 5 often dies during the rebuild, which is the expensive case.',
-      'Emergency phone recovery and clicking-drive intake can still be same-day if Columbia has bench time. The appointment constraint is physical presence at Boone Blvd, not whether the lab will take the job.',
+      'Urgent jobs do not have to wait for a Tysons slot. Call our 24/7 emergency line at (410) 937-7332 and we will work out the fastest way to get the device to the Columbia lab. The appointment constraint is physical presence at Boone Blvd, not whether the lab will take the job.',
       'How to reach the suite: 8300 Boone Blvd is the office tower next to the Tysons Corner corridor, not a mall kiosk inside Tysons I or II. Suite 513 is upstairs. Bring a photo ID if the building desk asks. Do not leave a drive with a receptionist who is not DiskDoctor staff. If you cannot get in, call (410) 937-7332 from the lobby rather than sliding media under a door.',
       'Silver Line riders sometimes prefer Tysons to Columbia. That is a logistics choice, not a second laboratory. The clone still happens in Howard County. If you need to watch chain-of-custody paperwork signed, say so when you book; we can do that at your appointment and again at return.',
       'What to bring: the failed disk or phone powered off, every RAID member, any passwords you will share, and a note with the OS and the folders that matter. Do not bring a running NAS that is still rebuilding. Power it down at the office before you drive.',
@@ -125,7 +125,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     faqs: [
       {
         question: 'Is the Tysons office a full lab?',
-        answer: 'No. It is appointment-only intake at 8300 Boone Blvd Suite 513. Imaging and cleanroom work happen in Columbia, MD.',
+        answer: 'No. It is our Virginia office, by appointment, at 8300 Boone Blvd Suite 513. Imaging and clean-room work happen in Columbia, MD.',
       },
       {
         question: 'Do I need an appointment in Tysons?',
@@ -137,7 +137,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       },
       {
         question: 'What are Tysons hours?',
-        answer: 'By appointment on weekdays. Emergency intake is arranged by phone, not by walking in.',
+        answer: 'By appointment on weekdays. For emergencies, call our 24/7 line at (410) 937-7332 rather than walking in.',
       },
     ],
     relatedServiceIds: ['raid-recovery', 'mobile-recovery', 'mac-recovery', 'windows-recovery'],

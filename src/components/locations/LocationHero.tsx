@@ -24,7 +24,7 @@ export default function LocationHero({ location, copy }: LocationHeroProps) {
           )}
           {location.isAppointmentOnly && (
             <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-white text-sm font-medium mb-6">
-              By appointment only
+              Office, by appointment
             </div>
           )}
           {copy.kind === 'service-area' && (
@@ -35,6 +35,7 @@ export default function LocationHero({ location, copy }: LocationHeroProps) {
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
             Data recovery in {location.fullName}
+            {location.isAppointmentOnly ? ': office by appointment' : ''}
           </h1>
 
           <p className="text-lg md:text-xl text-white/95 mb-6 leading-relaxed max-w-3xl mx-auto">

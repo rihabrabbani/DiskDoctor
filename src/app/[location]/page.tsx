@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import LocationHero from '@/components/locations/LocationHero';
 import LocationServices from '@/components/locations/LocationServices';
+import LocationPickup from '@/components/locations/LocationPickup';
 import LocationUniqueContent from '@/components/locations/LocationUniqueContent';
 import LocationTrustSignals from '@/components/locations/LocationTrustSignals';
 import LocationContact from '@/components/locations/LocationContact';
@@ -97,6 +98,7 @@ export default async function LocationPage({ params }: LocationPageProps) {
       <main>
         <LocationHero location={location} copy={copy} />
         <LocationUniqueContent location={location} copy={copy} />
+        <LocationPickup />
         <LocationServices location={location} serviceIds={copy.relatedServiceIds} />
         <LocationTrustSignals location={location} />
         <LocationTestimonials location={location} />

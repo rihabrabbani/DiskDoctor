@@ -103,6 +103,28 @@ export const serviceSchema = (service: any) => ({
   }
 })
 
+// Service JSON-LD for the core pages (src/data/corePages). The provider points at the Columbia lab entity.
+export const coreServiceSchema = (page: { h1: string; seoDescription: string; path: string }) => ({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": page.h1,
+  "description": page.seoDescription,
+  "url": `https://www.diskdoctorsamerica.com${page.path}`,
+  "serviceType": "Data Recovery",
+  "provider": { "@id": "https://www.diskdoctorsamerica.com/#columbia" },
+  "areaServed": [
+    { "@type": "State", "name": "Maryland" },
+    { "@type": "State", "name": "Virginia" },
+    { "@type": "AdministrativeArea", "name": "District of Columbia" },
+    { "@type": "Country", "name": "United States" }
+  ],
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "servicePhone": "+1-410-937-7332",
+    "availableLanguage": ["English"]
+  }
+})
+
 export const blogPostSchema = (blog: any) => {
   const canonicalPath = blog.slug || blog.id;
   const featuredImage =

@@ -1,9 +1,6 @@
-'use client';
-
-import { useState } from 'react';
-
+// Answers are always rendered: the page's FAQPage JSON-LD is built from the same list, and Google
+// only accepts FAQ markup whose answers are visible on the page.
 export default function ServiceFAQ({ faqs }: { faqs: { question: string; answer: string }[] }) {
-  const [open, setOpen] = useState<number | null>(0);
   if (!faqs?.length) return null;
 
   return (
@@ -12,20 +9,11 @@ export default function ServiceFAQ({ faqs }: { faqs: { question: string; answer:
         <h2 className="text-3xl font-bold text-[var(--color-text-primary)] mb-8 text-center">
           Frequently asked questions
         </h2>
-        <div className="space-y-3">
-          {faqs.map((faq, index) => (
-            <div key={faq.question} className="border border-[var(--color-border)] rounded-xl bg-[var(--color-background)]">
-              <button
-                type="button"
-                className="w-full text-left px-5 py-4 font-semibold text-[var(--color-text-primary)]"
-                onClick={() => setOpen(open === index ? null : index)}
-                aria-expanded={open === index}
-              >
-                {faq.question}
-              </button>
-              {open === index ? (
-                <p className="px-5 pb-4 text-[var(--color-text-secondary)] leading-relaxed">{faq.answer}</p>
-              ) : null}
+        <div className="space-y-4">
+          {faqs.map((faq) => (
+            <div key={faq.question} className="border border-[var(--color-border)] rounded-xl bg-[var(--color-background)] px-5 py-4">
+              <h3 className="font-semibold text-[var(--color-text-primary)] mb-2">{faq.question}</h3>
+              <p className="text-[var(--color-text-secondary)] leading-relaxed">{faq.answer}</p>
             </div>
           ))}
         </div>

@@ -11,6 +11,8 @@ import ServiceCTA from '@/components/new_components/ServiceCTA';
 import ServiceFAQ from '@/components/new_components/ServiceFAQ';
 import HubspotContactForm from '@/components/contact/HubspotContactForm';
 import { serviceSchema, breadcrumbSchema, faqSchema } from '@/lib/structuredData';
+import { coreServicePages, getCoreServicePage } from '@/data/corePages';
+import CorePageLayout from '@/components/corePage/CorePageLayout';
 import { SITE_URL } from '@/lib/site';
 
 export const dynamicParams = false;
@@ -22,11 +24,38 @@ interface ServicePageProps {
 }
 
 export async function generateStaticParams(): Promise<ServiceParams[]> {
-  return allServices.map((service) => ({ service: service.id }));
+  const ids = new Set([...coreServicePages.map((page) => page.id), ...allServices.map((service) => service.id)]);
+  return Array.from(ids, (service) => ({ service }));
 }
 
 export async function generateMetadata({ params }: ServicePageProps) {
   const { service } = await params;
+  const corePage = getCoreServicePage(service);
+
+  if (corePage) {
+    return {
+      title: { absolute: corePage.seoTitle },
+      description: corePage.seoDescription,
+      openGraph: {
+        title: corePage.seoTitle,
+        description: corePage.seoDescription,
+        type: 'website',
+        images: ['/images/og-image.jpg'],
+        url: `${SITE_URL}${corePage.path}`,
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: corePage.seoTitle,
+        description: corePage.seoDescription,
+        images: ['/images/og-image.jpg'],
+      },
+      alternates: {
+        canonical: `${SITE_URL}${corePage.path}`,
+      },
+      robots: { index: true, follow: true },
+    };
+  }
+
   const serviceData = allServices.find((s) => s.id === service);
 
   if (!serviceData) {
@@ -54,6 +83,12 @@ export async function generateMetadata({ params }: ServicePageProps) {
 
 export default async function ServicePage({ params }: ServicePageProps) {
   const { service } = await params;
+  const corePage = getCoreServicePage(service);
+
+  if (corePage) {
+    return <CorePageLayout page={corePage} />;
+  }
+
   const serviceData = allServices.find((s) => s.id === service);
 
   if (!serviceData) {

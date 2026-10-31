@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import Link from 'next/link';
-import { serviceRoutes, mainNavItems } from '@/data/navigation';
+import { primaryServiceNav, mainNavItems } from '@/data/navigation';
 import { locations as allLocations } from '@/data/locations';
 import Image from 'next/image';
 import Dark_logo from '@/../public/images/Dark_mode.png';
@@ -49,15 +49,6 @@ export default function Header() {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [mobileLocationsOpen, setMobileLocationsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
-
-  // Group services by category for desktop dropdown
-  const groupedServices = serviceRoutes.reduce((acc, service) => {
-    if (!acc[service.category]) {
-      acc[service.category] = [];
-    }
-    acc[service.category].push(service);
-    return acc;
-  }, {} as Record<string, typeof serviceRoutes>);
 
   const headOffice = allLocations.find((location) => location.isHeadOffice);
   const sortedLocations = headOffice
@@ -205,33 +196,32 @@ export default function Header() {
               <AnimatePresence>
                 {isServicesOpen && (
                   <motion.div
-                    className="absolute top-full left-0 mt-2 w-[600px] bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-lg shadow-[var(--shadow-lg)] z-50"
+                    className="absolute top-full left-0 mt-2 w-72 bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-lg shadow-[var(--shadow-lg)] z-50"
                     initial={{ opacity: 0, y: -10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <div className="p-6 grid grid-cols-2 gap-6">
-                      {Object.entries(groupedServices).map(([category, services]) => (
-                        <div key={category}>
-                          <h4 className="text-xs font-semibold text-[var(--color-text-tertiary)] uppercase tracking-wide mb-3 border-b border-[var(--color-border)] pb-2">
-                            {category}
-                          </h4>
-                          <ul className="space-y-2">
-                            {services.map((service) => (
-                              <li key={service.href}>
-                                <Link
-                                  href={service.href}
-                                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-200 block py-1 px-2 rounded hover:bg-[var(--color-surface-200)]"
-                                >
-                                  {service.label}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                    <ul className="p-4 space-y-1">
+                      {primaryServiceNav.map((service) => (
+                        <li key={service.href}>
+                          <Link
+                            href={service.href}
+                            className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-200 block py-1.5 px-2 rounded hover:bg-[var(--color-surface-200)]"
+                          >
+                            {service.label}
+                          </Link>
+                        </li>
                       ))}
-                    </div>
+                      <li className="border-t border-[var(--color-border)] mt-2 pt-2">
+                        <Link
+                          href="/services"
+                          className="text-sm font-semibold text-[var(--color-primary)] block py-1.5 px-2 rounded hover:bg-[var(--color-surface-200)]"
+                        >
+                          More services →
+                        </Link>
+                      </li>
+                    </ul>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -423,7 +413,7 @@ export default function Header() {
                     onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
                     className="w-full flex items-center justify-between py-3 px-2 text-sm font-semibold text-[var(--color-text-primary)] hover:bg-[var(--color-surface-200)] rounded-lg transition-colors"
                   >
-                    <span>All Services</span>
+                    <span>Services</span>
                     <motion.svg 
                       className="w-4 h-4" 
                       fill="none" 
@@ -445,26 +435,19 @@ export default function Header() {
                         transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                       >
-                        <div className="pl-4 mt-2 space-y-1 max-h-64 overflow-y-auto">
-                          {Object.entries(groupedServices).map(([category, services]) => (
-                            <div key={category} className="mb-3">
-                              <h5 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wide mb-2">
-                                {category}
-                              </h5>
-                              {services.map((service) => (
-                                <Link
-                                  key={service.href}
-                                  href={service.href}
-                                  className="block text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-200 py-1 px-2 rounded hover:bg-[var(--color-surface-200)]"
-                                  onClick={() => {
-                                    setIsMobileMenuOpen(false);
-                                    setMobileServicesOpen(false);
-                                  }}
-                                >
-                                  {service.label}
-                                </Link>
-                              ))}
-                            </div>
+                        <div className="pl-4 mt-2 space-y-1">
+                          {[...primaryServiceNav, { label: 'More services →', href: '/services' }].map((service) => (
+                            <Link
+                              key={service.href}
+                              href={service.href}
+                              className="block text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-200 py-1 px-2 rounded hover:bg-[var(--color-surface-200)]"
+                              onClick={() => {
+                                setIsMobileMenuOpen(false);
+                                setMobileServicesOpen(false);
+                              }}
+                            >
+                              {service.label}
+                            </Link>
                           ))}
                         </div>
                       </motion.div>

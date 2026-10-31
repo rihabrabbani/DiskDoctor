@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { allServices } from '@/data/allServices';
+import { coreServicePages } from '@/data/corePages';
 import { PHONE_TEL, SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -38,14 +39,22 @@ const groups: { title: string; ids: string[] }[] = [
   },
 ];
 
+// Core pages (hard drive, SSD, RAID, NAS, server) use their own list copy; the rest come from allServices.
+const directory = [
+  ...coreServicePages.map((page) => ({ id: page.id, title: page.listTitle, description: page.listDescription })),
+  ...allServices
+    .filter((service) => !coreServicePages.some((page) => page.id === service.id))
+    .map((service) => ({ id: service.id, title: service.title, description: service.description })),
+];
+
 const grouped = new Set(groups.flatMap((group) => group.ids));
-const ungrouped = allServices.filter((service) => !grouped.has(service.id));
+const ungrouped = directory.filter((service) => !grouped.has(service.id));
 
 const sections = [
   ...groups.map((group) => ({
     title: group.title,
     services: group.ids
-      .map((id) => allServices.find((service) => service.id === id))
+      .map((id) => directory.find((service) => service.id === id))
       .filter((service) => service !== undefined),
   })),
   ...(ungrouped.length > 0 ? [{ title: 'More services', services: ungrouped }] : []),

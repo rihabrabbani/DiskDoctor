@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { allServices } from '@/data/allServices'
+import { coreServicePages, dataRecoveryCost } from '@/data/corePages'
 import { staticBlogPosts } from '@/data/staticBlogPosts'
 import { locations } from '@/data/locations'
 import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb'
@@ -54,6 +55,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
+      url: `${baseUrl}${dataRecoveryCost.path}`,
+      lastModified: generatedAt,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/services`,
       lastModified: generatedAt,
       changeFrequency: 'monthly' as const,
@@ -68,8 +75,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]
 
   // Service pages
-  const servicePages = allServices.map((service) => ({
-    url: `${baseUrl}/services/${service.id}`,
+  const serviceIds = new Set([...coreServicePages.map((page) => page.id), ...allServices.map((service) => service.id)])
+  const servicePages = Array.from(serviceIds, (id) => ({
+    url: `${baseUrl}/services/${id}`,
     lastModified: generatedAt,
     changeFrequency: 'weekly' as const,
     priority: 0.9,

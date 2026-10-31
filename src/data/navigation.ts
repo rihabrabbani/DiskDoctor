@@ -9,7 +9,22 @@ export interface ServiceRoute {
   category: string;
 }
 
+// Main-nav Services dropdown, in the order the spec sets. Everything else is on /services.
+export const primaryServiceNav: { label: string; href: string }[] = [
+  { label: 'Hard drive', href: '/services/hard-drive-recovery' },
+  { label: 'SSD & NVMe', href: '/services/ssd-recovery' },
+  { label: 'RAID & server', href: '/services/raid-recovery' },
+  { label: 'NAS', href: '/services/nas-recovery' },
+  { label: 'Business & virtual servers', href: '/services/server-recovery' },
+  { label: 'Laptop & desktop', href: '/services/windows-recovery' },
+];
+
+// Full list, used by the footer.
 export const serviceRoutes: ServiceRoute[] = [
+  { label: 'Hard Drive Recovery', href: '/services/hard-drive-recovery', category: 'Drives & Storage' },
+  { label: 'SSD & NVMe Recovery', href: '/services/ssd-recovery', category: 'Drives & Storage' },
+  { label: 'NAS Recovery', href: '/services/nas-recovery', category: 'Drives & Storage' },
+  { label: 'Server Recovery', href: '/services/server-recovery', category: 'Enterprise' },
   { label: 'Windows Recovery', href: '/services/windows-recovery', category: 'Operating Systems' },
   { label: 'Mac Recovery', href: '/services/mac-recovery', category: 'Operating Systems' },
   { label: 'Linux Recovery', href: '/services/linux-recovery', category: 'Operating Systems' },

@@ -16,6 +16,11 @@ export const GBP_UTM_URL =
 export const COLUMBIA_ADDRESS = '10015 Old Columbia Rd Suite B 215, Columbia, MD 21046';
 export const TYSONS_ADDRESS = '8300 Boone Blvd Suite 513, Tysons, VA 22182';
 
+// Google Maps search for the Columbia Business Profile (opens the profile with directions and reviews).
+// Swap for the profile's own share link if Abdul provides one.
+export const COLUMBIA_MAPS_URL =
+  'https://www.google.com/maps/search/?api=1&query=Disk+Doctors+Data+Recovery+10015+Old+Columbia+Rd+Suite+B+215+Columbia+MD+21046';
+
 export function telHref(phone?: string): string {
   if (!phone) return PHONE_TEL;
   const digits = phone.replace(/[^\d]/g, '');

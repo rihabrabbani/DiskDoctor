@@ -8,6 +8,9 @@ export interface CaseStudy {
   href: string;
 }
 
+// The homepage shows only the drive, RAID and SSD cases; the phone case stays on /services/mobile-recovery.
+export const homeCaseStudyIds = [1, 2, 3];
+
 export const caseStudies: CaseStudy[] = [
   {
     id: 1,
@@ -34,7 +37,7 @@ export const caseStudies: CaseStudy[] = [
     category: "SSD RECOVERY",
     title: "Advanced SSD Recovery Using Specialized Firmware Tools",
     summary: "A NVMe SSD that vanished from the BIOS needed controller-level work, not desktop undelete software. We recovered the user partition after stabilizing firmware and reading NAND directly.",
-    href: "/services/file-recovery"
+    href: "/services/ssd-recovery"
   },
   {
     id: 4,

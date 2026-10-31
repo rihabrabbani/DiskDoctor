@@ -44,15 +44,15 @@ export default function ServicesSection() {
           variants={headerVariants}
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-[var(--color-text-primary)]">
-            All <span className="text-[var(--color-primary)]">data recovery</span> services
+            What we <span className="text-[var(--color-primary)]">recover</span>
           </h2>
           <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] leading-relaxed">
-            Comprehensive data recovery solutions for individuals, businesses, and government agencies.
+            Hard drives, SSDs, RAID arrays, NAS units and business servers, recovered in our Columbia, MD lab.
           </p>
         </motion.div>
         
         <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -87,7 +87,7 @@ export default function ServicesSection() {
                 href={service.href}
                 className="inline-flex items-center text-[var(--color-primary)] font-medium hover:underline"
               >
-                {service.title}
+                Learn more<span className="sr-only"> about {service.title.toLowerCase()}</span>
                 <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
@@ -96,25 +96,11 @@ export default function ServicesSection() {
           ))}
         </motion.div>
         
-        <motion.div 
-          className="flex justify-center mt-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-        >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link href="/contact" className="px-8 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[var(--color-text-inverse)] rounded-lg transition-all duration-300 inline-flex items-center font-medium shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)]">
-              <span>Start Your Recovery</span>
-              <svg className="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </Link>
-          </motion.div>
-        </motion.div>
+        <div className="flex justify-center mt-10">
+          <Link href="/services" className="text-[var(--color-primary)] font-medium hover:underline">
+            All services →
+          </Link>
+        </div>
       </div>
     </section>
   );

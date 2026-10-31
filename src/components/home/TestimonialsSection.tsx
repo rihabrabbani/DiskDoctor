@@ -2,6 +2,7 @@
 
 import { motion, Variants } from 'framer-motion';
 import { testimonials } from "@/data/testimonials";
+import { COLUMBIA_MAPS_URL } from "@/lib/site";
 
 // Define variants with proper typing
 const containerVariants: Variants = {
@@ -122,7 +123,7 @@ export default function TestimonialsSection() {
           variants={headerVariants}
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-6 !text-[#212529]">
-            Client <span className="text-[var(--color-primary)]">Success Stories</span>
+            What our <span className="text-[var(--color-primary)]">clients say</span>
           </h2>
           <p className="text-lg sm:text-xl text-[var(--color-neutral-800)] leading-relaxed">
             Real stories from clients who trusted DiskDoctor with their most critical data recovery needs.
@@ -130,7 +131,7 @@ export default function TestimonialsSection() {
         </motion.div>
         
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -226,6 +227,17 @@ export default function TestimonialsSection() {
             </motion.div>
           ))}
         </motion.div>
+
+        <div className="text-center mt-10">
+          <a
+            href={COLUMBIA_MAPS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[var(--color-primary)] font-semibold hover:underline"
+          >
+            Read our Google reviews →
+          </a>
+        </div>
       </div>
     </section>
   );

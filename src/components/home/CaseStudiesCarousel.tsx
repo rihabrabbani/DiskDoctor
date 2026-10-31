@@ -3,7 +3,9 @@
 import { motion, Variants } from 'framer-motion';
 import Image from "next/image";
 import Link from "next/link";
-import { caseStudies } from '@/data/caseStudies';
+import { caseStudies, homeCaseStudyIds } from '@/data/caseStudies';
+
+const homeCases = caseStudies.filter((c) => homeCaseStudyIds.includes(c.id));
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -34,7 +36,7 @@ export default function CaseStudiesCarousel() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--color-text-primary)]">
-            Recovery <span className="text-[var(--color-primary)]">Success Stories</span>
+            Recovery <span className="text-[var(--color-primary)]">success stories</span>
           </h2>
           <p className="mt-3 text-[var(--color-text-secondary)] max-w-2xl">
             Representative cases from the Columbia lab. Every job starts with a free evaluation and a fixed quote before work begins.
@@ -42,13 +44,13 @@ export default function CaseStudiesCarousel() {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
         >
-          {caseStudies.map((slide) => (
+          {homeCases.map((slide) => (
             <motion.div
               key={slide.id}
               className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl overflow-hidden h-full"

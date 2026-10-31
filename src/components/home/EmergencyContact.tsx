@@ -66,10 +66,10 @@ export default function EmergencyContact() {
             variants={headerVariants}
           >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--color-text-primary)] mb-6">
-              Need <span className="text-[var(--color-primary)]">Emergency</span> Data Recovery?
+              Need emergency data recovery? <span className="text-[var(--color-primary)]">We answer 24/7.</span>
             </h2>
             <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] mb-8 leading-relaxed">
-              Don&#39;t let data loss stop your business. Contact our emergency recovery team now for immediate assistance.
+              Power the device down and call us, or send the form for a free evaluation.
             </p>
           </motion.div>
           
@@ -123,16 +123,16 @@ export default function EmergencyContact() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Link href={PHONE_TEL} className="px-8 py-4 bg-[var(--color-accent-600)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] text-center block">
+              <a href={PHONE_TEL} className="px-8 py-4 bg-[var(--color-accent-600)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] text-center block">
                 Call {PHONE_DISPLAY}
-              </Link>
+              </a>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
                 <Link href="/contact" className="px-8 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[var(--color-text-inverse)] rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] text-center block">
-                Free Evaluation
+                Get a free evaluation
                 </Link>
             </motion.div>
           </motion.div>

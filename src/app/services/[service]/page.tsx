@@ -71,7 +71,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
   const breadcrumbData = [
     { name: 'Home', url: SITE_URL },
-    { name: 'Services', url: `${SITE_URL}/#services` },
+    { name: 'Services', url: `${SITE_URL}/services` },
     { name: serviceData.title, url: `${SITE_URL}/services/${serviceData.id}` },
   ];
 

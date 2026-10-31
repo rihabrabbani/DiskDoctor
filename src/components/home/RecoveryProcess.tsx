@@ -58,10 +58,10 @@ export default function RecoveryProcess() {
           variants={headerVariants}
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-[var(--color-text-primary)]">
-            Our Recovery <span className="text-[var(--color-primary)]">Process</span>
+            How it <span className="text-[var(--color-primary)]">works</span>
           </h2>
           <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] leading-relaxed">
-            Professional, secure, and transparent data recovery in 4 simple steps.
+            Free evaluation, a fixed quote before any paid work, and no data, no charge.
           </p>
         </motion.div>
         

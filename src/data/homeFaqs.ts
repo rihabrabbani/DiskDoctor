@@ -1,32 +1,35 @@
-export const homeFaqs = [
+// Visible on the homepage and used verbatim for the FAQPage JSON-LD, so keep the two in sync by editing here only.
+export const homeFaqs: { question: string; answer: string; link?: { href: string; label: string } }[] = [
   {
-    question: 'Where is DiskDoctor data recovery near me?',
+    question: 'How much does data recovery cost?',
     answer:
-      'The laboratory is at 10015 Old Columbia Rd Suite B 215, Columbia, MD 21046. Tysons, VA (8300 Boone Blvd Suite 513) is appointment-only intake. Baltimore, DC, Rockville, and the other city pages are service areas of that lab, not extra offices. Call (410) 937-7332.',
+      "The evaluation is free. After we diagnose the device you get a fixed quote before any paid work, and if we can't recover the data you need, you don't pay the recovery fee. Cost depends on the device, the type of failure and how urgent the job is.",
+    link: { href: '/data-recovery-cost', label: 'What affects the cost' },
   },
   {
-    question: 'Do you offer a free data recovery evaluation?',
+    question: 'How long does it take?',
     answer:
-      'Yes. Diagnosis is free. You receive a fixed quote before paid work. There is no recovery fee if we cannot retrieve the files you need — no data, no charge.',
+      'Logical recoveries usually finish in 24–48 hours. Physical jobs (clicking drives, RAID with failed members) usually take 3–7 days. Emergency service is available 24/7.',
   },
   {
-    question: 'Can you recover a clicking hard drive?',
+    question: 'Do you offer pickup?',
     answer:
-      'Often, if you stop using it. A repeating click is usually a failing head stack. Power the drive down, do not run CHKDSK or repair apps, and bring it to Columbia. We clone remaining readable surfaces in the lab.',
+      'Yes. Free pickup and drop-off across the Northeast. Call us or fill in the form to arrange it.',
   },
   {
-    question: 'What should I do if RAID 5 has two drives down?',
+    question: 'Can you recover a RAID or server?',
     answer:
-      'Power the array down. Do not start or continue a rebuild. Send every member, including disks the controller marked failed. RAID 5 is past its designed redundancy with two holes; recovery is a read of clones, not a vendor rebuild.',
+      "Yes. RAID 0, 1, 5, 6 and 10, NAS units, and Windows, Linux and virtual servers. Don't rebuild a degraded array or run repair tools before calling us.",
+    link: { href: '/services/raid-recovery', label: 'RAID recovery' },
   },
   {
-    question: 'Do you recover phones and RAID arrays?',
+    question: 'Where are you located?',
     answer:
-      'Yes. iPhone and Android chip-level work, and RAID 0/1/5/6/10 reconstruction, are done at the Columbia lab. Water-damaged phones should stay powered off. RAID members should all travel together.',
+      'Our ISO 9001 certified recovery lab is in Columbia, MD. Our Tysons, VA office sees clients by appointment.',
   },
   {
-    question: 'How long does data recovery take in Columbia, MD?',
+    question: 'Is my data kept confidential?',
     answer:
-      'Logical jobs are often 24–48 hours after the device arrives. Physical and RAID jobs are typically 3–7 days. Emergency imaging can be scheduled by phone at (410) 937-7332.',
+      "Recovered files are returned on new media. We don't keep copies longer than needed to confirm delivery, and businesses can request written chain-of-custody.",
   },
 ];

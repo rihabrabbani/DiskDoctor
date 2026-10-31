@@ -3,7 +3,15 @@
 import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { PHONE_DISPLAY, PHONE_TEL } from '@/lib/site';
+import { PHONE_TEL } from '@/lib/site';
+
+// Item 1 links to /free-pickup-and-mail-in once the pickup details are confirmed and that page is live.
+const trustItems = [
+  'Free pickup and drop-off across the Northeast',
+  'On-site diagnostics in special cases',
+  '35+ years · 15,000+ cases recovered · 95% success rate',
+  'ISO 9001 certified · clean room',
+];
 
 // Define variants with proper typing
 const heroVariants: Variants = {
@@ -82,24 +90,13 @@ export default function Hero() {
             animate="visible"
             variants={heroVariants}
           >
-            <motion.div 
-              className="mb-6"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <span className="inline-block bg-[var(--color-primary)] text-white px-4 py-2 rounded-full text-sm font-medium">
-                TRUSTED SINCE 1991 • 95% SUCCESS RATE
-              </span>
-            </motion.div>
-            
             <motion.h1 
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6 !text-[#212529]"
+              className="text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.1] mb-6 !text-[#212529]"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              Data recovery in Columbia, MD
+              Data recovery for hard drives, SSDs and RAID servers
             </motion.h1>
             
             <motion.p 
@@ -108,7 +105,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              Professional hard drive, SSD, RAID, and phone recovery at our Columbia lab. Stop using the failed device. Free evaluation. No data, no charge.
+              Recovering data since 1991 at our ISO 9001 certified clean-room lab in Columbia, Maryland, with a Virginia office in Tysons by appointment. Free evaluation. No data, no charge.
             </motion.p>
             
             <motion.div 
@@ -118,36 +115,33 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.7 }}
             >
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="/contact" className="px-8 py-4 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] text-center block">
-                  Get Free Evaluation
+                <Link href="/contact" className="px-6 py-4 whitespace-nowrap bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] text-center block">
+                  Get a free evaluation
                 </Link>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href={PHONE_TEL} className="px-8 py-4 bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-lg text-[var(--color-text-primary)] font-semibold hover:shadow-[var(--shadow-md)] hover:border-[var(--color-border-hover)] transition-all duration-300 text-center block">
-                  Emergency: {PHONE_DISPLAY}
-                </Link>
+                <a href={PHONE_TEL} className="px-6 py-4 whitespace-nowrap bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-lg text-[var(--color-text-primary)] font-semibold hover:shadow-[var(--shadow-md)] hover:border-[var(--color-border-hover)] transition-all duration-300 text-center block">
+                  24/7: (410) 937-7332
+                </a>
               </motion.div>
             </motion.div>
             
-            {/* Trust Indicators */}
-            <motion.div 
-              className="mt-12 flex flex-wrap items-center gap-8"
+            {/* Trust strip */}
+            <motion.ul 
+              className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3"
               variants={statsVariants}
               initial="hidden"
               animate="visible"
             >
-              {[
-                { value: "95%", label: "Success Rate" },
-                { value: "35+", label: "Years Experience" },
-                { value: "15,000+", label: "Cases Recovered" },
-                { value: "24/7", label: "Emergency Service" }
-              ].map((stat, index) => (
-                <motion.div key={index} className="text-center" variants={statItemVariants}>
-                  <div className="text-2xl font-bold text-[var(--color-primary)]">{stat.value}</div>
-                  <div className="text-sm text-[var(--color-text-secondary)]">{stat.label}</div>
-                </motion.div>
+              {trustItems.map((item) => (
+                <motion.li key={item} className="flex items-start gap-2 text-[var(--color-neutral-800)] font-medium" variants={statItemVariants}>
+                  <svg className="w-5 h-5 mt-0.5 flex-shrink-0 text-[var(--color-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>{item}</span>
+                </motion.li>
               ))}
-            </motion.div>
+            </motion.ul>
           </motion.div>
           
           <motion.div 

@@ -40,7 +40,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       'Logical jobs (deleted files, formatted volumes, failed Windows boot with a still-healthy head stack) often finish in 24–48 hours. Physical jobs — clicking ST/WD desktop drives, NVMe controller failure, multi-disk RAID — typically take 3–7 days because every platter or NAND chip is imaged before reconstruction. Same-day is possible when the clone is fast and the filesystem is intact.',
       'Columbia is the head office for the Tysons appointment location and for service-area pages covering Baltimore, DC, Rockville, and the rest of the corridor. Media from those cities is processed here, including devices brought to a Tysons appointment. There is no second cleanroom in Baltimore or DC; claiming otherwise would be a fake office.',
       'If another shop already started a rebuild or ran recovery software, say so. We can often still image remaining sectors, but every prior write reduces the odds. The “no data, no charge” policy applies to the recovery fee after a successful evaluation, not to shipping or to cases where the customer insists on destructive attempts we advise against.',
-      'Neighbors who actually use this lab: Ellicott City accountants with QuickBooks on a dying NAS, Laurel medical offices with imaging studies on RAID 5, Clarksville and Fulton home offices with photo libraries, and Maple Lawn startups whose only copy of source lived on a laptop disk. Howard County is small enough that people drive; they do not need a second pin in the Mall in Columbia.',
+      'The kinds of jobs that come in from around Howard County: QuickBooks on a NAS with a dying disk, imaging studies on a RAID 5, home-office photo libraries, and source code whose only copy lived on a laptop disk. Howard County is small enough that people drive; they do not need a second pin in the Mall in Columbia.',
       'What evaluation means here: we identify the device, photograph serials, attempt a safe clone, and tell you whether the files you named are present on that clone. You are not buying a “repair.” A repaired original disk is a bonus when the mechanics allow it; the deliverable is your files on new media. If the clone is empty of what you asked for, you do not pay a recovery fee.',
       'Packaging for mail-in from elsewhere in Maryland: original drive in an anti-static bag if you have one, then a rigid box with two inches of foam or crumpled paper on all sides. Tape the box. Write “do not X-ray / magnetic media” only if your carrier asks; the important part is rigidity. Include OS, what failed, passwords you are willing to share, and the folder names that matter. We email when the box is opened.',
       'What we will not do in Columbia: install Windows on the failed disk as a first step, run a RAID vendor rebuild “to see if it comes back,” freeze a clicking drive, or promise a dollar amount before we have seen the media. Those are how remaining readable sectors disappear. The phone number for a real intake is (410) 937-7332, not a 1-800 franchise line.',
@@ -51,16 +51,16 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     scenarios: [
       {
-        title: 'Howard County accounting firm, clicking 4TB NAS disk',
-        body: 'A Columbia CPA’s Synology dropped one disk with a click. They stopped the rebuild, brought both members in, and we cloned the degraded disk plus the healthy one. QuickBooks and tax-year folders came back from the clone. Rebuilding in the NAS would have been the second failure.',
+        title: 'Synology NAS with one clicking disk',
+        body: 'A Synology NAS drops one disk with a click. The safe move is to stop the rebuild and bring both disks in. We clone the degraded disk and the healthy one, then recover the folders from the clones. Rebuilding inside the NAS is how the second disk fails.',
       },
       {
-        title: 'Ellicott City photographer, formatted SD card',
-        body: 'A wedding card was formatted in-camera the next morning. The card still had intact photo headers. We imaged it and carved JPEG/RAW without writing to the card. Same-day return because the filesystem had not been overwritten by a new shoot.',
+        title: 'Formatted camera memory card',
+        body: 'A card is formatted in-camera by mistake. If nothing new has been shot onto it, the photo headers are often still there. We image the card and carve JPEG and RAW files without writing to it.',
       },
       {
-        title: 'Laurel medical office, RAID 5 with two dead members',
-        body: 'A small RAID 5 used for imaging studies lost a disk, then a second during a weekend rebuild. We cloned all five members, including the two that the controller had marked failed, and reconstructed the stripe in software. Partial patient studies were still on the remaining parity. Do not rebuild a RAID 5 that already lost a disk.',
+        title: 'RAID 5 with two failed members',
+        body: 'A small RAID 5 loses a disk, then a second during a rebuild. We clone every member, including the disks the controller marked failed, and reconstruct the stripe in software from the clones. Do not rebuild a RAID 5 that has already lost a disk.',
       },
     ],
     faqs: [
@@ -114,12 +114,12 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     scenarios: [
       {
-        title: 'McLean law firm, failed laptop SSD',
-        body: 'An NVMe that vanished from BIOS was brought to a Tysons appointment the same afternoon, imaged in Columbia overnight, and returned as a cloned volume of working documents. No Windows “repair” was run on the original.',
+        title: 'Laptop NVMe SSD missing from the BIOS',
+        body: 'A laptop NVMe vanishes from the BIOS. The drive goes to the Columbia lab, whether you bring it to a Tysons appointment or straight to Columbia, and we work from an image of it. Don’t run Windows “repair” on the original.',
       },
       {
-        title: 'Vienna office, Synology RAID 1 with one click',
-        body: 'They booked a Tysons appointment, brought both disks, and we cloned the clicking member before it was used in any rebuild. The mirror was rebuilt onto new disks after files were verified.',
+        title: 'Synology RAID 1 with one clicking disk',
+        body: 'One disk in a two-disk mirror starts clicking. Bring both disks: we clone the clicking member before it goes through any rebuild. The mirror can be rebuilt onto new disks once the files are verified.',
       },
     ],
     faqs: [
@@ -175,16 +175,16 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     scenarios: [
       {
-        title: 'Fells Point restaurant, POS disk not recognized',
-        body: 'A SATA SSD used for tickets dropped out of the BIOS after a power blip. Columbia imaged the NAND-side data. Sales history came back; they did not reinstall Windows on the failed module.',
+        title: 'Point-of-sale SSD not recognized',
+        body: 'A SATA SSD drops out of the BIOS after a power blip. We image what the controller still gives us in the Columbia lab. Don’t reinstall Windows on the failed drive.',
       },
       {
-        title: 'Towson clinic, external drive with patient exports',
-        body: 'A USB enclosure stopped enumerating. The disk inside was healthy enough to clone once removed from the cheap bridge board. Files were returned on a new encrypted drive.',
+        title: 'External USB drive that stopped showing up',
+        body: 'A USB enclosure stops showing up. Often the disk inside is healthy enough to clone once it is out of a failed bridge board. Recovered files go back on new media.',
       },
       {
-        title: 'Catonsville contractor, RAID 10 with two failed disks',
-        body: 'Two disks in different mirrors failed. We cloned all four, rebuilt the RAID 10 layout in software, and recovered project CAD. A controller rebuild would have finished the array off.',
+        title: 'RAID 10 with two failed disks',
+        body: 'Two disks in different mirrors fail. We clone every member, rebuild the RAID 10 layout in software and recover the files from the clones. A controller rebuild can finish the array off.',
       },
     ],
     faqs: [
@@ -248,16 +248,16 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     scenarios: [
       {
-        title: 'Capitol Hill firm, BitLocker SSD not detected',
-        body: 'The NVMe dropped from firmware. We recovered the encrypted volume from a chip-level read and the firm supplied the protector key. Files were returned without decrypting on an uncontrolled workstation.',
+        title: 'BitLocker NVMe SSD not detected',
+        body: 'An encrypted NVMe drops from firmware. A chip-level read can recover the encrypted volume, and you supply the recovery key to unlock it. We don’t decrypt on an uncontrolled workstation, and we can’t unlock it without your key.',
       },
       {
-        title: 'Navy Yard contractor, RAID 6 with a failed rebuild',
-        body: 'A RAID 6 started a rebuild, then a second disk slow-failed. We cloned every member, including the “rebuilding” disk, and reconstructed from parity. They did not let the controller finish.',
+        title: 'RAID 6 with a failed rebuild',
+        body: 'A RAID 6 starts a rebuild, then a second disk slow-fails. We clone every member, including the disk that was being rebuilt, and reconstruct from parity. Stop the controller before it finishes.',
       },
       {
-        title: 'Adams Morgan photographer, drowned iPhone',
-        body: 'The phone was sealed in rice, which did nothing useful. Chip-level extraction at Columbia recovered the camera roll. Stop charging wet phones.',
+        title: 'Water-damaged iPhone',
+        body: 'A wet phone gets sealed in rice, which does nothing useful. Chip-level work in the Columbia lab is what reads the storage when the board won’t boot. Stop charging wet phones.',
       },
     ],
     faqs: [
@@ -321,16 +321,16 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     scenarios: [
       {
-        title: 'North Bethesda home NAS, RAID 5 with one click',
-        body: 'A 4-bay RAID 5 started clicking. They powered it down, brought all four disks to Columbia, and we cloned the degraded member. Family photos and tax PDFs came off the reconstructed array.',
+        title: 'Home NAS, RAID 5 with one clicking disk',
+        body: 'A 4-bay RAID 5 starts clicking. Power it down and bring all four disks: we clone the degraded member and reconstruct the array from the clones.',
       },
       {
-        title: 'Rockville clinic, failed boot SSD',
-        body: 'Practice-management data lived on a SATA SSD that dropped to raw. Imaging recovered the database files. They did not reinstall Windows on the failed module.',
+        title: 'Boot SSD that dropped to RAW',
+        body: 'A SATA SSD holding a database drops to RAW. Imaging the drive comes first, not a Windows reinstall on the failed module.',
       },
       {
-        title: 'Gaithersburg engineer, deleted project folder',
-        body: 'An SSD was still in use after a delete. We imaged immediately; some files were already overwritten. Fast intake matters more than “undelete” apps on a working disk.',
+        title: 'Deleted folder on an SSD still in use',
+        body: 'Files are deleted from an SSD that stays in use. The longer it runs, the more TRIM and new writes erase. Image it immediately; “undelete” apps on a working disk come second.',
       },
     ],
     faqs: [
@@ -381,8 +381,8 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     scenarios: [
       {
-        title: 'Del Ray small business, failed boot drive',
-        body: 'Windows would not start. The disk was still readable enough to clone. They avoided Startup Repair loops that would have written more.',
+        title: 'Windows won’t start',
+        body: 'Windows will not start, but the disk can still be read well enough to clone. Avoid Startup Repair loops, which write more to a failing disk.',
       },
     ],
     faqs: [
@@ -412,8 +412,8 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     scenarios: [
       {
-        title: 'Ballston apartment, dying USB disk with taxes',
-        body: 'The enclosure failed; the disk inside cloned cleanly in Columbia. Files returned the next day.',
+        title: 'Failed USB enclosure',
+        body: 'The enclosure fails while the disk inside still works. We clone the disk directly in the Columbia lab.',
       },
     ],
     faqs: [
@@ -443,8 +443,8 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     scenarios: [
       {
-        title: 'Eastport, drowned work phone',
-        body: 'Chip-level extraction in Columbia recovered the camera roll after the board would not boot.',
+        title: 'Water-damaged phone that won’t boot',
+        body: 'The board won’t boot after water damage. Chip-level extraction in the Columbia lab can still read the storage.',
       },
     ],
     faqs: [
@@ -473,8 +473,8 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     scenarios: [
       {
-        title: 'Frederick contractor, RAID 1 with one click',
-        body: 'Both disks came to Columbia. The clicking member was cloned; the healthy mirror confirmed the file set.',
+        title: 'RAID 1 with one clicking disk',
+        body: 'Bring both disks. We clone the clicking member, and the healthy mirror is used to confirm the file set.',
       },
     ],
     faqs: [
@@ -503,8 +503,8 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     scenarios: [
       {
-        title: 'McLean household, iMac Fusion Drive',
-        body: 'The HDD side clicked. We cloned both parts of the Fusion pair in Columbia and returned a working disk image.',
+        title: 'iMac Fusion Drive with a clicking hard disk',
+        body: 'The hard disk half of a Fusion Drive clicks. Both halves need cloning, because the volume spans the SSD and the hard disk.',
       },
     ],
     faqs: [
@@ -534,8 +534,8 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     scenarios: [
       {
-        title: 'Great Falls home office, 8TB disk click',
-        body: 'The drive was cloned in Columbia. Most of the photo library was intact because they stopped using it the same day.',
+        title: 'Clicking 8TB desktop disk',
+        body: 'A large desktop disk starts clicking. Stop using it the same day: the less it spins, the more of the platters is still readable when we clone it.',
       },
     ],
     faqs: [
@@ -565,8 +565,8 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     scenarios: [
       {
-        title: 'Potomac household, RAID 5 photo archive',
-        body: 'One disk clicking, rebuild not started. Columbia cloned all members and reconstructed the volume.',
+        title: 'RAID 5 photo archive with one clicking disk',
+        body: 'One disk is clicking and no rebuild has started. We clone every member and reconstruct the volume from the clones.',
       },
     ],
     faqs: [

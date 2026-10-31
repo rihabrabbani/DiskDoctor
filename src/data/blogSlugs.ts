@@ -23,7 +23,7 @@ const serviceMatches: { pattern: RegExp; href: string; label: string; descriptio
   { pattern: /\bnas\b|synology|qnap|truenas/, href: '/services/nas-recovery', label: 'NAS data recovery', description: 'Crashed volumes and failed rebuilds on Synology, QNAP and TrueNAS units.' },
   { pattern: /\bssd\b|nvme|solid[- ]state/, href: '/services/ssd-recovery', label: 'SSD and NVMe data recovery', description: 'Failed, locked and undetected SATA and NVMe SSDs.' },
   { pattern: /\bservers?\b|virtual machine|vmware|hyper-v|business continuity/, href: '/services/server-recovery', label: 'Server and virtual machine recovery', description: 'Business servers, RAID arrays and VMware or Hyper-V virtual machines.' },
-  { pattern: /hard drive|hdd|clicking|external drive|power surge/, href: '/services/hard-drive-recovery', label: 'Hard drive data recovery', description: 'Clicking, beeping, undetected and dropped drives, in our ISO 9001 certified clean-room lab.' },
+  { pattern: /hard drive|hdd|clicking|external drive|power surge/, href: '/services/hard-drive-recovery', label: 'Hard drive data recovery', description: 'Clicking, beeping, undetected and dropped drives, in our ISO 9001 certified lab, with clean-room work when the heads fail.' },
 ];
 
 export function relatedServiceForPost(post: { title?: string; tags?: string[]; focusKeyword?: string; category?: string }) {

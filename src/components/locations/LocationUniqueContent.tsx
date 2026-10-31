@@ -1,4 +1,5 @@
 import { LocationData } from '@/data/locations';
+import { SCENARIO_LABEL } from '@/data/scenarios';
 import { LocationCopy } from '@/data/locationCopy';
 
 export default function LocationUniqueContent({
@@ -22,11 +23,12 @@ export default function LocationUniqueContent({
         {copy.scenarios.length > 0 && (
           <div className="mt-12">
             <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-6">
-              Local cases we actually see
+              Failures we often see
             </h2>
             <div className="space-y-6">
               {copy.scenarios.map((s) => (
                 <div key={s.title} className="border border-[var(--color-border)] rounded-xl p-5 bg-[var(--color-surface-100)]">
+                  <p className="text-sm italic text-[var(--color-text-tertiary)] mb-2">{SCENARIO_LABEL}</p>
                   <h3 className="font-semibold text-[var(--color-text-primary)] mb-2">{s.title}</h3>
                   <p className="text-[var(--color-text-secondary)] leading-relaxed">{s.body}</p>
                 </div>

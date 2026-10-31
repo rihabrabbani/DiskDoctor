@@ -75,7 +75,7 @@ export const columbiaLocalBusinessSchema = {
   "@type": "LocalBusiness",
   "@id": COLUMBIA_ID,
   "name": "DiskDoctor Data Recovery — Columbia, MD Lab",
-  "description": "Head office and ISO 9001 certified clean-room recovery lab for hard drives, SSDs, RAID arrays, NAS units and servers. Walk-in Monday to Friday; 24/7 emergency line.",
+  "description": "Head office and ISO 9001 certified recovery lab, with a clean room, for hard drives, SSDs, RAID arrays, NAS units and servers. Walk-in Monday to Friday; 24/7 emergency line.",
   "url": `${SITE}/columbia-md`,
   "image": `${SITE}/images/logo.png`,
   "telephone": "+1-410-937-7332",

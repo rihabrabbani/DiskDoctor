@@ -13,8 +13,8 @@ export const ssdRecovery: CorePage = {
   heroEyebrow: 'SSD data recovery',
   heroIntro:
     'We recover data from failed, locked and undetected SATA and NVMe SSDs, including laptop SSDs. Power the drive down, then get a free evaluation and a fixed quote before any paid work.',
-  heroImage:
-    'https://images.unsplash.com/photo-1720048169387-84bbb8fd8ec9?q=80&w=2070&auto=format&fit=crop&w=800&q=80',
+  heroImage: '/images/illustrations/fire-damaged-drive-nvme.webp',
+  heroImageAlt: 'Fire-damaged hard drive and NVMe SSD on an anti-static mat',
   sections: [
     {
       heading: 'Why SSD recovery is different',
@@ -86,19 +86,7 @@ export const ssdRecovery: CorePage = {
       link: { href: '/data-recovery-cost', label: 'What affects the cost' },
     },
   ],
-  casesHeading: 'An SSD recovery case',
-  cases: [
-    {
-      title: 'NVMe SSD that vanished from the BIOS',
-      details: [
-        { label: 'Drive', value: 'NVMe SSD' },
-        { label: 'Symptom', value: 'Not visible in the BIOS' },
-        { label: 'Work', value: 'Firmware stabilized, NAND read directly' },
-        { label: 'Result', value: 'User partition recovered' },
-      ],
-      body: 'An NVMe SSD had disappeared from the BIOS. This was a job for controller-level work, not desktop undelete software. We stabilized the firmware, read the NAND directly, and recovered the user partition.',
-    },
-  ],
+  scenarioIds: ['S4'],
   faqs: [
     {
       question: 'Can you recover data from an SSD that isn’t detected?',

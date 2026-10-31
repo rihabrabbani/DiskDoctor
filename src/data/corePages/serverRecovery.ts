@@ -77,18 +77,7 @@ export const serverRecovery: CorePage = {
       link: { href: '/data-recovery-cost', label: 'What affects the cost' },
     },
   ],
-  casesHeading: 'A recent business server case',
-  cases: [
-    {
-      title: 'Laurel medical office, RAID 5 with two dead members',
-      details: [
-        { label: 'Array', value: 'RAID 5, five disks' },
-        { label: 'Used for', value: 'Imaging studies' },
-        { label: 'Failure', value: 'One disk failed, a second during a weekend rebuild' },
-      ],
-      body: 'A medical office in Laurel kept its imaging studies on a small RAID 5 with five disks. One disk failed, then a second failed during a weekend rebuild. We cloned all five members, including the two the controller had marked failed, and reconstructed the stripe in software from the clones. Partial patient studies were still recoverable from the remaining parity. The lesson for any business: do not rebuild a RAID 5 that has already lost a disk.',
-    },
-  ],
+  scenarioIds: ['S3'],
   faqs: [
     {
       question: 'Can you recover a VMware datastore or a single virtual machine?',

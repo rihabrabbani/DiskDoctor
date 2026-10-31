@@ -13,7 +13,9 @@ export const raidRecovery: CorePage = {
   heroEyebrow: 'Failed rebuilds, dead members, controller failures',
   heroIntro:
     'Power the array down and don’t rebuild it. We clone every member in our Columbia, MD lab and reconstruct RAID 0, 1, 5, 6 and 10 from the clones.',
-  heroImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+  heroImage: '/images/illustrations/raid-drives-slot-order.webp',
+  heroImageAlt: 'RAID drives labelled in slot order beside NAS enclosures',
+  heroImagePosition: '30% 85%',
   sections: [
     {
       heading: 'Rebuild versus recovery',
@@ -87,18 +89,8 @@ export const raidRecovery: CorePage = {
       ],
     },
   ],
-  casesHeading: 'Recent RAID cases',
-  cases: [
-    {
-      title: 'Laurel medical office, RAID 5 with two dead members',
-      details: [
-        { label: 'RAID level', value: 'RAID 5, five disks' },
-        { label: 'What failed', value: 'One disk, then a second during a weekend rebuild' },
-        { label: 'What came back', value: 'Partial patient imaging studies from the remaining parity' },
-      ],
-      body: 'A small RAID 5 used for imaging studies lost a disk, then a second during a weekend rebuild. We cloned all five members, including the two the controller had marked failed, and reconstructed the stripe in software.',
-    },
-  ],
+  scenariosHeading: 'RAID failures we handle',
+  scenarioIds: ['S1', 'S2', 'S3'],
   faqs: [
     { question: 'Should I rebuild a RAID 5 that lost one disk?', answer: 'No. Power it down and send every member. Rebuilds are how the second disk dies.' },
     { question: 'Can you recover RAID 6 with two failed drives?', answer: 'Often yes, if both failed members can still be imaged. RAID 6 is designed for two missing disks; a rebuild in progress is the risk.' },

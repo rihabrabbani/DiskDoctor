@@ -5,6 +5,8 @@ import ServiceHero from '@/components/new_components/ServiceHero';
 import ServiceFAQ from '@/components/new_components/ServiceFAQ';
 import HubspotContactForm from '@/components/contact/HubspotContactForm';
 import type { CorePage } from '@/data/corePages/types';
+import ScenarioCard from '@/components/scenarios/ScenarioCard';
+import { scenarios } from '@/data/scenarios';
 import { breadcrumbSchema, coreServiceSchema, faqSchema } from '@/lib/structuredData';
 import { PHONE_TEL, SITE_URL } from '@/lib/site';
 
@@ -49,6 +51,9 @@ export default function CorePageLayout({ page }: { page: CorePage }) {
           heroImage={page.heroImage}
           layoutType="hero-split"
           ctaSection={heroCta}
+          heroImageAlt={page.heroImageAlt}
+          heroImagePosition={page.heroImagePosition}
+          showImageBadges={!page.heroImageAlt}
         />
 
         <section className="py-16">
@@ -84,6 +89,29 @@ export default function CorePageLayout({ page }: { page: CorePage }) {
             ))}
           </div>
         </section>
+
+        {page.scenarioIds && page.scenarioIds.length > 0 && (
+          <section className="py-16 bg-[var(--color-surface-200)]">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+              <h2 className="text-3xl font-bold text-[var(--color-text-primary)] mb-8 text-center">
+                {page.scenariosHeading || 'How we handle common failures'}
+              </h2>
+              <div
+                className={
+                  page.scenarioIds.length === 1
+                    ? 'grid grid-cols-1 gap-6 max-w-2xl mx-auto'
+                    : page.scenarioIds.length === 2
+                      ? 'grid grid-cols-1 md:grid-cols-2 gap-6'
+                      : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+                }
+              >
+                {page.scenarioIds.map((id) => (
+                  <ScenarioCard key={id} scenario={scenarios[id]} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {page.cases && page.cases.length > 0 && (
           <section className="py-16 bg-[var(--color-surface-200)]">

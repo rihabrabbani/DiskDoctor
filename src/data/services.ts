@@ -32,6 +32,8 @@ export const recoveryServices: RecoveryService[] = [
 export interface RecoveryStep {
   step: string;
   image: string;
+  // Steps 2 and 4 use P1-7 illustration photos, which need the spec's generic alt text.
+  alt?: string;
   title: string;
   description: string;
   color: string;
@@ -47,7 +49,8 @@ export const recoverySteps: RecoveryStep[] = [
   },
   {
     step: "02",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80",
+    image: "/images/illustrations/hardware-imager.webp",
+    alt: "Hard drive connected to a hardware imager for sector-by-sector cloning",
     title: "Lab imaging",
     description: "We clone first. Original media is not used as a working disk.",
     color: "var(--color-accent)"
@@ -61,7 +64,8 @@ export const recoverySteps: RecoveryStep[] = [
   },
   {
     step: "04",
-    image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=800&q=80",
+    image: "/images/illustrations/delivery-external-drive.webp",
+    alt: "Recovered data delivered on a new external drive in protective packaging",
     title: "Secure Delivery",
     description: "Recovered files go to new media. You pay only if we recover the data you need.",
     color: "var(--color-accent-400)"

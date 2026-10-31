@@ -13,7 +13,9 @@ export const nasRecovery: CorePage = {
   heroEyebrow: 'Synology, QNAP, Asustor, TrueNAS',
   heroIntro:
     'Volume crashed, rebuild failed, or the NAS won’t boot after an update? We clone every disk and rebuild the volume from the copies, never on your originals. Free evaluation, and a 24/7 emergency line at (410) 937-7332.',
-  heroImage: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=800&q=80',
+  heroImage: '/images/illustrations/raid-drives-slot-order.webp',
+  heroImageAlt: 'RAID drives labelled in slot order beside NAS enclosures',
+  heroImagePosition: '30% 85%',
   sections: [
     {
       heading: 'Common NAS failures we see',
@@ -79,19 +81,8 @@ export const nasRecovery: CorePage = {
       link: { href: '/data-recovery-cost', label: 'What affects the cost' },
     },
   ],
-  casesHeading: 'A NAS case from our Columbia lab',
-  cases: [
-    {
-      title: 'Howard County accounting firm, clicking 4TB NAS disk',
-      details: [
-        { label: 'Client', value: 'CPA firm, Columbia, MD' },
-        { label: 'NAS', value: 'Synology' },
-        { label: 'Failure', value: 'One 4TB disk clicking and dropped from the volume' },
-        { label: 'Recovered', value: 'QuickBooks data and tax-year folders' },
-      ],
-      body: 'A Columbia CPA firm kept its files on a Synology NAS. One disk started clicking and dropped out. Instead of letting the rebuild run, they stopped it and brought both disks to the lab. We cloned the degraded disk and the healthy one, then recovered the QuickBooks data and tax-year folders from the clones. Letting the rebuild finish inside the NAS would likely have caused a second failure.',
-    },
-  ],
+  scenariosHeading: 'NAS failures we handle',
+  scenarioIds: ['S1', 'S2'],
   faqs: [
     {
       question: 'My Synology says the volume crashed. What should I do?',

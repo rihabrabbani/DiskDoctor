@@ -91,7 +91,7 @@ export default function RecoveryProcess() {
                 >
                   <Image
                     src={step.image}
-                    alt={step.title}
+                    alt={step.alt || step.title}
                     fill
                     className="object-cover"
                   />

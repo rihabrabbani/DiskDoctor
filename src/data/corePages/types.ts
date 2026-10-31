@@ -1,3 +1,5 @@
+import type { ScenarioId } from '@/data/scenarios';
+
 // Content model for the core service pages (hard drive, SSD, RAID, NAS, server) and /data-recovery-cost.
 // Every page renders through src/components/corePage/CorePageLayout.tsx:
 // hero → sections (problem → what we do → process) → cases → FAQ → locations → form CTA.
@@ -31,7 +33,15 @@ export interface CorePage {
   heroEyebrow: string;
   heroIntro: string;
   heroImage: string;
+  // Required when heroImage is one of the P1-7 illustration photos.
+  heroImageAlt?: string;
+  // CSS object-position for the hero photo, e.g. 'center bottom'.
+  heroImagePosition?: string;
   sections: CorePageSection[];
+  // Labelled example scenarios (spec P1-7), shown until real cases arrive.
+  scenariosHeading?: string;
+  scenarioIds?: ScenarioId[];
+  // Real client cases only (confirmed by the client). None are published yet.
   casesHeading?: string;
   cases?: CorePageCase[];
   // Shown visibly and used verbatim for the FAQPage JSON-LD.

@@ -25,7 +25,7 @@ const processSteps = [
   {
     icon: Search,
     title: 'Expert Analysis',
-    description: 'Comprehensive evaluation in our certified cleanroom facility',
+    description: 'Comprehensive evaluation in our Columbia, MD lab',
     details: ['Professional diagnostic testing', 'Detailed damage assessment', 'Success probability evaluation', 'Fixed price quote provided']
   },
   {

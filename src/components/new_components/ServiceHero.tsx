@@ -19,6 +19,10 @@ interface ServiceHeroProps {
     urgencyText?: string;
   };
   accentColor?: string;
+  heroImageAlt?: string;
+  heroImagePosition?: string;
+  // Off for illustration photos, so the badges don't imply the photo shows the DiskDoctor lab.
+  showImageBadges?: boolean;
 }
 
 export default function ServiceHero({ 
@@ -28,7 +32,10 @@ export default function ServiceHero({
   heroImage,
   layoutType,
   ctaSection,
-  accentColor = 'var(--color-primary)'
+  accentColor = 'var(--color-primary)',
+  heroImageAlt,
+  heroImagePosition,
+  showImageBadges = true,
 }: ServiceHeroProps) {
   const getLayoutClasses = () => {
     switch (layoutType) {
@@ -180,7 +187,7 @@ export default function ServiceHero({
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link 
                   href="/contact" 
-                  className="px-8 py-4 text-white rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] hover:brightness-110 text-center block relative overflow-hidden group"
+                  className="px-6 py-4 whitespace-nowrap text-white rounded-lg font-semibold transition-all duration-300 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] hover:brightness-110 text-center block relative overflow-hidden group"
                   style={{ backgroundColor: accentColor }}
                 >
                   <span className="relative z-10">{ctaSection.primaryButton}</span>
@@ -192,7 +199,7 @@ export default function ServiceHero({
               </motion.div>
               {ctaSection.secondaryButton && (
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link href={PHONE_TEL} className="px-8 py-4 bg-[var(--color-surface-100)] border-2 border-[var(--color-border)] rounded-lg text-[var(--color-text-primary)] font-semibold hover:shadow-[var(--shadow-md)] hover:border-[var(--color-border-hover)] transition-all duration-300 text-center block">
+                  <Link href={PHONE_TEL} className="px-6 py-4 whitespace-nowrap bg-[var(--color-surface-100)] border-2 border-[var(--color-border)] rounded-lg text-[var(--color-text-primary)] font-semibold hover:shadow-[var(--shadow-md)] hover:border-[var(--color-border-hover)] transition-all duration-300 text-center block">
                     {ctaSection.secondaryButton}
                   </Link>
                 </motion.div>
@@ -223,13 +230,15 @@ export default function ServiceHero({
               <div className="relative h-[400px] lg:h-[500px] w-full group">
                 <Image
                   src={heroImage}
-                  alt={title}
+                  alt={heroImageAlt || title}
                   fill
+                  style={heroImagePosition ? { objectPosition: heroImagePosition } : undefined}
                   className="object-cover rounded-2xl shadow-[var(--shadow-xl)] group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl" />
                 
                 {/* Floating elements */}
+                {showImageBadges && (<>
                 <motion.div 
                   className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg"
                   initial={{ opacity: 0, scale: 0 }}
@@ -251,6 +260,7 @@ export default function ServiceHero({
                     Clean Room
                   </div>
                 </motion.div>
+                </>)}
               </div>
               
               <motion.div 

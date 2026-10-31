@@ -13,7 +13,8 @@ export const hardDriveRecovery: CorePage = {
   heroEyebrow: 'Clicking, dead and undetected drives',
   heroIntro:
     'Hard drive recovery for drives that click, beep, vanish from your computer or stopped working after a fall. We image the drive before any recovery work, give you a fixed quote first, and if we can’t get your data back, you don’t pay.',
-  heroImage: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
+  heroImage: '/images/illustrations/hard-drive-open.webp',
+  heroImageAlt: 'Inside a hard drive: platters and read/write head assembly',
   sections: [
     {
       heading: 'Hard drive symptoms we handle',
@@ -82,18 +83,7 @@ export const hardDriveRecovery: CorePage = {
       link: { href: '/data-recovery-cost', label: 'What affects the cost' },
     },
   ],
-  casesHeading: 'A recent hard drive case',
-  cases: [
-    {
-      title: 'Howard County accounting firm, clicking 4TB NAS disk',
-      details: [
-        { label: 'Device', value: 'Synology NAS: a clicking 4TB disk and its healthy partner' },
-        { label: 'What failed', value: 'One disk clicked and dropped out of the NAS' },
-        { label: 'What came back', value: 'QuickBooks and tax-year folders' },
-      ],
-      body: 'A Columbia CPA firm’s Synology dropped one disk with a click. They stopped the rebuild and brought both disks in. We cloned the failing disk and the healthy one, then recovered the QuickBooks and tax-year folders from the clones. Rebuilding inside the NAS would have been the second failure.',
-    },
-  ],
+  scenarioIds: ['S5'],
   faqs: [
     {
       question: 'Can you recover a clicking hard drive?',

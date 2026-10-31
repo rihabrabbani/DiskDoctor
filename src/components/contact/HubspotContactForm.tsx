@@ -57,6 +57,18 @@ export default function HubspotContactForm() {
   const [failed, setFailed] = useState(false);
   const hasMountedFormRef = useRef(false);
 
+  // This form is built in HubSpot's new editor, so v2.js hands it to the frame embed, which ignores
+  // the redirectUrl option below and only fires this DOM event on success. Redirect from here.
+  useEffect(() => {
+    const onSubmissionSuccess = (event: Event) => {
+      const formId = (event as CustomEvent<{ formId?: string }>).detail?.formId;
+      if (formId && formId !== HUBSPOT_FORM_ID) return;
+      window.location.assign(THANK_YOU_URL);
+    };
+    window.addEventListener('hs-form-event:on-submission:success', onSubmissionSuccess);
+    return () => window.removeEventListener('hs-form-event:on-submission:success', onSubmissionSuccess);
+  }, []);
+
   useEffect(() => {
     let observer: MutationObserver | null = null;
     let existingScriptLoadHandler: (() => void) | null = null;

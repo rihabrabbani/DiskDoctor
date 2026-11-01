@@ -95,9 +95,9 @@ export const locationCopy: Record<string, LocationCopy> = {
     kind: 'lab',
     seoTitle: 'Data Recovery Tysons VA | By Appointment',
     seoDescription:
-      'Tysons VA data recovery office at 8300 Boone Blvd Suite 513, by appointment. Hard drive, SSD, RAID and phone recovery. Free evaluation. Call (571) 202-8529.',
+      'Tysons VA data recovery office at 8300 Boone Blvd Suite 513, by appointment. Hard drive, SSD, RAID and server recovery. Free evaluation. Call (571) 202-8529.',
     directAnswer:
-      'DiskDoctor’s Tysons office is at 8300 Boone Blvd Suite 513, Tysons, VA 22182, by appointment. Bring a failed hard drive, SSD, RAID or phone powered down. Evaluation is free, and there is no recovery fee if we can’t retrieve the files you need. Call (571) 202-8529 to schedule.',
+      'DiskDoctor’s Tysons office is at 8300 Boone Blvd Suite 513, Tysons, VA 22182, by appointment. Bring a failed hard drive, SSD or RAID powered down. Evaluation is free, and there is no recovery fee if we can’t retrieve the files you need. Call (571) 202-8529 to schedule.',
     heroDescription:
       'Our Northern Virginia office in Tysons, by appointment. Call ahead so someone is here to meet you.',
     paragraphs: [

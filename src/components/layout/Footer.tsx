@@ -18,7 +18,7 @@ export default function Footer() {
             </span>
           </Link>
           <p className="mt-4 max-w-xl text-[var(--color-text-secondary)]">
-            Columbia, MD · Tysons, VA (by appointment). Hard drive, SSD, RAID, and phone recovery since 1991.
+            Columbia, MD · Tysons, VA (by appointment). Hard drive, SSD, RAID and server recovery since 1991.
           </p>
         </div>
 

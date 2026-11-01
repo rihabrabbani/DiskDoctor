@@ -131,7 +131,7 @@ export const tysonsLocalBusinessSchema = {
   "@type": "LocalBusiness",
   "@id": TYSONS_ID,
   "name": "DiskDoctor Data Recovery — Tysons, VA Office",
-  "description": "Northern Virginia office, by appointment, for hard drive, SSD, RAID and phone data recovery. Free evaluation.",
+  "description": "Northern Virginia office, by appointment, for hard drive, SSD, RAID and server data recovery. Free evaluation.",
   "url": `${SITE}/tysons-va`,
   "hasMap": TYSONS_MAPS_URL,
   "image": `${SITE}/images/logo.png`,

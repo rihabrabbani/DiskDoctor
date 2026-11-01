@@ -40,7 +40,7 @@ export default function ContactPage() {
               </p>
             </div>
 
-            <div className="bg-white border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-[var(--shadow-md)] mb-10">
+            <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-[var(--shadow-md)] mb-10">
               <HubspotContactForm />
             </div>
 

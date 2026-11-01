@@ -51,7 +51,7 @@ export const serverRecovery: CorePage = {
     {
       heading: 'On-site diagnostics',
       paragraphs: [
-        'On-site diagnostics in special cases: call us to discuss.',
+        'On-site diagnostics are available for a small fee. Call us to arrange a visit.',
         'Recovery itself is done in our Columbia, MD lab.',
       ],
     },
@@ -71,12 +71,13 @@ export const serverRecovery: CorePage = {
       heading: '24/7 priority handling',
       paragraphs: [
         'A down server is a business outage. Call the 24/7 emergency line at (410) 937-7332 and tell us the RAID level if you know it, how many disks, which bays failed, whether a rebuild started, and whether the server held virtual machines. Form enquiries get a reply within one business day.',
-        'Bring the disks to our Columbia lab at 10015 Old Columbia Rd, Suite B 215, Columbia, MD 21046, weekdays 8:30 a.m. to 5:00 p.m. We offer free pickup and drop-off across the Northeast; call or use the form to arrange it. To ship the disks instead, call us to arrange it.',
+        'Bring the disks to our Columbia lab at 10015 Old Columbia Rd, Suite B 215, Columbia, MD 21046, weekdays 8:30 a.m. to 5:00 p.m. You can also ship the disks to us free both ways, or book a pickup for a small fee; call or use the form to arrange it.',
         'Once all disks arrive, RAID and physical jobs usually take 3–7 days. The evaluation is free. You get a fixed quote before any paid work, and if we can’t recover the data you need, you don’t pay the recovery fee. Over 15,000 cases recovered, with a 95% success rate.',
       ],
       link: { href: '/data-recovery-cost', label: 'What affects the cost' },
     },
   ],
+  reviewIds: ['R1', 'R6'],
   scenarioIds: ['S3'],
   faqs: [
     {
@@ -97,7 +98,7 @@ export const serverRecovery: CorePage = {
     {
       question: 'Do you come on-site?',
       answer:
-        'On-site diagnostics in special cases: call us to discuss. The recovery itself is done in our Columbia, MD lab.',
+        'On-site diagnostics are available for a small fee. Call us to arrange a visit. The recovery itself is done in our Columbia, MD lab.',
     },
     {
       question: 'How fast can you recover a business server?',

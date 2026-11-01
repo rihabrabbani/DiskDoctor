@@ -5,7 +5,9 @@ import ServiceHero from '@/components/new_components/ServiceHero';
 import ServiceFAQ from '@/components/new_components/ServiceFAQ';
 import HubspotContactForm from '@/components/contact/HubspotContactForm';
 import type { CorePage } from '@/data/corePages/types';
+import ReviewCaseCard from '@/components/scenarios/ReviewCaseCard';
 import ScenarioCard from '@/components/scenarios/ScenarioCard';
+import { reviewCases } from '@/data/reviewCases';
 import { scenarios } from '@/data/scenarios';
 import { breadcrumbSchema, coreServiceSchema, faqSchema } from '@/lib/structuredData';
 import { PHONE_TEL, SITE_URL } from '@/lib/site';
@@ -90,6 +92,27 @@ export default function CorePageLayout({ page }: { page: CorePage }) {
           </div>
         </section>
 
+        {page.reviewIds && page.reviewIds.length > 0 && (
+          <section className="py-16">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+              <h2 className="text-3xl font-bold text-[var(--color-text-primary)] mb-8 text-center">
+                {page.reviewsHeading || 'Recent recoveries, in our clients’ words'}
+              </h2>
+              <div
+                className={
+                  page.reviewIds.length === 1
+                    ? 'grid grid-cols-1 gap-6 max-w-2xl mx-auto'
+                    : 'grid grid-cols-1 md:grid-cols-2 gap-6'
+                }
+              >
+                {page.reviewIds.map((id) => (
+                  <ReviewCaseCard key={id} review={reviewCases[id]} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         {page.scenarioIds && page.scenarioIds.length > 0 && (
           <section className="py-16 bg-[var(--color-surface-200)]">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
@@ -113,42 +136,6 @@ export default function CorePageLayout({ page }: { page: CorePage }) {
           </section>
         )}
 
-        {page.cases && page.cases.length > 0 && (
-          <section className="py-16 bg-[var(--color-surface-200)]">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
-              <h2 className="text-3xl font-bold text-[var(--color-text-primary)] mb-8 text-center">
-                {page.casesHeading || 'Recent cases'}
-              </h2>
-              <div
-                className={
-                  page.cases.length === 1
-                    ? 'grid grid-cols-1 gap-6 max-w-2xl mx-auto'
-                    : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
-                }
-              >
-                {page.cases.map((item) => (
-                  <article
-                    key={item.title}
-                    className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6"
-                  >
-                    <h3 className="font-semibold text-lg text-[var(--color-text-primary)] mb-3">{item.title}</h3>
-                    {item.details && item.details.length > 0 && (
-                      <dl className="text-sm mb-4 space-y-1">
-                        {item.details.map((detail) => (
-                          <div key={detail.label}>
-                            <dt className="inline font-medium text-[var(--color-text-primary)]">{detail.label}: </dt>
-                            <dd className="inline text-[var(--color-text-secondary)]">{detail.value}</dd>
-                          </div>
-                        ))}
-                      </dl>
-                    )}
-                    <p className="text-[var(--color-text-secondary)] leading-relaxed">{item.body}</p>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
 
         <ServiceFAQ faqs={page.faqs} />
 
@@ -164,8 +151,15 @@ export default function CorePageLayout({ page }: { page: CorePage }) {
               <Link href="/tysons-va" className="text-[var(--color-primary)] font-semibold hover:underline">
                 Tysons, VA office
               </Link>{' '}
-              sees clients by appointment. Free pickup and drop-off across the Northeast: call or use the form to
-              arrange it. 24/7 emergency line:{' '}
+              sees clients by appointment.{' '}
+              {page.path === '/mail-in-data-recovery' ? (
+                'Ship your drive to us free both ways'
+              ) : (
+                <Link href="/mail-in-data-recovery" className="text-[var(--color-primary)] font-semibold hover:underline">
+                  Ship your drive to us free both ways
+                </Link>
+              )}
+              , or book a pickup for a small fee. 24/7 emergency line:{' '}
               <a href={PHONE_TEL} className="text-[var(--color-primary)] font-semibold hover:underline">
                 (410) 937-7332
               </a>
@@ -196,7 +190,7 @@ export default function CorePageLayout({ page }: { page: CorePage }) {
               Tell us what failed. We reply within one business day, and you get a fixed quote before any paid
               work. No data, no charge.
             </p>
-            <div className="bg-white border border-[var(--color-border)] rounded-2xl p-6 sm:p-8">
+            <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8">
               <HubspotContactForm />
             </div>
           </div>

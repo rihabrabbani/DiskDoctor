@@ -5,12 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PHONE_TEL } from '@/lib/site';
 
-// Item 1 links to /free-pickup-and-mail-in once the pickup details are confirmed and that page is live.
-const trustItems = [
-  'Free pickup and drop-off across the Northeast',
-  'On-site diagnostics in special cases',
-  '35+ years · 15,000+ cases recovered · 95% success rate',
-  'ISO 9001 certified · clean room',
+const trustItems: { label: string; href?: string }[] = [
+  { label: 'Free shipping to our lab and back', href: '/mail-in-data-recovery' },
+  { label: 'Pickup and on-site diagnostics available' },
+  { label: '35+ years · 15,000+ cases recovered · 95% success rate' },
+  { label: 'ISO 9001 certified · clean room' },
 ];
 
 // Define variants with proper typing
@@ -93,7 +92,7 @@ export default function Hero() {
             variants={heroVariants}
           >
             <motion.h1 
-              className="text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.1] mb-6 !text-[#212529]"
+              className="text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.1] mb-6 !text-[var(--color-text-primary)]"
               initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
@@ -102,7 +101,7 @@ export default function Hero() {
             </motion.h1>
             
             <motion.p 
-              className="text-lg sm:text-xl text-[var(--color-neutral-800)] mb-8 max-w-2xl leading-relaxed"
+              className="text-lg sm:text-xl text-[var(--color-text-primary)] mb-8 max-w-2xl leading-relaxed"
               initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
@@ -136,11 +135,17 @@ export default function Hero() {
               animate="visible"
             >
               {trustItems.map((item) => (
-                <motion.li key={item} className="flex items-start gap-2 text-[var(--color-neutral-800)] font-medium" variants={statItemVariants}>
+                <motion.li key={item.label} className="flex items-start gap-2 text-[var(--color-text-primary)] font-medium" variants={statItemVariants}>
                   <svg className="w-5 h-5 mt-0.5 flex-shrink-0 text-[var(--color-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span>{item}</span>
+                  {item.href ? (
+                    <Link href={item.href} className="underline decoration-[var(--color-primary)] underline-offset-4 hover:text-[var(--color-primary)]">
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <span>{item.label}</span>
+                  )}
                 </motion.li>
               ))}
             </motion.ul>

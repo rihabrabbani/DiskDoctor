@@ -51,14 +51,11 @@ export default function HomeLocations() {
           <div className="flex flex-col bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6 lg:p-8">
             <h3 className="text-xl font-semibold text-[var(--color-text-primary)] mb-1">Tysons, VA</h3>
             <p className="text-[var(--color-primary)] font-medium mb-4">Office, by appointment</p>
-            <address className="not-italic text-[var(--color-text-secondary)] leading-relaxed mb-4">
+            <address className="not-italic text-[var(--color-text-secondary)] leading-relaxed mb-6">
               8300 Boone Blvd, Suite 513
               <br />
               Tysons, VA 22182
             </address>
-            <p className="text-[var(--color-text-secondary)] mb-6">
-              Recovery work is done in our Columbia lab.
-            </p>
             <div className="mt-auto">
               <Link
                 href="/tysons-va"

@@ -98,7 +98,7 @@ export default async function LocationPage({ params }: LocationPageProps) {
       <main>
         <LocationHero location={location} copy={copy} />
         <LocationUniqueContent location={location} copy={copy} />
-        <LocationPickup />
+        <LocationPickup phone={location.officePhone ?? location.phone} />
         <LocationServices location={location} serviceIds={copy.relatedServiceIds} />
         <LocationTrustSignals location={location} />
         <LocationTestimonials location={location} />

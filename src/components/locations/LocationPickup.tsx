@@ -1,9 +1,8 @@
 import Link from 'next/link';
 import { Truck } from 'lucide-react';
-import { PHONE_TEL } from '@/lib/site';
+import { telHref } from '@/lib/site';
 
-// Link the block to /free-pickup-and-mail-in once the pickup coverage is confirmed and that page is live.
-export default function LocationPickup() {
+export default function LocationPickup({ phone }: { phone: string }) {
   return (
     <section className="py-10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,9 +11,12 @@ export default function LocationPickup() {
             <Truck className="h-6 w-6 text-[var(--color-text-inverse)]" />
           </div>
           <p className="text-lg text-[var(--color-text-primary)] leading-relaxed">
-            <strong>Free pickup and drop-off across the Northeast</strong> — call{' '}
-            <a href={PHONE_TEL} className="text-[var(--color-primary)] font-semibold hover:underline">
-              (410) 937-7332
+            <Link href="/mail-in-data-recovery" className="font-semibold text-[var(--color-primary)] hover:underline">
+              Ship your drive to us free both ways
+            </Link>
+            , or book a pickup for a small fee. Call{' '}
+            <a href={telHref(phone)} className="text-[var(--color-primary)] font-semibold hover:underline">
+              {phone}
             </a>{' '}
             or{' '}
             <Link href="/contact" className="text-[var(--color-primary)] font-semibold hover:underline">

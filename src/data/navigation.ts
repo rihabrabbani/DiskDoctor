@@ -45,6 +45,7 @@ export const serviceRoutes: ServiceRoute[] = [
 
 export const mainNavItems = [
   { href: "/", label: "HOME" },
+  { href: "/mail-in-data-recovery", label: "SHIP YOUR DRIVE" },
   { href: "/contact", label: "CONTACT" }
 ];
 

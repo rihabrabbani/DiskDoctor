@@ -6,7 +6,7 @@ import { SITE_URL_SLASH } from '@/lib/site';
 
 const title = 'Data Recovery for Hard Drives, SSD & RAID | MD, VA & DC | DiskDoctor';
 const description =
-  'Hard drive, SSD, RAID and server data recovery from our ISO 9001 certified Columbia, MD lab. Free evaluation, free pickup across the Northeast, no data, no charge. 24/7: (410) 937-7332.';
+  'Hard drive, SSD, RAID and server data recovery from our ISO 9001 certified Columbia, MD lab. Free evaluation, free shipping both ways, no data, no charge. 24/7: (410) 937-7332.';
 
 export const metadata: Metadata = {
   title: {

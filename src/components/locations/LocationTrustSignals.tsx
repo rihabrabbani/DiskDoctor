@@ -155,18 +155,21 @@ export default function LocationTrustSignals({ location }: LocationTrustSignalsP
             Certified & Trusted
           </h3>
           <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-            {certifications.map((cert, index) => (
-              <div key={index} className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
-                <Shield className="h-5 w-5" />
-                {cert.name}
-              </div>
-            ))}
+            {certifications
+              // The client doesn't want Tysons pages to say where the recovery is done.
+              .filter((cert) => !(location.isAppointmentOnly && cert.name === 'Columbia MD laboratory'))
+              .map((cert, index) => (
+                <div key={index} className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
+                  <Shield className="h-5 w-5" />
+                  {cert.name}
+                </div>
+              ))}
           </div>
         </motion.div>
 
         {/* Local Emphasis */}
         <motion.div
-          className="mt-16 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] rounded-2xl p-8 text-center"
+          className="mt-16 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-2xl p-8 text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -176,14 +179,14 @@ export default function LocationTrustSignals({ location }: LocationTrustSignalsP
             Local Data Recovery Experts Serving {location.fullName}
           </h3>
           <p className="text-[var(--color-text-inverse)]/90 text-lg mb-6 max-w-2xl mx-auto">
-            As {location.isHeadOffice ? 'our head office location' : 'a trusted service area'}, 
+            As {location.isHeadOffice ? 'our head office location' : location.isAppointmentOnly ? 'our Virginia office' : 'a trusted service area'}, 
             we understand the unique data recovery needs of {location.city} businesses and residents.
           </p>
           <a
-            href={telHref(location.phone)}
+            href={telHref(location.officePhone ?? location.phone)}
             className="inline-flex items-center px-8 py-4 bg-[var(--color-accent)] text-[var(--color-text-inverse)] font-semibold rounded-lg hover:bg-[var(--color-accent-hover)] transition-all duration-300 shadow-lg hover:shadow-xl"
           >
-            Get Expert Help: {location.phone}
+            Get Expert Help: {location.officePhone ?? location.phone}
           </a>
         </motion.div>
       </div>

@@ -108,18 +108,18 @@ export default function LocationContact({ location }: LocationContactProps) {
                     <MapPin className="h-6 w-6 text-[var(--color-text-inverse)]" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="text-lg font-semibold text-[var(--color-text)] mb-2">
+                    <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">
                       {location.isHeadOffice
                         ? 'Head Office Location'
                         : location.address.startsWith('Serving')
                         ? 'Service Area'
                         : 'Office Location'}
                     </h4>
-                    <p className="text-[var(--color-text-light)] leading-relaxed">
+                    <p className="text-[var(--color-text-secondary)] leading-relaxed">
                       {location.address}
                     </p>
                     {location.officePhone && (
-                      <p className="text-[var(--color-text-light)] mt-2">
+                      <p className="text-[var(--color-text-secondary)] mt-2">
                         Office:{' '}
                         <a href={telHref(location.officePhone)} className="font-semibold text-[var(--color-accent)] hover:underline">
                           {location.officePhone}
@@ -132,7 +132,7 @@ export default function LocationContact({ location }: LocationContactProps) {
                       </p>
                     )}
                     {location.isHeadOffice && (
-                      <p className="text-sm text-[var(--color-text-light)] mt-2">
+                      <p className="text-sm text-[var(--color-text-secondary)] mt-2">
                         Serving {location.city} and surrounding areas
                       </p>
                     )}
@@ -151,13 +151,15 @@ export default function LocationContact({ location }: LocationContactProps) {
                     <Clock className="h-6 w-6 text-[var(--color-text-inverse)]" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="text-lg font-semibold text-[var(--color-text)] mb-3">
+                    <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">
                       Business Hours
                     </h4>
-                    <div className="space-y-2 text-[var(--color-text-light)]">
+                    <div className="space-y-2 text-[var(--color-text-secondary)]">
                       <div className="flex justify-between">
                         <span>Monday - Friday:</span>
-                        <span className="font-medium">8:30 AM - 5:00 PM</span>
+                        <span className="font-medium">
+                          {location.isAppointmentOnly ? 'By appointment' : '8:30 AM - 5:00 PM'}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span>Emergency Service:</span>
@@ -176,14 +178,14 @@ export default function LocationContact({ location }: LocationContactProps) {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <div className="bg-white border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-[var(--shadow-md)]">
-                <h3 className="text-2xl font-bold text-[var(--color-neutral-900)] mb-6">
+              <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-[var(--shadow-md)]">
+                <h3 className="text-2xl font-bold text-[var(--color-text-primary)] mb-6">
                   Get Your Free Evaluation
                 </h3>
 
                 <HubspotContactForm />
 
-                <p className="text-sm text-[var(--color-neutral-700)] mt-4 text-center">
+                <p className="text-sm text-[var(--color-text-secondary)] mt-4 text-center">
                   We reply within one business day. Emergencies: call our 24/7 line.
                 </p>
               </div>

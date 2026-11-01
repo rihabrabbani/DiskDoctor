@@ -26,18 +26,18 @@ export default function LocationsPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <h1 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] mb-6">
-              Labs and service areas
+              Locations and service areas
             </h1>
             <p className="text-xl text-[var(--color-text-secondary)] leading-relaxed">
-              Recovery work happens at the Columbia, Maryland laboratory. Tysons is an appointment-only
-              drop. Other cities on this site are service areas — not extra storefronts.
+              Our lab is in Columbia, Maryland, and our Tysons, Virginia office sees clients by appointment.
+              Other cities on this site are service areas — not extra storefronts.
             </p>
           </div>
 
-          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-6 text-center">Laboratories</h2>
+          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-6 text-center">Lab and office</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-16">
             {labs.map((location) => (
-              <Link key={location.slug} href={`/${location.slug}`} className="block bg-white rounded-xl p-8 border border-[var(--color-border)]">
+              <Link key={location.slug} href={`/${location.slug}`} className="block bg-[var(--color-surface-100)] rounded-xl p-8 border border-[var(--color-border)]">
                 <div className="flex items-start gap-4">
                   <MapPin className="h-8 w-8 text-[var(--color-primary)]" />
                   <div>
@@ -47,7 +47,7 @@ export default function LocationsPage() {
                       {location.isAppointmentOnly ? ' — Appointment only' : ''}
                     </h3>
                     <p className="text-[var(--color-text-secondary)] mt-2">{location.address}</p>
-                    <p className="mt-3 font-medium">{location.phone}</p>
+                    <p className="mt-3 font-medium text-[var(--color-text-primary)]">{location.officePhone ?? location.phone}</p>
                     <p className="text-sm text-[var(--color-text-secondary)] mt-2">
                       {locationCopy[location.slug]?.directAnswer}
                     </p>
@@ -63,7 +63,7 @@ export default function LocationsPage() {
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
             {areas.map((location) => (
-              <Link key={location.slug} href={`/${location.slug}`} className="block bg-white rounded-xl p-6 border border-[var(--color-border)]">
+              <Link key={location.slug} href={`/${location.slug}`} className="block bg-[var(--color-surface-100)] rounded-xl p-6 border border-[var(--color-border)]">
                 <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-2">{location.fullName}</h3>
                 <p className="text-sm text-[var(--color-text-secondary)] line-clamp-4">
                   {locationCopy[location.slug]?.heroDescription}
@@ -83,7 +83,7 @@ export default function LocationsPage() {
             </a>
           </div>
 
-          <div className="max-w-3xl mx-auto bg-white border border-[var(--color-border)] rounded-2xl p-6 sm:p-8">
+          <div className="max-w-3xl mx-auto bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8">
             <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4 text-center">
               Free evaluation
             </h2>

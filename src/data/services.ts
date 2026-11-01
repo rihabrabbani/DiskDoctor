@@ -44,7 +44,7 @@ export const recoverySteps: RecoveryStep[] = [
     step: "01",
     image: "https://images.unsplash.com/photo-1563207153-f403bf289096?auto=format&fit=crop&w=800&q=80",
     title: "Free Evaluation",
-    description: "We diagnose at no charge and quote before work starts. Bring it in, book a free pickup in the Northeast, or call us to arrange shipping.",
+    description: "We diagnose at no charge and quote before work starts. Bring it in, ship it to us free both ways, or book a pickup.",
     color: "var(--color-primary)"
   },
   {

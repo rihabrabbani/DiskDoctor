@@ -729,7 +729,7 @@ export const allServices: ServicePageData[] = [
       name: 'Email Enterprise',
       price: '$799',
       description: 'Enterprise email system recovery',
-      features: ['Unlimited mailboxes', 'Server-level recovery', 'Same-day service', 'On-site support', 'Migration assistance']
+      features: ['Unlimited mailboxes', 'Server-level recovery', 'Emergency service by phone', 'On-site support', 'Migration assistance']
     }
   ],
   caseStudies: [
@@ -845,7 +845,7 @@ export const allServices: ServicePageData[] = [
     benefits: [
       '95% Success Rate',
       'No Data, No Charge',
-      'Same-Day Service Available',
+      '24/7 Emergency Line',
       'Secure Recovery Process'
     ],
     detailedBenefits: [
@@ -861,7 +861,7 @@ export const allServices: ServicePageData[] = [
       },
       {
         title: 'Rapid Turnaround',
-        description: 'Emergency same-day service available for critical business data with express processing.',
+        description: 'Emergency service for critical business data: call our 24/7 line.',
         metric: '4-Hour Express'
       }
     ],
@@ -899,8 +899,8 @@ export const allServices: ServicePageData[] = [
       {
         name: 'Emergency Recovery',
         price: '$799',
-        description: 'Same-day emergency Windows recovery service',
-        features: ['Unlimited capacity', 'Same-day service', 'All file types', '24/7 phone support', 'On-site service available']
+        description: 'Emergency Windows recovery service',
+        features: ['Unlimited capacity', 'Emergency service by phone', 'All file types', '24/7 phone support', 'On-site service available']
       }
     ],
     caseStudies: [
@@ -927,7 +927,7 @@ export const allServices: ServicePageData[] = [
       },
       {
         question: 'How long does Windows data recovery typically take?',
-        answer: 'Standard recovery takes 3-5 business days, but we offer same-day emergency service for critical situations. Complex cases may require additional time.'
+        answer: 'Standard recovery takes 3-5 business days, and our emergency line is answered 24/7 for critical situations. Complex cases may require additional time.'
       }
     ],
     additionalContent: {
@@ -940,7 +940,7 @@ export const allServices: ServicePageData[] = [
       description: 'Our Windows recovery experts are standing by to help recover your critical files. Free evaluation included.',
       primaryButton: 'Start Recovery Now',
       secondaryButton: 'Get Free Quote',
-      urgencyText: '⚡ Same-day service available for emergency cases'
+      urgencyText: '⚡ 24/7 emergency line for urgent cases'
     }
   },
   {
@@ -1069,8 +1069,8 @@ export const allServices: ServicePageData[] = [
       {
         name: 'Mac Emergency',
         price: '$899',
-        description: 'Same-day Mac recovery service',
-        features: ['Unlimited capacity', 'All Mac models', 'Same-day service', 'On-site pickup available', '24/7 support']
+        description: 'Emergency Mac recovery service',
+        features: ['Unlimited capacity', 'All Mac models', 'Emergency service by phone', 'On-site pickup available', '24/7 support']
       }
     ],
     caseStudies: [
@@ -1261,7 +1261,7 @@ export const allServices: ServicePageData[] = [
         name: 'Photo Studio',
         price: '$699',
         description: 'Complete recovery for professional photographers',
-        features: ['Unlimited photos', 'All formats supported', 'Drone footage recovery', 'Same-day service', 'On-site pickup', 'Dedicated support']
+        features: ['Unlimited photos', 'All formats supported', 'Drone footage recovery', 'Emergency service by phone', 'On-site pickup', 'Dedicated support']
       }
     ],
     caseStudies: [
@@ -1322,7 +1322,7 @@ export const allServices: ServicePageData[] = [
       description: 'Professional photo recovery specialists ready to restore your irreplaceable photos and videos.',
       primaryButton: 'Recover My Photos',
       secondaryButton: 'Free Photo Evaluation',
-      urgencyText: '📸 Same-day service for urgent photo recovery needs'
+      urgencyText: '📸 24/7 emergency line for urgent photo recovery'
     }
   },
   {
@@ -1452,7 +1452,7 @@ export const allServices: ServicePageData[] = [
         name: 'Mobile Forensic',
         price: '$799',
         description: 'Comprehensive forensic data recovery service',
-        features: ['Unlimited data', 'All damage types', 'Same-day service', 'On-site evaluation', '24/7 support']
+        features: ['Unlimited data', 'All damage types', 'Emergency service by phone', 'On-site evaluation', '24/7 support']
       }
     ],
     caseStudies: [
@@ -1638,7 +1638,7 @@ export const allServices: ServicePageData[] = [
         name: 'RAID Emergency',
         price: '$1499',
         description: 'Immediate recovery for critical RAID failures',
-        features: ['Unlimited capacity', 'Same-day service', 'All RAID levels', '24/7 phone support', 'On-site service available']
+        features: ['Unlimited capacity', 'Emergency service by phone', 'All RAID levels', '24/7 phone support', 'On-site service available']
       }
     ],
     caseStudies: [
@@ -1825,7 +1825,7 @@ export const allServices: ServicePageData[] = [
         name: 'File Enterprise',
         price: '$499',
         description: 'Comprehensive recovery for business documents and databases',
-        features: ['Unlimited data', 'All file types', 'Same-day service', 'On-site evaluation', '24/7 support']
+        features: ['Unlimited data', 'All file types', 'Emergency service by phone', 'On-site evaluation', '24/7 support']
       }
     ],
     caseStudies: [
@@ -2015,7 +2015,7 @@ export const allServices: ServicePageData[] = [
         name: 'VM Enterprise',
         price: '$1299',
         description: 'Enterprise virtual infrastructure recovery',
-        features: ['Unlimited VMs', 'Unlimited data', 'Same-day service', 'On-site support', '24/7 phone support']
+        features: ['Unlimited VMs', 'Unlimited data', 'Emergency service by phone', 'On-site support', '24/7 phone support']
       }
     ],
     caseStudies: [
@@ -2383,7 +2383,7 @@ export const allServices: ServicePageData[] = [
         name: 'Clone Enterprise',
         price: '$599',
         description: 'Large-scale enterprise cloning service',
-        features: ['Batch cloning', 'Unlimited capacity', 'Same-day service', 'On-site service', 'Custom solutions']
+        features: ['Batch cloning', 'Unlimited capacity', 'Emergency service by phone', 'On-site service', 'Custom solutions']
       }
     ],
     caseStudies: [
@@ -2433,7 +2433,7 @@ export const allServices: ServicePageData[] = [
       description: 'Expert cloning services for system migration, forensic imaging, and secure data backup with guaranteed accuracy.',
       primaryButton: 'Start Cloning Service',
       secondaryButton: 'Cloning Consultation',
-      urgencyText: '⚡ Same-day cloning available for urgent projects'
+      urgencyText: '⚡ Urgent cloning projects: call our 24/7 line'
     }
   },
   {
@@ -2751,7 +2751,7 @@ export const allServices: ServicePageData[] = [
         name: 'Linux Enterprise',
         price: '$999',
         description: 'Enterprise Linux server recovery service',
-        features: ['Server farm recovery', 'Unlimited data', 'Same-day service', '24/7 support', 'On-site service available']
+        features: ['Server farm recovery', 'Unlimited data', 'Emergency service by phone', '24/7 support', 'On-site service available']
       }
     ],
     caseStudies: [
@@ -2946,7 +2946,7 @@ export const allServices: ServicePageData[] = [
         name: 'UNIX Enterprise',
         price: '$2499',
         description: 'Mission-critical UNIX recovery service',
-        features: ['Enterprise environments', 'Unlimited data', 'Same-day service', 'On-site support', 'Mainframe recovery']
+        features: ['Enterprise environments', 'Unlimited data', 'Emergency service by phone', 'On-site support', 'Mainframe recovery']
       }
     ],
     caseStudies: [

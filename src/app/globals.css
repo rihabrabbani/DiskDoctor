@@ -88,6 +88,12 @@ html.dark {
   --color-surface-200: #252525;
   --color-surface-300: #2e2e2e;
   
+  /* The light green tints (hero gradients, tags, tinted cards) become dark green tints,
+     so text set in --color-text-* stays readable on them. */
+  --color-primary-50: #0f2a1e;
+  --color-primary-100: #133626;
+  --color-primary-200: #1d5039;
+
   /* Dark mode primary palette adjustments */
   --color-primary: var(--color-primary-500);
   --color-primary-hover: var(--color-primary-400);

@@ -131,7 +131,7 @@ export default function ServiceHero({
             </motion.div>
             
             <motion.h1 
-              className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.1] mb-6 !text-[#212529]"
+              className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.1] mb-6 !text-[var(--color-text-primary)]"
               initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
@@ -150,7 +150,7 @@ export default function ServiceHero({
             </motion.p>
             
             <motion.p 
-              className="text-lg text-[var(--color-neutral-800)] mb-8 leading-relaxed max-w-lg"
+              className="text-lg text-[var(--color-text-primary)] mb-8 leading-relaxed max-w-lg"
               initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
@@ -211,7 +211,7 @@ export default function ServiceHero({
             {/* Urgency text */}
             {ctaSection.urgencyText && (
               <motion.p
-                className="mt-4 text-sm text-[var(--color-neutral-800)] font-medium"
+                className="mt-4 text-sm text-[var(--color-text-primary)] font-medium"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}

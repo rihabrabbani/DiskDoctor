@@ -155,7 +155,7 @@ export default function Header() {
           
           {/* Desktop Navigation */}
           <motion.nav 
-            className="hidden lg:flex items-center space-x-8"
+            className="hidden lg:flex items-center space-x-5 xl:space-x-8"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
@@ -167,7 +167,7 @@ export default function Header() {
             >
               <Link 
                 href="/" 
-                className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300"
+                className="whitespace-nowrap text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300"
               >
                 HOME
               </Link>
@@ -179,7 +179,7 @@ export default function Header() {
               onMouseEnter={() => setIsServicesOpen(true)}
               onMouseLeave={() => setIsServicesOpen(false)}
             >
-              <button className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300 flex items-center">
+              <button className="whitespace-nowrap text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300 flex items-center">
                 SERVICES
                 <motion.svg 
                   className="ml-1 w-4 h-4" 
@@ -233,7 +233,7 @@ export default function Header() {
               onMouseEnter={() => setIsLocationsOpen(true)}
               onMouseLeave={() => setIsLocationsOpen(false)}
             >
-              <Link href="/locations" className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300 flex items-center">
+              <Link href="/locations" className="whitespace-nowrap text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300 flex items-center">
                 LOCATIONS
                 <motion.svg 
                   className="ml-1 w-4 h-4" 
@@ -326,7 +326,7 @@ export default function Header() {
               >
                 <Link 
                   href={item.href} 
-                  className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300"
+                  className="whitespace-nowrap text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300"
                 >
                   {item.label}
                 </Link>
@@ -341,7 +341,7 @@ export default function Header() {
             >
               <Link 
                 href="/blog" 
-                className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300"
+                className="whitespace-nowrap text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-300"
               >
                 BLOGS
               </Link>
@@ -377,14 +377,14 @@ export default function Header() {
                 )}
               </motion.div>
             </motion.button>
-            <a href={PHONE_TEL} className="hidden sm:block font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-300">
+            <a href={PHONE_TEL} className="hidden sm:block lg:hidden xl:block whitespace-nowrap font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors duration-300">
               {PHONE_DISPLAY}
             </a>
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-                <Link href="/contact" className="px-2 py-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-medium text-center transition-all duration-300">
+                <Link href="/contact" className="whitespace-nowrap px-2 py-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-medium text-center transition-all duration-300">
                 Free Quote
                 </Link>
             </motion.div>

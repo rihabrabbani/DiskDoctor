@@ -7,7 +7,7 @@ import Hero from '@/components/home/Hero';
 import ServicesSection from '@/components/home/ServicesSection';
 import RecoveryProcess from '@/components/home/RecoveryProcess';
 import HomeLocations from '@/components/home/HomeLocations';
-import HomeScenarios from '@/components/home/HomeScenarios';
+import HomeRecoveries from '@/components/home/HomeRecoveries';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 import EmergencyContact from '@/components/home/EmergencyContact';
 import ScrollAnimations from '@/components/utils/ScrollAnimations';
@@ -25,7 +25,7 @@ export default function HomePage() {
         <ServicesSection />
         <RecoveryProcess />
         <HomeLocations />
-        <HomeScenarios />
+        <HomeRecoveries />
 
         <section id="faq" className="py-16 lg:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
@@ -60,7 +60,7 @@ export default function HomePage() {
               <p className="text-[var(--color-text-secondary)] mb-8 text-center">
                 Tell us what failed. A specialist replies within one business day. No data, no charge.
               </p>
-              <div className="bg-white border border-[var(--color-border)] rounded-2xl p-6 sm:p-8">
+              <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8">
                 <HubspotContactForm />
               </div>
             </div>

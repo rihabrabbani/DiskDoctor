@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 import { allServices } from '@/data/allServices'
-import { coreServicePages, dataRecoveryCost } from '@/data/corePages'
+import { coreServicePages, dataRecoveryCost, mailInDataRecovery } from '@/data/corePages'
 import { staticBlogPosts } from '@/data/staticBlogPosts'
 import { currentBlogSlug } from '@/data/blogSlugs'
 import { locations } from '@/data/locations'
@@ -57,6 +57,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}${dataRecoveryCost.path}`,
+      lastModified: generatedAt,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}${mailInDataRecovery.path}`,
       lastModified: generatedAt,
       changeFrequency: 'monthly' as const,
       priority: 0.8,

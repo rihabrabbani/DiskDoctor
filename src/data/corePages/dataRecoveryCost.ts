@@ -78,7 +78,7 @@ export const dataRecoveryCost: CorePage = {
         'How urgent it is, and which files matter most.',
       ],
       closing: [
-        'Free pickup and drop-off across the Northeast — call or use the form to arrange it. To ship the device instead, call us to arrange it. You can also walk in to the Columbia lab at 10015 Old Columbia Rd, Suite B 215, Columbia, MD 21046, Monday to Friday, 8:30 a.m. to 5:00 p.m.',
+        'Shipping to our lab and back is free, or we can pick the device up for a small fee: call or use the form to arrange it. You can also walk in to the Columbia lab at 10015 Old Columbia Rd, Suite B 215, Columbia, MD 21046, Monday to Friday, 8:30 a.m. to 5:00 p.m.',
         'DiskDoctor has been recovering data since 1991, with 15,000+ cases recovered, a 95% success rate and ISO 9001 certification. The evaluation is free, and you see a fixed quote before you commit to anything.',
       ],
       link: { href: '/contact', label: 'Request a free evaluation' },

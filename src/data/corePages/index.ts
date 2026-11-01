@@ -5,6 +5,7 @@ import { raidRecovery } from './raidRecovery';
 import { nasRecovery } from './nasRecovery';
 import { serverRecovery } from './serverRecovery';
 import { dataRecoveryCost } from './dataRecoveryCost';
+import { mailInDataRecovery } from './mailInDataRecovery';
 
 export type { CorePage } from './types';
 
@@ -17,6 +18,6 @@ export const coreServicePages: CorePage[] = [
   serverRecovery,
 ];
 
-export { dataRecoveryCost };
+export { dataRecoveryCost, mailInDataRecovery };
 
 export const getCoreServicePage = (id: string) => coreServicePages.find((page) => page.id === id);

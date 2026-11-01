@@ -57,16 +57,16 @@ export default function ServiceCTA({
             </motion.div>
           )}
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight !text-[#212529] mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight !text-[var(--color-text-primary)] mb-6">
             {ctaSection.title}
           </h2>
-          <p className="text-lg lg:text-xl text-[var(--color-neutral-800)] mb-8 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-lg lg:text-xl text-[var(--color-text-primary)] mb-8 leading-relaxed max-w-3xl mx-auto">
             {ctaSection.description}
           </p>
           
           {/* Trust indicators */}
           <motion.div 
-            className="flex flex-wrap justify-center gap-6 mb-10 text-sm text-[var(--color-neutral-800)]"
+            className="flex flex-wrap justify-center gap-6 mb-10 text-sm text-[var(--color-text-primary)]"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
@@ -120,16 +120,16 @@ export default function ServiceCTA({
 
           {/* Contact info */}
           <motion.div 
-            className="text-center text-[var(--color-neutral-800)]"
+            className="text-center text-[var(--color-text-primary)]"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            <p className="text-sm mb-2 text-[var(--color-neutral-800)]">
+            <p className="text-sm mb-2 text-[var(--color-text-primary)]">
               24/7 emergency line:{' '}
               <a href={PHONE_TEL} className="font-semibold hover:underline">{PHONE_DISPLAY}</a>
             </p>
-            <p className="text-xs text-[var(--color-neutral-800)]">Form enquiries get a reply within one business day</p>
+            <p className="text-xs text-[var(--color-text-primary)]">Form enquiries get a reply within one business day</p>
           </motion.div>
         </motion.div>
       </div>

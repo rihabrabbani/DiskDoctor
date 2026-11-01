@@ -12,9 +12,10 @@ export const homeFaqs: { question: string; answer: string; link?: { href: string
       'Logical recoveries usually finish in 24–48 hours. Physical jobs (clicking drives, RAID with failed members) usually take 3–7 days. Emergency service is available 24/7.',
   },
   {
-    question: 'Do you offer pickup?',
+    question: 'Do you offer pickup or shipping?',
     answer:
-      'Yes. Free pickup and drop-off across the Northeast. Call us or fill in the form to arrange it.',
+      "Yes. Shipping your drive to us and back is free. If you'd rather not ship it, we offer pickup and drop-off for a small fee, and on-site diagnostics for a small fee. Call us or fill in the form to arrange it.",
+    link: { href: '/mail-in-data-recovery', label: 'How mail-in works' },
   },
   {
     question: 'Can you recover a RAID or server?',

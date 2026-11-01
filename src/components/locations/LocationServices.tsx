@@ -36,8 +36,8 @@ export default function LocationServices({ location, serviceIds }: LocationServi
           ))}
         </div>
         <p className="text-center mt-8">
-          <a href={telHref(location.phone)} className="font-semibold text-[var(--color-primary)]">
-            Call {location.phone}
+          <a href={telHref(location.officePhone ?? location.phone)} className="font-semibold text-[var(--color-primary)]">
+            Call {location.officePhone ?? location.phone}
           </a>
           {' '}or{' '}
           <Link href="/contact" className="font-semibold text-[var(--color-primary)]">

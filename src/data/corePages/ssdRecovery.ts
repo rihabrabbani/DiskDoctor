@@ -81,11 +81,12 @@ export const ssdRecovery: CorePage = {
         'Verified delivery. We check that the files you care about open, then deliver them on new media.',
       ],
       closing: [
-        'Logical jobs usually take 24–48 hours. Physical jobs usually take 3–7 days. If it can’t wait, call our 24/7 emergency line at (410) 937-7332. Form enquiries get a reply within one business day. Walk in at the Columbia lab, use free pickup and drop-off across the Northeast (call or use the form to arrange it), or call us to arrange shipping.',
+        'Logical jobs usually take 24–48 hours. Physical jobs usually take 3–7 days. If it can’t wait, call our 24/7 emergency line at (410) 937-7332. Form enquiries get a reply within one business day. Walk in at the Columbia lab, ship the drive to us free both ways, or book a pickup for a small fee (call or use the form to arrange it).',
       ],
       link: { href: '/data-recovery-cost', label: 'What affects the cost' },
     },
   ],
+  reviewIds: ['R3'],
   scenarioIds: ['S4'],
   faqs: [
     {

@@ -21,10 +21,10 @@ export default function LocationFAQ({ location, faqs }: LocationFAQProps) {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text)] mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] mb-6">
             Frequently Asked Questions
           </h2>
-          <p className="text-xl text-[var(--color-text-light)] max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-[var(--color-text-secondary)] max-w-3xl mx-auto leading-relaxed">
             Common questions about data recovery services in {location.fullName} and how we can help you.
           </p>
         </motion.div>
@@ -47,10 +47,10 @@ export default function LocationFAQ({ location, faqs }: LocationFAQProps) {
                       <HelpCircle className="h-5 w-5 text-[var(--color-text-inverse)]" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-[var(--color-text)] mb-2">
+                      <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">
                         {faq.question}
                       </h3>
-                      <p className="text-[var(--color-text-light)] leading-relaxed">
+                      <p className="text-[var(--color-text-secondary)] leading-relaxed">
                         {faq.answer}
                       </p>
                     </div>
@@ -63,7 +63,7 @@ export default function LocationFAQ({ location, faqs }: LocationFAQProps) {
 
         {/* Additional local FAQ section */}
         <motion.div
-          className="mt-16 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] rounded-2xl p-8"
+          className="mt-16 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-2xl p-8"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -80,12 +80,12 @@ export default function LocationFAQ({ location, faqs }: LocationFAQProps) {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
-                href={telHref(location.phone)}
+                href={telHref(location.officePhone ?? location.phone)}
                 className="inline-flex items-center px-8 py-4 bg-[var(--color-accent)] text-[var(--color-text-inverse)] font-semibold rounded-lg hover:bg-[var(--color-accent-hover)] transition-all duration-300 shadow-lg hover:shadow-xl"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Call {location.phone}
+                Call {location.officePhone ?? location.phone}
               </motion.a>
               
               <motion.a
@@ -112,7 +112,7 @@ export default function LocationFAQ({ location, faqs }: LocationFAQProps) {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <p className="text-sm text-[var(--color-text-light)] max-w-4xl mx-auto leading-relaxed">
+          <p className="text-sm text-[var(--color-text-secondary)] max-w-4xl mx-auto leading-relaxed">
             <strong>Professional data recovery services in {location.fullName}</strong> - 
             Serving {location.nearbyAreas.slice(0, 4).join(', ')} and surrounding areas. 
             Specializing in hard drive recovery, SSD data recovery, RAID reconstruction, 

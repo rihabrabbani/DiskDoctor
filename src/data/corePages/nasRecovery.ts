@@ -59,7 +59,7 @@ export const nasRecovery: CorePage = {
         'The folders that matter most, so we check those first',
       ],
       closing: [
-        'All recovery work happens at our head office and lab, 10015 Old Columbia Rd, Suite B 215, Columbia, MD 21046. Walk in Monday to Friday, 8:30 a.m. to 5:00 p.m. Our Tysons, VA office at 8300 Boone Blvd, Suite 513 is by appointment. We also offer free pickup and drop-off across the Northeast — call or use the form to arrange it. To send the disks instead, call us to arrange shipping. On-site diagnostics are possible in special cases; call us to discuss.',
+        'All recovery work happens at our head office and lab, 10015 Old Columbia Rd, Suite B 215, Columbia, MD 21046. Walk in Monday to Friday, 8:30 a.m. to 5:00 p.m. Our Tysons, VA office at 8300 Boone Blvd, Suite 513 is by appointment. You can also ship the disks to us free both ways, or book a pickup for a small fee; call or use the form to arrange it. On-site diagnostics are available for a small fee.',
       ],
     },
     {

@@ -184,9 +184,12 @@ export default async function ServicePage({ params }: ServicePageProps) {
               Free evaluation
             </h2>
             <p className="text-center text-[var(--color-text-secondary)] mb-8">
-              No data, no charge. Tell us what failed.
+              No data, no charge. Tell us what failed.{' '}
+              <Link href="/mail-in-data-recovery" className="text-[var(--color-primary)] font-semibold hover:underline">
+                Shipping to our lab and back is free.
+              </Link>
             </p>
-            <div className="bg-white border border-[var(--color-border)] rounded-2xl p-6 sm:p-8">
+            <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8">
               <HubspotContactForm />
             </div>
           </div>

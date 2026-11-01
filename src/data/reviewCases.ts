@@ -54,15 +54,16 @@ export const reviewCases: Record<ReviewCaseId, ReviewCase> = {
   R5: {
     id: 'R5',
     title: '15-year-old external drive with family photos',
-    context:
-      'A 15-year-old external drive was “not powering on”. It held 20 years of family photos, and all of them were retrieved.',
+    context: 'A 15-year-old external drive was not powering on.',
+    quote: 'It had ALL my family photos stored on it.',
+    outcome: 'All of them were retrieved.',
     reviewer: 'Kylie B.',
     date: 'March 2025',
   },
   R6: {
     id: 'R6',
-    title: 'Business drive locked in the 2023 Western Digital outage',
-    context: 'A business drive was locked during the 2023 Western Digital outage.',
+    title: 'Business drive down in the 2023 Western Digital hack',
+    context: 'Their business hard drive went down in the 2023 Western Digital hack and the business was at a standstill.',
     quote: 'We were back up and running in 24 hours.',
     reviewer: 'Jennifer T.',
     date: 'April 2023',

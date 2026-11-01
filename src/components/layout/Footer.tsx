@@ -93,7 +93,7 @@ export default function Footer() {
         </div>
 
         <div className="pt-8 border-t border-[var(--color-border)] text-sm text-[var(--color-text-tertiary)]">
-          © {new Date().getFullYear()} DiskDoctor Data Recovery. Columbia, Maryland lab. Trusted since 1991.
+          © {new Date().getFullYear()} DiskDoctor Data Recovery. Trusted since 1991.
         </div>
       </div>
     </footer>

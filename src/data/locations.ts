@@ -297,7 +297,7 @@ export const locations: LocationData[] = [
     coordinates: { lat: 38.9182, lng: -77.2228 },
     isAppointmentOnly: true,
     metaDescription: "Tysons VA data recovery office at 8300 Boone Blvd Suite 513, by appointment. Hard drive, SSD, RAID and phone recovery. Free evaluation. Call (571) 202-8529.",
-    heroDescription: "Our Northern Virginia office in Tysons, by appointment. Staff are not always on site, so book before you drive.",
+    heroDescription: "Our Northern Virginia office in Tysons, by appointment. Call ahead so someone is here to meet you.",
     localKeywords: [
       'data recovery Tysons VA',
       'Tysons Corner data recovery',

@@ -99,14 +99,14 @@ export const locationCopy: Record<string, LocationCopy> = {
     directAnswer:
       'DiskDoctor’s Tysons office is at 8300 Boone Blvd Suite 513, Tysons, VA 22182, by appointment. Bring a failed hard drive, SSD, RAID or phone powered down. Evaluation is free, and there is no recovery fee if we can’t retrieve the files you need. Call (571) 202-8529 to schedule.',
     heroDescription:
-      'Our Northern Virginia office in Tysons, by appointment. Staff are not always on site, so book before you drive.',
+      'Our Northern Virginia office in Tysons, by appointment. Call ahead so someone is here to meet you.',
     paragraphs: [
       'Tysons is DiskDoctor’s Virginia office, by appointment. If you arrive unannounced, the suite may be locked. Call (571) 202-8529, pick a window, and bring the failed media powered down.',
-      'Address: 8300 Boone Blvd Suite 513, Tysons, VA 22182. Parking is in the Boone Boulevard garage. McLean, Vienna, Falls Church, Dunn Loring, and Merrifield clients book an appointment here to avoid a trip to Howard County.',
+      'Address: 8300 Boone Blvd Suite 513, Tysons, VA 22182. Parking is in the Boone Boulevard garage. McLean, Vienna, Falls Church, Dunn Loring, and Merrifield clients book an appointment here to save a trip.',
       'What happens after your appointment: the device is logged, evaluated at no charge, and quoted before any paid work. You can collect recovered files in Tysons on a scheduled return or receive a shipped encrypted drive. Chain of custody is kept for business and legal jobs.',
       'Do not start a RAID rebuild on a Tysons-area NAS while you wait for an appointment. Power the array down. The second disk in a degraded RAID 5 often dies during the rebuild, which is the expensive case.',
       'Urgent jobs do not have to wait for a Tysons slot. Call our 24/7 emergency line at (410) 937-7332 and we will work out the fastest way to start. The appointment is about someone being at Boone Blvd, not about whether we will take the job.',
-      'How to reach the suite: 8300 Boone Blvd is the office tower next to the Tysons Corner corridor, not a mall kiosk inside Tysons I or II. Suite 513 is upstairs. Bring a photo ID if the building desk asks. Do not leave a drive with a receptionist who is not DiskDoctor staff. If you cannot get in, call (571) 202-8529 from the lobby rather than sliding media under a door.',
+      'How to reach the suite: 8300 Boone Blvd is the office tower next to the Tysons Corner corridor, not a mall kiosk inside Tysons I or II. Suite 513 is upstairs. Bring a photo ID if the building desk asks. Do not leave a drive with a receptionist who is not DiskDoctor staff. If you cannot get in, call (571) 202-8529 from the lobby.',
       'If you need to watch chain-of-custody paperwork signed, say so when you book; we can do that at your appointment and again at return.',
       'What to bring: the failed disk or phone powered off, every RAID member, any passwords you will share, and a note with the OS and the folders that matter. Do not bring a running NAS that is still rebuilding. Power it down at the office before you drive.',
       'Return of files: encrypted USB or a new SATA/NVMe you approve, pickup in Tysons on a second appointment, or tracked shipping to your office. We do not email archives of recovered patient or legal files. If you want the original media back, say so; some physical jobs cannot reseal a drive that was opened for heads work.',
@@ -128,7 +128,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       },
       {
         question: 'Do I need an appointment in Tysons?',
-        answer: 'Yes. Staff are not always present. Call (571) 202-8529 before you go.',
+        answer: 'Yes. Call (571) 202-8529 ahead so someone is here to meet you.',
       },
       {
         question: 'Can I bring a Northern Virginia RAID job to Tysons?',

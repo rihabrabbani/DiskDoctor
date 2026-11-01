@@ -127,8 +127,8 @@ export default function LocationContact({ location }: LocationContactProps) {
                       </p>
                     )}
                     {location.isAppointmentOnly && (
-                      <p className="text-sm text-red-600 font-semibold mt-2 flex items-center gap-1.5">
-                        <span>⚠️</span> By Appointment Only (Staff not always present)
+                      <p className="text-sm text-[var(--color-text-secondary)] font-semibold mt-2">
+                        By appointment. Call ahead so someone is here to meet you.
                       </p>
                     )}
                     {location.isHeadOffice && (

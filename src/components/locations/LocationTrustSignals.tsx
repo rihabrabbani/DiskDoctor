@@ -36,6 +36,14 @@ const trustSignals = [
   }
 ];
 
+// The client doesn't want Tysons pages to say where the recovery is done.
+const appointmentOfficeSignal = {
+  icon: Shield,
+  title: 'Free evaluation',
+  description: 'No data, no charge on the recovery fee',
+  highlight: 'Free'
+};
+
 const certifications = [
   { name: 'Free evaluation', logo: '' },
   { name: 'No data, no charge', logo: '' },
@@ -74,30 +82,32 @@ export default function LocationTrustSignals({ location }: LocationTrustSignalsP
 
         {/* Trust Metrics */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {trustSignals.map((signal, index) => (
-            <motion.div
-              key={index}
-              className="text-center bg-[var(--color-surface-100)] rounded-xl p-8 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] transition-all duration-300"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -5 }}
-            >
-              <div className="inline-flex items-center justify-center h-16 w-16 bg-[var(--color-primary)] rounded-full mb-6">
-                <signal.icon className="h-8 w-8 text-[var(--color-text-inverse)]" />
-              </div>
-              <div className="text-4xl font-bold text-[var(--color-accent)] mb-2">
-                {signal.highlight}
-              </div>
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">
-                {signal.title}
-              </h3>
-              <p className="text-[var(--color-text-secondary)] text-sm">
-                {signal.description}
-              </p>
-            </motion.div>
-          ))}
+          {trustSignals
+            .map((signal) => (location.isAppointmentOnly && signal.highlight === 'Lab' ? appointmentOfficeSignal : signal))
+            .map((signal, index) => (
+              <motion.div
+                key={index}
+                className="text-center bg-[var(--color-surface-100)] rounded-xl p-8 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] transition-all duration-300"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -5 }}
+              >
+                <div className="inline-flex items-center justify-center h-16 w-16 bg-[var(--color-primary)] rounded-full mb-6">
+                  <signal.icon className="h-8 w-8 text-[var(--color-text-inverse)]" />
+                </div>
+                <div className="text-4xl font-bold text-[var(--color-accent)] mb-2">
+                  {signal.highlight}
+                </div>
+                <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">
+                  {signal.title}
+                </h3>
+                <p className="text-[var(--color-text-secondary)] text-sm">
+                  {signal.description}
+                </p>
+              </motion.div>
+            ))}
         </div>
 
         <motion.div

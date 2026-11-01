@@ -115,8 +115,8 @@ export default async function LocationPage({ params }: LocationPageProps) {
               </span>
             ))}
             . Call{' '}
-            <a href={telHref(location.phone)} className="font-semibold text-[var(--color-primary)]">
-              {location.phone}
+            <a href={telHref(location.officePhone ?? location.phone)} className="font-semibold text-[var(--color-primary)]">
+              {location.officePhone ?? location.phone}
             </a>
           </div>
         </section>

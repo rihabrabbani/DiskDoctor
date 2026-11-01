@@ -47,11 +47,11 @@ export default function LocationHero({ location, copy }: LocationHeroProps) {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
-              href={telHref(location.phone) || PHONE_TEL}
+              href={telHref(location.officePhone ?? location.phone) || PHONE_TEL}
               className="inline-flex items-center px-8 py-4 bg-[var(--color-accent-700)] text-white font-semibold rounded-lg"
             >
               <Phone className="h-5 w-5 mr-3" />
-              Call {location.phone}
+              Call {location.officePhone ?? location.phone}
             </a>
             <a
               href="/contact"

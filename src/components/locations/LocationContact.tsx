@@ -118,6 +118,14 @@ export default function LocationContact({ location }: LocationContactProps) {
                     <p className="text-[var(--color-text-light)] leading-relaxed">
                       {location.address}
                     </p>
+                    {location.officePhone && (
+                      <p className="text-[var(--color-text-light)] mt-2">
+                        Office:{' '}
+                        <a href={telHref(location.officePhone)} className="font-semibold text-[var(--color-accent)] hover:underline">
+                          {location.officePhone}
+                        </a>
+                      </p>
+                    )}
                     {location.isAppointmentOnly && (
                       <p className="text-sm text-red-600 font-semibold mt-2 flex items-center gap-1.5">
                         <span>⚠️</span> By Appointment Only (Staff not always present)

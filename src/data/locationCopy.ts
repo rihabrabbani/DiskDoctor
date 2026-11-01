@@ -96,7 +96,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     kind: 'lab',
     seoTitle: 'Data Recovery Tysons VA | By Appointment',
     seoDescription:
-      'Tysons VA data recovery office at 8300 Boone Blvd Suite 513, by appointment. Media is processed at the Columbia MD lab. Free evaluation. Call (410) 937-7332.',
+      'Tysons VA data recovery office at 8300 Boone Blvd Suite 513, by appointment. Media is processed at the Columbia MD lab. Free evaluation. Call (571) 202-8529.',
     directAnswer:
       'DiskDoctor’s Tysons office is at 8300 Boone Blvd Suite 513, Tysons, VA 22182, by appointment. Recovery work happens in the Columbia, MD lab: devices you bring to a Tysons appointment are taken there for imaging. Call (410) 937-7332 to schedule.',
     heroDescription:

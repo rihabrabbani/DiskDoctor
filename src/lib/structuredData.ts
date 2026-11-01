@@ -135,7 +135,7 @@ export const tysonsLocalBusinessSchema = {
   "url": `${SITE}/tysons-va`,
   "hasMap": TYSONS_MAPS_URL,
   "image": `${SITE}/images/logo.png`,
-  "telephone": "+1-410-937-7332",
+  "telephone": "+1-571-202-8529",
   "parentOrganization": { "@id": ORGANIZATION_ID },
   "address": {
     "@type": "PostalAddress",

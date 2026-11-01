@@ -7,10 +7,8 @@ import AnalyticsClicks from "@/components/analytics/AnalyticsClicks";
 import StickyMobileBar from "@/components/layout/StickyMobileBar";
 import { SITE_URL, SITE_URL_SLASH } from "@/lib/site";
 
+// GTM is the only Google tag on the site: GA4, Google Ads conversions and remarketing all live in the container.
 const gtmId = "GTM-K5DVZQX4";
-const googleAdsTysonsId = "AW-16976188859";
-const googleAdsColumbiaId = "AW-16534646072";
-const googleAdsColumbiaLeadId = "AW-7835970649";
 
 export const metadata: Metadata = {
   title: {
@@ -81,18 +79,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <Script id="google-ads-gtag" strategy="beforeInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${googleAdsTysonsId}');
-gtag('config', '${googleAdsColumbiaId}');
-gtag('config', '${googleAdsColumbiaLeadId}');`}
-        </Script>
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsTysonsId}`}
-          strategy="beforeInteractive"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

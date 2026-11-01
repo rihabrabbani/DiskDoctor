@@ -85,14 +85,16 @@ export default function Hero() {
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          {/* initial={false}: the headline and subhead are the LCP element, so they render visible
+              on the server instead of waiting for hydration and a fade-in. */}
           <motion.div
-            initial="hidden"
+            initial={false}
             animate="visible"
             variants={heroVariants}
           >
             <motion.h1 
               className="text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.1] mb-6 !text-[#212529]"
-              initial={{ opacity: 0, y: 30 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
@@ -101,7 +103,7 @@ export default function Hero() {
             
             <motion.p 
               className="text-lg sm:text-xl text-[var(--color-neutral-800)] mb-8 max-w-2xl leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
@@ -146,7 +148,7 @@ export default function Hero() {
           
           <motion.div 
             className="hidden lg:block relative"
-            initial="hidden"
+            initial={false}
             animate="visible"
             variants={imageVariants}
           >

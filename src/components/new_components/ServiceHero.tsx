@@ -107,8 +107,10 @@ export default function ServiceHero({
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className={getLayoutClasses()}>
+          {/* initial={false} on the hero text and image: they are the LCP element, so they render
+              visible on the server instead of waiting for hydration and a fade-in. */}
           <motion.div
-            initial={{ opacity: 0, x: layoutType === 'hero-center' ? 0 : -50 }}
+            initial={false}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             className={layoutType === 'hero-center' ? 'text-center' : ''}
@@ -130,7 +132,7 @@ export default function ServiceHero({
             
             <motion.h1 
               className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.1] mb-6 !text-[#212529]"
-              initial={{ opacity: 0, y: 30 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
@@ -140,7 +142,7 @@ export default function ServiceHero({
             <motion.p 
               className="text-xl lg:text-2xl font-medium mb-6"
               style={{ color: accentColor }}
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
@@ -149,7 +151,7 @@ export default function ServiceHero({
             
             <motion.p 
               className="text-lg text-[var(--color-neutral-800)] mb-8 leading-relaxed max-w-lg"
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
             >
@@ -223,7 +225,7 @@ export default function ServiceHero({
           {!isOverlay && layoutType !== 'hero-center' && (
             <motion.div 
               className="relative"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={false}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.4 }}
             >
@@ -232,6 +234,7 @@ export default function ServiceHero({
                   src={heroImage}
                   alt={heroImageAlt || title}
                   fill
+                  priority
                   style={heroImagePosition ? { objectPosition: heroImagePosition } : undefined}
                   className="object-cover rounded-2xl shadow-[var(--shadow-xl)] group-hover:scale-105 transition-transform duration-500"
                 />

@@ -87,31 +87,8 @@ export default function TestimonialsSection() {
     <section className="py-16 lg:py-24 bg-gradient-to-br from-[var(--color-primary-50)] to-[var(--color-primary-100)] relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
-        <motion.div 
-          className="absolute top-20 right-20 w-64 h-64 bg-[var(--color-primary)] rounded-full mix-blend-multiply filter blur-xl"
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.6, 0.3]
-          }}
-          transition={{ 
-            duration: 6, 
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-20 left-20 w-64 h-64 bg-[var(--color-accent)] rounded-full mix-blend-multiply filter blur-xl"
-          animate={{ 
-            scale: [1, 1.1, 1],
-            opacity: [0.4, 0.7, 0.4]
-          }}
-          transition={{ 
-            duration: 8, 
-            delay: 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
+        <div className="absolute top-20 right-20 w-64 h-64 bg-[var(--color-primary)] rounded-full mix-blend-multiply filter blur-xl" />
+        <div className="absolute bottom-20 left-20 w-64 h-64 bg-[var(--color-accent)] rounded-full mix-blend-multiply filter blur-xl" />
       </div>
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

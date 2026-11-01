@@ -23,18 +23,8 @@ export default function ServiceCTA({
     <section className="py-16 lg:py-24 bg-gradient-to-br from-[var(--color-primary-50)] to-[var(--color-primary-100)] relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-10">
-        <motion.div 
-          className="absolute top-10 left-10 w-32 h-32 rounded-full"
-          style={{ backgroundColor: accentColor }}
-          animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
-          transition={{ duration: 8, repeat: Infinity }}
-        />
-        <motion.div 
-          className="absolute bottom-10 right-10 w-24 h-24 rounded-full"
-          style={{ backgroundColor: accentColor }}
-          animate={{ scale: [1.2, 1, 1.2], rotate: [360, 180, 0] }}
-          transition={{ duration: 6, repeat: Infinity }}
-        />
+        <div className="absolute top-10 left-10 w-32 h-32 rounded-full" style={{ backgroundColor: accentColor }} />
+        <div className="absolute bottom-10 right-10 w-24 h-24 rounded-full" style={{ backgroundColor: accentColor }} />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

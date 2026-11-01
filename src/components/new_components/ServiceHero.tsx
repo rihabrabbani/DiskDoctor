@@ -61,34 +61,8 @@ export default function ServiceHero({
       {/* Enhanced Background Pattern */}
       {!isOverlay && (
         <div className="absolute inset-0 opacity-10">
-          <motion.div 
-            className="absolute top-20 right-20 w-64 h-64 rounded-full mix-blend-multiply filter blur-xl"
-            style={{ backgroundColor: accentColor }}
-            animate={{ 
-              scale: [1, 1.2, 1],
-              opacity: [0.3, 0.7, 0.3],
-              rotate: [0, 180, 360]
-            }}
-            transition={{ 
-              duration: 8, 
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-          <motion.div 
-            className="absolute bottom-20 left-20 w-48 h-48 rounded-full mix-blend-multiply filter blur-xl"
-            style={{ backgroundColor: accentColor }}
-            animate={{ 
-              scale: [1.2, 1, 1.2],
-              opacity: [0.2, 0.5, 0.2],
-              rotate: [360, 180, 0]
-            }}
-            transition={{ 
-              duration: 6, 
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
+          <div className="absolute top-20 right-20 w-64 h-64 rounded-full mix-blend-multiply filter blur-xl" style={{ backgroundColor: accentColor }} />
+          <div className="absolute bottom-20 left-20 w-48 h-48 rounded-full mix-blend-multiply filter blur-xl" style={{ backgroundColor: accentColor }} />
         </div>
       )}
 
@@ -266,19 +240,7 @@ export default function ServiceHero({
                 </>)}
               </div>
               
-              <motion.div 
-                className="absolute -bottom-6 -right-6 h-24 w-24 rounded-full opacity-80 shadow-lg"
-                style={{ backgroundColor: accentColor }}
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  opacity: [0.6, 0.9, 0.6]
-                }}
-                transition={{ 
-                  duration: 3, 
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
+              <div className="absolute -bottom-6 -right-6 h-24 w-24 rounded-full opacity-80 shadow-lg" style={{ backgroundColor: accentColor }} />
             </motion.div>
           )}
         </div>

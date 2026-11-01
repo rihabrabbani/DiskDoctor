@@ -204,19 +204,7 @@ export default function ServiceProcess({
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                 </div>
-                <motion.div 
-                  className="absolute -bottom-4 -right-4 h-16 w-16 rounded-full opacity-80 shadow-lg"
-                  style={{ backgroundColor: accentColor }}
-                  animate={{ 
-                    scale: [1, 1.1, 1],
-                    opacity: [0.6, 0.9, 0.6]
-                  }}
-                  transition={{ 
-                    duration: 3, 
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                />
+                <div className="absolute -bottom-4 -right-4 h-16 w-16 rounded-full opacity-80 shadow-lg" style={{ backgroundColor: accentColor }} />
               </div>
             </div>
           </motion.div>

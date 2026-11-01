@@ -25,6 +25,7 @@ export const organizationSchema = {
   "alternateName": "Disk Doctor",
   "url": SITE,
   "logo": `${SITE}/images/logo.png`,
+  "image": `${SITE}/images/logo.png`,
   "description": "ISO 9001 certified data recovery lab in Columbia, MD, recovering hard drives, SSDs, RAID arrays, NAS units and servers since 1991. 15,000+ cases recovered, 95% success rate.",
   "foundingDate": "1991",
   "slogan": "Your Data is Recoverable",

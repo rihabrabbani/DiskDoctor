@@ -19,7 +19,7 @@ export const serviceLongform: Record<
       'What “phone data recovery services” means here: not a mall kiosk that swaps a screen and hopes iCloud has the camera roll. If the photos were only in iCloud or Google Photos, get them from the cloud. If they were on the device and the board died, that is a lab job in Columbia.',
       'SIM and SD cards: a removable SD card is a separate recovery. Remove it if you can without forcing the tray. We can image the card and the phone NAND as two jobs. Do not format the card in another phone “to see if it works.”',
       'Passcode and encryption: a phone that still boots can often do a logical extraction if you know the passcode. A phone that does not boot is a physical or chip-off path. We will not advertise bypasses for stolen devices. Own the phone, or have a legal right to the data.',
-      'Turnaround details: a dry, intact board that still enumerates can be a same-week logical job. A washed iPhone that will not power is a longer board-level job. Emergency intake is by phone at (410) 937-7332, not by walking into Tysons unannounced.',
+      'Turnaround details: a dry, intact board that still enumerates can be a same-week logical job. A washed iPhone that will not power is a longer board-level job. Emergency intake is by phone at (410) 937-7332, not by walking into Tysons without an appointment.',
       'Start with the form on this page. Name the model, what happened (water, drop, boot loop, reset), and whether photos, messages, or both matter. Power the phone off. Evaluation is free. No data, no charge on the recovery fee if we cannot retrieve what you named.',
     ],
     faqs: [

@@ -101,7 +101,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     heroDescription:
       'Our Northern Virginia office in Tysons, by appointment. Call ahead so someone is here to meet you.',
     paragraphs: [
-      'Tysons is DiskDoctor’s Virginia office, by appointment. If you arrive unannounced, the suite may be locked. Call (571) 202-8529, pick a window, and bring the failed media powered down.',
+      'Tysons is DiskDoctor’s Virginia office, by appointment. Call (571) 202-8529 ahead so someone is here to meet you, and bring the failed media powered down.',
       'Address: 8300 Boone Blvd Suite 513, Tysons, VA 22182. Parking is in the Boone Boulevard garage. McLean, Vienna, Falls Church, Dunn Loring, and Merrifield clients book an appointment here to save a trip.',
       'What happens after your appointment: the device is logged, evaluated at no charge, and quoted before any paid work. You can collect recovered files in Tysons on a scheduled return or receive a shipped encrypted drive. Chain of custody is kept for business and legal jobs.',
       'Do not start a RAID rebuild on a Tysons-area NAS while you wait for an appointment. Power the array down. The second disk in a degraded RAID 5 often dies during the rebuild, which is the expensive case.',
@@ -230,7 +230,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       'Chain of custody, restricted bench access, and return on encrypted drives are routine for DC law firms and contractors. Put that requirement on the form. We do not mine files for marketing and we do not keep copies longer than the agreed retention after you confirm the delivery disk.',
       'Georgetown, Capitol Hill, Dupont, Foggy Bottom, Navy Yard, and Shaw are service areas, not fake offices. If a directory lists a DC street for DiskDoctor that is not 10015 Old Columbia Rd or the Tysons appointment suite, it is stale or belongs to another entity.',
       'Turnaround: logical 24–48 hours after arrival, physical/RAID 3–7 days, emergency by phone. Evaluation free. No data, no charge on the recovery fee.',
-      'Driving from downtown: I-295 or 395 to the Beltway to 29 north, or 95 if that is moving. Metro does not reach the Columbia suite; our Tysons office on the Silver Line is closer, by appointment, if you will not drive to Howard County. Book Tysons; do not assume the Boone Blvd suite is staffed.',
+      'Driving from downtown: I-295 or 395 to the Beltway to 29 north, or 95 if that is moving. Metro does not reach the Columbia suite; our Tysons office on the Silver Line is closer, by appointment, if you will not drive to Howard County. Tysons is by appointment. Call ahead so someone is here to meet you.',
       'Law firms around Judiciary Square and K Street: BitLocker and FileVault volumes are routine. Bring the protector key or password. We will not “break” encryption as a service. If the SSD is not detected in firmware, chip-level work may still return an encrypted blob you can unlock in-house.',
       'Contractors in Navy Yard and Crystal City (the DC side of that commute): RAID 6 and virtual disks on failed members are the expensive cases. Photograph slot order. Do not let a hardware card finish a rebuild overnight “so it is ready in the morning.”',
       'This page is not a guide to the monuments. If a directory still describes DiskDoctor with Mall copy, that is leftover tourism text from an older template. The service is laboratory recovery for failed media that happens to be used by people who work in the District.',
@@ -243,7 +243,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       'If a directory lists a National Mall address for DiskDoctor, ignore it. This operation’s streets are 10015 Old Columbia Rd in Columbia and 8300 Boone Blvd in Tysons (appointment). DC is a service area of those two, not a third laboratory.',
       'What to bring from DC: powered-down media, RAID members labeled by slot, BitLocker or FileVault keys if the volume is encrypted, and a note if chain-of-custody is required. Unclassified business and personal media only on this public form.',
       'What happens next: Columbia evaluates at no charge, quotes, clones, and returns files on new media. Pickup in Columbia, scheduled Tysons return, or tracked shipping. We do not email archives of recovered legal files.',
-      'If you are on the Hill and cannot drive to Howard County, book Tysons. Do not leave a drive with a building receptionist who is not DiskDoctor staff. Call (410) 937-7332 from the lobby if the suite is locked.',
+      'If you are on the Hill and cannot drive to Howard County, book Tysons. By appointment. Call ahead so someone is here to meet you. Do not leave a drive with a building receptionist who is not DiskDoctor staff.',
     ],
     scenarios: [
       {
@@ -495,8 +495,8 @@ export const locationCopy: Record<string, LocationCopy> = {
     heroDescription:
       'McLean and Langley clients can meet us at the Tysons office by appointment or go straight to the Columbia lab. Recovery is laboratory work, not a mall kiosk.',
     paragraphs: [
-      'McLean is minutes from the Tysons appointment suite. Book an appointment so the suite is staffed.',
-      'From downtown McLean or Langley, Boone Blvd is a short drive. Call (410) 937-7332 first. An unscheduled visit to suite 513 is how people find a locked door. Columbia remains the laboratory if Tysons cannot meet that day.',
+      'McLean is minutes from the Tysons office. By appointment. Call ahead so someone is here to meet you.',
+      'From downtown McLean or Langley, Boone Blvd is a short drive. Call (410) 937-7332 first to book a time.',
       'McLean household Fusion Drives and iMacs: the HDD side clicks while the SSD side still boots slowly. Do not run Disk Utility First Aid in a loop. Bring the machine or the pulled drives. We clone both parts of the pair.',
       'Professional offices along Chain Bridge and Old Dominion: BitLocker volumes and failing NVMe modules are routine. Bring the key. We return files on new media, not a “repaired” original you should trust as the only copy.',
     ],
@@ -508,7 +508,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     faqs: [
       { question: 'McLean office?', answer: 'No. Tysons by appointment; lab in Columbia.' },
-      { question: 'Can I walk into Tysons?', answer: 'Call first. Staff are not always present.' },
+      { question: 'Can I walk into Tysons?', answer: 'By appointment. Call ahead so someone is here to meet you.' },
       { question: 'RAID?', answer: 'Bring every member. Do not rebuild.' },
       { question: 'Cost?', answer: 'Free evaluation. No data, no charge.' },
     ],
@@ -560,7 +560,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       'From Potomac Village, 189 to 495 to 29 is a common drive to Columbia. Bethesda-adjacent streets can also use Tysons by appointment if that is shorter. There is no Potomac storefront and no “Bethesda lab.”',
       'Video and photo archives on RAID 5 are the expensive Potomac case. One clicking member plus a rebuild is two holes in the stripe. Label the slots. Bring all disks. We reconstruct from clones in Columbia.',
       'Mac desktops and Fusion pairs are common in Potomac households. If Disk Utility cannot repair the volume, stop. First Aid on a clicking HDD is a write. Imaging is a read.',
-      'Bethesda-adjacent clients can book a Tysons appointment if that is shorter than Columbia. Call (410) 937-7332 before you drive to Boone Blvd. The suite is not always staffed.',
+      'Bethesda-adjacent clients can book a Tysons appointment if that is shorter than Columbia. By appointment. Call ahead so someone is here to meet you.',
     ],
     scenarios: [
       {

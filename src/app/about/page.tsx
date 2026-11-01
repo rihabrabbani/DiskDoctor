@@ -35,7 +35,7 @@ export default function AboutPage() {
             Head office and recovery lab: {COLUMBIA_ADDRESS}. Walk-in weekdays 8:30 a.m.–5:00 p.m.
             24/7 emergency line:{' '}
             <a className="text-[var(--color-primary)] font-semibold" href={PHONE_TEL}>{PHONE_DISPLAY}</a>.
-            Tysons: {TYSONS_ADDRESS}, an office by appointment — staff are not always present.
+            Tysons: {TYSONS_ADDRESS}, an office by appointment. Call ahead so someone is here to meet you.
             Recovery work is performed in the Columbia lab.
           </p>
           <p>

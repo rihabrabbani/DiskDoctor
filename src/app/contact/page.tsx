@@ -25,7 +25,7 @@ export default function ContactPage() {
       <main className="py-16 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
-            <div className="mb-8">
+            <div className="mb-8" data-track-position="form_intro">
               <h1 className="text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-4">
                 Free data recovery evaluation
               </h1>

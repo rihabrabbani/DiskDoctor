@@ -52,7 +52,7 @@ const statItemVariants: Variants = {
 
 export default function Hero() {
   return (
-    <section className="min-h-screen flex items-center bg-gradient-to-br from-[var(--color-primary-50)] to-[var(--color-primary-100)] relative overflow-hidden">
+    <section data-track-position="hero" className="min-h-screen flex items-center bg-gradient-to-br from-[var(--color-primary-50)] to-[var(--color-primary-100)] relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-10 right-10 w-72 h-72 bg-[var(--color-primary)] rounded-full mix-blend-multiply filter blur-xl" />

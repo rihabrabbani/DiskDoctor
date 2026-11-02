@@ -181,7 +181,7 @@ export default function CorePageLayout({ page }: { page: CorePage }) {
           </div>
         </section>
 
-        <section className="py-16 bg-[var(--color-surface-100)]">
+        <section data-track-position="form_intro" className="py-16 bg-[var(--color-surface-100)]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
             <h2 className="text-3xl font-bold text-[var(--color-text-primary)] mb-4 text-center">
               Get a free evaluation

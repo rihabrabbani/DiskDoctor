@@ -68,7 +68,8 @@ export default function Header() {
   const otherLocationsCol2 = otherLocations.slice(midpoint);
   
   return (
-    <motion.header 
+    <motion.header
+      data-track-position="header"
       className="sticky top-0 z-50 bg-[var(--color-surface-100)]/95 backdrop-blur-lg border-b border-[var(--color-border)] shadow-[var(--shadow-sm)]"
       initial={{ y: -100 }}
       animate={{ y: 0 }}

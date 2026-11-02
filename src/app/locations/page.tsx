@@ -73,7 +73,7 @@ export default function LocationsPage() {
             ))}
           </div>
 
-          <div className="text-center mb-12">
+          <div className="text-center mb-12" data-track-position="cta_band">
             <a
               href={PHONE_TEL}
               className="inline-flex items-center px-8 py-4 bg-[var(--color-accent-700)] text-white font-semibold rounded-lg"
@@ -83,7 +83,7 @@ export default function LocationsPage() {
             </a>
           </div>
 
-          <div className="max-w-3xl mx-auto bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8">
+          <div data-track-position="form_intro" className="max-w-3xl mx-auto bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8">
             <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4 text-center">
               Free evaluation
             </h2>

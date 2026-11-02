@@ -20,6 +20,7 @@ export default function ReviewCaseCard({ review }: { review: ReviewCase }) {
         <p className="font-semibold text-[var(--color-text-primary)]">{review.reviewer}</p>
         <a
           href={GOOGLE_REVIEWS_URL}
+          data-map-link="reviews"
           target="_blank"
           rel="noopener noreferrer"
           className="text-[var(--color-primary)] hover:underline"

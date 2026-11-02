@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
+import TrackNotFound from '@/components/analytics/TrackNotFound'
 
 export const metadata: Metadata = {
   title: 'Page Not Found - 404',
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center">
+      <TrackNotFound />
       <div className="text-center max-w-md mx-auto px-4">
         <div className="text-6xl font-bold text-[var(--color-primary)] mb-4">404</div>
         <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-4">

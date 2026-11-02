@@ -53,7 +53,7 @@ export default function ServiceHero({
   const isOverlay = layoutType === 'hero-overlay';
 
   return (
-    <section className={`relative min-h-[80vh] flex items-center overflow-hidden ${
+    <section data-track-position="hero" className={`relative min-h-[80vh] flex items-center overflow-hidden ${
       isOverlay 
         ? 'bg-black' 
         : 'bg-gradient-to-br from-[var(--color-primary-50)] to-[var(--color-primary-100)]'

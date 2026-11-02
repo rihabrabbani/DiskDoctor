@@ -20,7 +20,7 @@ export default function ServiceCTA({
   accentColor = 'var(--color-primary)'
 }: ServiceCTAProps) {
   return (
-    <section className="py-16 lg:py-24 bg-gradient-to-br from-[var(--color-primary-50)] to-[var(--color-primary-100)] relative overflow-hidden">
+    <section data-track-position="cta_band" className="py-16 lg:py-24 bg-gradient-to-br from-[var(--color-primary-50)] to-[var(--color-primary-100)] relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-10 left-10 w-32 h-32 rounded-full" style={{ backgroundColor: accentColor }} />

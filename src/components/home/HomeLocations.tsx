@@ -6,7 +6,7 @@ const serviceAreas = locations.filter((location) => !location.isHeadOffice && !l
 
 export default function HomeLocations() {
   return (
-    <section id="locations" className="py-16 lg:py-24">
+    <section id="locations" data-track-position="location_card" className="py-16 lg:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto mb-12">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--color-text-primary)]">
@@ -39,6 +39,7 @@ export default function HomeLocations() {
               </Link>
               <a
                 href={COLUMBIA_MAPS_URL}
+                data-office="columbia"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block mt-3 px-6 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[var(--color-text-inverse)] rounded-lg font-semibold transition-all"
@@ -65,6 +66,7 @@ export default function HomeLocations() {
               </Link>
               <a
                 href={TYSONS_MAPS_URL}
+                data-office="tysons"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mr-4 text-[var(--color-primary)] font-medium hover:underline"

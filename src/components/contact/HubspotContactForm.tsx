@@ -12,53 +12,21 @@ import {
   SITE_URL,
 } from '@/lib/site';
 
-declare global {
-  interface Window {
-    dataLayer?: Record<string, unknown>[];
-    gtag?: (...args: unknown[]) => void;
-    hbspt?: {
-      forms: {
-        create: (config: Record<string, unknown>) => void;
-      };
-    };
-  }
-}
-
-const SCRIPT_ID = 'hubspot-forms-v2-script';
+// HubSpot's v4 embed (new-editor form), which renders each `.hs-form-frame` as an iframe. The legacy
+// v2.js / hbspt.forms.create path is gone: it only handed the form over to this embed anyway.
+const SCRIPT_ID = 'hubspot-forms-v4-script';
+const SCRIPT_SRC = `https://js-${HUBSPOT_REGION}.hsforms.net/forms/embed/${HUBSPOT_PORTAL_ID}.js`;
 
 // Lead conversions (GA4 generate_lead + Google Ads) fire from GTM on the /thank-you page view,
 // so they are not sent from here as well.
 const THANK_YOU_URL = `${SITE_URL}/thank-you`;
 
-function forceUsPhoneCountry(root: HTMLElement) {
-  const countrySelects = root.querySelectorAll<HTMLSelectElement>('select');
-  countrySelects.forEach((select) => {
-    const name = (select.name || select.id || '').toLowerCase();
-    if (name.includes('country') || name.includes('phone_ext')) {
-      const us = Array.from(select.options).find((opt) =>
-        /united states|^us$|^usa$|\+1/.test(opt.text.toLowerCase() + opt.value.toLowerCase())
-      );
-      if (us) {
-        select.value = us.value;
-        select.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-    }
-  });
-
-  const flag = root.querySelector<HTMLElement>('.iti__selected-flag, .hs-selected-flag');
-  if (flag && !/us|united states/i.test(flag.getAttribute('title') || flag.getAttribute('aria-label') || '')) {
-    flag.click();
-    const usItem = root.querySelector<HTMLElement>('[data-country-code="us"], li[data-country-code="us"]');
-    usItem?.click();
-  }
-}
-
 export default function HubspotContactForm() {
   const [failed, setFailed] = useState(false);
-  const hasMountedFormRef = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // This form is built in HubSpot's new editor, so v2.js hands it to the frame embed, which ignores
-  // the redirectUrl option below and only fires this DOM event on success. Redirect from here.
+  // The v4 embed has no redirect option for this form and only fires this DOM event on success.
+  // Redirect from here, as a full page load so GTM sees the /thank-you page view.
   useEffect(() => {
     const onSubmissionSuccess = (event: Event) => {
       const formId = (event as CustomEvent<{ formId?: string }>).detail?.formId;
@@ -69,112 +37,31 @@ export default function HubspotContactForm() {
     return () => window.removeEventListener('hs-form-event:on-submission:success', onSubmissionSuccess);
   }, []);
 
+  // The embed renders `.hs-form-frame` elements found on load, then watches for new ones, but it only
+  // searches 5 levels into each added node. A client-side navigation adds the whole page at once, with
+  // the form deeper than that, so the frame element is appended on its own after mount.
   useEffect(() => {
-    let observer: MutationObserver | null = null;
-    let existingScriptLoadHandler: (() => void) | null = null;
+    const frame = document.createElement('div');
+    frame.className = 'hs-form-frame';
+    frame.dataset.region = HUBSPOT_REGION;
+    frame.dataset.formId = HUBSPOT_FORM_ID;
+    frame.dataset.portalId = HUBSPOT_PORTAL_ID;
+    containerRef.current?.appendChild(frame);
+    return () => frame.remove();
+  }, []);
 
-    const applyDarkModeStyles = (rootEl: HTMLElement) => {
-      const isDark = document.documentElement.classList.contains('dark');
-      if (!isDark) return;
-
-      const textSelectors = [
-        'label',
-        'legend',
-        '.hs-richtext',
-        '.hs-error-msg',
-        '.hs-form-field > span',
-        'p',
-      ];
-
-      rootEl.querySelectorAll<HTMLElement>(textSelectors.join(',')).forEach((el) => {
-        el.style.setProperty('color', 'var(--color-text-primary)', 'important');
-      });
-
-      rootEl.querySelectorAll<HTMLElement>('input, textarea, select').forEach((el) => {
-        el.style.setProperty('color', 'var(--color-text-primary)', 'important');
-        el.style.setProperty('background-color', 'var(--color-surface-200)', 'important');
-        el.style.setProperty('border-color', 'var(--color-border)', 'important');
-      });
-    };
-
-    const mountForm = () => {
-      try {
-        const target = document.getElementById('hubspot-contact-form');
-        if (!target || !window.hbspt?.forms?.create) return;
-
-        if (
-          hasMountedFormRef.current ||
-          target.dataset.hubspotMounted === 'true' ||
-          target.querySelector('form, iframe, .hs-form, .hsfc-Form')
-        ) {
-          return;
-        }
-
-        hasMountedFormRef.current = true;
-        target.dataset.hubspotMounted = 'true';
-        target.innerHTML = '';
-
-        window.hbspt.forms.create({
-          region: HUBSPOT_REGION,
-          portalId: HUBSPOT_PORTAL_ID,
-          formId: HUBSPOT_FORM_ID,
-          target: '#hubspot-contact-form',
-          locale: 'en',
-          redirectUrl: THANK_YOU_URL,
-          onFormReady: ($form: HTMLElement) => {
-            const root = document.getElementById('hubspot-contact-form');
-            if (root) {
-              forceUsPhoneCountry(root);
-              setTimeout(() => forceUsPhoneCountry(root), 400);
-            }
-            if ($form) forceUsPhoneCountry($form);
-          },
-        });
-
-        observer = new MutationObserver(() => {
-          applyDarkModeStyles(target);
-          forceUsPhoneCountry(target);
-        });
-        observer.observe(target, { childList: true, subtree: true });
-        setTimeout(() => applyDarkModeStyles(target), 300);
-        setTimeout(() => applyDarkModeStyles(target), 1200);
-      } catch (error) {
-        console.error('HubSpot form mount failed:', error);
-        setFailed(true);
-      }
-    };
-
-    const existingScript = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
-
-    if (existingScript) {
-      if (window.hbspt?.forms?.create) {
-        mountForm();
-      } else {
-        existingScriptLoadHandler = () => mountForm();
-        existingScript.addEventListener('load', existingScriptLoadHandler, { once: true });
-      }
-      return () => {
-        if (observer) observer.disconnect();
-        if (existingScriptLoadHandler) {
-          existingScript.removeEventListener('load', existingScriptLoadHandler);
-        }
-      };
-    }
-
+  useEffect(() => {
+    if (document.getElementById(SCRIPT_ID)) return;
     const script = document.createElement('script');
     script.id = SCRIPT_ID;
-    script.src = 'https://js-na2.hsforms.net/forms/embed/v2.js';
-    script.async = true;
-    script.onload = mountForm;
+    script.src = SCRIPT_SRC;
+    script.defer = true;
     script.onerror = () => {
       console.error('Failed to load HubSpot forms script');
+      script.remove();
       setFailed(true);
     };
     document.body.appendChild(script);
-
-    return () => {
-      if (observer) observer.disconnect();
-    };
   }, []);
 
   if (failed) {
@@ -183,7 +70,7 @@ export default function HubspotContactForm() {
 
   return (
     <div>
-      <div id="hubspot-contact-form" className="min-h-[520px]" />
+      <div ref={containerRef} className="min-h-[520px]" />
       <noscript>
         <p>
           JavaScript is required for the form. Call{' '}

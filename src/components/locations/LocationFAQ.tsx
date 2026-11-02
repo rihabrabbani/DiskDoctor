@@ -63,6 +63,7 @@ export default function LocationFAQ({ location, faqs }: LocationFAQProps) {
 
         {/* Additional local FAQ section */}
         <motion.div
+          data-track-position="cta_band"
           className="mt-16 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-2xl p-8"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

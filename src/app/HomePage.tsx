@@ -51,7 +51,7 @@ export default function HomePage() {
 
         <TestimonialsSection />
 
-        <section id="evaluation" className="py-16 lg:py-24 bg-[var(--color-surface-100)]">
+        <section id="evaluation" data-track-position="form_intro" className="py-16 lg:py-24 bg-[var(--color-surface-100)]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-4 text-center">

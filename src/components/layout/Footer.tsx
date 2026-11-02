@@ -8,7 +8,7 @@ export default function Footer() {
   const serviceAreas = locations.filter((l) => !l.isHeadOffice && l.slug !== 'tysons-va');
 
   return (
-    <footer className="bg-[var(--color-surface-200)] border-t border-[var(--color-border)] py-16">
+    <footer data-track-position="footer" className="bg-[var(--color-surface-200)] border-t border-[var(--color-border)] py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12">
           <Link href="/" className="text-2xl font-bold tracking-tight inline-flex items-center text-[var(--color-primary)]">

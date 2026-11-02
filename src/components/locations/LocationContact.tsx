@@ -12,7 +12,7 @@ interface LocationContactProps {
 
 export default function LocationContact({ location }: LocationContactProps) {
   return (
-    <section id="contact" className="py-20 bg-[var(--color-background)]">
+    <section id="contact" data-track-position="form_intro" className="py-20 bg-[var(--color-background)]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center mb-16"
@@ -195,6 +195,7 @@ export default function LocationContact({ location }: LocationContactProps) {
 
         {/* Emergency CTA */}
         <motion.div
+          data-track-position="cta_band"
           className="mt-16 bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl p-8 text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

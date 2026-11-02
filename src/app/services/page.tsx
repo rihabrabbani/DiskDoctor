@@ -105,7 +105,7 @@ export default function ServicesIndexPage() {
               ))}
             </div>
 
-            <div className="mt-14 text-center">
+            <div className="mt-14 text-center" data-track-position="cta_band">
               <Link
                 href="/contact"
                 className="inline-block px-8 py-4 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white rounded-lg font-semibold transition-all"

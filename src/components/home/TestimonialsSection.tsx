@@ -208,6 +208,7 @@ export default function TestimonialsSection() {
         <div className="text-center mt-10">
           <a
             href={COLUMBIA_MAPS_URL}
+            data-map-link="reviews"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[var(--color-primary)] font-semibold hover:underline"

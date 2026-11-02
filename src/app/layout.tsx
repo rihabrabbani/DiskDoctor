@@ -10,6 +10,9 @@ import { SITE_URL, SITE_URL_SLASH } from "@/lib/site";
 
 // GTM is the only Google tag on the site: GA4, Google Ads conversions and remarketing all live in the container.
 const gtmId = "GTM-K5DVZQX4";
+// GTM loads only on the live host, so preview deployments and localhost never send hits to GA4 or Ads.
+const GTM_HOST = "www.diskdoctorsamerica.com";
+const isProductionBuild = process.env.VERCEL_ENV === "production";
 
 export const metadata: Metadata = {
   title: {
@@ -117,21 +120,24 @@ export default function RootLayout({
         {gtmId ? (
           <>
             <Script id="gtm" strategy="afterInteractive">
-              {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              {`if(location.hostname==='${GTM_HOST}')(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','${gtmId}');`}
             </Script>
-            <noscript>
-              <iframe
-                src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
-                height="0"
-                width="0"
-                style={{ display: 'none', visibility: 'hidden' }}
-                title="Google Tag Manager"
-              />
-            </noscript>
+            {/* No hostname check is possible without JS, so the no-JS fallback is left out of non-production builds. */}
+            {isProductionBuild ? (
+              <noscript>
+                <iframe
+                  src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+                  height="0"
+                  width="0"
+                  style={{ display: 'none', visibility: 'hidden' }}
+                  title="Google Tag Manager"
+                />
+              </noscript>
+            ) : null}
           </>
         ) : null}
         <ThemeProvider>

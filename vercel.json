@@ -5,6 +5,12 @@
       "has": [{ "type": "host", "value": "diskdoctorsamerica.com" }],
       "destination": "https://www.diskdoctorsamerica.com/:path*",
       "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "disk-doctor.vercel.app" }],
+      "destination": "https://www.diskdoctorsamerica.com/:path*",
+      "permanent": true
     }
   ]
 }

@@ -12,11 +12,11 @@ export function middleware(request: NextRequest) {
 
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://js-na2.hsforms.net https://js.hsforms.net https://js.hscollectedforms.net https://js.hubspot.com https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://www.google.com https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://js-na2.hsforms.net https://js.hsforms.net https://*.hscollectedforms.net https://js.hubspot.com https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://www.google.com https://googleads.g.doubleclick.net https://*.hs-scripts.com https://*.hs-analytics.net https://*.hs-banner.com https://www.gstatic.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: https: blob:",
     "font-src 'self' https://fonts.gstatic.com",
-    "connect-src 'self' https://api.cloudinary.com https://*.mongodb.net https://forms-na2.hsforms.com https://forms.hsforms.com https://api.hsforms.com https://*.hubapi.com https://*.hsforms.com https://*.hsforms.net https://www.google-analytics.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://www.googleadservices.com https://www.google.com https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com https://*.doubleclick.net https://*.googleadservices.com https://*.google.com",
+    "connect-src 'self' https://api.cloudinary.com https://*.mongodb.net https://forms-na2.hsforms.com https://forms.hsforms.com https://api.hsforms.com https://*.hubapi.com https://*.hsforms.com https://*.hsforms.net https://www.google-analytics.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://www.googleadservices.com https://www.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://*.googleadservices.com https://*.google.com https://*.hubspot.com https://*.hs-banner.com https://*.hscollectedforms.net",
     "media-src 'self' https:",
     "frame-src 'self' https://forms-na2.hsforms.com https://forms.hsforms.com https://js-na2.hsforms.net https://*.hsforms.net https://*.hsforms.com https://*.hubspot.com https://www.googletagmanager.com https://td.doubleclick.net https://maps.google.com https://www.google.com",
     "object-src 'none'",

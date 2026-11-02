@@ -68,7 +68,7 @@ export const raidRecovery: CorePage = {
     {
       heading: 'Getting your array to us',
       paragraphs: [
-        'Drop the disks at our Columbia, MD lab (walk-in Mon–Fri, 8:30 a.m.–5:00 p.m.), book an appointment at our Tysons, VA office, ship the disks to us free both ways, or book a pickup for a small fee. If you ship, pad each disk separately, keep them in slot order in the box, and include the NAS or card only if the layout is proprietary.',
+        'Drop the disks at our Columbia, MD lab (walk-in Mon–Fri, 8:30 a.m.–5:00 p.m.), book an appointment at our Tysons, VA office, or ship the disks to us free both ways. Pickup is also available, call for details. If you ship, pad each disk separately, keep them in slot order in the box, and include the NAS or card only if the layout is proprietary.',
         'Tell us the RAID level if you know it, how many disks, which bays failed and whether a rebuild already started.',
       ],
     },

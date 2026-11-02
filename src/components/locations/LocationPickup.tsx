@@ -14,7 +14,7 @@ export default function LocationPickup({ phone }: { phone: string }) {
             <Link href="/mail-in-data-recovery" className="font-semibold text-[var(--color-primary)] hover:underline">
               Ship your drive to us free both ways
             </Link>
-            , or book a pickup for a small fee. Call{' '}
+            . Pickup is also available; call{' '}
             <a href={telHref(phone)} className="text-[var(--color-primary)] font-semibold hover:underline">
               {phone}
             </a>{' '}
@@ -22,7 +22,7 @@ export default function LocationPickup({ phone }: { phone: string }) {
             <Link href="/contact" className="text-[var(--color-primary)] font-semibold hover:underline">
               use the form
             </Link>{' '}
-            to arrange it.
+            for details.
           </p>
         </div>
       </div>

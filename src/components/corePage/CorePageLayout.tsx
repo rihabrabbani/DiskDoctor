@@ -159,7 +159,7 @@ export default function CorePageLayout({ page }: { page: CorePage }) {
                   Ship your drive to us free both ways
                 </Link>
               )}
-              , or book a pickup for a small fee. 24/7 emergency line:{' '}
+              . Pickup is also available, call for details. 24/7 emergency line:{' '}
               <a href={PHONE_TEL} className="text-[var(--color-primary)] font-semibold hover:underline">
                 (410) 937-7332
               </a>

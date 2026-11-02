@@ -78,7 +78,7 @@ export const hardDriveRecovery: CorePage = {
         'Evaluation is free. Once we’ve looked at the drive, you get a fixed quote before any paid work starts. No data, no charge.',
         'We don’t publish a price list. A deleted folder on a healthy drive and a dropped drive with damaged heads are different jobs, and the quote reflects the actual failure.',
         'Physical jobs, like head replacement or a drive that won’t spin, usually take 3–7 days. Logical jobs, like a formatted drive or deleted partitions, usually take 24–48 hours. Form enquiries get a reply within one business day.',
-        'Looking for hard drive recovery near you in Maryland, Virginia or DC? Walk in at our Columbia lab, 10015 Old Columbia Rd, Suite B 215, Columbia, MD 21046, Monday to Friday, 8:30 a.m. to 5:00 p.m. You can also book an appointment at our Tysons, VA office, 8300 Boone Blvd, Suite 513. You can also ship the drive to us free both ways, or book a pickup for a small fee.',
+        'Looking for hard drive recovery near you in Maryland, Virginia or DC? Walk in at our Columbia lab, 10015 Old Columbia Rd, Suite B 215, Columbia, MD 21046, Monday to Friday, 8:30 a.m. to 5:00 p.m. You can also book an appointment at our Tysons, VA office, 8300 Boone Blvd, Suite 513. You can also ship the drive to us free both ways. Pickup is available too, call for details.',
       ],
       link: { href: '/data-recovery-cost', label: 'What affects the cost' },
     },
@@ -104,7 +104,7 @@ export const hardDriveRecovery: CorePage = {
     {
       question: 'Do I have to bring it in?',
       answer:
-        'No. You can ship it to us and back for free, book a pickup for a small fee, or bring it in.',
+        'No. You can ship it to us and back for free or bring it in. Pickup is also available, call for details.',
     },
   ],
   relatedLinks: [

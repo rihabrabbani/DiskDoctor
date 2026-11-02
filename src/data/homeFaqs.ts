@@ -14,7 +14,7 @@ export const homeFaqs: { question: string; answer: string; link?: { href: string
   {
     question: 'Do you offer pickup or shipping?',
     answer:
-      "Yes. Shipping your drive to us and back is free. If you'd rather not ship it, we offer pickup and drop-off for a small fee, and on-site diagnostics for a small fee. Call us or fill in the form to arrange it.",
+      "Yes. Shipping your drive to us and back is free. If you'd rather not ship it, pickup and drop-off and on-site diagnostics are also available. Call us or fill in the form for details.",
     link: { href: '/mail-in-data-recovery', label: 'How mail-in works' },
   },
   {

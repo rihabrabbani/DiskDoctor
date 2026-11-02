@@ -44,7 +44,7 @@ export const mailInDataRecovery: CorePage = {
     {
       heading: 'Prefer not to ship it?',
       paragraphs: [
-        'We offer pickup and drop-off for a small fee, and on-site diagnostics for a small fee. Call us or use the form to arrange it. You can also walk in to our Columbia, MD lab, Monday to Friday, 8:30 a.m. to 5:00 p.m.',
+        'Pickup and drop-off and on-site diagnostics are also available. Call us or use the form for details. You can also walk in to our Columbia, MD lab, Monday to Friday, 8:30 a.m. to 5:00 p.m.',
       ],
     },
     {
@@ -73,7 +73,7 @@ export const mailInDataRecovery: CorePage = {
     {
       question: 'Do you offer pickup?',
       answer:
-        'Yes. If you’d rather not ship it, we offer pickup and drop-off for a small fee, and on-site diagnostics for a small fee. Call us or fill in the form to arrange it.',
+        'Yes. If you’d rather not ship it, pickup and drop-off and on-site diagnostics are also available. Call us or fill in the form for details.',
     },
   ],
   relatedLinks: [

@@ -20,7 +20,7 @@ const processSteps = [
     icon: Truck,
     title: 'Secure Pickup',
     description: 'Safe and secure device collection from your location',
-    details: ['Free shipping to the lab and back', 'Pickup for a small fee', 'Secure chain of custody', 'Device tracking system']
+    details: ['Free shipping to the lab and back', 'Pickup available, call for details', 'Secure chain of custody', 'Device tracking system']
   },
   {
     icon: Search,

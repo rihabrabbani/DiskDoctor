@@ -18,7 +18,8 @@ export function track(event: string, params?: Record<string, unknown>) {
   window.dataLayer.push({ event, ...params });
 }
 
-const MAIN_PHONE_DIGITS = '4109377332';
+// The main line and the Tysons office line; copying either one fires phone_copy.
+const PHONE_COPY_DIGITS = ['4109377332', '5712028529'];
 
 // Google Business Profile place IDs, so a maps link can be attributed to an office.
 const cidOf = (url: string) => url.match(/cid=(\d+)/)?.[1];
@@ -103,11 +104,17 @@ export default function AnalyticsClicks() {
       }
     };
 
-    // Someone copying the main number to dial it elsewhere: count it like a call intent.
+    // Someone copying a phone number to dial it elsewhere: count it like a call intent.
     const onCopy = () => {
-      const copied = window.getSelection()?.toString().replace(/\D/g, '') || '';
-      if (copied.includes(MAIN_PHONE_DIGITS)) {
-        track('phone_copy', { link_location: window.location.pathname });
+      const selection = window.getSelection();
+      const copied = selection?.toString().replace(/\D/g, '') || '';
+      if (PHONE_COPY_DIGITS.some((digits) => copied.includes(digits))) {
+        const node = selection?.anchorNode;
+        const el = node instanceof Element ? node : node?.parentElement;
+        track('phone_copy', {
+          link_position: el ? positionOf(el) : 'body',
+          link_location: window.location.pathname,
+        });
       }
     };
 

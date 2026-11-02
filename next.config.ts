@@ -54,6 +54,16 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Backup for the page's meta noindex, so the conversion page is never indexed.
+      {
+        source: '/thank-you',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex',
+          },
+        ],
+      },
       {
         source: '/sitemap.xml',
         headers: [

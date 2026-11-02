@@ -70,7 +70,9 @@ export default function HubspotContactForm() {
 
   return (
     <div>
-      <div ref={containerRef} className="min-h-[520px]" />
+      {/* The form is an iframe with HubSpot's dark label colours, which can't be restyled from here.
+          A fixed light panel keeps it readable in dark mode too (deliberately not a theme var). */}
+      <div ref={containerRef} className="min-h-[520px] rounded-xl bg-white p-4 sm:p-6 [color-scheme:light]" />
       <noscript>
         <p>
           JavaScript is required for the form. Call{' '}

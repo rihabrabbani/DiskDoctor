@@ -20,6 +20,12 @@ export const TYSONS_ADDRESS = '8300 Boone Blvd Suite 513, Tysons, VA 22182';
 export const COLUMBIA_MAPS_URL = 'https://maps.google.com/?cid=14046850434310190420';
 export const TYSONS_MAPS_URL = 'https://maps.google.com/?cid=8914738077225716090';
 
+// Directions links by location slug. `office` is the directions_click param GTM reads via data-office.
+export const OFFICE_MAPS: Record<string, { office: 'columbia' | 'tysons'; url: string }> = {
+  'columbia-md': { office: 'columbia', url: COLUMBIA_MAPS_URL },
+  'tysons-va': { office: 'tysons', url: TYSONS_MAPS_URL },
+};
+
 export function telHref(phone?: string): string {
   if (!phone) return PHONE_TEL;
   const digits = phone.replace(/[^\d]/g, '');

@@ -6,7 +6,7 @@ import { MapPin, Phone } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import HubspotContactForm from '@/components/contact/HubspotContactForm';
-import { PHONE_DISPLAY, PHONE_TEL, SITE_URL } from '@/lib/site';
+import { OFFICE_MAPS, PHONE_DISPLAY, PHONE_TEL, SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Data Recovery Locations | MD VA DC',
@@ -35,26 +35,47 @@ export default function LocationsPage() {
           </div>
 
           <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-6 text-center">Lab and office</h2>
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-16">
-            {labs.map((location) => (
-              <Link key={location.slug} href={`/${location.slug}`} className="block bg-[var(--color-surface-100)] rounded-xl p-8 border border-[var(--color-border)]">
-                <div className="flex items-start gap-4">
-                  <MapPin className="h-8 w-8 text-[var(--color-primary)]" />
-                  <div>
-                    <h3 className="text-2xl font-bold text-[var(--color-text-primary)]">
-                      {location.fullName}
-                      {location.isHeadOffice ? ' — Head office' : ''}
-                      {location.isAppointmentOnly ? ' — Appointment only' : ''}
-                    </h3>
-                    <p className="text-[var(--color-text-secondary)] mt-2">{location.address}</p>
-                    <p className="mt-3 font-medium text-[var(--color-text-primary)]">{location.officePhone ?? location.phone}</p>
-                    <p className="text-sm text-[var(--color-text-secondary)] mt-2">
-                      {locationCopy[location.slug]?.directAnswer}
-                    </p>
+          <div data-track-position="location_card" className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-16">
+            {labs.map((location) => {
+              const maps = OFFICE_MAPS[location.slug];
+              return (
+                <div key={location.slug} className="bg-[var(--color-surface-100)] rounded-xl p-8 border border-[var(--color-border)]">
+                  <div className="flex items-start gap-4">
+                    <MapPin className="h-8 w-8 flex-shrink-0 text-[var(--color-primary)]" />
+                    <div>
+                      <h3 className="text-2xl font-bold text-[var(--color-text-primary)]">
+                        <Link href={`/${location.slug}`} className="hover:text-[var(--color-primary)]">
+                          {location.fullName}
+                          {location.isHeadOffice ? ' — Head office' : ''}
+                          {location.isAppointmentOnly ? ' — Appointment only' : ''}
+                        </Link>
+                      </h3>
+                      <p className="text-[var(--color-text-secondary)] mt-2">{location.address}</p>
+                      <p className="mt-3 font-medium text-[var(--color-text-primary)]">{location.officePhone ?? location.phone}</p>
+                      <p className="text-sm text-[var(--color-text-secondary)] mt-2">
+                        {locationCopy[location.slug]?.directAnswer}
+                      </p>
+                      <div className="mt-4 flex flex-wrap items-center gap-4">
+                        <Link href={`/${location.slug}`} className="text-[var(--color-primary)] font-semibold hover:underline">
+                          About this location
+                        </Link>
+                        {maps && (
+                          <a
+                            href={maps.url}
+                            data-office={maps.office}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-5 py-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[var(--color-text-inverse)] rounded-lg font-semibold transition-all"
+                          >
+                            Directions
+                          </a>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </Link>
-            ))}
+              );
+            })}
           </div>
 
           <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-6 text-center">Service areas</h2>

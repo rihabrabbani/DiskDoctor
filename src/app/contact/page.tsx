@@ -2,7 +2,39 @@ import type { Metadata } from 'next';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import HubspotContactForm from '@/components/contact/HubspotContactForm';
-import { EMAIL, PHONE_DISPLAY, PHONE_TEL, SITE_URL } from '@/lib/site';
+import {
+  COLUMBIA_ADDRESS,
+  EMAIL,
+  OFFICE_MAPS,
+  PHONE_DISPLAY,
+  PHONE_TEL,
+  SITE_URL,
+  TYSONS_ADDRESS,
+  telHref,
+} from '@/lib/site';
+import { locations } from '@/data/locations';
+
+const tysons = locations.find((loc) => loc.slug === 'tysons-va');
+
+// Both offices with Directions links. Tysons uses its own office line, per the client's spec.
+const officeCards = [
+  {
+    office: OFFICE_MAPS['columbia-md'].office,
+    title: 'Columbia, MD lab',
+    address: COLUMBIA_ADDRESS,
+    hours: 'Walk-in Mon–Fri, 8:30 a.m.–5:00 p.m.',
+    phone: '(410) 937-7332',
+    mapsUrl: OFFICE_MAPS['columbia-md'].url,
+  },
+  {
+    office: OFFICE_MAPS['tysons-va'].office,
+    title: 'Tysons, VA office',
+    address: TYSONS_ADDRESS,
+    hours: 'By appointment. Call ahead so someone is here to meet you.',
+    phone: tysons?.officePhone ?? '(410) 937-7332',
+    mapsUrl: OFFICE_MAPS['tysons-va'].url,
+  },
+];
 
 export const metadata: Metadata = {
   title: 'Free Data Recovery Evaluation',
@@ -42,6 +74,30 @@ export default function ContactPage() {
 
             <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-[var(--shadow-md)] mb-10">
               <HubspotContactForm />
+            </div>
+
+            <div data-track-position="location_card" className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+              {officeCards.map((card) => (
+                <div key={card.office} className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-xl p-6">
+                  <h2 className="text-xl font-bold text-[var(--color-text-primary)]">{card.title}</h2>
+                  <address className="not-italic text-[var(--color-text-secondary)] mt-2">{card.address}</address>
+                  <p className="text-[var(--color-text-secondary)] mt-1">{card.hours}</p>
+                  <p className="mt-2">
+                    <a href={telHref(card.phone)} className="text-[var(--color-primary)] font-semibold hover:underline">
+                      {card.phone}
+                    </a>
+                  </p>
+                  <a
+                    href={card.mapsUrl}
+                    data-office={card.office}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-4 px-5 py-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[var(--color-text-inverse)] rounded-lg font-semibold transition-all"
+                  >
+                    Directions
+                  </a>
+                </div>
+              ))}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">

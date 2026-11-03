@@ -1,9 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { PHONE_DISPLAY, PHONE_TEL } from '@/lib/site';
 
 export default function StickyMobileBar() {
+  // The ad landing pages have their own sticky bar.
+  if (usePathname()?.startsWith('/lp/')) return null;
   return (
     <div data-track-position="sticky_mobile" className="fixed bottom-0 inset-x-0 z-50 lg:hidden border-t border-[var(--color-border)] bg-[var(--color-surface-100)] pb-[env(safe-area-inset-bottom)]">
       <div className="grid grid-cols-2">

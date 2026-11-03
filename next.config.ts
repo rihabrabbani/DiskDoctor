@@ -64,6 +64,16 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Ad landing pages: noindex (also in their meta), but not disallowed in robots.txt so AdsBot can crawl.
+      {
+        source: '/lp/:path*',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex',
+          },
+        ],
+      },
       {
         source: '/sitemap.xml',
         headers: [

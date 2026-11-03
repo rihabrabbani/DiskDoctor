@@ -92,7 +92,7 @@ export default function AnalyticsClicks() {
       const looksLikeCtaLabel =
         text.length <= 40 && !text.endsWith('?') && !el.hasAttribute('aria-expanded') && CTA_TEXT.test(text);
       const isCta =
-        (sameSite && (CTA_PATHS.includes(url!.pathname) || /form|evaluation/i.test(url!.hash))) ||
+        (sameSite && (CTA_PATHS.includes(url!.pathname) || /form|evaluation|^#start$/i.test(url!.hash))) ||
         looksLikeCtaLabel;
       if (isCta) {
         track('cta_click', {

@@ -52,7 +52,7 @@ const md: Area = {
   photoSlots: ['Real photo: Columbia lab / clean room', 'Real photo: team at work', 'ISO 9001 certificate scan'],
   officeH: 'A real lab in Columbia, Maryland',
   officeP:
-    'Every recovery is done in-house at our Columbia lab, including physical recoveries in our clean room. We’re ISO 9001 certified and have handled more than 15,000 cases since 1991.',
+    'Recoveries are done at our Columbia lab, including physical recoveries in our clean room. We’re ISO 9001 certified and have handled more than 15,000 cases since 1991.',
   addrName: 'Disk Doctors · Columbia lab',
   addr: '10015 Old Columbia Rd, Suite B 215, Columbia, MD 21046',
   addrHours: 'Walk in Mon–Fri, 8:30 a.m.–5:00 p.m. · Phone answered 24/7',
@@ -86,7 +86,7 @@ const va: Area = {
   ],
   officeH: 'Our Tysons office, by appointment',
   officeP:
-    'Meet us at our Tysons office by appointment: fill in the form or call (571) 202-8529 to set a time. Every recovery is then done in-house at our Columbia, MD lab, including physical recoveries in our clean room. ISO 9001 certified, 15,000+ cases since 1991.',
+    'Meet us at our Tysons office by appointment: fill in the form or call (571) 202-8529 to set a time. Recoveries are then done at our Columbia, MD lab, including physical recoveries in our clean room. ISO 9001 certified, 15,000+ cases since 1991.',
   addrName: 'Disk Doctors · Tysons office',
   addr: '8300 Boone Blvd, Suite 513, Tysons, VA 22182 (American Center)',
   addrHours: 'By appointment, Mon–Fri · Call (571) 202-8529',

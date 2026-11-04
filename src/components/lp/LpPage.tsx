@@ -47,19 +47,25 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
   const faq = [
     {
       q: 'How much does it cost?',
-      a: 'The diagnosis is free. After it, you get a fixed quote and decide. No paid work starts without your OK, and if we can’t recover your data, you don’t pay.',
+      a: 'The diagnosis is free. After it, you get a quote and decide. No paid work starts without your OK, and if we can’t recover your data, you don’t pay.',
     },
     {
       q: 'How long does it take?',
-      a: 'Logical recoveries usually take 24–48 hours. Physical failures, like clicking drives, usually take 3–7 days. For emergencies, call the 24/7 line.',
+      a: 'It depends on the fault. You get a time estimate with your free diagnosis. For emergencies, call the 24/7 line.',
     },
     { q: `Do I have to bring ${templateId === 'raid' ? 'the drives' : 'the drive'} in?`, a: area.faqBring },
     template.faqFirstAid,
-    {
-      q: 'Do you recover phones or SD cards?',
-      a: 'Our lab specialises in hard drives, SSDs, RAID and servers. For phones, SD cards and USB sticks we’re usually not the right fit.',
-    },
+    ...(templateId === 'raid'
+      ? []
+      : [
+          {
+            q: 'Do you recover phones or SD cards?',
+            a: 'Our lab specialises in hard drives, SSDs, RAID and servers. For phones, SD cards and USB sticks we’re usually not the right fit.',
+          },
+        ]),
   ];
+  // The SSD page opens with SSD symptoms instead of the area's "Clicking, not detected…" question.
+  const heroSub = template.heroQuestion ? area.heroSub.replace(/^[^?]*\?/, template.heroQuestion) : area.heroSub;
 
   return (
     <>
@@ -67,6 +73,7 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
       <main>
         <LpHero
           area={area}
+          heroSub={heroSub}
           h1={template.h1(areaId, area.place)}
           rating={rating}
           ratingSub={ratingSub}
@@ -91,7 +98,7 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
         <FeaturedReview rating={rating} ratingBig={ratingBig} review={featured} meta={featuredMeta} />
         <OfficeBlock area={area} mapsUrl={rating.mapsUrl} showPhotoSlots={process.env.VERCEL_ENV !== 'production'} />
         <LpFaq items={faq} />
-        <FinalCta area={area} />
+        <FinalCta area={area} heading={templateId === 'raid' ? 'Don’t give up on those drives yet' : 'Don’t give up on the drive yet'} />
       </main>
       <LpFooter />
       <LpStickyBar tel={area.tel} callLabel={area.stickyCallLabel} />

@@ -19,6 +19,8 @@ export type Template = {
   urgency: { strong: string; text: string };
   /** Replaces "Should I try recovery software first?" in the shared FAQ. */
   faqFirstAid: FaqItem;
+  /** Replaces the opening question of the area's hero subline. */
+  heroQuestion?: string;
   /** Pre-selected device; step 1 still shows. */
   device?: DeviceValue;
 };
@@ -92,6 +94,7 @@ export const TEMPLATES: Record<TemplateId, Template> = {
     id: 'ssd',
     slug: 'ssd-recovery',
     h1: (_area, place) => ({ lead: 'SSD & NVMe data recovery in ', place }),
+    heroQuestion: 'SSD not detected, showing the wrong size or dead after an update?',
     metaDescription: (area) =>
       `SSD or NVMe not detected, showing 0 MB or dead after an update? ${where(area)}. ${facts}`,
     symptomsH: 'SSD failures we recover from',
@@ -101,10 +104,10 @@ export const TEMPLATES: Record<TemplateId, Template> = {
       { icon: 'chip', title: 'Shows 0 MB or the wrong size', text: 'A common sign of a firmware fault. Don’t initialise or format it.' },
       { icon: 'refresh', title: 'Died after an update or power loss', text: 'The SSD stopped working after a firmware update, crash or outage.' },
       { icon: 'power', title: 'Laptop won’t boot', text: 'The laptop starts but can’t find the SSD, or won’t start at all.' },
-      { icon: 'board', title: 'Soldered SSD, dead motherboard', text: 'The storage is built into the board and the laptop no longer works.' },
+      { icon: 'drive', title: 'External SSD stopped working', text: 'A portable SSD that no longer shows up or won’t open your files.' },
       { icon: 'trash', title: 'Deleted files on an SSD', text: 'Turn it off straight away: SSDs can clear deleted data on their own.' },
     ],
-    brands: ['Samsung', 'Crucial', 'WD', 'SanDisk', 'Kingston', 'Intel'],
+    brands: ['Samsung', 'Crucial', 'WD', 'Kingston', 'Intel'],
     urgency: {
       strong: 'SSD not detected or showing the wrong size? Turn it off.',
       text: 'Don’t initialise, format or update it, and don’t run recovery software on it. Talk to the lab first.',

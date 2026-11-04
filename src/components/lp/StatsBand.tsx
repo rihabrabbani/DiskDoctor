@@ -8,8 +8,8 @@ const STATS = [
   { value: 95, suffix: '%', label: 'success rate' },
 ];
 
-// Server HTML has the final numbers. If the band is still below the fold on load, it counts up once
-// when it comes into view; with reduced motion, or already in view, the numbers just stay.
+// Server HTML has the final numbers, and they stay until the band comes into view: only then does it
+// count up once. With reduced motion, or already in view on load, the numbers just stay.
 export default function StatsBand() {
   const ref = useRef<HTMLElement>(null);
   const [progress, setProgress] = useState(1);
@@ -20,12 +20,12 @@ export default function StatsBand() {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (el.getBoundingClientRect().top < window.innerHeight) return;
 
-    setProgress(0);
     let raf = 0;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
         observer.disconnect();
+        setProgress(0);
         const start = performance.now();
         const tick = (now: number) => {
           const t = Math.min(1, (now - start) / 1800);

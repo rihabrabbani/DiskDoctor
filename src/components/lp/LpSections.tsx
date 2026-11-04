@@ -50,6 +50,7 @@ const TICKS = ['Free diagnosis', 'You approve the quote first', 'No data, no cha
 
 export function LpHero({
   area,
+  heroSub,
   h1,
   rating,
   ratingSub,
@@ -57,6 +58,7 @@ export function LpHero({
   form,
 }: {
   area: Area;
+  heroSub: string;
   h1: { lead: string; place?: string };
   rating: LocationRating;
   ratingSub: string;
@@ -76,7 +78,7 @@ export function LpHero({
             {h1.lead}
             {h1.place && <span className="lp-place">{h1.place}</span>}
           </h1>
-          <p className="lp-hero-sub">{area.heroSub}</p>
+          <p className="lp-hero-sub">{heroSub}</p>
           <div className="lp-rating-row">
             <div className="lp-avatars" aria-hidden="true">
               {heroStack.map((r) => (
@@ -160,7 +162,7 @@ export function HowItWorks({ area }: { area: Area }) {
   const steps = [
     { title: 'Tell us what happened', text: 'Use the form or call. Our lab line is answered 24/7.' },
     { title: 'Free diagnosis', text: area.step2 },
-    { title: 'You approve a fixed quote', text: 'No paid work starts without your OK. No data, no charge.' },
+    { title: 'You approve a quote', text: 'No paid work starts without your OK. No data, no charge.' },
     {
       title: 'Get your data back',
       text: 'Your recovered files, returned to you, with free shipping back if you mailed the drive in.',
@@ -289,13 +291,13 @@ export function LpFaq({ items }: { items: FaqItem[] }) {
   );
 }
 
-export function FinalCta({ area }: { area: Area }) {
+export function FinalCta({ area, heading }: { area: Area; heading: string }) {
   return (
     <section className="lp-dark lp-final" data-track-position="final_cta">
       <Platter size={520} dark />
       <div className="lp-wrap lp-final-inner">
         <div>
-          <h2>Don&apos;t give up on the drive yet</h2>
+          <h2>{heading}</h2>
           <p>Free diagnosis. You approve the quote. No data, no charge.</p>
         </div>
         <div className="lp-final-actions">

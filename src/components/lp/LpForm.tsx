@@ -480,7 +480,7 @@ export default function LpForm({
 
       <div className="lp-form-trust">
         <LpIcon name="lock" size={18} />
-        Your details go only to our lab team. No spam, no sharing.
+        Your details go only to our lab team. No spam.
       </div>
     </div>
   );

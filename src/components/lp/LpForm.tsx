@@ -226,7 +226,7 @@ export default function LpForm({
     const lead = {
       form_id: LP_FORM_GUID,
       conv_id: submissionId.current,
-      ch: (attr.last || attr.first || {}).ch || 'direct',
+      ch: (attr.last || attr.first || {}).ch || 'unknown',
       device: recoveryDeviceTypeValue,
       state: serviceStateValue,
       email: email.trim().toLowerCase(),

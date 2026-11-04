@@ -26,6 +26,20 @@ export default function PrivacyPage() {
           longer than needed to confirm delivery unless you ask us to retain them.
         </p>
         <p>
+          We use Microsoft Clarity and Google Analytics to understand how visitors use our website,
+          including session recordings and heatmaps. Text you type into forms is masked and not
+          recorded. These tools may use cookies. Learn more in{' '}
+          <a
+            href="https://privacy.microsoft.com/privacystatement"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline text-[var(--color-text-primary)]"
+          >
+            Microsoft&apos;s privacy statement
+          </a>
+          .
+        </p>
+        <p>
           Questions: {EMAIL}.
         </p>
       </main>

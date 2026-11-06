@@ -31,7 +31,7 @@ export const locations: LocationData[] = [
     zipCode: '21046',
     coordinates: { lat: 39.2037, lng: -76.8610 },
     isHeadOffice: true,
-    metaDescription: "Columbia MD data recovery lab at 10015 Old Columbia Rd. Hard drive, SSD, RAID, and phone recovery. Free evaluation. No data, no charge. Call (410) 937-7332.",
+    metaDescription: "Columbia MD data recovery lab at 10015 Old Columbia Rd. Hard drive, SSD, RAID and server recovery. Free evaluation. No data, no charge. Call (410) 937-7332.",
     heroDescription: "The Columbia lab is the working cleanroom for Maryland, DC, and Northern Virginia jobs. Drop off a failed disk, RAID member, or phone here. We image first, quote before paid work, and return files on new media.",
     localKeywords: [
       'data recovery Columbia MD',
@@ -61,7 +61,7 @@ export const locations: LocationData[] = [
     address: 'Serving Baltimore Metro Area',
     zipCode: '21201',
     coordinates: { lat: 39.2904, lng: -76.6122 },
-    metaDescription: "Baltimore data recovery via DiskDoctor’s Columbia MD lab. Hard drive, RAID, and phone recovery. Free evaluation. No data, no charge. Call (410) 937-7332.",
+    metaDescription: "Baltimore data recovery via DiskDoctor’s Columbia MD lab. Hard drive, SSD, RAID and server recovery. Free evaluation. No data, no charge. Call (410) 937-7332.",
     heroDescription: "Baltimore-area recovery is handled at the Columbia laboratory, not a Harbor-front kiosk. Ship or drop the failed device. We image first and quote before paid work.",
     localKeywords: [
       'data recovery Baltimore MD',
@@ -91,7 +91,7 @@ export const locations: LocationData[] = [
     zipCode: '20001',
     coordinates: { lat: 38.9072, lng: -77.0369 },
     metaDescription: "Washington DC data recovery for government, legal, and business media at DiskDoctor’s Columbia MD lab. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "DC-area hard drive, RAID, and phone recovery through the Columbia laboratory. Built for legal, contractor, and office failures — not a tourist-page about monuments.",
+    heroDescription: "DC-area hard drive, SSD and RAID recovery through the Columbia laboratory. Built for legal, contractor, and office failures — not a tourist-page about monuments.",
     localKeywords: [
       'data recovery Washington DC',
       'government data recovery DC',
@@ -149,7 +149,7 @@ export const locations: LocationData[] = [
     zipCode: '22201',
     coordinates: { lat: 38.8816, lng: -77.0910 },
     metaDescription: "Arlington VA data recovery at DiskDoctor’s Columbia MD lab. RAID, SSD, phone. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "Arlington-area drive and phone recovery through Columbia. Contractor and office media welcome with chain-of-custody on request.",
+    heroDescription: "Arlington-area hard drive, SSD and RAID recovery through Columbia. Contractor and office media welcome with chain-of-custody on request.",
     localKeywords: [
       'data recovery Arlington VA',
       'Arlington Virginia data recovery',
@@ -357,7 +357,7 @@ export const locations: LocationData[] = [
     zipCode: '20854',
     coordinates: { lat: 39.0182, lng: -77.2086 },
     metaDescription: "Potomac MD data recovery via DiskDoctor’s Columbia lab. Hard drive, RAID, phone. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "Potomac-area drive and phone recovery at the Columbia laboratory. Stop using a failing disk.",
+    heroDescription: "Potomac-area hard drive and RAID recovery at the Columbia laboratory. Stop using a failing disk.",
     localKeywords: [
       'data recovery Potomac MD',
       'Potomac Maryland data recovery',

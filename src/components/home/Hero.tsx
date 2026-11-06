@@ -88,7 +88,7 @@ export default function Hero() {
             
             <motion.div 
               className="flex flex-col sm:flex-row gap-4 mt-8"
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
             >
@@ -108,7 +108,7 @@ export default function Hero() {
             <motion.ul 
               className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3"
               variants={statsVariants}
-              initial="hidden"
+              initial={false}
               animate="visible"
             >
               {trustItems.map((item) => (

@@ -197,6 +197,10 @@ export default function LpForm({
     // One ID per form: reused on a retry, so HubSpot and Ads see the same lead.
     submissionId.current = uuid();
     landing.current = readLandingParams();
+    // dd_cta is per landing-page visit: a click on another LP earlier in the session doesn't count.
+    try {
+      sessionStorage.removeItem('dd_cta');
+    } catch {}
     deviceType.current =
       /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || matchMedia('(max-width: 767px)').matches
         ? 'mobile'
@@ -350,6 +354,9 @@ export default function LpForm({
       phone_number: e164Phone,
       target: recoveryDeviceTypeValue !== 'Phone, SD card or USB stick',
     };
+    try {
+      sessionStorage.removeItem('dd_cta');
+    } catch {}
     sessionStorage.setItem('dd_lead', JSON.stringify(lead));
     sessionStorage.setItem('dd_ec', JSON.stringify({ email: lead.email, phone_number: lead.phone_number }));
     window.dataLayer = window.dataLayer || [];

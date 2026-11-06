@@ -81,8 +81,8 @@ export default function ServiceHero({
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className={getLayoutClasses()}>
-          {/* initial={false} on the hero text and image: they are the LCP element, so they render
-              visible on the server instead of waiting for hydration and a fade-in. */}
+          {/* initial={false} on everything in the hero: it renders visible on the server instead of
+              waiting for hydration and a fade-in, so a slow page never holds back the LCP. */}
           <motion.div
             initial={false}
             animate={{ opacity: 1, x: 0 }}
@@ -91,7 +91,7 @@ export default function ServiceHero({
           >
             <motion.div 
               className="mb-6 mt-2"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={false}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
@@ -135,7 +135,7 @@ export default function ServiceHero({
             {/* Trust indicators */}
             <motion.div 
               className="flex flex-wrap gap-4 mb-8 text-sm text-[var(--color-text-secondary)]"
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.65 }}
             >
@@ -156,7 +156,7 @@ export default function ServiceHero({
             {/* Enhanced CTA buttons using ctaSection data */}
             <motion.div 
               className="flex flex-col sm:flex-row gap-4"
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
             >
@@ -186,7 +186,7 @@ export default function ServiceHero({
             {ctaSection.urgencyText && (
               <motion.p
                 className="mt-4 text-sm text-[var(--color-text-primary)] font-medium"
-                initial={{ opacity: 0 }}
+                initial={false}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
               >
@@ -218,7 +218,7 @@ export default function ServiceHero({
                 {showImageBadges && (<>
                 <motion.div 
                   className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg"
-                  initial={{ opacity: 0, scale: 0 }}
+                  initial={false}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1.2, duration: 0.5 }}
                 >
@@ -229,7 +229,7 @@ export default function ServiceHero({
                 
                 <motion.div 
                   className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg"
-                  initial={{ opacity: 0, scale: 0 }}
+                  initial={false}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1.4, duration: 0.5 }}
                 >

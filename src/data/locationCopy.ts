@@ -28,7 +28,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     kind: 'lab',
     seoTitle: 'Data Recovery Columbia MD | Free Evaluation',
     seoDescription:
-      'Columbia MD data recovery lab at 10015 Old Columbia Rd. Hard drive, SSD, RAID, and phone recovery. Free evaluation. No data, no charge. Call (410) 937-7332.',
+      'Columbia MD data recovery lab at 10015 Old Columbia Rd. Hard drive, SSD, RAID and server recovery. Free evaluation. No data, no charge. Call (410) 937-7332.',
     directAnswer:
       'DiskDoctor recovers failed hard drives, SSDs, RAID arrays and servers at 10015 Old Columbia Rd Suite B 215, Columbia, MD 21046. Walk in or ship the device. Evaluation is free. You pay a recovery fee only if we retrieve the files you need. Call (410) 937-7332 before you run more software on a clicking drive.',
     heroDescription:
@@ -146,7 +146,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     kind: 'service-area',
     seoTitle: 'Data Recovery Baltimore MD | Columbia Lab',
     seoDescription:
-      'Baltimore data recovery via DiskDoctor’s Columbia MD lab. Hard drive, RAID, and phone recovery. Free evaluation. No data, no charge. Call (410) 937-7332.',
+      'Baltimore data recovery via DiskDoctor’s Columbia MD lab. Hard drive, SSD, RAID and server recovery. Free evaluation. No data, no charge. Call (410) 937-7332.',
     directAnswer:
       'There is no DiskDoctor storefront in Baltimore. Failed drives, SSDs and RAID members from Baltimore, Towson, Catonsville, and Glen Burnie are recovered at the Columbia, MD lab (about 25 minutes from downtown). Free evaluation. Call (410) 937-7332. Do not rebuild a clicking disk or a degraded RAID.',
     heroDescription:
@@ -387,7 +387,6 @@ export const locationCopy: Record<string, LocationCopy> = {
     faqs: [
       { question: 'Do you have an Alexandria office?', answer: 'No. Columbia lab, or our Tysons office by appointment.' },
       { question: 'Where can Old Town businesses bring RAID disks?', answer: 'Drop them off at the Columbia lab, or book a Tysons appointment. Bring every member.' },
-      { question: 'Phone recovery from Alexandria?', answer: 'Chip-level work is in Columbia. Power the phone off and stop charging it if it is wet.' },
       { question: 'Cost?', answer: 'Free evaluation, fixed quote, no data no charge on the recovery fee.' },
     ],
     relatedServiceIds: ['windows-recovery', 'raid-recovery', 'mac-recovery', 'file-recovery'],

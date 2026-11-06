@@ -1134,7 +1134,7 @@ export const allServices: ServicePageData[] = [
     id: 'photo-recovery',
     title: 'Photo Recovery',
     subtitle: 'Recover Your Precious Memories',
-    description: 'Specialized photo and video recovery from memory cards, cameras, phones, corrupted storage devices with advanced RAW file reconstruction and metadata preservation.',
+    description: 'Photo and video recovery from cameras, drives and corrupted storage, with RAW file reconstruction and metadata preservation.',
     heroImage: 'https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?auto=format&fit=crop&w=1200&q=80',
     layoutType: 'hero-split',
     features: [

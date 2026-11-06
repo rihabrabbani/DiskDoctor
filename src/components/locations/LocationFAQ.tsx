@@ -76,7 +76,7 @@ export default function LocationFAQ({ location, faqs }: LocationFAQProps) {
             </h3>
             <p className="text-[var(--color-text-inverse)]/90 text-lg mb-6 max-w-2xl mx-auto">
               Our {location.fullName} data recovery experts are here to answer your questions 
-              and provide personalized guidance for your specific situation.
+              and help with your specific situation.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -117,8 +117,8 @@ export default function LocationFAQ({ location, faqs }: LocationFAQProps) {
             <strong>Professional data recovery services in {location.fullName}</strong> - 
             Serving {location.nearbyAreas.slice(0, 4).join(', ')} and surrounding areas. 
             Specializing in hard drive recovery, SSD data recovery, RAID reconstruction, 
-            mobile device recovery, and emergency data recovery services. 
-            {location.isHeadOffice && ' Our head office location provides comprehensive data recovery solutions with on-site cleanroom facilities.'}
+            server recovery, and emergency data recovery services. 
+            {location.isHeadOffice && ' Our head office lab has a certified clean room.'}
           </p>
         </motion.div>
       </div>

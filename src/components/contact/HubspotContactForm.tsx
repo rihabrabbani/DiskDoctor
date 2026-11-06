@@ -50,18 +50,38 @@ export default function HubspotContactForm() {
     return () => frame.remove();
   }, []);
 
+  // The embed pulls about 1 MB of HubSpot JS, so it loads only when the form is near the viewport.
+  // Most service pages have the form at the bottom; on /contact it is on screen and loads at once.
   useEffect(() => {
     if (document.getElementById(SCRIPT_ID)) return;
-    const script = document.createElement('script');
-    script.id = SCRIPT_ID;
-    script.src = SCRIPT_SRC;
-    script.defer = true;
-    script.onerror = () => {
-      console.error('Failed to load HubSpot forms script');
-      script.remove();
-      setFailed(true);
+    const load = () => {
+      if (document.getElementById(SCRIPT_ID)) return;
+      const script = document.createElement('script');
+      script.id = SCRIPT_ID;
+      script.src = SCRIPT_SRC;
+      script.defer = true;
+      script.onerror = () => {
+        console.error('Failed to load HubSpot forms script');
+        script.remove();
+        setFailed(true);
+      };
+      document.body.appendChild(script);
     };
-    document.body.appendChild(script);
+    const container = containerRef.current;
+    if (!container || !('IntersectionObserver' in window)) {
+      load();
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        load();
+      },
+      { rootMargin: '800px 0px' },
+    );
+    observer.observe(container);
+    return () => observer.disconnect();
   }, []);
 
   if (failed) {

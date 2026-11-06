@@ -88,7 +88,7 @@ export const locationCopy: Record<string, LocationCopy> = {
         answer: 'Yes. Ellicott City, Laurel, Clarksville, Fulton, Savage, and Jessup routinely ship or drop at this lab. Include OS, symptoms, and the files that matter.',
       },
     ],
-    relatedServiceIds: ['raid-recovery', 'mobile-recovery', 'windows-recovery', 'file-recovery'],
+    relatedServiceIds: ['raid-recovery', 'windows-recovery', 'file-recovery', 'mac-recovery'],
     relatedLocationSlugs: ['tysons-va', 'baltimore-md', 'rockville-md', 'washington-dc'],
   },
   'tysons-va': {
@@ -212,7 +212,7 @@ export const locationCopy: Record<string, LocationCopy> = {
         answer: 'Use the form on this page or call (410) 937-7332. Evaluation is free once the media is in the lab.',
       },
     ],
-    relatedServiceIds: ['raid-recovery', 'windows-recovery', 'mobile-recovery', 'file-recovery'],
+    relatedServiceIds: ['raid-recovery', 'windows-recovery', 'file-recovery', 'mac-recovery'],
     relatedLocationSlugs: ['columbia-md', 'annapolis-md', 'washington-dc', 'rockville-md'],
   },
   'washington-dc': {
@@ -285,7 +285,7 @@ export const locationCopy: Record<string, LocationCopy> = {
         answer: 'Yes. Fixed quote before paid work. No data, no charge on the recovery fee if we cannot get the files you need.',
       },
     ],
-    relatedServiceIds: ['raid-recovery', 'data-security', 'mobile-recovery', 'windows-recovery'],
+    relatedServiceIds: ['raid-recovery', 'data-security', 'windows-recovery', 'file-recovery'],
     relatedLocationSlugs: ['columbia-md', 'arlington-va', 'alexandria-va', 'tysons-va'],
   },
   'rockville-md': {
@@ -358,7 +358,7 @@ export const locationCopy: Record<string, LocationCopy> = {
         answer: 'Not at a Rockville storefront. Drop off at the Columbia lab, book a Tysons appointment, or ship the device powered off.',
       },
     ],
-    relatedServiceIds: ['raid-recovery', 'file-recovery', 'windows-recovery', 'mobile-recovery'],
+    relatedServiceIds: ['raid-recovery', 'file-recovery', 'windows-recovery', 'mac-recovery'],
     relatedLocationSlugs: ['columbia-md', 'potomac-md', 'washington-dc', 'tysons-va'],
   },
   'alexandria-va': {
@@ -390,7 +390,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       { question: 'Phone recovery from Alexandria?', answer: 'Chip-level work is in Columbia. Power the phone off and stop charging it if it is wet.' },
       { question: 'Cost?', answer: 'Free evaluation, fixed quote, no data no charge on the recovery fee.' },
     ],
-    relatedServiceIds: ['windows-recovery', 'raid-recovery', 'mobile-recovery', 'mac-recovery'],
+    relatedServiceIds: ['windows-recovery', 'raid-recovery', 'mac-recovery', 'file-recovery'],
     relatedLocationSlugs: ['columbia-md', 'arlington-va', 'tysons-va', 'washington-dc'],
   },
   'arlington-va': {
@@ -421,7 +421,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       { question: 'How long?', answer: '24–48 hours logical after arrival; 3–7 days physical/RAID.' },
       { question: 'Cost?', answer: 'Free evaluation. No data, no charge on the recovery fee.' },
     ],
-    relatedServiceIds: ['raid-recovery', 'windows-recovery', 'data-security', 'mobile-recovery'],
+    relatedServiceIds: ['raid-recovery', 'windows-recovery', 'data-security', 'file-recovery'],
     relatedLocationSlugs: ['washington-dc', 'columbia-md', 'tysons-va', 'alexandria-va'],
   },
   'annapolis-md': {
@@ -452,7 +452,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       { question: 'Naval Academy / government media?', answer: 'Unclassified personal and business media yes. Follow your organization’s rules for anything else.' },
       { question: 'Cost?', answer: 'Free evaluation. No data, no charge on the recovery fee.' },
     ],
-    relatedServiceIds: ['mobile-recovery', 'windows-recovery', 'raid-recovery', 'photo-recovery'],
+    relatedServiceIds: ['windows-recovery', 'raid-recovery', 'photo-recovery', 'file-recovery'],
     relatedLocationSlugs: ['columbia-md', 'baltimore-md', 'washington-dc', 'alexandria-va'],
   },
   'frederick-md': {
@@ -482,7 +482,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       { question: 'Timeline?', answer: '24–48 hours logical after arrival; 3–7 days physical.' },
       { question: 'Cost?', answer: 'Free evaluation. No data, no charge.' },
     ],
-    relatedServiceIds: ['raid-recovery', 'windows-recovery', 'file-recovery', 'mobile-recovery'],
+    relatedServiceIds: ['raid-recovery', 'windows-recovery', 'file-recovery', 'mac-recovery'],
     relatedLocationSlugs: ['columbia-md', 'rockville-md', 'baltimore-md', 'potomac-md'],
   },
   'mclean-va': {
@@ -512,7 +512,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       { question: 'RAID?', answer: 'Bring every member. Do not rebuild.' },
       { question: 'Cost?', answer: 'Free evaluation. No data, no charge.' },
     ],
-    relatedServiceIds: ['mac-recovery', 'raid-recovery', 'mobile-recovery', 'windows-recovery'],
+    relatedServiceIds: ['mac-recovery', 'raid-recovery', 'windows-recovery', 'file-recovery'],
     relatedLocationSlugs: ['tysons-va', 'great-falls-va', 'arlington-va', 'columbia-md'],
   },
   'great-falls-va': {

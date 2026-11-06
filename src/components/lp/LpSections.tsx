@@ -4,7 +4,8 @@ import type { Area } from '@/lp/config/areas';
 import type { FaqItem, Template } from '@/lp/config/templates';
 import type { LocationRating, LpReview } from '@/lp/reviews';
 import logo from '@/../public/images/light_mode.png';
-import LpIcon from './LpIcon';
+import LpIcon, { type IconName } from './LpIcon';
+import { Initials, RatingStars } from './ReviewBits';
 
 const LAB_TEL = 'tel:+14109377332';
 
@@ -46,6 +47,8 @@ export function LpHeader({ area }: { area: Area }) {
   );
 }
 
+export const FIXED_QUOTE = 'You get a fixed quote before any paid work. Nothing is charged unless you approve it.';
+
 const TICKS = ['Free diagnosis', 'You approve the quote first', 'No data, no charge', 'Free shipping both ways'];
 
 export function LpHero({
@@ -78,19 +81,33 @@ export function LpHero({
             {h1.lead}
             {h1.place && <span className="lp-place">{h1.place}</span>}
           </h1>
+          <div className="lp-hero-call" data-track-position="hero_call">
+            <a href={area.tel} className="lp-hero-call-btn">
+              <LpIcon name="phone" size={22} />
+              <span>
+                <strong>{area.phone}</strong> · {area.heroCallNote}
+              </span>
+            </a>
+            {area.tel !== LAB_TEL && (
+              <p>
+                Emergency? Our lab line <a href={LAB_TEL}>(410) 937-7332</a> is answered 24/7.
+              </p>
+            )}
+          </div>
           <p className="lp-hero-sub">{heroSub}</p>
+          <p className="lp-hero-quote">
+            <LpIcon name="check" size={18} strokeWidth={3} />
+            {FIXED_QUOTE}
+          </p>
           <div className="lp-rating-row">
             <div className="lp-avatars" aria-hidden="true">
               {heroStack.map((r) => (
-                <Image key={r.avatar} src={r.avatar} alt="" width={40} height={40} sizes="40px" loading="eager" />
+                <Initials key={r.avatar} name={r.name} size={40} />
               ))}
             </div>
             <div className="lp-rating-text">
               <div>
-                <span className="lp-stars" role="img" aria-label={`${rating.rating} out of 5 stars`}>
-                  ★★★★★
-                </span>{' '}
-                <strong>{rating.rating}</strong> on Google
+                <RatingStars rating={rating.rating} /> <strong>{rating.rating}</strong> on Google
               </div>
               <a href="#reviews">{ratingSub}</a>
             </div>
@@ -123,6 +140,76 @@ export function UrgencyBand({ template }: { template: Template }) {
         <a href={LAB_TEL} className="lp-btn lp-btn-ghost-dark">
           Talk to the lab, 24/7
         </a>
+      </div>
+    </section>
+  );
+}
+
+// "What happened?" tiles: each one scrolls to the form and pre-picks its symptom (LpForm listens for
+// data-cta clicks); the RAID tile opens the RAID path instead.
+const TILES: { label: string; icon: IconName; symptom?: string; raid?: true }[] = [
+  { label: 'Clicking or beeping', icon: 'sound', symptom: 'Clicking or beeping' },
+  { label: 'Not detected', icon: 'monitorX', symptom: 'Not detected' },
+  { label: 'Dropped or damaged', icon: 'drop', symptom: 'Dropped' },
+  { label: 'RAID or NAS failed', icon: 'server', raid: true },
+  { label: 'Deleted or formatted', icon: 'trash', symptom: 'Deleted files' },
+  { label: 'Something else', icon: 'alert', symptom: 'Something else' },
+];
+
+export function WhatHappenedTiles() {
+  return (
+    <section className="lp-tiles-sec" data-track-position="tiles" aria-labelledby="lp-tiles-h">
+      <div className="lp-wrap">
+        <h2 id="lp-tiles-h" className="lp-tiles-h">
+          What happened?
+        </h2>
+        <div className="lp-tiles">
+          {TILES.map((t) => (
+            <a
+              key={t.label}
+              href="#start"
+              className="lp-tile"
+              data-cta="tile"
+              data-tile-symptom={t.symptom}
+              data-tile-raid={t.raid ? '' : undefined}
+            >
+              <LpIcon name={t.icon} size={22} />
+              {t.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function RaidFirstHour() {
+  return (
+    <section className="lp-reveal" data-track-position="raid_first_hour">
+      <div className="lp-wrap lp-sec">
+        <h2 className="lp-h2">First hour after a RAID failure</h2>
+        <div className="lp-firsthour">
+          <div className="lp-firsthour-col is-dont">
+            <h3>Don&apos;t</h3>
+            <ul>
+              <li>Rebuild the array</li>
+              <li>Run chkdsk or fsck</li>
+              <li>Swap the drive order</li>
+              <li>Re-initialize the controller</li>
+            </ul>
+          </div>
+          <div className="lp-firsthour-col is-do">
+            <h3>Do</h3>
+            <ul>
+              <li>Power it down</li>
+              <li>Label each drive with its slot</li>
+              <li>Note the RAID level and controller</li>
+              <li>
+                Call us: <a href={LAB_TEL}>(410) 937-7332</a>, answered 24/7
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -162,7 +249,7 @@ export function HowItWorks({ area }: { area: Area }) {
   const steps = [
     { title: 'Tell us what happened', text: 'Use the form or call. Our lab line is answered 24/7.' },
     { title: 'Free diagnosis', text: area.step2 },
-    { title: 'You approve a quote', text: 'No paid work starts without your OK. No data, no charge.' },
+    { title: 'Fixed quote before any paid work', text: `${FIXED_QUOTE} No data, no charge.` },
     {
       title: 'Get your data back',
       text: 'Your recovered files, returned to you, with free shipping back if you mailed the drive in.',
@@ -202,8 +289,8 @@ export function FeaturedReview({
       <div className="lp-wrap lp-sec lp-featured">
         <div className="lp-featured-score">
           <div className="lp-big-rating">{rating.rating}</div>
-          <div className="lp-stars" role="img" aria-label={`${rating.rating} out of 5 stars`}>
-            ★★★★★
+          <div>
+            <RatingStars rating={rating.rating} />
           </div>
           <p>{ratingBig}</p>
           <a
@@ -223,7 +310,7 @@ export function FeaturedReview({
           </svg>
           <blockquote>{review.featuredText ?? review.excerpt}</blockquote>
           <figcaption>
-            <Image src={review.avatar} alt="" width={48} height={48} sizes="48px" />
+            <Initials name={review.name} size={48} />
             <div>
               <strong>{review.name}</strong>
               <span>{meta}</span>
@@ -301,7 +388,7 @@ export function FinalCta({ area, heading }: { area: Area; heading: string }) {
           <p>Free diagnosis. You approve the quote. No data, no charge.</p>
         </div>
         <div className="lp-final-actions">
-          <a href="#start" className="lp-btn lp-btn-red">
+          <a href="#start" data-cta="footer" className="lp-btn lp-btn-red">
             Start free diagnosis
           </a>
           <a href={area.tel} className="lp-btn lp-btn-ghost-dark">

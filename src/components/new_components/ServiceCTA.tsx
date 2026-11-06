@@ -67,11 +67,11 @@ export default function ServiceCTA({
             </div>
             <div className="flex items-center">
               <span className="text-green-500 mr-2">✓</span>
-              ISO 9001 Certified
+              ISO 9001 Certified Lab
             </div>
             <div className="flex items-center">
               <span className="text-green-500 mr-2">✓</span>
-              Clean Room
+              Certified Clean Room
             </div>
             <div className="flex items-center">
               <span className="text-green-500 mr-2">✓</span>

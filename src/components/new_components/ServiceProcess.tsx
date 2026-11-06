@@ -144,15 +144,9 @@ export default function ServiceProcess({
               </div>
               
               <div className="mt-auto pt-4">
-                {useDetailedSteps && step.duration && (
-                  <motion.div 
-                    className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white mb-6"
-                    style={{ backgroundColor: accentColor }}
-                  >
-                    {step.duration}
-                  </motion.div>
-                )}
-                
+                {/* Step durations are not shown: the only turnaround times we may state are 24–48 hours
+                    (logical) and 3–7 days (physical). */}
+
                 <motion.div 
                   className="w-full h-1.5 rounded-full bg-[var(--color-border)] overflow-hidden"
                   initial={{ opacity: 0 }}

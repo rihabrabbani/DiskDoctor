@@ -2,14 +2,19 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import {
-  BUSINESS_OR_PERSONAL,
+  CONTACT_PREFS,
   DEVICES,
   DEVICE_VALUES,
+  FILES_NEEDED,
   LEAD_CHANNELS,
+  POWER_DOWN_SYMPTOMS,
+  PRIOR_ATTEMPT,
+  RAID_LEVELS,
   STATES,
   STEER_DEVICE,
   SYMPTOMS,
   URGENCY,
+  URGENCY_LABELS,
   type Attribution,
   type DeviceValue,
 } from '@/lp/config/form';
@@ -22,9 +27,31 @@ type Touch = Partial<Record<'gclid' | 'gbraid' | 'wbraid' | 'src' | 'med' | 'cmp
 type DdAttr = { first?: Touch; last?: Touch };
 type Errors = Partial<Record<'name' | 'phone' | 'email', string>>;
 
+const URL_KEYS = [
+  'gclid',
+  'gbraid',
+  'wbraid',
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_term',
+  'utm_content',
+  'matchtype',
+  'loc_physical_ms',
+] as const;
+type LandingParams = Partial<Record<(typeof URL_KEYS)[number] | 'lp', string>>;
+
 function cookie(name: string) {
   const row = document.cookie.split('; ').find((c) => c.startsWith(`${name}=`));
   return row ? row.slice(name.length + 1) : '';
+}
+
+function session(key: string) {
+  try {
+    return sessionStorage.getItem(key) || '';
+  } catch {
+    return '';
+  }
 }
 
 // dd_attr is set by GTM on every page: JSON {first, last}, possibly URI-encoded.
@@ -40,8 +67,49 @@ function readAttr(): DdAttr {
   return {};
 }
 
-// Hidden fields from `last`, falling back to `first` for click IDs and the landing page.
-function attributionFields(attr: DdAttr): Attribution {
+// Ad parameters from the landing URL. Kept in sessionStorage so they survive a reload or a
+// second page view without them; a URL that has any of them replaces what was stored.
+function readLandingParams(): LandingParams {
+  const query = new URLSearchParams(location.search);
+  const fresh: LandingParams = {};
+  for (const key of URL_KEYS) {
+    const value = query.get(key);
+    if (value) fresh[key] = value.slice(0, 200);
+  }
+  if (Object.keys(fresh).length === 0) {
+    try {
+      return JSON.parse(session('dd_lp_url') || '{}') as LandingParams;
+    } catch {
+      return {};
+    }
+  }
+  const params = { ...fresh, lp: location.pathname };
+  try {
+    sessionStorage.setItem('dd_lp_url', JSON.stringify(params));
+  } catch {}
+  return params;
+}
+
+// Hidden fields from dd_attr `last`, falling back to `first` for click IDs and the landing page.
+// Without dd_attr (GTM blocked), they come from the landing URL instead.
+function attributionFields(attr: DdAttr, url: LandingParams): Attribution {
+  const gaClientId = cookie('_ga').match(/\d+\.\d+$/)?.[0] || '';
+  if (!attr.last && !attr.first) {
+    const clicked = Boolean(url.gclid || url.gbraid || url.wbraid);
+    return {
+      dd_gclid: url.gclid || '',
+      dd_gbraid: url.gbraid || '',
+      dd_wbraid: url.wbraid || '',
+      dd_utm_source: url.utm_source || '',
+      dd_utm_medium: url.utm_medium || '',
+      dd_utm_campaign: url.utm_campaign || '',
+      dd_utm_term: url.utm_term || '',
+      dd_utm_content: url.utm_content || '',
+      dd_landing_page: clicked ? url.lp || location.pathname : '',
+      dd_lead_channel: clicked ? 'google_ads' : 'unknown',
+      dd_ga_client_id: gaClientId,
+    };
+  }
   const last = attr.last || {};
   const first = attr.first || {};
   const get = (key: keyof Touch, fallback = false) => last[key] || (fallback ? first[key] : '') || '';
@@ -57,7 +125,7 @@ function attributionFields(attr: DdAttr): Attribution {
     dd_utm_content: get('cnt'),
     dd_landing_page: get('lp', true),
     dd_lead_channel: (LEAD_CHANNELS as readonly string[]).includes(ch) ? ch : 'unknown',
-    dd_ga_client_id: cookie('_ga').match(/\d+\.\d+$/)?.[0] || '',
+    dd_ga_client_id: gaClientId,
   };
 }
 
@@ -73,6 +141,9 @@ function push(event: string, params: Record<string, unknown>) {
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ event, ...params });
 }
+
+const toggle = (list: string[], value: string) =>
+  list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
 
 export default function LpForm({
   variant,
@@ -94,20 +165,26 @@ export default function LpForm({
   const [step, setStep] = useState<Step>(1);
   const [device, setDevice] = useState<DeviceValue | null>(presetDevice ?? null);
   const [symptoms, setSymptoms] = useState<string[]>([]);
+  const [filesNeeded, setFilesNeeded] = useState<string[]>([]);
+  const [priorAttempt, setPriorAttempt] = useState('');
   const [urgency, setUrgency] = useState('');
   const [message, setMessage] = useState('');
-  const [businessOrPersonal, setBusinessOrPersonal] = useState<string>('Business');
   const [driveCount, setDriveCount] = useState('');
+  const [raidLevel, setRaidLevel] = useState('');
   const [name, setName] = useState('');
+  const [company, setCompany] = useState('');
   const [phoneValue, setPhoneValue] = useState('');
   const [email, setEmail] = useState('');
   const [state, setState] = useState(stateDefault);
+  const [contactPref, setContactPref] = useState<string>('Call');
   const [errors, setErrors] = useState<Errors>({});
   const [sending, setSending] = useState(false);
   const [apiFailed, setApiFailed] = useState(false);
 
   const loadedAt = useRef(0);
   const submissionId = useRef('');
+  const landing = useRef<LandingParams>({});
+  const deviceType = useRef<'mobile' | 'desktop'>('desktop');
   const started = useRef(false);
   const stepsSeen = useRef(new Set<string>());
   const stepRef = useRef<HTMLDivElement>(null);
@@ -119,6 +196,11 @@ export default function LpForm({
     loadedAt.current = Date.now();
     // One ID per form: reused on a retry, so HubSpot and Ads see the same lead.
     submissionId.current = uuid();
+    landing.current = readLandingParams();
+    deviceType.current =
+      /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || matchMedia('(max-width: 767px)').matches
+        ? 'mobile'
+        : 'desktop';
   }, []);
 
   // Move focus to the new step, so keyboard and screen-reader users land on it.
@@ -156,8 +238,34 @@ export default function LpForm({
     goTo(value === STEER_DEVICE ? 'steer' : 2, value);
   };
 
-  const toggleSymptom = (label: string) =>
-    setSymptoms((list) => (list.includes(label) ? list.filter((s) => s !== label) : [...list, label]));
+  // Page buttons marked data-cta: the last one clicked becomes dd_cta. A "What happened?" tile also
+  // pre-picks its symptom, and the RAID tile opens the RAID path.
+  const onCta = useRef<(el: Element) => void>(() => {});
+  onCta.current = (el) => {
+    const cta = el.getAttribute('data-cta') || '';
+    try {
+      sessionStorage.setItem('dd_cta', cta);
+    } catch {}
+    if (el.hasAttribute('data-tile-raid')) {
+      if (step === 1 || step === 'steer' || !isRaid) pickDevice(DEVICE_VALUES.raid);
+      return;
+    }
+    const symptom = el.getAttribute('data-tile-symptom');
+    if (!symptom) return;
+    setSymptoms((list) => (list.includes(symptom) ? list : [...list, symptom]));
+    if (step === 'steer') {
+      setDevice(presetDevice ?? null);
+      setStep(1);
+    }
+  };
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      const el = (event.target as Element | null)?.closest?.('[data-cta]');
+      if (el && !el.closest('#start')) onCta.current(el);
+    };
+    document.addEventListener('click', onClick);
+    return () => document.removeEventListener('click', onClick);
+  }, []);
 
   const validate = (): Errors => {
     const next: Errors = {};
@@ -182,6 +290,7 @@ export default function LpForm({
     setSending(true);
     setApiFailed(false);
     const attr = readAttr();
+    const attribution = attributionFields(attr, landing.current);
     const e164Phone = toE164(phoneValue);
     let ok = false;
     try {
@@ -193,15 +302,23 @@ export default function LpForm({
           variant,
           device,
           symptoms,
+          filesNeeded,
+          priorAttempt,
           urgency,
           message,
-          businessOrPersonal: isRaid ? businessOrPersonal : '',
           driveCount: isRaid ? driveCount : '',
+          raidLevel: isRaid ? raidLevel : '',
           name,
+          company,
           phone: phoneValue,
           email,
           state,
-          attribution: attributionFields(attr),
+          contactPref,
+          ddDevice: deviceType.current,
+          ddCta: session('dd_cta') || 'form',
+          ddMatchtype: landing.current.matchtype || '',
+          ddLoc: landing.current.loc_physical_ms || '',
+          attribution,
           pageUri: window.location.href,
           pageName: document.title,
           elapsedMs: Date.now() - loadedAt.current,
@@ -226,7 +343,7 @@ export default function LpForm({
     const lead = {
       form_id: LP_FORM_GUID,
       conv_id: submissionId.current,
-      ch: (attr.last || attr.first || {}).ch || 'unknown',
+      ch: (attr.last || attr.first || {}).ch || attribution.dd_lead_channel,
       device: recoveryDeviceTypeValue,
       state: serviceStateValue,
       email: email.trim().toLowerCase(),
@@ -247,6 +364,8 @@ export default function LpForm({
         {errors[key]}
       </p>
     ) : null;
+  const showPowerDown = symptoms.some((s) => POWER_DOWN_SYMPTOMS.includes(s));
+  const canContinue = symptoms.length > 0;
 
   return (
     <div id="start" className="lp-form" data-track-position="form_intro" data-clarity-mask="true">
@@ -314,7 +433,7 @@ export default function LpForm({
         {step === 2 && (
           <>
             <p className="lp-q" id="lp-sym-q">
-              What&apos;s happening? <span>(pick any)</span>
+              What&apos;s happening? <span>(pick at least one)</span>
             </p>
             <div className="lp-chips" role="group" aria-labelledby="lp-sym-q">
               {SYMPTOMS.map((label) => (
@@ -323,22 +442,20 @@ export default function LpForm({
                   type="button"
                   className="lp-chip"
                   aria-pressed={symptoms.includes(label)}
-                  onClick={() => toggleSymptom(label)}
+                  onClick={() => setSymptoms((list) => toggle(list, label))}
                 >
                   {label}
                 </button>
               ))}
             </div>
+            {showPowerDown && (
+              <p className="lp-powerdown" role="status">
+                <LpIcon name="warn" size={18} />
+                Power it off and don&apos;t keep retrying. Every restart can make recovery harder.
+              </p>
+            )}
             {isRaid && (
               <div className="lp-grid2">
-                <label className="lp-field">
-                  Business or personal?
-                  <select value={businessOrPersonal} onChange={(e) => setBusinessOrPersonal(e.target.value)}>
-                    {BUSINESS_OR_PERSONAL.map((v) => (
-                      <option key={v}>{v}</option>
-                    ))}
-                  </select>
-                </label>
                 <label className="lp-field">
                   How many drives?
                   <input
@@ -350,21 +467,64 @@ export default function LpForm({
                     onChange={(e) => setDriveCount(e.target.value)}
                   />
                 </label>
+                <label className="lp-field">
+                  RAID level
+                  <select value={raidLevel} onChange={(e) => setRaidLevel(e.target.value)}>
+                    <option value="">Choose…</option>
+                    {RAID_LEVELS.map((v) => (
+                      <option key={v} value={v}>
+                        {/^\d+$/.test(v) ? `RAID ${v}` : v}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
             )}
-            <p className="lp-q" id="lp-urg-q">
-              How urgent is it?
+            <p className="lp-q" id="lp-files-q">
+              What do you need back most? <span>(optional)</span>
             </p>
-            <div className="lp-urgency" role="group" aria-labelledby="lp-urg-q">
-              {URGENCY.map((label) => (
+            <div className="lp-chips" role="group" aria-labelledby="lp-files-q">
+              {FILES_NEEDED.map((label) => (
                 <button
                   key={label}
                   type="button"
                   className="lp-chip"
-                  aria-pressed={urgency === label}
-                  onClick={() => setUrgency(urgency === label ? '' : label)}
+                  aria-pressed={filesNeeded.includes(label)}
+                  onClick={() => setFilesNeeded((list) => toggle(list, label))}
                 >
                   {label}
+                </button>
+              ))}
+            </div>
+            <p className="lp-q" id="lp-prior-q">
+              Has anyone tried to recover it? <span>(optional)</span>
+            </p>
+            <div className="lp-chips" role="group" aria-labelledby="lp-prior-q">
+              {PRIOR_ATTEMPT.map((label) => (
+                <button
+                  key={label}
+                  type="button"
+                  className="lp-chip"
+                  aria-pressed={priorAttempt === label}
+                  onClick={() => setPriorAttempt(priorAttempt === label ? '' : label)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <p className="lp-q" id="lp-urg-q">
+              How urgent is it?
+            </p>
+            <div className="lp-urgency" role="group" aria-labelledby="lp-urg-q">
+              {URGENCY.map((value) => (
+                <button
+                  key={value}
+                  type="button"
+                  className="lp-chip"
+                  aria-pressed={urgency === value}
+                  onClick={() => setUrgency(urgency === value ? '' : value)}
+                >
+                  {URGENCY_LABELS[value]}
                 </button>
               ))}
             </div>
@@ -375,7 +535,11 @@ export default function LpForm({
               <textarea
                 rows={3}
                 maxLength={2000}
-                placeholder="e.g. WD My Passport 2TB, dropped last week, family photos on it"
+                placeholder={
+                  isRaid
+                    ? 'e.g. Synology 4-bay, two drives failed during a rebuild'
+                    : 'e.g. WD My Passport 2TB, dropped last week, project files on it'
+                }
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               />
@@ -384,10 +548,21 @@ export default function LpForm({
               <button type="button" className="lp-btn lp-btn-ghost" onClick={() => setStep(1)}>
                 Back
               </button>
-              <button type="button" className="lp-btn lp-btn-red" onClick={() => goTo(3)}>
+              <button
+                type="button"
+                className="lp-btn lp-btn-red"
+                disabled={!canContinue}
+                aria-describedby={canContinue ? undefined : 'lp-continue-hint'}
+                onClick={() => goTo(3)}
+              >
                 Continue
               </button>
             </div>
+            {!canContinue && (
+              <p className="lp-form-hint" id="lp-continue-hint">
+                Pick at least one symptom to continue.
+              </p>
+            )}
           </>
         )}
 
@@ -407,6 +582,19 @@ export default function LpForm({
                   aria-describedby={errors.name ? 'lp-name-err' : undefined}
                 />
                 {fieldError('name')}
+              </label>
+              <label className="lp-field">
+                <span>
+                  Company <span className="lp-hint">Optional</span>
+                </span>
+                <input
+                  type="text"
+                  name="company"
+                  autoComplete="organization"
+                  maxLength={200}
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                />
               </label>
               <label className="lp-field">
                 <span>
@@ -448,6 +636,26 @@ export default function LpForm({
                   ))}
                 </select>
               </label>
+              <div className="lp-field">
+                <span id="lp-pref-q">
+                  Best way to reach you <span className="lp-hint">Optional</span>
+                </span>
+                <div className="lp-urgency lp-pref" role="radiogroup" aria-labelledby="lp-pref-q">
+                  {CONTACT_PREFS.map((value) => (
+                    <button
+                      key={value}
+                      type="button"
+                      role="radio"
+                      className="lp-chip"
+                      aria-checked={contactPref === value}
+                      aria-pressed={contactPref === value}
+                      onClick={() => setContactPref(value)}
+                    >
+                      {value}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
             {/* Honeypot: hidden from people, bots fill it in. */}
             <div className="lp-hp" aria-hidden="true">
@@ -464,6 +672,10 @@ export default function LpForm({
                 {sending ? 'Sending…' : 'Get my free diagnosis'}
               </button>
             </div>
+            <p className="lp-form-next">
+              Next: we reply within one business day. After the free diagnosis you get a fixed quote, and nothing is
+              charged unless you approve it.
+            </p>
             {apiFailed && (
               <p className="lp-alert" role="alert">
                 Sorry, that didn&apos;t go through. Please try again, or call <a href={tel}>{phone}</a>
@@ -471,7 +683,7 @@ export default function LpForm({
               </p>
             )}
             <p className="lp-form-note">
-              We reply within one business day. Need us sooner? Call <a href={tel}>{phone}</a>
+              Need us sooner? Call <a href={tel}>{phone}</a>
               {soonerSuffix} By sending this you agree to our <a href="/privacy">privacy policy</a>.
             </p>
           </form>
@@ -480,7 +692,7 @@ export default function LpForm({
 
       <div className="lp-form-trust">
         <LpIcon name="lock" size={18} />
-        Your details go only to our lab team. No spam.
+        Your details go to our lab team and our CRM. No spam.
       </div>
     </div>
   );

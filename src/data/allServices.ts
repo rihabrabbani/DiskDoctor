@@ -1409,12 +1409,12 @@ export const allServices: ServicePageData[] = [
       {
         title: 'No Data, No Fee Guarantee',
         description: 'You only pay if we successfully recover your data, making our service risk-free.',
-        metric: '100% Satisfaction Guarantee'
+        metric: 'No data, no charge'
       },
       {
         title: 'Rapid Response Times',
         description: 'Get your data back quickly with our expedited recovery options for critical data.',
-        metric: '24-Hour Turnaround'
+        metric: 'Emergency line 24/7'
       }
     ],
     technicalSpecs: {

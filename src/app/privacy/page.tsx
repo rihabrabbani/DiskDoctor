@@ -40,8 +40,41 @@ export default function PrivacyPage() {
           .
         </p>
         <p>
+          We use Google Ads conversion tracking and remarketing to measure which ads lead to enquiries
+          and to show our ads to people who have visited our website. You can turn off personalized ads
+          from Google in{' '}
+          <a
+            href="https://adssettings.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline text-[var(--color-text-primary)]"
+          >
+            Google&apos;s Ads Settings
+          </a>
+          .
+        </p>
+        <p>
+          When you submit a form, a hashed (scrambled) copy of your email address and phone number is
+          shared with Google to measure our ads. This is Google&apos;s enhanced conversions feature.
+        </p>
+        <p>
+          If you reach our website from a Google ad, the phone number shown may be a Google forwarding
+          number. For calls to that number, Google logs the start and end time, the duration and the
+          caller&apos;s area code. Google does not record the call.
+        </p>
+        <p>
+          Cookies: HubSpot sets <code>hubspotutk</code> and <code>__hstc</code> to connect form
+          submissions with visits. Our own <code>dd_attr</code> cookie remembers how you found us, such
+          as the ad or search you came from, for 90 days. Microsoft Clarity and Microsoft Advertising may
+          set cookies such as <code>MUID</code>.
+        </p>
+        <p>
+          Google Analytics data is kept for 14 months. To ask us to delete your data, email {EMAIL}.
+        </p>
+        <p>
           Questions: {EMAIL}.
         </p>
+        <p className="text-sm">Last updated: November 6, 2026</p>
       </main>
       <Footer />
     </div>

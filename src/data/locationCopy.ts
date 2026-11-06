@@ -30,9 +30,9 @@ export const locationCopy: Record<string, LocationCopy> = {
     seoDescription:
       'Columbia MD data recovery lab at 10015 Old Columbia Rd. Hard drive, SSD, RAID, and phone recovery. Free evaluation. No data, no charge. Call (410) 937-7332.',
     directAnswer:
-      'DiskDoctor recovers failed hard drives, SSDs, RAID arrays, and phones at 10015 Old Columbia Rd Suite B 215, Columbia, MD 21046. Walk in or ship the device. Evaluation is free. You pay a recovery fee only if we retrieve the files you need. Call (410) 937-7332 before you run more software on a clicking drive.',
+      'DiskDoctor recovers failed hard drives, SSDs, RAID arrays and servers at 10015 Old Columbia Rd Suite B 215, Columbia, MD 21046. Walk in or ship the device. Evaluation is free. You pay a recovery fee only if we retrieve the files you need. Call (410) 937-7332 before you run more software on a clicking drive.',
     heroDescription:
-      'The Columbia lab is the working cleanroom for Maryland, DC, and Northern Virginia jobs. Drop off a failed disk, RAID member, or phone here. We image first, quote before paid work, and return files on new media.',
+      'The Columbia lab is the working cleanroom for Maryland, DC, and Northern Virginia jobs. Drop off a failed disk, SSD or RAID member here. We image first, quote before paid work, and return files on new media.',
     paragraphs: [
       'This is a data recovery laboratory, not a walk-up computer-repair counter. When a drive clicks, an SSD disappears from BIOS, or a RAID 5 loses a second member during a rebuild, the useful work is cloning the media and reconstructing the filesystem from that clone. Doing that on the original disk is how remaining readable sectors get overwritten.',
       'The lab sits at 10015 Old Columbia Rd Suite B 215, Columbia, MD 21046, in the Oakland Ridge industrial area off Route 175. Howard County businesses, law offices, medical practices, and home users drop devices here during weekday hours (8:30 a.m.–5:00 p.m.). After hours, leave a message or use the form; emergency intake is arranged by phone at (410) 937-7332.',
@@ -108,7 +108,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       'Urgent jobs do not have to wait for a Tysons slot. Call our 24/7 emergency line at (410) 937-7332 and we will work out the fastest way to start. The appointment is about someone being at Boone Blvd, not about whether we will take the job.',
       'How to reach the suite: 8300 Boone Blvd is the office tower next to the Tysons Corner corridor, not a mall kiosk inside Tysons I or II. Suite 513 is upstairs. Bring a photo ID if the building desk asks. Do not leave a drive with a receptionist who is not DiskDoctor staff. If you cannot get in, call (571) 202-8529 from the lobby.',
       'If you need to watch chain-of-custody paperwork signed, say so when you book; we can do that at your appointment and again at return.',
-      'What to bring: the failed disk or phone powered off, every RAID member, any passwords you will share, and a note with the OS and the folders that matter. Do not bring a running NAS that is still rebuilding. Power it down at the office before you drive.',
+      'What to bring: the failed disk powered off, every RAID member, any passwords you will share, and a note with the OS and the folders that matter. Do not bring a running NAS that is still rebuilding. Power it down at the office before you drive.',
       'Return of files: encrypted USB or a new SATA/NVMe you approve, pickup in Tysons on a second appointment, or tracked shipping to your office. We do not email archives of recovered patient or legal files. If you want the original media back, say so; some physical jobs cannot reseal a drive that was opened for heads work.',
     ],
     scenarios: [
@@ -139,7 +139,7 @@ export const locationCopy: Record<string, LocationCopy> = {
         answer: 'By appointment on weekdays. For emergencies, call our 24/7 line at (410) 937-7332 rather than walking in.',
       },
     ],
-    relatedServiceIds: ['raid-recovery', 'mobile-recovery', 'mac-recovery', 'windows-recovery'],
+    relatedServiceIds: ['raid-recovery', 'file-recovery', 'mac-recovery', 'windows-recovery'],
     relatedLocationSlugs: ['columbia-md', 'mclean-va', 'arlington-va', 'washington-dc'],
   },
   'baltimore-md': {
@@ -148,7 +148,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     seoDescription:
       'Baltimore data recovery via DiskDoctor’s Columbia MD lab. Hard drive, RAID, and phone recovery. Free evaluation. No data, no charge. Call (410) 937-7332.',
     directAnswer:
-      'There is no DiskDoctor storefront in Baltimore. Failed drives, RAID members, and phones from Baltimore, Towson, Catonsville, and Glen Burnie are recovered at the Columbia, MD lab (about 25 minutes from downtown). Free evaluation. Call (410) 937-7332. Do not rebuild a clicking disk or a degraded RAID.',
+      'There is no DiskDoctor storefront in Baltimore. Failed drives, SSDs and RAID members from Baltimore, Towson, Catonsville, and Glen Burnie are recovered at the Columbia, MD lab (about 25 minutes from downtown). Free evaluation. Call (410) 937-7332. Do not rebuild a clicking disk or a degraded RAID.',
     heroDescription:
       'Baltimore-area recovery is handled at the Columbia laboratory, not a Harbor-front kiosk. Ship or drop the failed device. We image first and quote before paid work.',
     paragraphs: [
@@ -168,7 +168,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       'Towson University-adjacent and county offices: unclassified student or business media only on this public form. Follow your records policy. We can log chain-of-custody; we cannot invent a Baltimore cleanroom that does not exist.',
       'Catonsville and Ellicott City (the Baltimore-side commute): you are closer to Columbia than downtown thinks. 40 to 29 is often faster than 95. Drop the device powered down. Do not copy “one more folder” in the parking lot.',
       'If a Harbor IT company quoted a rebuild on a clicking RAID 5, get a second opinion before they write a new member. The expensive Baltimore case is the second disk dying at 80% rebuild. We clone first. Evaluation is free once the members arrive.',
-      'What to bring from Baltimore: the failed disk or phone powered off, every RAID member, passwords you will share, and a note with the OS and the folders that matter. If you ship, use a rigid box and tracking. We email when the box is opened at Old Columbia Rd.',
+      'What to bring from Baltimore: the failed disk powered off, every RAID member, passwords you will share, and a note with the OS and the folders that matter. If you ship, use a rigid box and tracking. We email when the box is opened at Old Columbia Rd.',
       'What happens next: free evaluation, fixed quote, clone, then files on new media. You can collect in Columbia or receive a shipped encrypted drive. We do not keep a Baltimore waiting room because there is no Baltimore storefront.',
       'Rush jobs: say so on the form if payroll or a filing is stuck. Emergency imaging is scheduled by phone at (410) 937-7332. A Harbor-front kiosk cannot clone platters faster than a lab that already has the bench.',
     ],
@@ -223,7 +223,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     directAnswer:
       'DiskDoctor does not operate a storefront on the National Mall. DC, Georgetown, Capitol Hill, and Navy Yard recoveries are performed at the Columbia, MD lab. Government, legal, and contractor media is accepted with chain-of-custody. Free evaluation. Call (410) 937-7332. Do not image a classified or CUI disk with consumer software.',
     heroDescription:
-      'DC-area hard drive, RAID, and phone recovery through the Columbia laboratory. Built for legal, contractor, and office failures — not a tourist-page about monuments.',
+      'DC-area hard drive, SSD and RAID recovery through the Columbia laboratory. Built for legal, contractor, and office failures — not a tourist-page about monuments.',
     paragraphs: [
       'Washington jobs are often time-bound: a partner’s laptop died the night before a filing, a RAID holding discovery productions lost a disk, a phone with field photos will not boot. The laboratory that can clone those devices is in Columbia, Maryland, about 30–45 minutes from downtown depending on the Beltway.',
       'We are not a federal contractor by default and we do not claim SCIF access on this page. If your media is classified, follow your agency’s procedure. For unclassified business, legal, and personal media, intake is the same: power down, no CHKDSK, no RAID rebuild, document the serials, and either drop at Columbia or ship with tracking.',
@@ -294,7 +294,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     seoDescription:
       'Rockville and Montgomery County data recovery at DiskDoctor’s Columbia lab. Hard drive, RAID, SSD, phone. Free evaluation. Call (410) 937-7332.',
     directAnswer:
-      'Rockville data recovery is performed at DiskDoctor’s Columbia, MD lab, not a Rockville storefront. Montgomery County hard drives, RAID arrays, and phones can be dropped in Columbia or shipped from Rockville, North Bethesda, or Gaithersburg. Free evaluation. Call (410) 937-7332.',
+      'Rockville data recovery is performed at DiskDoctor’s Columbia, MD lab, not a Rockville storefront. Montgomery County hard drives, SSDs and RAID arrays can be dropped in Columbia or shipped from Rockville, North Bethesda, or Gaithersburg. Free evaluation. Call (410) 937-7332.',
     heroDescription:
       'Montgomery County recovery through the Columbia laboratory. Built for biotech, professional offices, and home NAS failures — not a park-guide page.',
     paragraphs: [
@@ -401,7 +401,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     directAnswer:
       'Arlington, Rosslyn, Ballston, and Crystal City data recovery is handled at the Columbia, MD lab. No Arlington storefront. Free evaluation. Call (410) 937-7332. Power down failed RAID and clicking disks.',
     heroDescription:
-      'Arlington-area drive and phone recovery through Columbia. Contractor and office media welcome with chain-of-custody on request.',
+      'Arlington-area hard drive, SSD and RAID recovery through Columbia. Contractor and office media welcome with chain-of-custody on request.',
     paragraphs: [
       'Arlington sits next to DC contractor offices and dense apartment NAS setups. When a disk fails, the correct next step is imaging, not another Disk Management “initialize” click.',
       'Service area of Columbia; Tysons office by appointment. Evaluation free.',
@@ -430,9 +430,9 @@ export const locationCopy: Record<string, LocationCopy> = {
     seoDescription:
       'Annapolis data recovery at DiskDoctor’s Columbia MD lab — not SEO services. Hard drive, RAID, phone. Free evaluation. Call (410) 937-7332.',
     directAnswer:
-      'Annapolis and Anne Arundel County data recovery is done at the Columbia, MD lab. This is not an SEO or IT-retainer page. Failed drives and phones can be shipped from Annapolis or dropped in Columbia. Free evaluation. Call (410) 937-7332.',
+      'Annapolis and Anne Arundel County data recovery is done at the Columbia, MD lab. This is not an SEO or IT-retainer page. Failed drives and RAID arrays can be shipped from Annapolis or dropped in Columbia. Free evaluation. Call (410) 937-7332.',
     heroDescription:
-      'Anne Arundel recovery through the Columbia laboratory. Hard drives, RAID, and phones — not “SEO strategies.”',
+      'Anne Arundel recovery through the Columbia laboratory. Hard drives, SSDs and RAID — not “SEO strategies.”',
     paragraphs: [
       'Annapolis media fails the same way as everywhere else: marine-electronics laptops, home NAS units, and phones that went over a gunwale. Rice and freezer tricks waste time. Power down and send the device.',
       'No Annapolis storefront. Columbia lab. Evaluation free.',
@@ -461,7 +461,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     seoDescription:
       'Frederick MD data recovery via DiskDoctor’s Columbia lab. Hard drive, RAID, phone. Free evaluation. Call (410) 937-7332.',
     directAnswer:
-      'Frederick County data recovery is performed in Columbia, MD. No Frederick storefront. Ship or drop failed drives and phones. Free evaluation. Call (410) 937-7332.',
+      'Frederick County data recovery is performed in Columbia, MD. No Frederick storefront. Ship or drop failed drives and RAID arrays. Free evaluation. Call (410) 937-7332.',
     heroDescription:
       'Frederick-area recovery at the Columbia laboratory. Stop using a clicking disk. Do not rebuild a NAS.',
     paragraphs: [
@@ -554,7 +554,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     directAnswer:
       'Potomac and Bethesda-adjacent recoveries are done at the Columbia, MD lab. No Potomac storefront. Free evaluation. Call (410) 937-7332.',
     heroDescription:
-      'Potomac-area drive and phone recovery at the Columbia laboratory. Stop using a failing disk.',
+      'Potomac-area hard drive and RAID recovery at the Columbia laboratory. Stop using a failing disk.',
     paragraphs: [
       'Potomac home offices often run large photo and video volumes on desktop RAIDs. When a member clicks, power the box down and send every disk. Rebuilds are how the second disk dies.',
       'From Potomac Village, 189 to 495 to 29 is a common drive to Columbia. Bethesda-adjacent streets can also use Tysons by appointment if that is shorter. There is no Potomac storefront and no “Bethesda lab.”',

@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     default: "Data Recovery Services in MD, VA & DC | DiskDoctor",
     template: "%s | DiskDoctor"
   },
-  description: "Hard drive, SSD, RAID, and phone data recovery in Columbia MD and Tysons VA. Free evaluation. No data, no charge. Call (410) 937-7332.",
+  description: "Hard drive, SSD, RAID and server data recovery in Columbia MD and Tysons VA. Free evaluation. No data, no charge. Call (410) 937-7332.",
   authors: [{ name: "DiskDoctor Data Recovery" }],
   creator: "DiskDoctor Data Recovery",
   publisher: "DiskDoctor Data Recovery",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     url: SITE_URL_SLASH,
     siteName: 'DiskDoctor Data Recovery',
     title: 'Data Recovery Services in MD, VA & DC | DiskDoctor',
-    description: 'Hard drive, SSD, RAID, and phone data recovery in Columbia MD and Tysons VA. Free evaluation. No data, no charge.',
+    description: 'Hard drive, SSD, RAID and server data recovery in Columbia MD and Tysons VA. Free evaluation. No data, no charge.',
     images: [
       {
         url: '/images/og-image.jpg',
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Data Recovery Services in MD, VA & DC | DiskDoctor',
-    description: 'Hard drive, SSD, RAID, and phone data recovery. Free evaluation. No data, no charge.',
+    description: 'Hard drive, SSD, RAID and server data recovery. Free evaluation. No data, no charge.',
     images: ['/images/og-image.jpg'],
   },
   robots: {

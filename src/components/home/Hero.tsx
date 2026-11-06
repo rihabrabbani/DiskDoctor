@@ -9,7 +9,7 @@ const trustItems: { label: string; href?: string }[] = [
   { label: 'Free shipping to our lab and back', href: '/mail-in-data-recovery' },
   { label: 'Pickup and on-site diagnostics available' },
   { label: '35+ years · 15,000+ cases recovered · 95% success rate' },
-  { label: 'ISO 9001 certified · clean room' },
+  { label: 'ISO 9001 certified lab · certified clean room' },
 ];
 
 // Define variants with proper typing
@@ -83,7 +83,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              Recovering data since 1991 at our ISO 9001 certified lab and clean room in Columbia, Maryland, with a Virginia office in Tysons by appointment. Free evaluation. No data, no charge.
+              Recovering data since 1991 at our ISO 9001 certified lab in Columbia, Maryland, which has a certified clean room. Our Virginia office in Tysons is by appointment. Free evaluation. No data, no charge.
             </motion.p>
             
             <motion.div 

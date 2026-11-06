@@ -223,7 +223,7 @@ export default function ServiceHero({
                   transition={{ delay: 1.2, duration: 0.5 }}
                 >
                   <div className="text-sm font-semibold" style={{ color: accentColor }}>
-                    ISO 9001 Certified
+                    ISO 9001 Certified Lab
                   </div>
                 </motion.div>
                 
@@ -234,7 +234,7 @@ export default function ServiceHero({
                   transition={{ delay: 1.4, duration: 0.5 }}
                 >
                   <div className="text-sm font-semibold" style={{ color: accentColor }}>
-                    Clean Room
+                    Certified Clean Room
                   </div>
                 </motion.div>
                 </>)}

@@ -117,14 +117,14 @@ export default function ContactPage() {
 
             <div>
               <p className="text-lg text-[var(--color-text-secondary)] max-w-3xl leading-relaxed mb-4">
-                Stop using the failed drive, phone, or RAID. Power it down and tell us what happened.
+                Stop using the failed drive, SSD, or RAID. Power it down and tell us what happened.
                 A DiskDoctor specialist at the Columbia, MD lab reviews the case, explains options, and
                 gives a fixed quote before any paid work. If we cannot recover the data you need, you do
                 not pay a recovery fee — no data, no charge.
               </p>
               <p className="text-lg text-[var(--color-text-secondary)] max-w-3xl leading-relaxed mb-4">
                 Typical logical recoveries finish in 24–48 hours. Physical jobs (clicking drives, RAID
-                with multiple dead members, water-damaged phones) usually take 3–7 days, with emergency
+                with multiple dead members, water-damaged drives) usually take 3–7 days, with emergency
                 options when the files are time-critical. Drop off at 10015 Old Columbia Rd Suite B 215
                 or ship in. The Tysons office at 8300 Boone Blvd Suite 513 is by appointment.
               </p>
@@ -142,7 +142,7 @@ export default function ContactPage() {
                 .
               </p>
               <p className="text-lg text-[var(--color-text-secondary)] max-w-3xl leading-relaxed mb-4">
-                What to include in the form: device type (hard drive, SSD, NAS, phone), what failed
+                What to include in the form: device type (hard drive, SSD, RAID, NAS), what failed
                 (click, not detected, water, RAID rebuild), operating system, and the folders that
                 matter. Power the device down before you drive or ship. Do not run CHKDSK, Disk Utility
                 First Aid, or a vendor RAID repair while you wait for a reply.

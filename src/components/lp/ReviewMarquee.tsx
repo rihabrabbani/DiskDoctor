@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
+import { Initials } from './ReviewBits';
 import type { LpReview } from '@/lp/reviews';
 
 // CSS-only infinite scroll (track duplicated, translateX(-50%)), paused on hover/focus and by the
@@ -9,12 +9,12 @@ import type { LpReview } from '@/lp/reviews';
 export default function ReviewMarquee({
   title,
   reviews,
-  count,
+  linkLabel,
   mapsUrl,
 }: {
   title: string;
   reviews: LpReview[];
-  count: number;
+  linkLabel: string;
   mapsUrl: string;
 }) {
   const [paused, setPaused] = useState(false);
@@ -30,7 +30,7 @@ export default function ReviewMarquee({
       {...(dup ? { 'data-dup': '', 'aria-hidden': true, tabIndex: -1 } : {})}
     >
       <span className="lp-rcard-top">
-        <Image src={r.avatar} alt="" width={38} height={38} sizes="38px" />
+        <Initials name={r.name} size={38} />
         <span className="lp-rcard-name">
           <strong>{r.name}</strong>
           <span>{r.date} · Google</span>
@@ -49,7 +49,7 @@ export default function ReviewMarquee({
         <p>{title}</p>
         <div className="lp-marquee-head-right">
           <a href={mapsUrl} target="_blank" rel="noopener noreferrer" data-map-link="reviews">
-            See all {count} on Google Maps
+            {linkLabel}
           </a>
           <button type="button" className="lp-marquee-toggle" aria-pressed={paused} onClick={() => setPaused(!paused)}>
             {paused ? 'Play reviews' : 'Pause reviews'}

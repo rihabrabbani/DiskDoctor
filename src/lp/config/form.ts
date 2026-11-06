@@ -34,8 +34,41 @@ export const SYMPTOMS = [
   'Something else',
 ] as const;
 
-/** dd_urgency options. */
+/** dd_urgency options: the stored values stay the same, only the labels imply business. */
 export const URGENCY = ['Today', 'This week', 'No rush'] as const;
+export const URGENCY_LABELS: Record<(typeof URGENCY)[number], string> = {
+  Today: 'Work is stopped – as soon as possible',
+  'This week': 'Needed within a few days',
+  'No rush': 'No hard deadline',
+};
+
+/** Symptoms that show the power-down note. */
+export const POWER_DOWN_SYMPTOMS: readonly string[] = ['Clicking or beeping', 'Dropped', 'Water or power damage'];
+
+/** dd_files_needed options (multi, joined with ";"). */
+export const FILES_NEEDED = [
+  'Work documents',
+  'Accounting or database files',
+  'Email',
+  'Photos and videos',
+  'Everything on the drive',
+  'Not sure',
+] as const;
+
+/** dd_prior_attempt options. */
+export const PRIOR_ATTEMPT = [
+  'No',
+  'Recovery software was run',
+  'Another shop or lab tried',
+  'The drive was opened',
+  'Not sure',
+] as const;
+
+/** dd_raid_level options (RAID / NAS / server path only). */
+export const RAID_LEVELS = ['0', '1', '5', '6', '10', 'Other', 'Not sure'] as const;
+
+/** dd_contact_pref options. */
+export const CONTACT_PREFS = ['Call', 'Text', 'Email'] as const;
 
 /** service_state options. */
 export const STATES = [
@@ -48,8 +81,6 @@ export const STATES = [
   'New York',
   'Other US state',
 ] as const;
-
-export const BUSINESS_OR_PERSONAL = ['Business', 'Personal'] as const;
 
 export const LEAD_CHANNELS = [
   'google_ads',

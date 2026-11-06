@@ -207,7 +207,7 @@ export const locations: LocationData[] = [
     zipCode: '21401',
     coordinates: { lat: 39.1612, lng: -76.5197 },
     metaDescription: "Annapolis data recovery at DiskDoctor’s Columbia MD lab — not SEO services. Hard drive, RAID, phone. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "Anne Arundel recovery through the Columbia laboratory. Hard drives, RAID, and phones — not “SEO strategies.”",
+    heroDescription: "Anne Arundel recovery through the Columbia laboratory. Hard drives, SSDs and RAID — not “SEO strategies.”",
     localKeywords: [
       'data recovery Annapolis MD',
       'Anne Arundel County data recovery',

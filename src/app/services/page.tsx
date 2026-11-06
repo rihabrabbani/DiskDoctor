@@ -9,7 +9,7 @@ import { PHONE_TEL, SITE_URL } from '@/lib/site';
 export const metadata: Metadata = {
   title: 'Data Recovery Services',
   description:
-    'Every DiskDoctor data recovery service: hard drives, SSDs, RAID, NAS, servers, Windows, Mac, Linux, phones, photos, email and more. Free evaluation. No data, no charge.',
+    'Every DiskDoctor data recovery service: hard drives, SSDs, RAID, NAS, servers, Windows, Mac, Linux, photos, email and more. Free evaluation. No data, no charge.',
   alternates: {
     canonical: `${SITE_URL}/services`,
   },
@@ -26,8 +26,8 @@ const groups: { title: string; ids: string[] }[] = [
     ids: ['windows-recovery', 'mac-recovery', 'linux-recovery', 'unix-recovery'],
   },
   {
-    title: 'Files, photos and devices',
-    ids: ['file-recovery', 'photo-recovery', 'mobile-recovery'],
+    title: 'Files and photos',
+    ids: ['file-recovery', 'photo-recovery'],
   },
   {
     title: 'Email, security and backup',
@@ -47,7 +47,9 @@ const directory = [
     .map((service) => ({ id: service.id, title: service.title, description: service.description })),
 ];
 
-const grouped = new Set(groups.flatMap((group) => group.ids));
+// Phone recovery is not promoted: its page stays live but isn't listed here.
+const hidden = new Set(['mobile-recovery']);
+const grouped = new Set([...groups.flatMap((group) => group.ids), ...hidden]);
 const ungrouped = directory.filter((service) => !grouped.has(service.id));
 
 const sections = [

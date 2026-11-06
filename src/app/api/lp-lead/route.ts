@@ -1,8 +1,11 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import {
   ATTRIBUTION_FIELDS,
-  BUSINESS_OR_PERSONAL,
+  CONTACT_PREFS,
   DEVICE_VALUES,
+  FILES_NEEDED,
+  PRIOR_ATTEMPT,
+  RAID_LEVELS,
   STATES,
   STEER_DEVICE,
   SYMPTOMS,
@@ -33,6 +36,10 @@ function rateLimited(ip: string) {
 }
 
 const str = (value: unknown, max = 500) => (typeof value === 'string' ? value.trim().slice(0, max) : '');
+const match = (value: unknown, pattern: RegExp) => {
+  const s = str(value, 40);
+  return pattern.test(s) ? s : '';
+};
 const oneOf = <T extends string>(value: string, options: readonly T[]) => (options as readonly string[]).includes(value);
 
 const reject = (reason: string, status = 400) => {
@@ -62,7 +69,12 @@ export async function POST(req: NextRequest) {
   const name = str(body.name, 200).replace(/\s+/g, ' ');
   const phone = str(body.phone, 40);
   const email = str(body.email, 200);
-  const symptoms = Array.isArray(body.symptoms) ? body.symptoms.map((s) => str(s, 80)) : [];
+  const list = (value: unknown) => (Array.isArray(value) ? value.map((s) => str(s, 80)) : []);
+  const symptoms = list(body.symptoms);
+  const filesNeeded = list(body.filesNeeded);
+  const priorAttempt = str(body.priorAttempt, 80);
+  const raidLevel = str(body.raidLevel, 20);
+  const contactPref = str(body.contactPref, 20);
   const isRaid = device === DEVICE_VALUES.raid;
 
   if (!UUID.test(submissionId)) return reject('submission id');
@@ -70,7 +82,11 @@ export async function POST(req: NextRequest) {
   if (!oneOf(device, Object.values(DEVICE_VALUES)) || device === STEER_DEVICE) return reject('device');
   if (!oneOf(state, STATES)) return reject('state');
   if (urgency && !oneOf(urgency, URGENCY)) return reject('urgency');
-  if (!symptoms.every((s) => oneOf(s, SYMPTOMS))) return reject('symptoms');
+  if (symptoms.length === 0 || !symptoms.every((s) => oneOf(s, SYMPTOMS))) return reject('symptoms');
+  if (!filesNeeded.every((s) => oneOf(s, FILES_NEEDED))) return reject('files needed');
+  if (priorAttempt && !oneOf(priorAttempt, PRIOR_ATTEMPT)) return reject('prior attempt');
+  if (raidLevel && !oneOf(raidLevel, RAID_LEVELS)) return reject('raid level');
+  if (contactPref && !oneOf(contactPref, CONTACT_PREFS)) return reject('contact pref');
   if (!name || !isValidPhone(phone) || !isValidEmail(email)) return reject('contact fields');
 
   if (LP_FORM_GUID_IS_PLACEHOLDER) {
@@ -89,12 +105,20 @@ export async function POST(req: NextRequest) {
     dd_symptoms: [...new Set(symptoms)].join(';'),
     dd_urgency: urgency,
     message: str(body.message, 2000),
+    company: str(body.company, 200),
+    dd_files_needed: [...new Set(filesNeeded)].join(';'),
+    dd_prior_attempt: priorAttempt,
+    dd_contact_pref: contactPref,
+    // Context read on landing; each one is checked against a tight pattern and dropped otherwise.
+    dd_device: match(body.ddDevice, /^(mobile|desktop)$/),
+    dd_cta: match(body.ddCta, /^[a-z_]{1,20}$/),
+    dd_matchtype: match(body.ddMatchtype, /^[a-z]{1,10}$/),
+    dd_loc: match(body.ddLoc, /^\d{1,12}$/),
     dd_lp_variant: variant,
     dd_submission_id: submissionId,
   };
   if (isRaid) {
-    const bop = str(body.businessOrPersonal, 20);
-    if (oneOf(bop, BUSINESS_OR_PERSONAL)) values.business_or_personal = bop;
+    if (raidLevel) values.dd_raid_level = raidLevel;
     const count = parseInt(str(body.driveCount, 6), 10);
     if (count > 0 && count < 1000) values.dd_drive_count = String(count);
   }

@@ -14,8 +14,10 @@ import {
   LpHeader,
   LpHero,
   OfficeBlock,
+  RaidFirstHour,
   SymptomGrid,
   UrgencyBand,
+  WhatHappenedTiles,
 } from './LpSections';
 
 /** dd_lp_variant and the lp_form_start param, e.g. "md/hard-drive" or "all/raid". */
@@ -30,12 +32,14 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
 
   // VA pages show the Tysons rating and also mention the Columbia lab's.
   const isVa = areaId === 'va';
+  // VA pages show no review counts (they go out of date); the strip links to all Google reviews.
   const ratingSub = isVa
-    ? `from ${rating.count} reviews of our Tysons office · ${lab.rating} at our lab`
+    ? `Google reviews of our Tysons office · ${lab.rating} at our Columbia lab`
     : `from ${rating.count} reviews of our Columbia lab`;
   const ratingBig = isVa
-    ? `Average of ${rating.count} Google reviews of our Tysons office (our Columbia lab: ${lab.rating} from ${lab.count})`
+    ? `Google rating of our Tysons office (our Columbia lab: ${lab.rating})`
     : `Average of ${rating.count} Google reviews of our Columbia lab`;
+  const reviewsLinkLabel = isVa ? 'See all Google reviews' : `See all ${rating.count} on Google Maps`;
   const marqueeTitle = isVa
     ? 'Selected Google reviews of our Tysons office and Columbia lab'
     : 'Selected Google reviews of our Columbia lab';
@@ -47,11 +51,11 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
   const faq = [
     {
       q: 'How much does it cost?',
-      a: 'The diagnosis is free. After it, you get a quote and decide. No paid work starts without your OK, and if we can’t recover your data, you don’t pay.',
+      a: 'The diagnosis is free. After it, you get a fixed quote before any paid work, and nothing is charged unless you approve it. The return drive for your data is included in the quote. If we can’t recover your data, you don’t pay.',
     },
     {
       q: 'How long does it take?',
-      a: 'It depends on the fault. You get a time estimate with your free diagnosis. For emergencies, call the 24/7 line.',
+      a: 'Logical recoveries, like deleted files or a formatted drive, usually take 24–48 hours. Physical failures, like clicking drives, usually take 3–7 days. For emergencies, call the 24/7 line.',
     },
     { q: `Do I have to bring ${templateId === 'raid' ? 'the drives' : 'the drive'} in?`, a: area.faqBring },
     template.faqFirstAid,
@@ -90,8 +94,10 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
             />
           }
         />
-        <ReviewMarquee title={marqueeTitle} reviews={reviews.strip} count={rating.count} mapsUrl={rating.mapsUrl} />
+        <WhatHappenedTiles />
+        <ReviewMarquee title={marqueeTitle} reviews={reviews.strip} linkLabel={reviewsLinkLabel} mapsUrl={rating.mapsUrl} />
         <UrgencyBand template={template} />
+        {templateId === 'raid' && <RaidFirstHour />}
         <StatsBand />
         <SymptomGrid template={template} />
         <HowItWorks area={area} />
@@ -101,7 +107,7 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
         <FinalCta area={area} heading={templateId === 'raid' ? 'Don’t give up on those drives yet' : 'Don’t give up on the drive yet'} />
       </main>
       <LpFooter />
-      <LpStickyBar tel={area.tel} callLabel={area.stickyCallLabel} />
+      <LpStickyBar tel={area.tel} phone={area.phone} callLabel={area.stickyCallLabel} topNote={area.pill} />
     </>
   );
 }

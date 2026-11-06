@@ -18,7 +18,8 @@ export default function TermsPage() {
         <p>
           Evaluation is free. Paid recovery work proceeds only after you accept a quote. “No data, no
           charge” means no recovery fee if we cannot retrieve the files specified in that quote. Shipping
-          and media are separate.
+          to and from our lab is free, and the return drive for your data is included in your fixed
+          quote.
         </p>
         <p>
           You warrant that you have the right to authorize recovery of the device you send. We may refuse

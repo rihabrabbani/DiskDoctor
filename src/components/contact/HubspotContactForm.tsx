@@ -11,6 +11,7 @@ import {
   PHONE_TEL,
   SITE_URL,
 } from '@/lib/site';
+import { fallbackFields } from '@/lib/leadSource';
 
 // HubSpot's v4 embed (new-editor form), which renders each `.hs-form-frame` as an iframe. The legacy
 // v2.js / hbspt.forms.create path is gone: it only handed the form over to this embed anyway.
@@ -20,6 +21,18 @@ const SCRIPT_SRC = `https://js-${HUBSPOT_REGION}.hsforms.net/forms/embed/${HUBSP
 // Lead conversions (GA4 generate_lead + Google Ads) fire from GTM on the /thank-you page view,
 // so they are not sent from here as well.
 const THANK_YOU_URL = `${SITE_URL}/thank-you`;
+
+// GTM fills the dd_ fields on the form's on-ready event and then sets window.__ddHsFill. Give it this
+// long; if the flag is still unset (GTM blocked), fill them from the site's own first-touch data.
+const GTM_FILL_WAIT_MS = 1500;
+
+type HsForm = { getFormId?: () => string; setFieldValue: (name: string, value: string) => void };
+declare global {
+  interface Window {
+    __ddHsFill?: unknown;
+    HubSpotFormsV4?: { getFormFromEvent: (event: Event) => HsForm | undefined };
+  }
+}
 
 export default function HubspotContactForm() {
   const [failed, setFailed] = useState(false);
@@ -35,6 +48,35 @@ export default function HubspotContactForm() {
     };
     window.addEventListener('hs-form-event:on-submission:success', onSubmissionSuccess);
     return () => window.removeEventListener('hs-form-event:on-submission:success', onSubmissionSuccess);
+  }, []);
+
+  // Lead-source fallback (dev brief 9 Nov, item 1). Listens for on-ready, so it also works when the
+  // embed script loads late. dd_ga_client_id is never filled here.
+  useEffect(() => {
+    const timers: number[] = [];
+    const onReady = (event: Event) => {
+      const form = window.HubSpotFormsV4?.getFormFromEvent(event);
+      if (!form) return;
+      const formId = form.getFormId?.() ?? (event as CustomEvent<{ formId?: string }>).detail?.formId;
+      if (formId && formId !== HUBSPOT_FORM_ID) return;
+      timers.push(
+        window.setTimeout(() => {
+          if (window.__ddHsFill) return;
+          for (const [name, value] of Object.entries(fallbackFields())) {
+            try {
+              form.setFieldValue(`0-1/${name}`, value);
+            } catch {
+              // A field missing from the form must not stop the others.
+            }
+          }
+        }, GTM_FILL_WAIT_MS),
+      );
+    };
+    window.addEventListener('hs-form-event:on-ready', onReady);
+    return () => {
+      window.removeEventListener('hs-form-event:on-ready', onReady);
+      timers.forEach((t) => window.clearTimeout(t));
+    };
   }, []);
 
   // The embed renders `.hs-form-frame` elements found on load, then watches for new ones, but it only

@@ -1,5 +1,6 @@
 import { AREAS, type AreaId } from '@/lp/config/areas';
 import { TEMPLATES, type TemplateId } from '@/lp/config/templates';
+import { HOW_IT_WORKS_PHOTOS, LP_PHOTOS } from '@/lp/config/photos';
 import { locationRating, pageReviews } from '@/lp/reviews';
 import LpForm from './LpForm';
 import ReviewMarquee from './ReviewMarquee';
@@ -9,6 +10,7 @@ import {
   FeaturedReview,
   FinalCta,
   HowItWorks,
+  LabPhotos,
   LpFaq,
   LpFooter,
   LpHeader,
@@ -26,27 +28,37 @@ export const lpVariant = (area: AreaId, template: TemplateId) => `${area}/${temp
 export default function LpPage({ areaId, templateId }: { areaId: AreaId; templateId: TemplateId }) {
   const area = AREAS[areaId];
   const template = TEMPLATES[templateId];
-  const reviews = pageReviews(templateId === 'raid' ? 'raid' : `${areaId}/${templateId}`);
+  const pageKey = templateId === 'raid' ? 'raid' : `${areaId}/${templateId}`;
+  const reviews = pageReviews(pageKey);
+  const photos = LP_PHOTOS[pageKey];
   const rating = locationRating(area.location);
   const lab = locationRating('columbia');
 
-  // VA pages show the Tysons rating and also mention the Columbia lab's.
+  // No review counts anywhere (they go stale). Each rating sits only next to its own office's reviews:
+  // VA pages show Tysons and Columbia separately, MD and RAID pages show Columbia only.
   const isVa = areaId === 'va';
-  // VA pages show no review counts (they go out of date); the strip links to all Google reviews.
   const ratingSub = isVa
     ? `Google reviews of our Tysons office · ${lab.rating} at our Columbia lab`
-    : `from ${rating.count} reviews of our Columbia lab`;
-  const ratingBig = isVa
-    ? `Google rating of our Tysons office (our Columbia lab: ${lab.rating})`
-    : `Average of ${rating.count} Google reviews of our Columbia lab`;
-  const reviewsLinkLabel = isVa ? 'See all Google reviews' : `See all ${rating.count} on Google Maps`;
-  const marqueeTitle = isVa
-    ? 'Selected Google reviews of our Tysons office and Columbia lab'
-    : 'Selected Google reviews of our Columbia lab';
+    : 'Google reviews of our Columbia lab';
+  const tysons = locationRating('tysons');
+  const marqueeRatings = isVa
+    ? [
+        { label: 'Tysons office', rating: tysons.rating },
+        { label: 'Columbia lab', rating: lab.rating },
+      ]
+    : [{ label: 'Columbia lab', rating: lab.rating }];
+  const marqueeLinks = isVa
+    ? [
+        { label: 'See all Tysons reviews on Google Maps', href: tysons.mapsUrl },
+        { label: 'See all Columbia reviews on Google Maps', href: lab.mapsUrl },
+      ]
+    : [{ label: 'See all reviews on Google Maps', href: lab.mapsUrl }];
   const featured = reviews.featured;
-  const featuredMeta = isVa
-    ? `Google review of our ${featured.location === 'tysons' ? 'Tysons office' : 'Columbia lab'} · ${featured.date}`
-    : `Google review · ${featured.date}`;
+  // The big rating next to the featured review is that review's own office rating.
+  const featuredRating = locationRating(featured.location);
+  const featuredOffice = featured.location === 'tysons' ? 'Tysons office' : 'Columbia lab';
+  const ratingBig = `Google rating of our ${featuredOffice}`;
+  const featuredMeta = isVa ? `Google review of our ${featuredOffice} · ${featured.date}` : `Google review · ${featured.date}`;
 
   const faq = [
     {
@@ -95,14 +107,15 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
           }
         />
         <WhatHappenedTiles />
-        <ReviewMarquee title={marqueeTitle} reviews={reviews.strip} linkLabel={reviewsLinkLabel} mapsUrl={rating.mapsUrl} />
+        <ReviewMarquee reviews={reviews.strip} links={marqueeLinks} ratings={marqueeRatings} showOffice={isVa} />
         <UrgencyBand template={template} />
-        {templateId === 'raid' && <RaidFirstHour />}
+        {templateId === 'raid' && <RaidFirstHour photo={photos.firstHour} />}
         <StatsBand />
-        <SymptomGrid template={template} />
-        <HowItWorks area={area} />
-        <FeaturedReview rating={rating} ratingBig={ratingBig} review={featured} meta={featuredMeta} />
-        <OfficeBlock area={area} mapsUrl={rating.mapsUrl} showPhotoSlots={process.env.VERCEL_ENV !== 'production'} />
+        <SymptomGrid template={template} photos={photos.failures} />
+        <HowItWorks area={area} photos={HOW_IT_WORKS_PHOTOS} />
+        <LabPhotos photos={photos.lab} mobile={photos.labMobile} />
+        <FeaturedReview rating={featuredRating} ratingBig={ratingBig} review={featured} meta={featuredMeta} />
+        <OfficeBlock area={area} mapsUrl={rating.mapsUrl} />
         <LpFaq items={faq} />
         <FinalCta area={area} heading={templateId === 'raid' ? 'Don’t give up on those drives yet' : 'Don’t give up on the drive yet'} />
       </main>

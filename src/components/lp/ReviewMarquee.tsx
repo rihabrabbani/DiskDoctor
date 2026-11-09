@@ -1,21 +1,26 @@
 'use client';
 
 import { useState } from 'react';
-import { Initials } from './ReviewBits';
+import { Avatar, ReviewStars } from './ReviewBits';
 import type { LpReview } from '@/lp/reviews';
+
+const OFFICE_LABEL = { tysons: 'Tysons office', columbia: 'Columbia lab' } as const;
 
 // CSS-only infinite scroll (track duplicated, translateX(-50%)), paused on hover/focus and by the
 // button (WCAG 2.2.2). Reduced motion: no animation, the duplicates hide and the strip scrolls.
 export default function ReviewMarquee({
-  title,
   reviews,
-  linkLabel,
-  mapsUrl,
+  links,
+  ratings,
+  showOffice,
 }: {
-  title: string;
   reviews: LpReview[];
-  linkLabel: string;
-  mapsUrl: string;
+  /** "See all reviews on Google Maps" per location shown (no counts: they go stale). */
+  links: { label: string; href: string }[];
+  /** Each office's own rating, shown in the header. */
+  ratings: { label: string; rating: string }[];
+  /** VA pages: label each card with its office. */
+  showOffice: boolean;
 }) {
   const [paused, setPaused] = useState(false);
 
@@ -30,27 +35,38 @@ export default function ReviewMarquee({
       {...(dup ? { 'data-dup': '', 'aria-hidden': true, tabIndex: -1 } : {})}
     >
       <span className="lp-rcard-top">
-        <Initials name={r.name} size={38} />
+        <Avatar name={r.name} photo={r.photo} size={40} />
         <span className="lp-rcard-name">
           <strong>{r.name}</strong>
           <span>{r.date} · Google</span>
         </span>
-        <span className="lp-stars" role="img" aria-label="5 out of 5 stars">
-          ★★★★★
-        </span>
+        <ReviewStars stars={r.stars} />
       </span>
-      <blockquote>{r.excerpt}</blockquote>
+      {showOffice && <span className="lp-rcard-label">{OFFICE_LABEL[r.location]}</span>}
+      <blockquote>{r.featuredText ?? r.excerpt}</blockquote>
+      <span className="lp-rcard-more">Read more on Google Maps</span>
     </a>
   );
 
   return (
-    <section aria-label="Selected Google reviews" className="lp-marquee-sec">
+    <section aria-labelledby="lp-reviews-h" className="lp-marquee-sec">
       <div className="lp-wrap lp-marquee-head">
-        <p>{title}</p>
+        <div>
+          <p id="lp-reviews-h">Reviews from Google</p>
+          <span className="lp-marquee-ratings">
+            {ratings.map((r) => (
+              <span key={r.label}>
+                {r.label} <strong>{r.rating}</strong>
+              </span>
+            ))}
+          </span>
+        </div>
         <div className="lp-marquee-head-right">
-          <a href={mapsUrl} target="_blank" rel="noopener noreferrer" data-map-link="reviews">
-            {linkLabel}
-          </a>
+          {links.map((l) => (
+            <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" data-map-link="reviews">
+              {l.label}
+            </a>
+          ))}
           <button type="button" className="lp-marquee-toggle" aria-pressed={paused} onClick={() => setPaused(!paused)}>
             {paused ? 'Play reviews' : 'Pause reviews'}
           </button>

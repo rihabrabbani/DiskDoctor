@@ -3,6 +3,9 @@
 import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
 import { recoverySteps } from '@/data/services';
+import { LAB_PHOTOS } from '@/data/labPhotos';
+import PhotoNote from '@/components/lab/PhotoNote';
+import LabFigure from '@/components/lab/LabFigure';
 
 // Define variants with proper typing
 const containerVariants: Variants = {
@@ -90,12 +93,14 @@ export default function RecoveryProcess() {
                   transition={{ duration: 0.7, ease: "easeOut" }}
                 >
                   <Image
-                    src={step.image}
-                    alt={step.alt || step.title}
+                    src={LAB_PHOTOS[step.photo].src}
+                    alt={LAB_PHOTOS[step.photo].alt}
                     fill
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                     className="object-cover"
                   />
                 </motion.div>
+                <PhotoNote />
                 
                 <motion.div 
                   className="absolute top-4 left-4 z-20"
@@ -145,6 +150,13 @@ export default function RecoveryProcess() {
             </motion.div>
           ))}
         </motion.div>
+
+        {/* Lab-at-work strip (P13, P18, P19): no names, no headshots, and no office named. */}
+        <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-5xl mx-auto text-[var(--color-text-secondary)]">
+          <LabFigure code="P13" sizes="(min-width: 640px) 45vw, 100vw" aspect="4 / 5" className="sm:row-span-2" />
+          <LabFigure code="P18" sizes="(min-width: 640px) 45vw, 100vw" aspect="16 / 9" />
+          <LabFigure code="P19" sizes="(min-width: 640px) 45vw, 100vw" aspect="16 / 9" />
+        </div>
       </div>
     </section>
   );

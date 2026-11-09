@@ -19,8 +19,6 @@ export type Area = {
   soonerSuffix: string;
   stateDefault: string;
   step2: string;
-  /** Labelled media slots shown on previews only, until the client sends real photos and video. */
-  photoSlots: string[];
   /** Tap-to-call block under the H1: the number plus this note. 24/7 only ever goes with the (410) line. */
   heroCallNote: string;
   officeH: string;
@@ -52,7 +50,6 @@ const md: Area = {
   stateDefault: 'Maryland',
   step2:
     'Walk in to our Columbia lab, or ship it to us: shipping is free both ways. Pickup is also available, call for details.',
-  photoSlots: ['Real video: short lab tour', 'Real photo: Columbia lab / clean room', 'Real photo: team at work', 'ISO 9001 certificate scan'],
   heroCallNote: 'answered 24/7',
   officeH: 'A real lab in Columbia, Maryland',
   officeP:
@@ -83,12 +80,6 @@ const va: Area = {
   stateDefault: 'Virginia',
   step2:
     'Bring it to our Tysons office by appointment, or ship it free both ways to our Columbia lab. Pickup is also available, call for details.',
-  photoSlots: [
-    'Real video: short lab tour',
-    'Real photo: Tysons building entrance, 8300 Boone Blvd',
-    'Real photo: Suite 513 / office',
-    'Real photo: Columbia lab / clean room',
-  ],
   heroCallNote: 'Tysons office',
   officeH: 'Our Tysons office, by appointment',
   officeP:

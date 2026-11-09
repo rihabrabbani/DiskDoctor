@@ -322,3 +322,28 @@ html.dark #hubspot-contact-form .hsfc-Textarea {
   margin-top: 0 !important;
   padding-top: 0 !important;
 }
+
+/* Lab photos (src/components/lab/LabFigure.tsx) and the (i) note (PhotoNote). Here rather than in their
+   own file: globals.css already loads on every page, the /lp pages included, so this adds no extra
+   render-blocking stylesheet. Plain CSS, no theme vars, because the /lp pages don't define them. */
+.lab-fig { margin: 0; min-width: 0; }
+.lab-fig-media { position: relative; width: 100%; overflow: hidden; border-radius: 14px; background: #e5e7eb; }
+.lab-fig-media img { object-fit: cover; }
+.lab-fig figcaption { margin-top: 8px; font-size: 14px; line-height: 1.35; color: inherit; opacity: .78; }
+
+/* CSS-only toggle (no JS to hydrate): hover shows the note, a tap or Space toggles the checkbox. */
+.lab-note { position: absolute; top: 8px; right: 8px; z-index: 30; display: inline-flex; }
+.lab-note-input { position: absolute; inset: -8px; width: auto; height: auto; margin: 0; opacity: 0; cursor: pointer; z-index: 1; }
+.lab-note-dot {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 999px; background: rgba(17, 24, 39, .55); color: #fff;
+}
+.lab-note-input:focus-visible + .lab-note-dot { outline: 2px solid #fff; outline-offset: 2px; }
+.lab-note-text {
+  position: absolute; top: 34px; right: 0; width: max-content; max-width: min(240px, 70vw);
+  padding: 8px 10px; border-radius: 8px; background: rgba(17, 24, 39, .92); color: #fff;
+  font-size: 12px; line-height: 1.4; font-weight: 500; text-align: left;
+  opacity: 0; visibility: hidden; transition: opacity .15s; pointer-events: none;
+}
+.lab-note-input:checked ~ .lab-note-text { opacity: 1; visibility: visible; }
+@media (hover: hover) { .lab-note:hover .lab-note-text { opacity: 1; visibility: visible; } }

@@ -1,3 +1,5 @@
+import type { LabPhotoCode } from "@/data/labPhotos";
+
 export interface RecoveryService {
   id: string;
   icon: string;
@@ -31,41 +33,40 @@ export const recoveryServices: RecoveryService[] = [
 
 export interface RecoveryStep {
   step: string;
-  image: string;
-  // Steps 2 and 4 use P1-7 illustration photos, which need the spec's generic alt text.
-  alt?: string;
+  // Lab photo (src/data/labPhotos.ts); its alt text comes from there.
+  photo: LabPhotoCode;
   title: string;
   description: string;
   color: string;
 }
 
+// Homepage "How it works" (dev brief 9 Nov 2026): P11 → P2 → P12, plus P6 for the recovery step,
+// which replaces the last Unsplash photo.
 export const recoverySteps: RecoveryStep[] = [
   {
     step: "01",
-    image: "https://images.unsplash.com/photo-1563207153-f403bf289096?auto=format&fit=crop&w=800&q=80",
+    photo: "P11",
     title: "Free Evaluation",
     description: "We diagnose at no charge and quote before work starts. Bring it in, ship it to us free both ways, or book a pickup.",
     color: "var(--color-primary)"
   },
   {
     step: "02",
-    image: "/images/illustrations/hardware-imager.webp",
-    alt: "Hard drive connected to a hardware imager for sector-by-sector cloning",
+    photo: "P2",
     title: "Lab imaging",
     description: "We clone first. Original media is not used as a working disk.",
     color: "var(--color-accent)"
   },
   {
     step: "03",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+    photo: "P6",
     title: "Data Recovery",
     description: "Logical or physical recovery from the clone, including RAID reconstruction when needed.",
     color: "var(--color-primary-400)"
   },
   {
     step: "04",
-    image: "/images/illustrations/delivery-external-drive.webp",
-    alt: "Recovered data delivered on a new external drive in protective packaging",
+    photo: "P12",
     title: "Secure Delivery",
     description: "Recovered files go to new media. You pay only if we recover the data you need.",
     color: "var(--color-accent-400)"

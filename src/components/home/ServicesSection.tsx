@@ -3,6 +3,17 @@
 import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
 import { recoveryServices } from '@/data/services';
+import type { LabPhotoCode } from '@/data/labPhotos';
+import LabFigure from '@/components/lab/LabFigure';
+
+// Card photos (manifest "/" what_we_recover). Cards without one show their icon in the same 16:9 box,
+// so every card in a row lines up.
+const CARD_PHOTOS: Record<string, LabPhotoCode> = {
+  'hard-drive-recovery': 'P8',
+  'ssd-recovery': 'P10',
+  'raid-recovery': 'P17',
+  'nas-recovery': 'P9',
+};
 
 // Define variants with proper typing
 const containerVariants: Variants = {
@@ -68,15 +79,21 @@ export default function ServicesSection() {
                 transition: { duration: 0.2 }
               }}
             >
-              <motion.div 
-                className="rounded-full w-16 h-16 bg-[var(--color-primary-50)] flex items-center justify-center mb-6 group-hover:bg-[var(--color-primary-100)] transition-colors duration-300"
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                transition={{ duration: 0.2 }}
-              >
-                <svg className="w-8 h-8 text-[var(--color-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={service.icon} />
-                </svg>
-              </motion.div>
+              {CARD_PHOTOS[service.id] ? (
+                <LabFigure
+                  code={CARD_PHOTOS[service.id]}
+                  sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
+                  aspect="16 / 9"
+                  caption={false}
+                  className="mb-6"
+                />
+              ) : (
+                <div className="mb-6 aspect-[16/9] rounded-[14px] bg-[var(--color-primary-50)] group-hover:bg-[var(--color-primary-100)] transition-colors duration-300 flex items-center justify-center">
+                  <svg className="w-12 h-12 text-[var(--color-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={service.icon} />
+                  </svg>
+                </div>
+              )}
               <h3 className="text-xl font-semibold mb-3 text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors duration-300">
                 {service.title}
               </h3>

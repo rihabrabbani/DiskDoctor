@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { organizationSchema, websiteSchema, columbiaLocalBusinessSchema, tysonsLocalBusinessSchema } from "@/lib/structuredData";
 import AnalyticsClicks from "@/components/analytics/AnalyticsClicks";
 import HubspotPageViews from "@/components/analytics/HubspotPageViews";
+import FirstTouch from "@/components/analytics/FirstTouch";
 import StickyMobileBar from "@/components/layout/StickyMobileBar";
 import { SITE_URL, SITE_URL_SLASH } from "@/lib/site";
 
@@ -143,6 +144,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <ThemeProvider>
           <AnalyticsClicks />
           <HubspotPageViews />
+          <FirstTouch />
           {children}
           <StickyMobileBar />
         </ThemeProvider>

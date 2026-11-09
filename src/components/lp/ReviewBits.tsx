@@ -1,5 +1,7 @@
-// Review display helpers: initials instead of copied Google profile photos, and a star row that
-// shows the real rating (4.9 = a partial fifth star), never five full stars by default.
+import { getImageProps } from 'next/image';
+
+// Review display helpers: the reviewer's stored Google profile photo (initials when there is none),
+// a per-review star row, and a rating row that shows the real rating (4.9 = a partial fifth star).
 
 const AVATAR_COLOURS = ['#111827', '#b92d1a', '#374151', '#9a2a18', '#4b5563'];
 
@@ -26,6 +28,27 @@ export function Initials({ name, size }: { name: string; size: number }) {
       }}
     >
       {initials(name)}
+    </span>
+  );
+}
+
+/** Reviewer avatar: the stored profile photo (round, lazy, alt = name) or initials as the fallback. */
+export function Avatar({ name, photo, size }: { name: string; photo?: string; size: number }) {
+  if (!photo) return <Initials name={name} size={size} />;
+  // getImageProps + <img>: optimized like <Image>, without a client component per avatar (the review
+  // strip renders each one twice).
+  const { props } = getImageProps({ src: photo, alt: name, width: size, height: size, loading: 'lazy' });
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img {...props} alt={name} className="lp-avatar" />;
+}
+
+/** One review's own stars, as on Google. */
+export function ReviewStars({ stars }: { stars: number }) {
+  const n = Math.max(0, Math.min(5, Math.round(stars)));
+  return (
+    <span className="lp-stars" role="img" aria-label={`${n} out of 5 stars`}>
+      {'★'.repeat(n)}
+      {n < 5 && <span className="lp-stars-off">{'★'.repeat(5 - n)}</span>}
     </span>
   );
 }

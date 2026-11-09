@@ -2,10 +2,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Area } from '@/lp/config/areas';
 import type { FaqItem, Template } from '@/lp/config/templates';
-import type { LocationRating, LpReview } from '@/lp/reviews';
+import type { LocationRating, LpReview, StackAvatar } from '@/lp/reviews';
+import type { LabPhotoCode } from '@/data/labPhotos';
 import logo from '@/../public/images/light_mode.png';
+import LabFigure from '@/components/lab/LabFigure';
 import LpIcon, { type IconName } from './LpIcon';
-import { Initials, RatingStars } from './ReviewBits';
+import { Avatar, RatingStars } from './ReviewBits';
 
 const LAB_TEL = 'tel:+14109377332';
 
@@ -65,7 +67,7 @@ export function LpHero({
   h1: { lead: string; place?: string };
   rating: LocationRating;
   ratingSub: string;
-  heroStack: { name: string; avatar: string }[];
+  heroStack: StackAvatar[];
   form: React.ReactNode;
 }) {
   return (
@@ -100,9 +102,9 @@ export function LpHero({
             {FIXED_QUOTE}
           </p>
           <div className="lp-rating-row">
-            <div className="lp-avatars" aria-hidden="true">
+            <div className="lp-avatars">
               {heroStack.map((r) => (
-                <Initials key={r.avatar} name={r.name} size={40} />
+                <Avatar key={r.name} name={r.name} photo={r.photo} size={40} />
               ))}
             </div>
             <div className="lp-rating-text">
@@ -183,7 +185,7 @@ export function WhatHappenedTiles() {
   );
 }
 
-export function RaidFirstHour() {
+export function RaidFirstHour({ photo }: { photo?: LabPhotoCode }) {
   return (
     <section className="lp-reveal" data-track-position="raid_first_hour">
       <div className="lp-wrap lp-sec">
@@ -210,17 +212,32 @@ export function RaidFirstHour() {
             </ul>
           </div>
         </div>
+        {photo && (
+          <LabFigure code={photo} sizes="(min-width: 1200px) 1100px, 100vw" aspect="3 / 1" className="lp-firsthour-photo" />
+        )}
       </div>
     </section>
   );
 }
 
-export function SymptomGrid({ template }: { template: Template }) {
+export function SymptomGrid({ template, photos = [] }: { template: Template; photos?: LabPhotoCode[] }) {
   return (
     <section className="lp-reveal">
       <div className="lp-wrap lp-sec">
         <h2 className="lp-h2">{template.symptomsH}</h2>
         <p className="lp-sec-sub">{template.symptomsP}</p>
+        {photos.length > 0 && (
+          <div className="lp-photo-row">
+            {photos.map((code) => (
+              <LabFigure
+                key={code}
+                code={code}
+                sizes={photos.length > 1 ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 1200px) 1100px, 100vw'}
+                aspect={photos.length > 1 ? '16 / 9' : '3 / 1'}
+              />
+            ))}
+          </div>
+        )}
         <div className="lp-cards">
           {template.symptoms.map((s) => (
             <div key={s.title} className="lp-card">
@@ -245,7 +262,7 @@ export function SymptomGrid({ template }: { template: Template }) {
   );
 }
 
-export function HowItWorks({ area }: { area: Area }) {
+export function HowItWorks({ area, photos = [] }: { area: Area; photos?: LabPhotoCode[] }) {
   const steps = [
     { title: 'Tell us what happened', text: 'Use the form or call. Our lab line is answered 24/7.' },
     { title: 'Free diagnosis', text: area.step2 },
@@ -268,6 +285,44 @@ export function HowItWorks({ area }: { area: Area }) {
             </li>
           ))}
         </ol>
+        {photos.length > 0 && (
+          <div className="lp-photo-row is-steps">
+            {photos.map((code) => (
+              <LabFigure key={code} code={code} sizes="(min-width: 768px) 33vw, 100vw" />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+// Lab photo block. Its own section with a neutral heading, kept apart from the office copy: the
+// photos are never presented as a named office (see src/data/labPhotos.ts).
+export function LabPhotos({ photos, mobile }: { photos: LabPhotoCode[]; mobile?: LabPhotoCode }) {
+  if (photos.length === 0) return null;
+  return (
+    <section className="lp-reveal" data-track-position="lab_photos">
+      <div className="lp-wrap lp-sec">
+        <h2 className="lp-h2">At the recovery bench</h2>
+        <div
+          className={`lp-lab-grid${mobile ? ' has-mobile' : ''}`}
+          style={{ '--lp-lab-n': photos.length } as React.CSSProperties}
+        >
+          {photos.map((code) => (
+            <LabFigure
+              key={code}
+              code={code}
+              sizes={`(min-width: 768px) ${Math.round(100 / photos.length)}vw, 100vw`}
+              aspect={photos.length >= 3 ? '4 / 3' : '16 / 9'}
+            />
+          ))}
+        </div>
+        {mobile && (
+          <div className="lp-lab-mobile">
+            <LabFigure code={mobile} sizes="(max-width: 767px) 100vw, 1px" aspect="4 / 5" />
+          </div>
+        )}
       </div>
     </section>
   );
@@ -310,7 +365,7 @@ export function FeaturedReview({
           </svg>
           <blockquote>{review.featuredText ?? review.excerpt}</blockquote>
           <figcaption>
-            <Initials name={review.name} size={48} />
+            <Avatar name={review.name} photo={review.photo} size={48} />
             <div>
               <strong>{review.name}</strong>
               <span>{meta}</span>
@@ -325,21 +380,11 @@ export function FeaturedReview({
   );
 }
 
-export function OfficeBlock({ area, mapsUrl, showPhotoSlots }: { area: Area; mapsUrl: string; showPhotoSlots: boolean }) {
+// No photos here: the Tysons office photo (next week) is the only one that may sit in this block.
+export function OfficeBlock({ area, mapsUrl }: { area: Area; mapsUrl: string }) {
   return (
     <section className="lp-reveal" style={{ borderTop: '1px solid #E5E7EB' }}>
       <div className="lp-wrap lp-sec lp-office">
-        {/* Real photos only (never stock or AI) once the client sends them. Until then the labelled
-            slots show on previews and are left out of production. */}
-        {showPhotoSlots && (
-          <div className="lp-photos">
-            {area.photoSlots.map((label) => (
-              <div key={label} className="lp-photo">
-                [{label}]
-              </div>
-            ))}
-          </div>
-        )}
         <div className="lp-office-copy">
           <h2 className="lp-h2" style={{ marginBottom: 14 }}>
             {area.officeH}

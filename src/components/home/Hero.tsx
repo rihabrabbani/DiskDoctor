@@ -1,9 +1,31 @@
 'use client';
 
 import { motion, Variants } from 'framer-motion';
-import Image from 'next/image';
+import { getImageProps } from 'next/image';
 import Link from 'next/link';
 import { PHONE_TEL } from '@/lib/site';
+import { LAB_PHOTOS } from '@/data/labPhotos';
+import PhotoNote from '@/components/lab/PhotoNote';
+
+// Hero photo, art-directed: P1 (landscape) from 640 px up, P14 (vertical) on phones. One <picture>, so
+// each device downloads only its own photo. Lazy: the headline text is the LCP element (on phones the
+// photo sits below the copy and buttons), so the photo must not compete with it.
+const HERO_DESKTOP = LAB_PHOTOS.P1;
+const HERO_MOBILE = LAB_PHOTOS.P14;
+// One <img> serves both photos, so its alt text fits both (each shows a technician at a clean hood).
+const HERO_ALT = 'Technician working on an open hard drive at a clean-air hood';
+const heroImg = getImageProps({
+  src: HERO_DESKTOP.src,
+  alt: HERO_ALT,
+  fill: true,
+  sizes: '(min-width: 1024px) 50vw, 100vw',
+}).props;
+const heroMobileSrcSet = getImageProps({
+  src: HERO_MOBILE.src,
+  alt: HERO_ALT,
+  fill: true,
+  sizes: '100vw',
+}).props.srcSet;
 
 const trustItems: { label: string; href?: string }[] = [
   { label: 'Free shipping to our lab and back', href: '/mail-in-data-recovery' },
@@ -128,22 +150,21 @@ export default function Hero() {
             </motion.ul>
           </motion.div>
           
-          <motion.div 
-            className="hidden lg:block relative"
+          <motion.div
+            className="relative"
             initial={false}
             animate="visible"
             variants={imageVariants}
           >
-            <div className="relative h-[400px] lg:h-[500px] w-full">
-              <Image
-                src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80"
-                alt="Professional data recovery laboratory with technician working on hard drive"
-                fill
-                className="object-cover rounded-2xl shadow-[var(--shadow-lg)]"
-              />
+            <div className="relative aspect-[4/5] max-h-[460px] sm:aspect-[16/10] lg:aspect-auto lg:max-h-none lg:h-[500px] w-full overflow-hidden rounded-2xl shadow-[var(--shadow-lg)] bg-[var(--color-surface-200)]">
+              <picture>
+                <source media="(max-width: 639px)" srcSet={heroMobileSrcSet} sizes="100vw" />
+                <img {...heroImg} alt={HERO_ALT} className="object-cover" />
+              </picture>
+              <PhotoNote />
             </div>
-            <div className="absolute -bottom-6 -left-6 h-24 w-24 bg-[var(--color-accent)] rounded-full opacity-80" />
-            <div className="absolute top-1/2 -right-6 h-16 w-16 bg-[var(--color-primary)] rounded-full opacity-60" />
+            <div className="hidden lg:block absolute -bottom-6 -left-6 h-24 w-24 bg-[var(--color-accent)] rounded-full opacity-80" />
+            <div className="hidden lg:block absolute top-1/2 -right-6 h-16 w-16 bg-[var(--color-primary)] rounded-full opacity-60" />
           </motion.div>
         </div>
       </div>

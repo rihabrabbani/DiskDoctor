@@ -1,3 +1,4 @@
+import { LAB_PHOTOS } from '@/data/labPhotos';
 import type { CorePage } from './types';
 
 export const nasRecovery: CorePage = {
@@ -13,9 +14,10 @@ export const nasRecovery: CorePage = {
   heroEyebrow: 'Synology, QNAP, Asustor, TrueNAS',
   heroIntro:
     'Volume crashed, rebuild failed, or the NAS won’t boot after an update? We clone every disk and rebuild the volume from the copies, never on your originals. Free evaluation, and a 24/7 emergency line at (410) 937-7332.',
-  heroImage: '/images/illustrations/raid-drives-slot-order.webp',
-  heroImageAlt: 'RAID drives labelled in slot order beside NAS enclosures',
-  heroImagePosition: '30% 85%',
+  heroImage: LAB_PHOTOS.P9.src,
+  heroImageAlt: LAB_PHOTOS.P9.alt,
+  heroPhotoNote: true,
+  labPhoto: 'P16',
   sections: [
     {
       heading: 'Common NAS failures we see',

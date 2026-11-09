@@ -78,8 +78,9 @@
 .lp-hero-quote svg { flex: none; margin-top: 3px; color: var(--lp-red); }
 .lp-rating-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 0 0 26px; }
 .lp-avatars { display: flex; }
-.lp-avatars .lp-initials { border: 3px solid var(--lp-grey-bg); box-sizing: content-box; }
-.lp-avatars .lp-initials + .lp-initials { margin-left: -12px; }
+.lp-avatar { border-radius: 999px; object-fit: cover; display: block; flex: none; }
+.lp-avatars .lp-initials, .lp-avatars .lp-avatar { border: 3px solid var(--lp-grey-bg); box-sizing: content-box; }
+.lp-avatars > * + * { margin-left: -12px; }
 .lp-rating-text { font-size: 15px; line-height: 1.35; }
 .lp .lp-rating-text a { color: var(--lp-text-2); }
 .lp-ticks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
@@ -153,6 +154,13 @@
 .lp-rcard-name span { display: block; font-size: 12px; color: var(--lp-muted); }
 .lp-rcard-top .lp-stars { margin-left: auto; font-size: 13px; }
 .lp-rcard blockquote { margin: 0; font-size: 14px; line-height: 1.55; color: #1f2937; }
+/* Review text as on Google, cut only by this 4-line clamp; the card links to Google Maps. */
+.lp-rcard blockquote { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; overflow: hidden; }
+.lp-rcard-label { align-self: flex-start; font-size: 12px; font-weight: 600; color: var(--lp-text-2); background: var(--lp-grey-bg); border-radius: 999px; padding: 2px 10px; }
+.lp-rcard-more { margin-top: auto; font-size: 13px; font-weight: 600; color: var(--lp-red); }
+.lp-stars-off { color: var(--lp-line-strong); }
+.lp-marquee-ratings { display: inline-flex; gap: 14px; flex-wrap: wrap; font-size: 14px; color: var(--lp-text-2); }
+.lp-marquee-ratings strong { color: var(--lp-ink); }
 
 /* Urgency and final CTA bands */
 .lp-dark { background: var(--lp-ink); color: #fff; }
@@ -220,9 +228,18 @@
 
 /* Office */
 .lp-office { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; }
-.lp-photos { flex: 1 1 460px; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.lp-photo { aspect-ratio: 1 / 1; border: 1px dashed #9ca3af; border-radius: 16px; background: var(--lp-grey-bg); display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; color: var(--lp-muted); font-size: 14px; }
-.lp-photo:first-child { grid-column: 1 / -1; aspect-ratio: 16 / 9; font-size: 15px; }
+
+/* Lab photos (dev brief 9 Nov, item 2). Always below the first screen. */
+.lp-photo-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 24px 0 8px; color: var(--lp-text-2); }
+.lp-photo-row.is-steps { margin-top: 20px; }
+.lp-lab-grid { display: grid; grid-template-columns: repeat(var(--lp-lab-n, 3), minmax(0, 1fr)); gap: 16px; margin-top: 22px; color: var(--lp-text-2); }
+.lp-lab-mobile { display: none; margin-top: 22px; color: var(--lp-text-2); max-width: 420px; }
+@media (max-width: 767px) {
+  .lp-lab-grid { grid-template-columns: minmax(0, 1fr); }
+  .lp-lab-grid.has-mobile { display: none; }
+  .lp-lab-mobile { display: block; }
+}
+.lp-firsthour-photo { margin-top: 20px; color: var(--lp-text-2); }
 .lp-office-copy { flex: 1 1 420px; min-width: 0; }
 .lp-office-copy > p { margin: 0 0 22px; font-size: 17px; color: var(--lp-text-2); }
 .lp-addr { border: 1px solid var(--lp-line); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 16px; }

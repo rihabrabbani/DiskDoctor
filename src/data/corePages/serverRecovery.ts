@@ -1,3 +1,4 @@
+import { LAB_PHOTOS } from '@/data/labPhotos';
 import type { CorePage } from './types';
 
 export const serverRecovery: CorePage = {
@@ -13,7 +14,10 @@ export const serverRecovery: CorePage = {
   heroEyebrow: 'Business server recovery',
   heroIntro:
     'When a file server, database host or VMware datastore goes down, what you do in the first hour matters. Power it down, don’t rebuild, and call our 24/7 emergency line at (410) 937-7332.',
-  heroImage: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
+  heroImage: LAB_PHOTOS.P3.src,
+  heroImageAlt: LAB_PHOTOS.P3.alt,
+  heroPhotoNote: true,
+  labPhoto: 'P16',
   sections: [
     {
       heading: 'Who this is for',

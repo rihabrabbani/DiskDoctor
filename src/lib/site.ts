@@ -40,6 +40,7 @@ export function absoluteUrl(path = '/'): string {
   return `${SITE_URL}${normalized}`;
 }
 
+// Used by Header, Footer and GlobalSchema (server-rendered with the right path, so pages stay static).
 // Brief 9 Nov, section 6: Virginia pages never mention the Columbia lab or where recovery is done, and
 // never imply a lab in Virginia. Tysons is only ever "our Tysons office, by appointment".
 export const VIRGINIA_CITY_SLUGS = ['tysons-va', 'mclean-va', 'arlington-va', 'alexandria-va', 'great-falls-va'];

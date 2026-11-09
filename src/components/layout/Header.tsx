@@ -53,10 +53,12 @@ export default function Header() {
   const [mobileLocationsOpen, setMobileLocationsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
-  const headOffice = allLocations.find((location) => location.isHeadOffice);
+  // Virginia pages leave the Columbia head office out of the Locations menu (section 6).
+  const navLocations = virginia ? allLocations.filter((location) => !location.isHeadOffice) : allLocations;
+  const headOffice = navLocations.find((location) => location.isHeadOffice);
   const sortedLocations = headOffice
-    ? [headOffice, ...allLocations.filter((location) => location.slug !== headOffice.slug)]
-    : allLocations;
+    ? [headOffice, ...navLocations.filter((location) => location.slug !== headOffice.slug)]
+    : navLocations;
 
   const groupedLocations = sortedLocations.reduce((acc, location) => {
     if (!acc[location.state]) {
@@ -261,21 +263,21 @@ export default function Header() {
                     transition={{ duration: 0.2 }}
                   >
                     <div className="p-6 space-y-6">
+                      {headOffice ? (
                       <div>
                         <h4 className="text-xs font-semibold text-[var(--color-text-tertiary)] uppercase tracking-wide mb-3 border-b border-[var(--color-border)] pb-2">
                           Head Office
                         </h4>
-                        {headOffice ? (
                           <Link
                             href={`/${headOffice.slug}`}
                             className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-200 block py-1 px-2 rounded hover:bg-[var(--color-surface-200)]"
                           >
                             {headOffice.fullName}
                           </Link>
-                        ) : null}
                       </div>
+                      ) : null}
 
-                      <div className="pt-2 border-t border-[var(--color-border)]">
+                      <div className={headOffice ? 'pt-2 border-t border-[var(--color-border)]' : ''}>
                         <h4 className="text-xs font-semibold text-[var(--color-text-tertiary)] uppercase tracking-wide mb-3 border-b border-[var(--color-border)] pb-2">
                           Other Locations
                         </h4>

@@ -119,8 +119,8 @@ export const locations: LocationData[] = [
     address: 'Serving Alexandria Metro Area',
     zipCode: '22301',
     coordinates: { lat: 38.8048, lng: -77.0469 },
-    metaDescription: "Alexandria VA data recovery via DiskDoctor’s Columbia MD lab. Hard drive, RAID, phone. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "Northern Virginia recovery for Alexandria devices at the Columbia laboratory. Stop using a clicking drive. Do not rebuild a NAS.",
+    metaDescription: "Alexandria VA data recovery for hard drives, SSDs and RAID. Our Tysons office by appointment, or ship it to us free both ways. Free evaluation. Call (410) 937-7332.",
+    heroDescription: "Hard drive, SSD and RAID recovery for Alexandria. Stop using a clicking drive. Do not rebuild a NAS.",
     localKeywords: [
       'data recovery Alexandria VA',
       'Northern Virginia data recovery',
@@ -148,8 +148,8 @@ export const locations: LocationData[] = [
     address: 'Serving Arlington Metro Area',
     zipCode: '22201',
     coordinates: { lat: 38.8816, lng: -77.0910 },
-    metaDescription: "Arlington VA data recovery at DiskDoctor’s Columbia MD lab. RAID, SSD, phone. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "Arlington-area hard drive, SSD and RAID recovery through Columbia. Contractor and office media welcome with chain-of-custody on request.",
+    metaDescription: "Arlington VA data recovery for RAID, SSDs and hard drives. Our Tysons office by appointment, or ship it to us free both ways. Free evaluation. Call (410) 937-7332.",
+    heroDescription: "Arlington-area hard drive, SSD and RAID recovery. Contractor and office media welcome, with chain-of-custody on request.",
     localKeywords: [
       'data recovery Arlington VA',
       'Arlington Virginia data recovery',
@@ -264,8 +264,8 @@ export const locations: LocationData[] = [
     address: 'Serving McLean Metro Area',
     zipCode: '22101',
     coordinates: { lat: 38.9343, lng: -77.1775 },
-    metaDescription: "McLean VA data recovery via our Tysons office (by appointment) and Columbia MD lab. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "McLean and Langley clients can meet us at the Tysons office by appointment or go straight to the Columbia lab. Recovery is laboratory work, not a mall kiosk.",
+    metaDescription: "McLean VA data recovery via our Tysons office, by appointment, or ship it to us free both ways. Free evaluation. Call (410) 937-7332.",
+    heroDescription: "McLean and Langley clients can meet us at our Tysons office by appointment, or ship the drive to us free both ways.",
     localKeywords: [
       'data recovery McLean VA',
       'McLean Virginia data recovery',
@@ -326,8 +326,8 @@ export const locations: LocationData[] = [
     address: 'Serving Great Falls Metro Area',
     zipCode: '22066',
     coordinates: { lat: 39.0012, lng: -77.2883 },
-    metaDescription: "Great Falls VA data recovery at DiskDoctor’s Columbia lab, with a Tysons office by appointment. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "Great Falls and Reston-area recovery through Columbia, with our Tysons office by appointment. Not a park brochure.",
+    metaDescription: "Great Falls VA data recovery with our Tysons office by appointment, or ship it to us free both ways. Free evaluation. Call (410) 937-7332.",
+    heroDescription: "Great Falls and Reston-area recovery, with our Tysons office by appointment. Not a park brochure.",
     localKeywords: [
       'data recovery Great Falls VA',
       'Great Falls Virginia data recovery',
@@ -378,6 +378,9 @@ export const locations: LocationData[] = [
     ]
   }
 ];
+
+// Virginia pages never mention the Columbia lab or where recovery is done (brief 9 Nov, section 6).
+export const isVirginia = (location: LocationData) => location.state === 'Virginia';
 
 export const getLocationBySlug = (slug: string) => {
   return locations.find(location => location.slug === slug);

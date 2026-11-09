@@ -34,7 +34,7 @@ const HDD_URGENCY = {
 
 const where = (area: AreaId) =>
   area === 'va'
-    ? 'Tysons office by appointment, free shipping to our Columbia, MD lab'
+    ? 'Tysons office by appointment, free shipping both ways'
     : 'Columbia, MD lab, walk in or ship free both ways';
 
 const facts = 'Free diagnosis, no data no charge. Since 1991, ISO 9001.';

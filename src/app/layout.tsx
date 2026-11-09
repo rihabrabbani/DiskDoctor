@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import { organizationSchema, websiteSchema, columbiaLocalBusinessSchema, tysonsLocalBusinessSchema } from "@/lib/structuredData";
+import GlobalSchema from "@/components/seo/GlobalSchema";
 import AnalyticsClicks from "@/components/analytics/AnalyticsClicks";
 import HubspotPageViews from "@/components/analytics/HubspotPageViews";
 import FirstTouch from "@/components/analytics/FirstTouch";
@@ -92,30 +92,6 @@ export default function RootLayout({
               "try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.className=t}catch(e){}",
           }}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema)
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(websiteSchema)
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(columbiaLocalBusinessSchema)
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(tysonsLocalBusinessSchema)
-          }}
-        />
       </head>
       <body className="pb-16 lg:pb-0">
         {gtmId ? (
@@ -141,6 +117,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             ) : null}
           </>
         ) : null}
+        <GlobalSchema />
         <ThemeProvider>
           <AnalyticsClicks />
           <HubspotPageViews />

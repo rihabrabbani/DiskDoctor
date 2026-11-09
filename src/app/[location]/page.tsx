@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getLocationBySlug, getAllLocationSlugs } from '@/data/locations';
+import { getLocationBySlug, getAllLocationSlugs, isVirginia } from '@/data/locations';
 import { locationCopy } from '@/data/locationCopy';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -65,7 +65,9 @@ export default async function LocationPage({ params }: LocationPageProps) {
 
   const pageUrl = `${SITE_URL}/${location.slug}`;
   // The Columbia and Tysons LocalBusiness entities are defined once in the root layout;
-  // location pages reference them by @id instead of redefining them.
+  // location pages reference them by @id instead of redefining them. Virginia pages only ever
+  // reference the Tysons office (brief 9 Nov, section 6).
+  const officeId = isVirginia(location) ? TYSONS_ID : COLUMBIA_ID;
   const structuredData =
     copy.kind === 'lab'
       ? {
@@ -75,7 +77,7 @@ export default async function LocationPage({ params }: LocationPageProps) {
           url: pageUrl,
           name: copy.seoTitle,
           description: copy.seoDescription,
-          about: { '@id': location.slug === 'tysons-va' ? TYSONS_ID : COLUMBIA_ID },
+          about: { '@id': officeId },
         }
       : {
           '@context': 'https://schema.org',
@@ -83,7 +85,7 @@ export default async function LocationPage({ params }: LocationPageProps) {
           name: `Data recovery serving ${location.fullName}`,
           description: copy.directAnswer,
           url: pageUrl,
-          provider: { '@id': COLUMBIA_ID },
+          provider: { '@id': officeId },
           areaServed: {
             '@type': 'City',
             name: location.city,

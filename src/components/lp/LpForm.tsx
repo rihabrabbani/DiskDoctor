@@ -162,6 +162,8 @@ export default function LpForm({
   stateDefault: string;
   presetDevice?: DeviceValue;
 }) {
+  // VA pages never say "lab" (brief 9 Nov, section 6). Copy only: fields, events and submit are unchanged.
+  const va = variant.startsWith('va/');
   const [step, setStep] = useState<Step>(1);
   const [device, setDevice] = useState<DeviceValue | null>(presetDevice ?? null);
   const [symptoms, setSymptoms] = useState<string[]>([]);
@@ -419,7 +421,7 @@ export default function LpForm({
             <div className="lp-steer">
               <p>Phones, SD cards and USB sticks aren&apos;t our specialty</p>
               <p>
-                Our lab focuses on hard drives, SSDs, RAID and servers. For phones and memory cards we&apos;re usually
+                {va ? 'We focus' : 'Our lab focuses'} on hard drives, SSDs, RAID and servers. For phones and memory cards we&apos;re usually
                 not the right fit, and we&apos;d rather tell you now than waste your time.
               </p>
             </div>
@@ -605,7 +607,7 @@ export default function LpForm({
               </label>
               <label className="lp-field">
                 <span>
-                  Phone <span className="lp-hint">So the lab can call you back</span>
+                  Phone <span className="lp-hint">{va ? 'So we can call you back' : 'So the lab can call you back'}</span>
                 </span>
                 <input
                   ref={fieldRefs.phone}
@@ -699,7 +701,7 @@ export default function LpForm({
 
       <div className="lp-form-trust">
         <LpIcon name="lock" size={18} />
-        Your details go to our lab team and our CRM. No spam.
+        {va ? 'Your details go to our recovery team and our CRM. No spam.' : 'Your details go to our lab team and our CRM. No spam.'}
       </div>
     </div>
   );

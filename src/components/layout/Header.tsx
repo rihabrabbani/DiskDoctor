@@ -9,7 +9,8 @@ import Image from 'next/image';
 import Dark_logo from '@/../public/images/Dark_mode.png';
 import Light_logo from '@/../public/images/light_mode.png';
 import { useTheme } from '@/contexts/ThemeContext';
-import { EMAIL, PHONE_DISPLAY, PHONE_TEL } from '@/lib/site';
+import { usePathname } from 'next/navigation';
+import { EMAIL, PHONE_DISPLAY, PHONE_TEL, isVirginiaPath } from '@/lib/site';
 
 // Define variants with proper typing
 const mobileMenuVariants: Variants = {
@@ -43,6 +44,8 @@ const menuItemsStagger = {
 };
 
 export default function Header() {
+  // Virginia pages: the top bar shows the Tysons office only (brief 9 Nov, section 6).
+  const virginia = isVirginiaPath(usePathname());
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isLocationsOpen, setIsLocationsOpen] = useState(false);
@@ -96,7 +99,7 @@ export default function Header() {
             <div className="flex items-center space-x-4 text-[var(--color-text-secondary)]">
               <span className="flex items-center space-x-1">
                 <span className="text-[var(--color-primary)]">📍</span>
-                <span>Columbia, MD | Tysons, VA</span>
+                <span>{virginia ? 'Tysons, VA (by appointment)' : 'Columbia, MD | Tysons, VA'}</span>
               </span>
             </div>
           </div>

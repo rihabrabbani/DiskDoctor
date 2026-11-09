@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { LocationData } from '@/data/locations';
+import { LocationData, isVirginia } from '@/data/locations';
 import { LocationCopy } from '@/data/locationCopy';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import { PHONE_TEL, telHref } from '@/lib/site';
@@ -29,7 +29,7 @@ export default function LocationHero({ location, copy }: LocationHeroProps) {
           )}
           {copy.kind === 'service-area' && (
             <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-white text-sm font-medium mb-6">
-              Service area — lab in Columbia, MD
+              {isVirginia(location) ? 'Service area — Tysons office by appointment' : 'Service area — lab in Columbia, MD'}
             </div>
           )}
 

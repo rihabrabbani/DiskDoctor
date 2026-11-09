@@ -63,7 +63,9 @@ const md: Area = {
   stickyCallLabel: 'Call 24/7',
 };
 
-// 24/7 wording only ever attaches to the lab line (410), never to the Tysons 571 line.
+// 24/7 wording only ever attaches to the (410) line, never to the Tysons 571 line.
+// Brief 9 Nov, section 6: VA copy never mentions the Columbia lab or where recovery is done, and never
+// implies a lab in Virginia. Tysons is only ever "our Tysons office, by appointment".
 const va: Area = {
   id: 'va',
   location: 'tysons',
@@ -74,20 +76,20 @@ const va: Area = {
   eyebrow: 'Tysons office · Northern Virginia & DC',
   place: 'Northern Virginia & DC',
   heroSub:
-    'Clicking, not detected, dropped or dead? Meet us at our Tysons office by appointment, or ship your drive free to our Columbia, MD lab, recovering data since 1991. The diagnosis is free, and nothing is charged unless you approve the quote and we recover your data.',
-  talkSuffix: `. Emergency? Our lab line ${LAB_PHONE} is answered 24/7.`,
-  soonerSuffix: `, or our 24/7 lab line ${LAB_PHONE}.`,
+    'Clicking, not detected, dropped or dead? Meet us at our Tysons office by appointment, or ship your drive to us, free both ways. Recovering data since 1991. The diagnosis is free, and nothing is charged unless you approve the quote and we recover your data.',
+  talkSuffix: `. Emergency? Our 24/7 line ${LAB_PHONE} is always answered.`,
+  soonerSuffix: `, or our 24/7 line ${LAB_PHONE}.`,
   stateDefault: 'Virginia',
   step2:
-    'Bring it to our Tysons office by appointment, or ship it free both ways to our Columbia lab. Pickup is also available, call for details.',
+    'Bring it to our Tysons office by appointment, or ship it to us free both ways. Pickup is also available, call for details.',
   heroCallNote: 'Tysons office',
   officeH: 'Our Tysons office, by appointment',
   officeP:
-    'Meet us at our Tysons office by appointment: fill in the form or call (571) 202-8529 to set a time. Recoveries are then done at our Columbia, MD lab, including physical recoveries in our clean room. ISO 9001 certified, 15,000+ cases since 1991.',
+    'Meet us at our Tysons office by appointment: fill in the form or call (571) 202-8529 to set a time. Physical recoveries are done in a certified clean room. ISO 9001 certified, 15,000+ cases since 1991.',
   addrName: 'Disk Doctors · Tysons office',
   addr: '8300 Boone Blvd, Suite 513, Tysons, VA 22182 (American Center)',
   addrHours: 'By appointment, Mon–Fri · Call (571) 202-8529',
-  otherOffice: 'Our lab: 10015 Old Columbia Rd, Suite B 215, Columbia, MD 21046.',
+  otherOffice: 'Our Tysons office (by appointment): 8300 Boone Blvd, Suite 513, Tysons, VA 22182.',
   faqBring:
     'No. Shipping is free both ways, and pickup is also available, call for details. You can also bring it to our Tysons office by appointment.',
   stickyCallLabel: 'Call Tysons',

@@ -39,3 +39,15 @@ export function absoluteUrl(path = '/'): string {
   const normalized = path.startsWith('/') ? path : `/${path}`;
   return `${SITE_URL}${normalized}`;
 }
+
+// Brief 9 Nov, section 6: Virginia pages never mention the Columbia lab or where recovery is done, and
+// never imply a lab in Virginia. Tysons is only ever "our Tysons office, by appointment".
+export const VIRGINIA_CITY_SLUGS = ['tysons-va', 'mclean-va', 'arlington-va', 'alexandria-va', 'great-falls-va'];
+
+export function isVirginiaPath(pathname: string | null | undefined): boolean {
+  if (!pathname) return false;
+  if (pathname.startsWith('/lp/va/')) return true;
+  return VIRGINIA_CITY_SLUGS.includes(pathname.replace(/^\/|\/$/g, ''));
+}
+
+export const TYSONS_ADDRESS_LINE = '8300 Boone Blvd, Suite 513, Tysons, VA 22182';

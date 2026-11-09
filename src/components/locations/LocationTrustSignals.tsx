@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { LocationData } from '@/data/locations';
+import { LocationData, isVirginia } from '@/data/locations';
 import { Shield, Award, Clock, Users, CheckCircle } from 'lucide-react';
 import { telHref } from '@/lib/site';
 
@@ -36,7 +36,7 @@ const trustSignals = [
   }
 ];
 
-// The client doesn't want Tysons pages to say where the recovery is done.
+// Virginia pages (and the Tysons office page) never say where the recovery is done.
 const appointmentOfficeSignal = {
   icon: Shield,
   title: 'Free evaluation',
@@ -83,7 +83,7 @@ export default function LocationTrustSignals({ location }: LocationTrustSignalsP
         {/* Trust Metrics */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {trustSignals
-            .map((signal) => (location.isAppointmentOnly && signal.highlight === 'Lab' ? appointmentOfficeSignal : signal))
+            .map((signal) => (isVirginia(location) && signal.highlight === 'Lab' ? appointmentOfficeSignal : signal))
             .map((signal, index) => (
               <motion.div
                 key={index}
@@ -110,6 +110,8 @@ export default function LocationTrustSignals({ location }: LocationTrustSignalsP
             ))}
         </div>
 
+        {/* A Columbia review, so not on Virginia pages (they show Tysons reviews only). */}
+        {!isVirginia(location) && (
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
@@ -124,6 +126,7 @@ export default function LocationTrustSignals({ location }: LocationTrustSignalsP
             </div>
           </div>
         </motion.div>
+        )}
 
         {/* Features Grid */}
         <motion.div
@@ -166,8 +169,8 @@ export default function LocationTrustSignals({ location }: LocationTrustSignalsP
           </h3>
           <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
             {certifications
-              // The client doesn't want Tysons pages to say where the recovery is done.
-              .filter((cert) => !(location.isAppointmentOnly && cert.name === 'Columbia MD laboratory'))
+              // Virginia pages never say where the recovery is done.
+              .filter((cert) => !(isVirginia(location) && cert.name === 'Columbia MD laboratory'))
               .map((cert, index) => (
                 <div key={index} className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
                   <Shield className="h-5 w-5" />

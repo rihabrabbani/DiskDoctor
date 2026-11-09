@@ -92,7 +92,7 @@ export function LpHero({
             </a>
             {area.tel !== LAB_TEL && (
               <p>
-                Emergency? Our lab line <a href={LAB_TEL}>(410) 937-7332</a> is answered 24/7.
+                Emergency? Our 24/7 line <a href={LAB_TEL}>(410) 937-7332</a> is always answered.
               </p>
             )}
           </div>
@@ -131,16 +131,18 @@ export function LpHero({
   );
 }
 
-export function UrgencyBand({ template }: { template: Template }) {
+// VA pages (brief 9 Nov, section 6) say "us", never "the lab".
+export function UrgencyBand({ template, va = false }: { template: Template; va?: boolean }) {
+  const text = va ? template.urgency.text.replace('Talk to the lab first.', 'Talk to us first.') : template.urgency.text;
   return (
     <section className="lp-dark lp-urgency-band" data-track-position="urgency_band">
       <div className="lp-wrap">
         <LpIcon name="warn" size={28} />
         <p>
-          <strong>{template.urgency.strong}</strong> {template.urgency.text}
+          <strong>{template.urgency.strong}</strong> {text}
         </p>
         <a href={LAB_TEL} className="lp-btn lp-btn-ghost-dark">
-          Talk to the lab, 24/7
+          {va ? 'Talk to us, 24/7' : 'Talk to the lab, 24/7'}
         </a>
       </div>
     </section>
@@ -266,7 +268,10 @@ export function SymptomGrid({ template, photos = [], va = false }: { template: T
 
 export function HowItWorks({ area, photos = [], va = false }: { area: Area; photos?: LabPhotoCode[]; va?: boolean }) {
   const steps = [
-    { title: 'Tell us what happened', text: 'Use the form or call. Our lab line is answered 24/7.' },
+    {
+      title: 'Tell us what happened',
+      text: va ? 'Use the form or call. Our line is answered 24/7.' : 'Use the form or call. Our lab line is answered 24/7.',
+    },
     { title: 'Free diagnosis', text: area.step2 },
     { title: 'Fixed quote before any paid work', text: `${FIXED_QUOTE} No data, no charge.` },
     {
@@ -460,12 +465,18 @@ export function FinalCta({ area, heading }: { area: Area; heading: string }) {
   );
 }
 
-export function LpFooter() {
+export function LpFooter({ va = false }: { va?: boolean }) {
   return (
     <footer className="lp-footer" data-track-position="footer">
       <div className="lp-wrap">
-        <span>Disk Doctors America · 10015 Old Columbia Rd, Suite B 215, Columbia, MD 21046</span>
-        <span>Tysons office (by appointment): 8300 Boone Blvd, Suite 513, Tysons, VA 22182</span>
+        {va ? (
+          <span>Disk Doctors America · Tysons office by appointment: 8300 Boone Blvd, Suite 513, Tysons, VA 22182</span>
+        ) : (
+          <>
+            <span>Disk Doctors America · 10015 Old Columbia Rd, Suite B 215, Columbia, MD 21046</span>
+            <span>Tysons office (by appointment): 8300 Boone Blvd, Suite 513, Tysons, VA 22182</span>
+          </>
+        )}
         <a href="/privacy">Privacy policy</a>
       </div>
     </footer>

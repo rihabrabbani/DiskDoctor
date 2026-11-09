@@ -1,10 +1,16 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { serviceRoutes } from '@/data/navigation';
 import { locations } from '@/data/locations';
-import { EMAIL, PHONE_DISPLAY, PHONE_TEL } from '@/lib/site';
+import { EMAIL, PHONE_DISPLAY, PHONE_TEL, TYSONS_ADDRESS_LINE, isVirginiaPath } from '@/lib/site';
 
+// A client component only to know the path; it still renders on the server. Virginia pages show the
+// Tysons office only, with no Columbia address and no "Labs" heading (brief 9 Nov, section 6).
 export default function Footer() {
-  const labs = locations.filter((l) => l.isHeadOffice || l.slug === 'tysons-va');
+  const virginia = isVirginiaPath(usePathname());
+  const labs = locations.filter((l) => (virginia ? l.slug === 'tysons-va' : l.isHeadOffice || l.slug === 'tysons-va'));
   const serviceAreas = locations.filter((l) => !l.isHeadOffice && l.slug !== 'tysons-va');
 
   return (
@@ -18,7 +24,7 @@ export default function Footer() {
             </span>
           </Link>
           <p className="mt-4 max-w-xl text-[var(--color-text-secondary)]">
-            Columbia, MD · Tysons, VA (by appointment). Hard drive, SSD, RAID and server recovery since 1991.
+            {`${virginia ? 'Tysons, VA (by appointment)' : 'Columbia, MD · Tysons, VA (by appointment)'}. Hard drive, SSD, RAID and server recovery since 1991.`}
           </p>
         </div>
 
@@ -35,11 +41,15 @@ export default function Footer() {
               <Link href="/contact" className="block text-[var(--color-primary)] font-medium hover:underline">
                 Free evaluation form
               </Link>
-              {labs.map((lab) => (
-                <p key={lab.slug} className="text-sm text-[var(--color-text-secondary)]">
-                  {lab.address}
-                </p>
-              ))}
+              {virginia ? (
+                <p className="text-sm text-[var(--color-text-secondary)]">Tysons office (by appointment): {TYSONS_ADDRESS_LINE}</p>
+              ) : (
+                labs.map((lab) => (
+                  <p key={lab.slug} className="text-sm text-[var(--color-text-secondary)]">
+                    {lab.address}
+                  </p>
+                ))
+              )}
             </div>
           </div>
 
@@ -57,12 +67,13 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Labs</h3>
+            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">{virginia ? 'Office' : 'Labs'}</h3>
             <ul className="space-y-2">
               {labs.map((lab) => (
                 <li key={lab.slug}>
                   <Link href={`/${lab.slug}`} className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:underline">
-                    {lab.fullName}{lab.isHeadOffice ? ' (Head office)' : ''}
+                    {lab.fullName}
+                    {lab.isHeadOffice ? ' (Head office)' : virginia ? ' (by appointment)' : ''}
                   </Link>
                 </li>
               ))}

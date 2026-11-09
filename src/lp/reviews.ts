@@ -7,6 +7,7 @@ import data from './data/lp-reviews.json';
 // first, then Columbia, and never put the Tysons rating next to Columbia reviews. No review counts.
 // 9 Nov follow-up: cards show the full Google text (`text`) when stored; Menna Khaliel and Kristin
 // deGhetaldi are off the landing pages; Moeez Ahmed is off the VA pages.
+// Section 6: VA pages show Tysons reviews only (no Columbia review, rating or label).
 
 export type LocationId = 'columbia' | 'tysons';
 
@@ -87,8 +88,10 @@ export function pageReviews(key: string) {
 
   let strip = page.strip.map(toReview).filter(good);
   if (isVa) {
-    // Tysons first, then Columbia, each keeping the JSON order.
-    strip = [...strip.filter((r) => r.location === 'tysons'), ...strip.filter((r) => r.location === 'columbia')];
+    // Every Tysons review in the JSON (not only this page's strip), in the strip's order first.
+    const tysons = Object.keys(reviews).filter((id) => allowed(id) && reviews[id].location === 'tysons');
+    const order = [...strip.map((r) => r.id).filter((id) => tysons.includes(id)), ...tysons.filter((id) => !strip.some((r) => r.id === id))];
+    strip = order.map(toReview).filter(good);
   } else {
     strip = strip.filter((r) => r.location === 'columbia');
   }

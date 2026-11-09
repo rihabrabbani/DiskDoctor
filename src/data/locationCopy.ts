@@ -140,7 +140,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       },
     ],
     relatedServiceIds: ['raid-recovery', 'file-recovery', 'mac-recovery', 'windows-recovery'],
-    relatedLocationSlugs: ['columbia-md', 'mclean-va', 'arlington-va', 'washington-dc'],
+    relatedLocationSlugs: ['mclean-va', 'arlington-va', 'alexandria-va', 'washington-dc'],
   },
   'baltimore-md': {
     kind: 'service-area',
@@ -363,20 +363,20 @@ export const locationCopy: Record<string, LocationCopy> = {
   },
   'alexandria-va': {
     kind: 'service-area',
-    seoTitle: 'Data Recovery Alexandria VA | Columbia Lab',
+    seoTitle: 'Data Recovery Alexandria VA | Tysons Office',
     seoDescription:
-      'Alexandria VA data recovery via DiskDoctor’s Columbia MD lab. Hard drive, RAID, phone. Free evaluation. Call (410) 937-7332.',
+      'Alexandria VA data recovery for hard drives, SSDs and RAID. Our Tysons office by appointment, or ship it to us free both ways. Free evaluation. Call (410) 937-7332.',
     directAnswer:
-      'Alexandria does not have a DiskDoctor storefront. Old Town, Del Ray, and Eisenhower Valley recoveries are done at the Columbia, MD lab, with our Tysons office available by appointment. Free evaluation. Call (410) 937-7332.',
+      'Alexandria does not have a DiskDoctor storefront. Old Town, Del Ray and Eisenhower Valley clients meet us at our Tysons office by appointment, or ship the drive to us free both ways. Free evaluation. Call (410) 937-7332.',
     heroDescription:
-      'Northern Virginia recovery for Alexandria devices at the Columbia laboratory. Stop using a clicking drive. Do not rebuild a NAS.',
+      'Hard drive, SSD and RAID recovery for Alexandria. Stop using a clicking drive. Do not rebuild a NAS.',
     paragraphs: [
-      'Alexandria failures are the usual mix: laptop disks that click on the GW Parkway commute, RAID boxes in home offices, and phones that took a fall on King Street. None of that requires a fake Old Town address. It requires a clone in Columbia.',
-      'Drop off at the Columbia lab, book an appointment at our Tysons office (8300 Boone Blvd), or ship. Evaluation free. No data, no charge.',
-      'If a local repair shop already opened the drive, tell us. We can still image many of those, but opened HDA work belongs in a lab, not on a counter.',
-      'From Old Town, King Street to 395 to the Beltway to 29 is the usual drive to Columbia. From Eisenhower Avenue and Huntington, the Beltway west toward Tysons is shorter if you booked a Boone Blvd appointment. Do not leave a clicking NAS running in a Del Ray office “until Friday.”',
-      'Alexandria home offices and small firms often keep QuickBooks and photo archives on a single USB disk. When the enclosure dies, the SATA disk inside may still clone. Bring the whole unit if you are unsure how to open it. Evaluation is free once it reaches Columbia.',
-      'Waterfront and marina devices: power them off. Do not charge a wet phone or “dry out” a laptop on a heater. Corrosion continues with power. Chip-level work is in Columbia, not at a King Street counter.',
+      'Alexandria failures are the usual mix: laptop disks that click on the GW Parkway commute and RAID boxes in home offices. None of that requires a fake Old Town address. It requires a careful clone of the failing disk before anything else is tried.',
+      'Book an appointment at our Tysons office (8300 Boone Blvd), or ship it to us free both ways. Pickup is also available, call for details. Evaluation is free. No data, no charge.',
+      'If a local repair shop already opened the drive, tell us. We can still image many of those, but an opened drive needs clean-room work, not another try on a counter.',
+      'From Eisenhower Avenue and Huntington, the Beltway west to Tysons is a short drive if you booked a Boone Blvd appointment. Do not leave a clicking NAS running in a Del Ray office “until Friday.”',
+      'Alexandria home offices and small firms often keep QuickBooks and photo archives on a single USB disk. When the enclosure dies, the SATA disk inside may still clone. Bring the whole unit if you are unsure how to open it. Evaluation is free.',
+      'Waterfront and marina devices: power them off. Do not “dry out” a wet laptop on a heater. Corrosion continues with power, and water-damaged drives need chip-level work, not a King Street counter.',
     ],
     scenarios: [
       {
@@ -385,43 +385,43 @@ export const locationCopy: Record<string, LocationCopy> = {
       },
     ],
     faqs: [
-      { question: 'Do you have an Alexandria office?', answer: 'No. Columbia lab, or our Tysons office by appointment.' },
-      { question: 'Where can Old Town businesses bring RAID disks?', answer: 'Drop them off at the Columbia lab, or book a Tysons appointment. Bring every member.' },
+      { question: 'Do you have an Alexandria office?', answer: 'No. Meet us at our Tysons office by appointment, or ship it to us free both ways.' },
+      { question: 'Where can Old Town businesses bring RAID disks?', answer: 'Book an appointment at our Tysons office, or ship them to us free both ways. Bring every member.' },
       { question: 'Cost?', answer: 'Free evaluation, fixed quote, no data no charge on the recovery fee.' },
     ],
     relatedServiceIds: ['windows-recovery', 'raid-recovery', 'mac-recovery', 'file-recovery'],
-    relatedLocationSlugs: ['columbia-md', 'arlington-va', 'tysons-va', 'washington-dc'],
+    relatedLocationSlugs: ['tysons-va', 'arlington-va', 'mclean-va', 'washington-dc'],
   },
   'arlington-va': {
     kind: 'service-area',
-    seoTitle: 'Data Recovery Arlington VA | Columbia Lab',
+    seoTitle: 'Data Recovery Arlington VA | Tysons Office',
     seoDescription:
-      'Arlington VA data recovery at DiskDoctor’s Columbia MD lab. RAID, SSD, phone. Free evaluation. Call (410) 937-7332.',
+      'Arlington VA data recovery for RAID, SSDs and hard drives. Our Tysons office by appointment, or ship it to us free both ways. Free evaluation. Call (410) 937-7332.',
     directAnswer:
-      'Arlington, Rosslyn, Ballston, and Crystal City data recovery is handled at the Columbia, MD lab. No Arlington storefront. Free evaluation. Call (410) 937-7332. Power down failed RAID and clicking disks.',
+      'Arlington, Rosslyn, Ballston and Crystal City data recovery: meet us at our Tysons office by appointment, or ship the drive to us free both ways. No Arlington storefront. Free evaluation. Call (410) 937-7332. Power down failed RAID and clicking disks.',
     heroDescription:
-      'Arlington-area hard drive, SSD and RAID recovery through Columbia. Contractor and office media welcome with chain-of-custody on request.',
+      'Arlington-area hard drive, SSD and RAID recovery. Contractor and office media welcome, with chain-of-custody on request.',
     paragraphs: [
       'Arlington sits next to DC contractor offices and dense apartment NAS setups. When a disk fails, the correct next step is imaging, not another Disk Management “initialize” click.',
-      'Service area of Columbia; Tysons office by appointment. Evaluation free.',
+      'Our Tysons office is by appointment, or ship it to us free both ways. Evaluation is free.',
       'Rosslyn and Courthouse contractors: BitLocker laptops that vanish from BIOS are chip-level or firmware jobs, not “Startup Repair.” Bring the machine or the NVMe. We will not bypass agency account locks.',
-      'Ballston and Virginia Square apartments: USB disks with taxes and photos fail in cheap enclosures. Unplug them. A clone in Columbia is cheaper than another week of Disk Management “initialize.”',
+      'Ballston and Virginia Square apartments: USB disks with taxes and photos fail in cheap enclosures. Unplug them. A careful clone is cheaper than another week of Disk Management “initialize.”',
       'Crystal City and Pentagon City offices: RAID members should travel together. Photograph the slots. Do not hot-swap a new disk into a clicking array over a weekend.',
     ],
     scenarios: [
       {
         title: 'Failed USB enclosure',
-        body: 'The enclosure fails while the disk inside still works. We clone the disk directly in the Columbia lab.',
+        body: 'The enclosure fails while the disk inside still works. We take the disk out and clone it directly.',
       },
     ],
     faqs: [
-      { question: 'Arlington office?', answer: 'No. Columbia lab; Tysons by appointment.' },
-      { question: 'RAID in Crystal City?', answer: 'Bring all members to Columbia. Do not rebuild.' },
+      { question: 'Arlington office?', answer: 'No. Our Tysons office by appointment, or ship it to us free both ways.' },
+      { question: 'RAID in Crystal City?', answer: 'Bring every member to our Tysons office by appointment, or ship them to us. Do not rebuild.' },
       { question: 'How long?', answer: '24–48 hours logical after arrival; 3–7 days physical/RAID.' },
       { question: 'Cost?', answer: 'Free evaluation. No data, no charge on the recovery fee.' },
     ],
     relatedServiceIds: ['raid-recovery', 'windows-recovery', 'data-security', 'file-recovery'],
-    relatedLocationSlugs: ['washington-dc', 'columbia-md', 'tysons-va', 'alexandria-va'],
+    relatedLocationSlugs: ['washington-dc', 'mclean-va', 'tysons-va', 'alexandria-va'],
   },
   'annapolis-md': {
     kind: 'service-area',
@@ -488,11 +488,11 @@ export const locationCopy: Record<string, LocationCopy> = {
     kind: 'service-area',
     seoTitle: 'Data Recovery McLean VA | Tysons Office',
     seoDescription:
-      'McLean VA data recovery via our Tysons office (by appointment) and Columbia MD lab. Free evaluation. Call (410) 937-7332.',
+      'McLean VA data recovery via our Tysons office, by appointment, or ship it to us free both ways. Free evaluation. Call (410) 937-7332.',
     directAnswer:
-      'McLean data recovery uses the Tysons appointment office (8300 Boone Blvd Suite 513) and the Columbia lab. No McLean storefront. Call (410) 937-7332 before you drive to Tysons.',
+      'McLean data recovery goes through our Tysons office (8300 Boone Blvd Suite 513), by appointment, or ship the drive to us free both ways. No McLean storefront. Call (410) 937-7332 before you drive to Tysons.',
     heroDescription:
-      'McLean and Langley clients can meet us at the Tysons office by appointment or go straight to the Columbia lab. Recovery is laboratory work, not a mall kiosk.',
+      'McLean and Langley clients can meet us at our Tysons office by appointment. Recovery is careful imaging work, not a mall kiosk.',
     paragraphs: [
       'McLean is minutes from the Tysons office. By appointment. Call ahead so someone is here to meet you.',
       'From downtown McLean or Langley, Boone Blvd is a short drive. Call (410) 937-7332 first to book a time.',
@@ -506,29 +506,29 @@ export const locationCopy: Record<string, LocationCopy> = {
       },
     ],
     faqs: [
-      { question: 'McLean office?', answer: 'No. Tysons by appointment; lab in Columbia.' },
+      { question: 'McLean office?', answer: 'No. Our Tysons office by appointment, or ship it to us free both ways.' },
       { question: 'Can I walk into Tysons?', answer: 'By appointment. Call ahead so someone is here to meet you.' },
       { question: 'RAID?', answer: 'Bring every member. Do not rebuild.' },
       { question: 'Cost?', answer: 'Free evaluation. No data, no charge.' },
     ],
     relatedServiceIds: ['mac-recovery', 'raid-recovery', 'windows-recovery', 'file-recovery'],
-    relatedLocationSlugs: ['tysons-va', 'great-falls-va', 'arlington-va', 'columbia-md'],
+    relatedLocationSlugs: ['tysons-va', 'great-falls-va', 'arlington-va', 'alexandria-va'],
   },
   'great-falls-va': {
     kind: 'service-area',
-    seoTitle: 'Data Recovery Great Falls VA | Columbia Lab',
+    seoTitle: 'Data Recovery Great Falls VA | Tysons Office',
     seoDescription:
-      'Great Falls VA data recovery at DiskDoctor’s Columbia lab, with a Tysons office by appointment. Free evaluation. Call (410) 937-7332.',
+      'Great Falls VA data recovery with our Tysons office by appointment, or ship it to us free both ways. Free evaluation. Call (410) 937-7332.',
     directAnswer:
-      'Great Falls does not have a DiskDoctor office. Book an appointment at our Tysons office or use the Columbia lab. Free evaluation. Call (410) 937-7332.',
+      'Great Falls does not have a DiskDoctor office. Book an appointment at our Tysons office, or ship the drive to us free both ways. Free evaluation. Call (410) 937-7332.',
     heroDescription:
-      'Great Falls and Reston-area recovery through Columbia, with our Tysons office by appointment. Not a park brochure.',
+      'Great Falls and Reston-area recovery, with our Tysons office by appointment. Not a park brochure.',
     paragraphs: [
-      'Home NAS and workstation failures in Great Falls are imaged in Columbia. Book a Tysons appointment if that is a shorter drive. Power down clicking disks.',
-      'Great Falls, Reston, and Herndon are not a park-brochure service. The work is cloning a clicking 8TB desktop disk or a 4-bay RAID under a home-office desk. Tysons is the closer office, by appointment; Columbia is the lab.',
+      'Home NAS and workstation failures in Great Falls: book a Tysons appointment, or ship the drive to us free both ways. Power down clicking disks.',
+      'Great Falls, Reston, and Herndon are not a park-brochure service. The work is cloning a clicking 8TB desktop disk or a 4-bay RAID under a home-office desk. Our Tysons office is the closest place to meet us, by appointment.',
       'Photo libraries on a single disk are the usual Great Falls failure. If the disk is clicking, stop the Lightroom catalog on that volume. Every extra spin is a write-adjacent risk. Bring the disk in a padded box.',
       'Mail-in from Great Falls: rigid box, two inches of padding, powered down, note with the folders that matter. We confirm receipt by email.',
-      'Reston and Herndon neighbors use the same path: Tysons by appointment or Columbia lab. There is no Great Falls storefront and no park-ranger copy on this page. The job is cloning a failed disk.',
+      'Reston and Herndon neighbors use the same path: our Tysons office by appointment, or ship it to us free both ways. There is no Great Falls storefront and no park-ranger copy on this page. The job is cloning a failed disk.',
     ],
     scenarios: [
       {
@@ -537,13 +537,13 @@ export const locationCopy: Record<string, LocationCopy> = {
       },
     ],
     faqs: [
-      { question: 'Local office?', answer: 'No. Tysons appointment or Columbia lab.' },
+      { question: 'Local office?', answer: 'No. Our Tysons office by appointment, or ship it to us free both ways.' },
       { question: 'Mail-in?', answer: 'Yes. Padded box, powered down.' },
       { question: 'Timeline?', answer: '24–48 hours logical after arrival.' },
       { question: 'Cost?', answer: 'Free evaluation. No data, no charge.' },
     ],
     relatedServiceIds: ['file-recovery', 'raid-recovery', 'photo-recovery', 'windows-recovery'],
-    relatedLocationSlugs: ['tysons-va', 'mclean-va', 'columbia-md', 'potomac-md'],
+    relatedLocationSlugs: ['tysons-va', 'mclean-va', 'arlington-va', 'potomac-md'],
   },
   'potomac-md': {
     kind: 'service-area',

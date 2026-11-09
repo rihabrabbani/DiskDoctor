@@ -35,31 +35,19 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
   const rating = locationRating(area.location);
   const lab = locationRating('columbia');
 
-  // No review counts anywhere (they go stale). Each rating sits only next to its own office's reviews:
-  // VA pages show Tysons and Columbia separately, MD and RAID pages show Columbia only.
+  // No review counts anywhere (they go stale). VA pages (section 6) show the Tysons office only: its
+  // rating, its reviews and its Maps listing, and never mention Columbia. MD and RAID: Columbia only.
   const isVa = areaId === 'va';
-  const ratingSub = isVa
-    ? `Google reviews of our Tysons office · ${lab.rating} at our Columbia lab`
-    : 'Google reviews of our Columbia lab';
-  const tysons = locationRating('tysons');
+  const ratingSub = isVa ? 'our Tysons office' : 'Google reviews of our Columbia lab';
   const marqueeRatings = isVa
-    ? [
-        { label: 'Tysons office', rating: tysons.rating },
-        { label: 'Columbia, MD', rating: lab.rating },
-      ]
+    ? [{ label: 'Tysons office', rating: rating.rating }]
     : [{ label: 'Columbia lab', rating: lab.rating }];
-  const marqueeLinks = isVa
-    ? [
-        { label: 'See all Tysons reviews on Google Maps', href: tysons.mapsUrl },
-        { label: 'See all Columbia reviews on Google Maps', href: lab.mapsUrl },
-      ]
-    : [{ label: 'See all reviews on Google Maps', href: lab.mapsUrl }];
+  const marqueeLinks = [{ label: 'See all reviews on Google Maps', href: rating.mapsUrl }];
   const featured = reviews.featured;
+  if (isVa && featured.location !== 'tysons') throw new Error(`VA page ${pageKey} features a Columbia review`);
   // The big rating next to the featured review is that review's own office rating.
   const featuredRating = locationRating(featured.location);
-  // VA pages call the Columbia reviews "Columbia, MD", not "Columbia lab".
-  const featuredOffice =
-    featured.location === 'tysons' ? 'our Tysons office' : isVa ? 'Columbia, MD' : 'our Columbia lab';
+  const featuredOffice = featured.location === 'tysons' ? 'our Tysons office' : 'our Columbia lab';
   const ratingBig = `Google rating of ${featuredOffice}`;
   const featuredMeta = isVa ? `Google review of ${featuredOffice} · ${featured.date}` : `Google review · ${featured.date}`;
 
@@ -79,7 +67,7 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
       : [
           {
             q: 'Do you recover phones or SD cards?',
-            a: 'Our lab specialises in hard drives, SSDs, RAID and servers. For phones, SD cards and USB sticks we’re usually not the right fit.',
+            a: `${isVa ? 'We specialise' : 'Our lab specialises'} in hard drives, SSDs, RAID and servers. For phones, SD cards and USB sticks we’re usually not the right fit.`,
           },
         ]),
   ];
@@ -111,7 +99,7 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
         />
         <WhatHappenedTiles />
         <ReviewMarquee reviews={reviews.strip} links={marqueeLinks} ratings={marqueeRatings} showOffice={isVa} />
-        <UrgencyBand template={template} />
+        <UrgencyBand template={template} va={isVa} />
         {templateId === 'raid' && <RaidFirstHour photo={photos.firstHour} />}
         <StatsBand />
         <SymptomGrid template={template} photos={photos.failures} va={isVa} />
@@ -126,7 +114,7 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
         <LpFaq items={faq} />
         <FinalCta area={area} heading={templateId === 'raid' ? 'Don’t give up on those drives yet' : 'Don’t give up on the drive yet'} />
       </main>
-      <LpFooter />
+      <LpFooter va={isVa} />
       <LpStickyBar tel={area.tel} phone={area.phone} callLabel={area.stickyCallLabel} topNote={area.pill} />
     </>
   );

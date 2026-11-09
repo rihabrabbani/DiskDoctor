@@ -5,7 +5,6 @@ import { getImageProps } from 'next/image';
 import Link from 'next/link';
 import { PHONE_TEL } from '@/lib/site';
 import { LAB_PHOTOS } from '@/data/labPhotos';
-import PhotoNote from '@/components/lab/PhotoNote';
 
 // Hero photo, art-directed: P1 (landscape) from 640 px up, P14 (vertical) on phones. One <picture>, so
 // each device downloads only its own photo. Lazy: the headline text is the LCP element (on phones the
@@ -13,7 +12,7 @@ import PhotoNote from '@/components/lab/PhotoNote';
 const HERO_DESKTOP = LAB_PHOTOS.P1;
 const HERO_MOBILE = LAB_PHOTOS.P14;
 // One <img> serves both photos, so its alt text fits both (each shows a technician at a clean hood).
-const HERO_ALT = 'Technician working on an open hard drive at a clean-air hood';
+const HERO_ALT = 'Technician working on an open hard drive at the clean-air hood in the Disk Doctors lab, Columbia, MD';
 const heroImg = getImageProps({
   src: HERO_DESKTOP.src,
   alt: HERO_ALT,
@@ -161,7 +160,6 @@ export default function Hero() {
                 <source media="(max-width: 639px)" srcSet={heroMobileSrcSet} sizes="100vw" />
                 <img {...heroImg} alt={HERO_ALT} className="object-cover" />
               </picture>
-              <PhotoNote />
             </div>
             <div className="hidden lg:block absolute -bottom-6 -left-6 h-24 w-24 bg-[var(--color-accent)] rounded-full opacity-80" />
             <div className="hidden lg:block absolute top-1/2 -right-6 h-16 w-16 bg-[var(--color-primary)] rounded-full opacity-60" />

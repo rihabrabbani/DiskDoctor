@@ -16,7 +16,6 @@ export const raidRecovery: CorePage = {
     'Power the array down and don’t rebuild it. We clone every member in our Columbia, MD lab and reconstruct RAID 0, 1, 5, 6 and 10 from the clones.',
   heroImage: LAB_PHOTOS.P17.src,
   heroImageAlt: LAB_PHOTOS.P17.alt,
-  heroPhotoNote: true,
   labPhoto: 'P16',
   sections: [
     {

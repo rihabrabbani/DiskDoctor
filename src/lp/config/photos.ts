@@ -9,7 +9,7 @@ export type LpPhotos = {
   failures?: LabPhotoCode[];
   /** RAID page only: next to "First hour after a RAID failure". */
   firstHour?: LabPhotoCode;
-  /** The lab photo block (desktop). */
+  /** Lab photos (desktop): in "A real lab in Columbia" on MD/RAID, their own section on VA. */
   lab: LabPhotoCode[];
   /** Phones show this one vertical photo instead of `lab`, when set. */
   labMobile?: LabPhotoCode;

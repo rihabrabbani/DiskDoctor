@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -58,14 +57,12 @@ export default function CorePageLayout({ page }: { page: CorePage }) {
           heroImageAlt={page.heroImageAlt}
           heroImagePosition={page.heroImagePosition}
           showImageBadges={!page.heroImageAlt}
-          heroPhotoNote={page.heroPhotoNote}
         />
 
         <section className="py-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl space-y-12">
-            {page.sections.map((section, index) => (
-              <Fragment key={section.heading}>
-              <div>
+            {page.sections.map((section) => (
+              <div key={section.heading}>
                 <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-4">
                   {section.heading}
                 </h2>
@@ -92,17 +89,6 @@ export default function CorePageLayout({ page }: { page: CorePage }) {
                   )}
                 </div>
               </div>
-              {/* After the first section, which names no office (later ones do), so the photo is
-                  never presented as a named office. */}
-              {index === 0 && page.labPhoto && (
-                <LabFigure
-                  code={page.labPhoto}
-                  sizes="(min-width: 768px) 768px, 100vw"
-                  aspect="16 / 9"
-                  className="text-[var(--color-text-secondary)]"
-                />
-              )}
-              </Fragment>
             ))}
           </div>
         </section>
@@ -180,6 +166,14 @@ export default function CorePageLayout({ page }: { page: CorePage }) {
               </a>
               .
             </p>
+            {page.labPhoto && (
+              <LabFigure
+                code={page.labPhoto}
+                sizes="(min-width: 768px) 768px, 100vw"
+                aspect="16 / 9"
+                className="pt-4 max-w-3xl mx-auto text-left text-[var(--color-text-secondary)]"
+              />
+            )}
             {page.relatedLinks && page.relatedLinks.length > 0 && (
               <p className="text-[var(--color-text-secondary)]">
                 Related:{' '}

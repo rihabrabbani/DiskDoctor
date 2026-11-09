@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
 import { PHONE_DISPLAY, PHONE_TEL } from '@/lib/site';
-import PhotoNote from '@/components/lab/PhotoNote';
 
 interface ServiceHeroProps {
   title: string;
@@ -24,8 +23,6 @@ interface ServiceHeroProps {
   heroImagePosition?: string;
   // Off for illustration photos, so the badges don't imply the photo shows the DiskDoctor lab.
   showImageBadges?: boolean;
-  // Lab photos: the (i) note about the photos.
-  heroPhotoNote?: boolean;
 }
 
 export default function ServiceHero({ 
@@ -39,7 +36,6 @@ export default function ServiceHero({
   heroImageAlt,
   heroImagePosition,
   showImageBadges = true,
-  heroPhotoNote = false,
 }: ServiceHeroProps) {
   const getLayoutClasses = () => {
     switch (layoutType) {
@@ -218,7 +214,6 @@ export default function ServiceHero({
                   className="object-cover rounded-2xl shadow-[var(--shadow-xl)] group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl" />
-                {heroPhotoNote && <PhotoNote />}
 
                 {/* Floating elements */}
                 {showImageBadges && (<>

@@ -186,6 +186,7 @@ export function WhatHappenedTiles() {
 }
 
 export function RaidFirstHour({ photo }: { photo?: LabPhotoCode }) {
+  // RAID page only, which is never a VA page.
   return (
     <section className="lp-reveal" data-track-position="raid_first_hour">
       <div className="lp-wrap lp-sec">
@@ -220,7 +221,7 @@ export function RaidFirstHour({ photo }: { photo?: LabPhotoCode }) {
   );
 }
 
-export function SymptomGrid({ template, photos = [] }: { template: Template; photos?: LabPhotoCode[] }) {
+export function SymptomGrid({ template, photos = [], va = false }: { template: Template; photos?: LabPhotoCode[]; va?: boolean }) {
   return (
     <section className="lp-reveal">
       <div className="lp-wrap lp-sec">
@@ -234,6 +235,7 @@ export function SymptomGrid({ template, photos = [] }: { template: Template; pho
                 code={code}
                 sizes={photos.length > 1 ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 1200px) 1100px, 100vw'}
                 aspect={photos.length > 1 ? '16 / 9' : '3 / 1'}
+                va={va}
               />
             ))}
           </div>
@@ -262,7 +264,7 @@ export function SymptomGrid({ template, photos = [] }: { template: Template; pho
   );
 }
 
-export function HowItWorks({ area, photos = [] }: { area: Area; photos?: LabPhotoCode[] }) {
+export function HowItWorks({ area, photos = [], va = false }: { area: Area; photos?: LabPhotoCode[]; va?: boolean }) {
   const steps = [
     { title: 'Tell us what happened', text: 'Use the form or call. Our lab line is answered 24/7.' },
     { title: 'Free diagnosis', text: area.step2 },
@@ -288,7 +290,7 @@ export function HowItWorks({ area, photos = [] }: { area: Area; photos?: LabPhot
         {photos.length > 0 && (
           <div className="lp-photo-row is-steps">
             {photos.map((code) => (
-              <LabFigure key={code} code={code} sizes="(min-width: 768px) 33vw, 100vw" />
+              <LabFigure key={code} code={code} sizes="(min-width: 768px) 33vw, 100vw" va={va} />
             ))}
           </div>
         )}
@@ -297,32 +299,43 @@ export function HowItWorks({ area, photos = [] }: { area: Area; photos?: LabPhot
   );
 }
 
-// Lab photo block. Its own section with a neutral heading, kept apart from the office copy: the
-// photos are never presented as a named office (see src/data/labPhotos.ts).
+// Lab photo grid (desktop) plus the one vertical photo phones get instead, when set.
+export function LabGrid({ photos, mobile, va = false }: { photos: LabPhotoCode[]; mobile?: LabPhotoCode; va?: boolean }) {
+  if (photos.length === 0) return null;
+  return (
+    <>
+      <div
+        className={`lp-lab-grid${mobile ? ' has-mobile' : ''}`}
+        style={{ '--lp-lab-n': photos.length } as React.CSSProperties}
+      >
+        {photos.map((code) => (
+          <LabFigure
+            key={code}
+            code={code}
+            sizes={`(min-width: 768px) ${Math.round(100 / photos.length)}vw, 100vw`}
+            aspect={photos.length >= 3 ? '4 / 3' : '16 / 9'}
+            va={va}
+          />
+        ))}
+      </div>
+      {mobile && (
+        <div className="lp-lab-mobile">
+          <LabFigure code={mobile} sizes="(max-width: 767px) 100vw, 1px" aspect="4 / 5" va={va} />
+        </div>
+      )}
+    </>
+  );
+}
+
+// VA pages: the Columbia lab photos get their own section with a neutral heading, apart from the
+// Tysons office block, and never name Columbia (MD pages show them in the office block instead).
 export function LabPhotos({ photos, mobile }: { photos: LabPhotoCode[]; mobile?: LabPhotoCode }) {
   if (photos.length === 0) return null;
   return (
     <section className="lp-reveal" data-track-position="lab_photos">
       <div className="lp-wrap lp-sec">
         <h2 className="lp-h2">At the recovery bench</h2>
-        <div
-          className={`lp-lab-grid${mobile ? ' has-mobile' : ''}`}
-          style={{ '--lp-lab-n': photos.length } as React.CSSProperties}
-        >
-          {photos.map((code) => (
-            <LabFigure
-              key={code}
-              code={code}
-              sizes={`(min-width: 768px) ${Math.round(100 / photos.length)}vw, 100vw`}
-              aspect={photos.length >= 3 ? '4 / 3' : '16 / 9'}
-            />
-          ))}
-        </div>
-        {mobile && (
-          <div className="lp-lab-mobile">
-            <LabFigure code={mobile} sizes="(max-width: 767px) 100vw, 1px" aspect="4 / 5" />
-          </div>
-        )}
+        <LabGrid photos={photos} mobile={mobile} va />
       </div>
     </section>
   );
@@ -363,7 +376,7 @@ export function FeaturedReview({
           <svg width="40" height="40" viewBox="0 0 24 24" fill="#B92D1A" aria-hidden="true">
             <path d="M7.2 6C4.9 7.3 3.5 9.6 3.5 12.6V18h6v-6H6.6c0-1.9.9-3.3 2.4-4.1zm10 0c-2.3 1.3-3.7 3.6-3.7 6.6V18h6v-6h-2.9c0-1.9.9-3.3 2.4-4.1z" />
           </svg>
-          <blockquote>{review.featuredText ?? review.excerpt}</blockquote>
+          <blockquote>{review.featuredBody}</blockquote>
           <figcaption>
             <Avatar name={review.name} photo={review.photo} size={48} />
             <div>
@@ -380,8 +393,9 @@ export function FeaturedReview({
   );
 }
 
-// No photos here: the Tysons office photo (next week) is the only one that may sit in this block.
-export function OfficeBlock({ area, mapsUrl }: { area: Area; mapsUrl: string }) {
+// MD and RAID pages: "A real lab in Columbia, Maryland" with the lab photos under the intro.
+// VA pages: the Tysons office block takes only the Tysons office photo (next week), so no photos yet.
+export function OfficeBlock({ area, mapsUrl, photos }: { area: Area; mapsUrl: string; photos?: React.ReactNode }) {
   return (
     <section className="lp-reveal" style={{ borderTop: '1px solid #E5E7EB' }}>
       <div className="lp-wrap lp-sec lp-office">
@@ -390,6 +404,7 @@ export function OfficeBlock({ area, mapsUrl }: { area: Area; mapsUrl: string }) 
             {area.officeH}
           </h2>
           <p>{area.officeP}</p>
+          {photos && <div className="lp-office-photos">{photos}</div>}
           <div className="lp-addr">
             <strong>{area.addrName}</strong>
             <span>{area.addr}</span>

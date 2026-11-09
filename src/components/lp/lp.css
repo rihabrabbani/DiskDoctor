@@ -155,7 +155,7 @@
 .lp-rcard-top .lp-stars { margin-left: auto; font-size: 13px; }
 .lp-rcard blockquote { margin: 0; font-size: 14px; line-height: 1.55; color: #1f2937; }
 /* Review text as on Google, cut only by this 4-line clamp; the card links to Google Maps. */
-.lp-rcard blockquote { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; overflow: hidden; }
+.lp-rcard blockquote { white-space: pre-line; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; overflow: hidden; }
 .lp-rcard-label { align-self: flex-start; font-size: 12px; font-weight: 600; color: var(--lp-text-2); background: var(--lp-grey-bg); border-radius: 999px; padding: 2px 10px; }
 .lp-rcard-more { margin-top: auto; font-size: 13px; font-weight: 600; color: var(--lp-red); }
 .lp-stars-off { color: var(--lp-line-strong); }
@@ -240,6 +240,8 @@
   .lp-lab-mobile { display: block; }
 }
 .lp-firsthour-photo { margin-top: 20px; color: var(--lp-text-2); }
+.lp-office-photos { margin: -6px 0 26px; }
+.lp-office-photos .lp-lab-grid, .lp-office-photos .lp-lab-mobile { margin-top: 0; }
 .lp-office-copy { flex: 1 1 420px; min-width: 0; }
 .lp-office-copy > p { margin: 0 0 22px; font-size: 17px; color: var(--lp-text-2); }
 .lp-addr { border: 1px solid var(--lp-line); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 16px; }
@@ -308,3 +310,5 @@
   .lp-marquee-toggle { display: none; }
   .lp-sticky, .lp-topbar { transition: none; }
 }
+/* Full Google review text keeps its own paragraph breaks. */
+.lp-featured blockquote { white-space: pre-line; }

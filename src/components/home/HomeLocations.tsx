@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { locations } from '@/data/locations';
 import { COLUMBIA_MAPS_URL, PHONE_TEL, TYSONS_MAPS_URL } from '@/lib/site';
+import LabFigure from '@/components/lab/LabFigure';
 
 const serviceAreas = locations.filter((location) => !location.isHeadOffice && !location.isAppointmentOnly);
 
@@ -16,6 +17,8 @@ export default function HomeLocations() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
           <div className="flex flex-col bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6 lg:p-8">
+            {/* P16. The Tysons card gets its own office photo when it arrives (manifest: null). */}
+            <LabFigure code="P16" sizes="(min-width: 768px) 45vw, 100vw" aspect="16 / 9" caption={false} className="mb-5" />
             <h3 className="text-xl font-semibold text-[var(--color-text-primary)] mb-1">Columbia, MD</h3>
             <p className="text-[var(--color-primary)] font-medium mb-4">Head office and recovery lab</p>
             <address className="not-italic text-[var(--color-text-secondary)] leading-relaxed mb-4">

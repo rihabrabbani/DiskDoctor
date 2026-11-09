@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Avatar, ReviewStars } from './ReviewBits';
 import type { LpReview } from '@/lp/reviews';
 
-const OFFICE_LABEL = { tysons: 'Tysons office', columbia: 'Columbia lab' } as const;
+const OFFICE_LABEL = { tysons: 'Tysons office', columbia: 'Columbia, MD' } as const;
 
 // CSS-only infinite scroll (track duplicated, translateX(-50%)), paused on hover/focus and by the
 // button (WCAG 2.2.2). Reduced motion: no animation, the duplicates hide and the strip scrolls.
@@ -43,7 +43,7 @@ export default function ReviewMarquee({
         <ReviewStars stars={r.stars} />
       </span>
       {showOffice && <span className="lp-rcard-label">{OFFICE_LABEL[r.location]}</span>}
-      <blockquote>{r.featuredText ?? r.excerpt}</blockquote>
+      <blockquote>{r.body}</blockquote>
       <span className="lp-rcard-more">Read more on Google Maps</span>
     </a>
   );

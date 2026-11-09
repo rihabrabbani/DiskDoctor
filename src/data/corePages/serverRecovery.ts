@@ -16,7 +16,6 @@ export const serverRecovery: CorePage = {
     'When a file server, database host or VMware datastore goes down, what you do in the first hour matters. Power it down, don’t rebuild, and call our 24/7 emergency line at (410) 937-7332.',
   heroImage: LAB_PHOTOS.P3.src,
   heroImageAlt: LAB_PHOTOS.P3.alt,
-  heroPhotoNote: true,
   labPhoto: 'P16',
   sections: [
     {

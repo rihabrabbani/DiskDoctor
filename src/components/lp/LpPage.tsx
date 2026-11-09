@@ -10,6 +10,7 @@ import {
   FeaturedReview,
   FinalCta,
   HowItWorks,
+  LabGrid,
   LabPhotos,
   LpFaq,
   LpFooter,
@@ -44,7 +45,7 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
   const marqueeRatings = isVa
     ? [
         { label: 'Tysons office', rating: tysons.rating },
-        { label: 'Columbia lab', rating: lab.rating },
+        { label: 'Columbia, MD', rating: lab.rating },
       ]
     : [{ label: 'Columbia lab', rating: lab.rating }];
   const marqueeLinks = isVa
@@ -56,9 +57,11 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
   const featured = reviews.featured;
   // The big rating next to the featured review is that review's own office rating.
   const featuredRating = locationRating(featured.location);
-  const featuredOffice = featured.location === 'tysons' ? 'Tysons office' : 'Columbia lab';
-  const ratingBig = `Google rating of our ${featuredOffice}`;
-  const featuredMeta = isVa ? `Google review of our ${featuredOffice} · ${featured.date}` : `Google review · ${featured.date}`;
+  // VA pages call the Columbia reviews "Columbia, MD", not "Columbia lab".
+  const featuredOffice =
+    featured.location === 'tysons' ? 'our Tysons office' : isVa ? 'Columbia, MD' : 'our Columbia lab';
+  const ratingBig = `Google rating of ${featuredOffice}`;
+  const featuredMeta = isVa ? `Google review of ${featuredOffice} · ${featured.date}` : `Google review · ${featured.date}`;
 
   const faq = [
     {
@@ -111,11 +114,15 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
         <UrgencyBand template={template} />
         {templateId === 'raid' && <RaidFirstHour photo={photos.firstHour} />}
         <StatsBand />
-        <SymptomGrid template={template} photos={photos.failures} />
-        <HowItWorks area={area} photos={HOW_IT_WORKS_PHOTOS} />
-        <LabPhotos photos={photos.lab} mobile={photos.labMobile} />
+        <SymptomGrid template={template} photos={photos.failures} va={isVa} />
+        <HowItWorks area={area} photos={HOW_IT_WORKS_PHOTOS} va={isVa} />
+        {isVa && <LabPhotos photos={photos.lab} mobile={photos.labMobile} />}
         <FeaturedReview rating={featuredRating} ratingBig={ratingBig} review={featured} meta={featuredMeta} />
-        <OfficeBlock area={area} mapsUrl={rating.mapsUrl} />
+        <OfficeBlock
+          area={area}
+          mapsUrl={rating.mapsUrl}
+          photos={isVa ? undefined : <LabGrid photos={photos.lab} mobile={photos.labMobile} />}
+        />
         <LpFaq items={faq} />
         <FinalCta area={area} heading={templateId === 'raid' ? 'Don’t give up on those drives yet' : 'Don’t give up on the drive yet'} />
       </main>

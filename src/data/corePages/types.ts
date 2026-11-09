@@ -29,15 +29,12 @@ export interface CorePage {
   heroEyebrow: string;
   heroIntro: string;
   heroImage: string | StaticImageData;
-  // True for lab photos (src/data/labPhotos.ts): shows the (i) photo note on the hero.
-  heroPhotoNote?: boolean;
   // Required when heroImage is one of the P1-7 illustration photos.
   heroImageAlt?: string;
   // CSS object-position for the hero photo, e.g. 'center bottom'.
   heroImagePosition?: string;
   sections: CorePageSection[];
-  // Lab photo shown after the sections, with its caption and the (i) note. Never inside copy that
-  // names an office.
+  // Lab photo under "Where the work is done", with its caption.
   labPhoto?: LabPhotoCode;
   // Real recoveries from Google reviews (spec v4 W4), shown above the scenarios.
   reviewsHeading?: string;

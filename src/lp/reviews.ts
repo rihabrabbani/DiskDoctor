@@ -5,6 +5,8 @@ import data from './data/lp-reviews.json';
 // Dev brief 9 Nov 2026, item 3: reviewers' stored profile photos (realPhoto) with initials as the
 // fallback; 4★ and up only; MD and RAID pages show Columbia reviews only; VA pages show Tysons reviews
 // first, then Columbia, and never put the Tysons rating next to Columbia reviews. No review counts.
+// 9 Nov follow-up: cards show the full Google text (`text`) when stored; Menna Khaliel and Kristin
+// deGhetaldi are off the landing pages; Moeez Ahmed is off the VA pages.
 
 export type LocationId = 'columbia' | 'tysons';
 
@@ -16,8 +18,10 @@ export type LpReview = {
   /** Stored Google profile photo, only when the reviewer has a real one (else render initials). */
   photo?: string;
   stars: number;
-  excerpt: string;
-  featuredText?: string;
+  /** What the card shows: the full Google text when stored, else the stored excerpt. */
+  body: string;
+  /** What the featured block shows. */
+  featuredBody: string;
   mapsUrl: string;
 };
 
@@ -32,11 +36,14 @@ type RawReview = {
   avatar: string;
   realPhoto?: boolean;
   stars: number;
+  text?: string;
   excerpt?: string;
   featuredText?: string;
 };
 
 const MIN_STARS = 4;
+const LP_EXCLUDE = new Set(['menna-khaliel', 'kristin-deghetaldi']);
+const VA_EXCLUDE = new Set(['moeez-ahmed']);
 
 const reviews = data.reviews as Record<string, RawReview>;
 const stackOnly = data.stackOnly as Record<string, RawReview>;
@@ -62,8 +69,8 @@ function toReview(id: string): LpReview {
     location,
     photo: hasPhoto(r) ? r.avatar : undefined,
     stars: r.stars,
-    excerpt: r.excerpt ?? '',
-    featuredText: r.featuredText,
+    body: r.text ?? r.featuredText ?? r.excerpt ?? '',
+    featuredBody: r.text ?? r.featuredText ?? r.excerpt ?? '',
     mapsUrl: data.locations[location].mapsUrl,
   };
 }
@@ -75,7 +82,8 @@ export function pageReviews(key: string) {
   const page = pages[key];
   if (!page) throw new Error(`lp-reviews.json: no page "${key}"`);
   const isVa = page.location === 'tysons';
-  const good = (r: LpReview) => r.stars >= MIN_STARS;
+  const allowed = (id: string) => !LP_EXCLUDE.has(id) && !(isVa && VA_EXCLUDE.has(id));
+  const good = (r: LpReview) => r.stars >= MIN_STARS && allowed(r.id);
 
   let strip = page.strip.map(toReview).filter(good);
   if (isVa) {
@@ -88,15 +96,18 @@ export function pageReviews(key: string) {
   // The hero stack sits next to the page's own rating, so it only shows that location's reviewers.
   // VA: every Tysons reviewer, real photos first. MD/RAID: the JSON stack, minus any Tysons reviewer.
   const heroStack = isVa
-    ? Object.values(reviews)
-        .filter((r) => r.location === 'tysons' && r.stars >= MIN_STARS)
+    ? Object.entries(reviews)
+        .filter(([id, r]) => allowed(id) && r.location === 'tysons' && r.stars >= MIN_STARS)
+        .map(([, r]) => r)
         .sort((a, b) => Number(hasPhoto(b)) - Number(hasPhoto(a)))
         .map(toAvatar)
     : page.heroStack
+        .filter(allowed)
         .map((id) => reviews[id] ?? stackOnly[id])
         .filter((r) => r.location === 'columbia' && r.stars >= MIN_STARS)
         .map(toAvatar);
 
+  if (!allowed(page.featured)) throw new Error(`lp-reviews.json: featured review "${page.featured}" is excluded on ${key}`);
   return { heroStack, featured: toReview(page.featured), strip };
 }
 

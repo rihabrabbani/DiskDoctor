@@ -34,7 +34,14 @@ declare global {
   }
 }
 
-export default function HubspotContactForm() {
+// Brief 9 Nov, item 5 (deploy B): the embed script (~1 MB of HubSpot JS, a main cause of blocking time)
+// loads only when needed: when the form comes within ~600 px of the viewport, or on the visitor's first
+// scroll, tap, click or keypress, whichever comes first. `eager` (on /contact, where the form is the
+// page) loads it at once, as before. The lead-source fallback and GTM's fill both listen for on-ready,
+// so they work however late the form loads.
+const FIRST_INTERACTION = ['scroll', 'pointerdown', 'touchstart', 'keydown'] as const;
+
+export default function HubspotContactForm({ eager = false }: { eager?: boolean }) {
   const [failed, setFailed] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -92,8 +99,6 @@ export default function HubspotContactForm() {
     return () => frame.remove();
   }, []);
 
-  // The embed pulls about 1 MB of HubSpot JS, so it loads only when the form is near the viewport.
-  // Most service pages have the form at the bottom; on /contact it is on screen and loads at once.
   useEffect(() => {
     if (document.getElementById(SCRIPT_ID)) return;
     const load = () => {
@@ -110,21 +115,32 @@ export default function HubspotContactForm() {
       document.body.appendChild(script);
     };
     const container = containerRef.current;
-    if (!container || !('IntersectionObserver' in window)) {
+    if (eager || !container || !('IntersectionObserver' in window)) {
       load();
       return;
     }
+    // `observer` is assigned below; cleanup only runs later (from an event or the observer callback).
+    const cleanup = () => {
+      observer.disconnect();
+      FIRST_INTERACTION.forEach((type) => window.removeEventListener(type, onInteraction));
+    };
+    const trigger = () => {
+      cleanup();
+      load();
+    };
+    function onInteraction() {
+      trigger();
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return;
-        observer.disconnect();
-        load();
+        if (entry.isIntersecting) trigger();
       },
-      { rootMargin: '800px 0px' },
+      { rootMargin: '600px 0px' },
     );
     observer.observe(container);
-    return () => observer.disconnect();
-  }, []);
+    FIRST_INTERACTION.forEach((type) => window.addEventListener(type, onInteraction, { passive: true, once: true }));
+    return cleanup;
+  }, [eager]);
 
   if (failed) {
     return <FormFallback />;

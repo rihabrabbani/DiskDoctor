@@ -73,7 +73,7 @@ export default function ContactPage() {
             </div>
 
             <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-[var(--shadow-md)] mb-10">
-              <HubspotContactForm />
+              <HubspotContactForm eager />
             </div>
 
             <div data-track-position="location_card" className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">

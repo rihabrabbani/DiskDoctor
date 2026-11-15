@@ -7,7 +7,7 @@ export const raidRecovery: CorePage = {
   navLabel: 'RAID & server',
   listTitle: 'RAID & server recovery',
   listDescription: 'RAID 0/1/5/6/10, failed rebuilds, controller failures',
-  seoTitle: 'RAID Data Recovery | RAID 0, 1, 5, 6, 10 & Failed Rebuilds | DiskDoctor',
+  seoTitle: 'RAID 5, 6 & 10 Data Recovery | Failed Rebuilds | Disk Doctors',
   seoDescription:
     'RAID 0, 1, 5, 6 and 10 recovery after failed rebuilds, dead disks and controller failures. Free evaluation, no data no charge. 24/7: (410) 937-7332.',
   h1: 'RAID data recovery',

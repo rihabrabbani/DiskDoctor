@@ -10,14 +10,25 @@ export interface LocationScenario {
   body: string;
 }
 
+export interface LocationReview {
+  quote: string;
+  author: string;
+  date: string;
+}
+
 export interface LocationCopy {
   kind: LocationKind;
   seoTitle: string;
   seoDescription: string;
   directAnswer: string;
   heroDescription: string;
+  /** Optional H2 above the intro paragraph. */
+  introHeading?: string;
+  /** Paragraphs; "[text](https://…)" becomes an external link. */
   paragraphs: string[];
   scenarios: LocationScenario[];
+  /** Real Google reviews of the Columbia lab picked for this page, in place of the general list. */
+  reviews?: LocationReview[];
   faqs: LocationFaq[];
   relatedServiceIds: string[];
   relatedLocationSlugs: string[];
@@ -38,24 +49,20 @@ export const locationCopy: Record<string, LocationCopy> = {
       'The lab sits at 10015 Old Columbia Rd Suite B 215, Columbia, MD 21046, in the Oakland Ridge industrial area off Route 175. Howard County businesses, law offices, medical practices, and home users drop devices here during weekday hours (8:30 a.m.–5:00 p.m.). After hours, leave a message or use the form; emergency intake is arranged by phone at (410) 937-7332.',
       'Walk-in: power the device down, do not run CHKDSK, Disk Utility, or RAID rebuilds, and bring any passwords you have. Mail-in: pad the drive, do not send it in a bubble envelope without a box, and include a note with the OS, what failed, and the files that matter. We confirm receipt, diagnose at no charge, and send a fixed quote.',
       'Logical jobs (deleted files, formatted volumes, failed Windows boot with a still-healthy head stack) often finish in 24–48 hours. Physical jobs — clicking ST/WD desktop drives, NVMe controller failure, multi-disk RAID — typically take 3–7 days because every platter or NAND chip is imaged before reconstruction.',
-      'Columbia is the head office for the Tysons appointment location and for service-area pages covering Baltimore, DC, Rockville, and the rest of the corridor. Media from those cities is processed here. There is no second cleanroom in Baltimore or DC; claiming otherwise would be a fake office.',
+      'Columbia is the head office for the Tysons appointment location and for service-area pages covering Baltimore, DC, Rockville, and the rest of the corridor. Media from those cities is processed here.',
       'If another shop already started a rebuild or ran recovery software, say so. We can often still image remaining sectors, but every prior write reduces the odds. The “no data, no charge” policy applies to the recovery fee after a successful evaluation, not to cases where the customer insists on destructive attempts we advise against.',
-      'The kinds of jobs that come in from around Howard County: QuickBooks on a NAS with a dying disk, imaging studies on a RAID 5, home-office photo libraries, and source code whose only copy lived on a laptop disk. Howard County is small enough that people drive; they do not need a second pin in the Mall in Columbia.',
+      'The kinds of jobs that come in from around Howard County: QuickBooks on a NAS with a dying disk, imaging studies on a RAID 5, home-office photo libraries, and source code whose only copy lived on a laptop disk. Most Howard County customers simply drive over.',
       'What evaluation means here: we identify the device, photograph serials, attempt a safe clone, and tell you whether the files you named are present on that clone. You are not buying a “repair.” A repaired original disk is a bonus when the mechanics allow it; the deliverable is your files on new media. If the clone is empty of what you asked for, you do not pay a recovery fee.',
       'Packaging for mail-in from elsewhere in Maryland: original drive in an anti-static bag if you have one, then a rigid box with two inches of foam or crumpled paper on all sides. Tape the box. Write “do not X-ray / magnetic media” only if your carrier asks; the important part is rigidity. Include OS, what failed, passwords you are willing to share, and the folder names that matter. We email when the box is opened.',
       'What we will not do in Columbia: install Windows on the failed disk as a first step, run a RAID vendor rebuild “to see if it comes back,” freeze a clicking drive, or promise a dollar amount before we have seen the media. Those are how remaining readable sectors disappear. The phone number for a real intake is (410) 937-7332, not a 1-800 franchise line.',
       'Evenings and weekends: the suite is not a 24-hour lobby. Leave a voicemail or the form. If the files are time-critical — payroll, a filing, a shoot that cannot be repeated — say so. Emergency imaging is scheduled by phone when a bench is free, not by an unstaffed drop slot.',
-      'How to find the suite: 10015 Old Columbia Rd is in Oakland Ridge, not the Mall in Columbia. Suite B 215 is an office-lab, not a storefront with a neon “computer repair” sign. If GPS drops you at the wrong building, call (410) 937-7332 from the parking lot. Bring the device powered down. We will not start a paid recovery until you accept a quote.',
+      'How to find the suite: 10015 Old Columbia Rd is in Oakland Ridge, not the Mall in Columbia. Suite B 215 is an office and lab, not a walk-in computer repair shop. If GPS drops you at the wrong building, call (410) 937-7332 from the parking lot. Bring the device powered down. We will not start a paid recovery until you accept a quote.',
       'What “no data, no charge” does not cover: a new return disk, or a job you told us to attempt after we said the platters were unreadable. It does cover the recovery fee when we cannot retrieve the files you named. That distinction is why we ask you to list the folders that matter on the form.',
     ],
     scenarios: [
       {
         title: 'Synology NAS with one clicking disk',
         body: 'A Synology NAS drops one disk with a click. The safe move is to stop the rebuild and bring both disks in. We clone the degraded disk and the healthy one, then recover the folders from the clones. Rebuilding inside the NAS is how the second disk fails.',
-      },
-      {
-        title: 'Formatted camera memory card',
-        body: 'A card is formatted in-camera by mistake. If nothing new has been shot onto it, the photo headers are often still there. We image the card and carve JPEG and RAW files without writing to it.',
       },
       {
         title: 'RAID 5 with two failed members',
@@ -106,7 +113,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       'What happens after your appointment: the device is logged, evaluated at no charge, and quoted before any paid work. You can collect recovered files in Tysons on a scheduled return or receive a shipped encrypted drive. Chain of custody is kept for business and legal jobs.',
       'Do not start a RAID rebuild on a Tysons-area NAS while you wait for an appointment. Power the array down. The second disk in a degraded RAID 5 often dies during the rebuild, which is the expensive case.',
       'Urgent jobs do not have to wait for a Tysons slot. Call our 24/7 emergency line at (410) 937-7332 and we will work out the fastest way to start. The appointment is about someone being at Boone Blvd, not about whether we will take the job.',
-      'How to reach the suite: 8300 Boone Blvd is the office tower next to the Tysons Corner corridor, not a mall kiosk inside Tysons I or II. Suite 513 is upstairs. Bring a photo ID if the building desk asks. Do not leave a drive with a receptionist who is not DiskDoctor staff. If you cannot get in, call (571) 202-8529 from the lobby.',
+      'How to reach the suite: 8300 Boone Blvd is the office tower next to the Tysons Corner corridor, not a mall inside Tysons I or II. Suite 513 is upstairs. Bring a photo ID if the building desk asks. Do not leave a drive with a receptionist who is not DiskDoctor staff. If you cannot get in, call (571) 202-8529 from the lobby.',
       'If you need to watch chain-of-custody paperwork signed, say so when you book; we can do that at your appointment and again at return.',
       'What to bring: the failed disk powered off, every RAID member, any passwords you will share, and a note with the OS and the folders that matter. Do not bring a running NAS that is still rebuilding. Power it down at the office before you drive.',
       'Return of files: encrypted USB or a new SATA/NVMe you approve, pickup in Tysons on a second appointment, or tracked shipping to your office. We do not email archives of recovered patient or legal files. If you want the original media back, say so; some physical jobs cannot reseal a drive that was opened for heads work.',
@@ -150,27 +157,27 @@ export const locationCopy: Record<string, LocationCopy> = {
     directAnswer:
       'There is no DiskDoctor storefront in Baltimore. Failed drives, SSDs and RAID members from Baltimore, Towson, Catonsville, and Glen Burnie are recovered at the Columbia, MD lab (about 25 minutes from downtown). Free evaluation. Call (410) 937-7332. Do not rebuild a clicking disk or a degraded RAID.',
     heroDescription:
-      'Baltimore-area recovery is handled at the Columbia laboratory, not a Harbor-front kiosk. Ship or drop the failed device. We image first and quote before paid work.',
+      'Baltimore-area recovery is handled at the Columbia laboratory. Ship or drop the failed device. We image first and quote before paid work.',
     paragraphs: [
-      'Baltimore jobs look like everyone else’s physical failures: 3.5" NAS disks that click after a power event, RAID 5 arrays in Harbor East offices that lost a second disk during a rebuild, and phones pulled from a wet bag. The work is the same. The lab is in Columbia, not a “Baltimore metro office” with a fake street.',
+      'Baltimore jobs look like everyone else’s physical failures: 3.5" NAS disks that click after a power event, RAID 5 arrays in Harbor East offices that lost a second disk during a rebuild, and laptops that stopped booting after a spill. The work is the same. The lab is in Columbia.',
       'Drive time from Inner Harbor to 10015 Old Columbia Rd is typically 25–40 minutes via I-95 or I-895. Towson, Dundalk, Catonsville, Pikesville, and Glen Burnie ship overnight if a trip is inconvenient. Pad the drive; do not send it loose in a bubble mailer.',
       'Port, hospital, and municipal contractors in Baltimore often need chain-of-custody notes. Say so on the form. We log intake, restrict access, and return files on new media. We do not browse contents beyond verification.',
       'If a Baltimore IT vendor already ran recovery software or a RAID rebuild, tell us. Remaining readable sectors can still be cloned. Every extra write lowers the odds.',
       'Turnaround matches the Columbia bench: 24–48 hours for logical, 3–7 days for physical and RAID, emergency imaging by phone. Evaluation is free. No data, no charge on the recovery fee.',
       'From Canton, Hampden, Federal Hill, and Locust Point the drive is I-95 south to 175 west, or 895 if the Fort McHenry Tunnel is faster that hour. From Towson and Timonium, 83 to the Beltway to 95 is the usual path. If you would rather not sit in traffic, overnight the disks; a padded box arrives before most people finish arguing with a local “computer repair” counter about RAID rebuilds.',
-      'Johns Hopkins, UMB, and hospital-adjacent offices: we recover unclassified research and practice files. Follow your IRB and HIPAA process for what you are allowed to send. We do not need a fake Baltimore “medical campus lab.” We need the media powered down and a note that chain-of-custody is required.',
+      'Johns Hopkins, UMB, and hospital-adjacent offices: we recover unclassified research and practice files. Follow your IRB and HIPAA process for what you are allowed to send. We need the media powered down and a note that chain-of-custody is required.',
       'Harbor East and Fells Point restaurants and retailers often lose a POS disk after a power blip. Do not reinstall the POS image on the failed module. Clone first. Ticket history and card-batch files are usually still on the NAND or platters if you stop using the device.',
       'If a Baltimore IT company already imaged the disk to a USB and the copy is incomplete, send both the original and their copy. Partial clones are still useful. Do not format the original “because we have a copy.”',
       'Federal Hill, Mount Vernon, and Charles Village apartments: a single USB disk with taxes and photos is the usual failure. Unplug it. Do not let Windows offer to format. Columbia is 25–40 minutes; overnight shipping is fine if you would rather not drive.',
-      'BWI-area and Glen Burnie offices: RAID members from a small server closet should travel together in one box, labeled by slot. A “Baltimore lab” pin in a directory that is not 10015 Old Columbia Rd is not this operation. The clone happens in Columbia.',
+      'BWI-area and Glen Burnie offices: RAID members from a small server closet should travel together in one box, labeled by slot. The clone happens in Columbia.',
       'If the disk clicked after a Harbor East power blip, do not keep the NAS on “so people can still work off the remaining disks.” That is a rebuild in slow motion. Power down and send the set.',
       'Pigtown, Locust Point, and Port Covington small businesses often keep the only copy of invoices on a desktop disk. When that disk clicks, a local “we’ll reinstall Windows” visit is the wrong first hour. Clone first in Columbia. Reinstall later on new media.',
       'Towson University-adjacent and county offices: unclassified student or business media only on this public form. Follow your records policy. We can log chain-of-custody; we cannot invent a Baltimore cleanroom that does not exist.',
       'Catonsville and Ellicott City (the Baltimore-side commute): you are closer to Columbia than downtown thinks. 40 to 29 is often faster than 95. Drop the device powered down. Do not copy “one more folder” in the parking lot.',
       'If a Harbor IT company quoted a rebuild on a clicking RAID 5, get a second opinion before they write a new member. The expensive Baltimore case is the second disk dying at 80% rebuild. We clone first. Evaluation is free once the members arrive.',
       'What to bring from Baltimore: the failed disk powered off, every RAID member, passwords you will share, and a note with the OS and the folders that matter. If you ship, use a rigid box and tracking. We email when the box is opened at Old Columbia Rd.',
-      'What happens next: free evaluation, fixed quote, clone, then files on new media. You can collect in Columbia or receive a shipped encrypted drive. We do not keep a Baltimore waiting room because there is no Baltimore storefront.',
-      'Rush jobs: say so on the form if payroll or a filing is stuck. Emergency imaging is scheduled by phone at (410) 937-7332. A Harbor-front kiosk cannot clone platters faster than a lab that already has the bench.',
+      'What happens next: free evaluation, fixed quote, clone, then files on new media. You can collect in Columbia or receive a shipped encrypted drive.',
+      'Rush jobs: say so on the form if payroll or a filing is stuck. Emergency imaging is scheduled by phone at (410) 937-7332.',
     ],
     scenarios: [
       {
@@ -186,18 +193,28 @@ export const locationCopy: Record<string, LocationCopy> = {
         body: 'Two disks in different mirrors fail. We clone every member, rebuild the RAID 10 layout in software and recover the files from the clones. A controller rebuild can finish the array off.',
       },
     ],
+    reviews: [
+      {
+        quote:
+          'My hard drive crashed and I lost all of my family photos… they were able to help get my photos back whereas the other company I previously contacted told me that the data wasn’t even recoverable.',
+        author: 'Gracie H.',
+        date: 'April 2025',
+      },
+      {
+        quote:
+          'I had a 15 year old external hard drive that was not powering on and it had ALL my family photos stored on it… the Disk Doctor was able to retrieve them all.',
+        author: 'Kylie B.',
+        date: 'March 2025',
+      },
+    ],
     faqs: [
       {
         question: 'Is there a DiskDoctor office in Baltimore?',
-        answer: 'No staffed Baltimore storefront. Recovery is at the Columbia, MD lab. Drop off there or ship from Baltimore, Towson, or Glen Burnie.',
+        answer: 'Recovery is at the Columbia, MD lab. Drop off there or ship from Baltimore, Towson, or Glen Burnie.',
       },
       {
         question: 'How fast can a Baltimore RAID come back?',
         answer: 'After the array arrives in Columbia, most RAID reconstructions take 3–7 days. Do not rebuild on site while you wait.',
-      },
-      {
-        question: 'Can you recover a phone from Baltimore the same week?',
-        answer: 'Often yes. Water-damaged and board-failed phones are chip-level jobs at the Columbia lab. Stop charging the device.',
       },
       {
         question: 'Do you serve the Port and downtown businesses?',
@@ -221,26 +238,26 @@ export const locationCopy: Record<string, LocationCopy> = {
     seoDescription:
       'Washington DC data recovery for government, legal, and business media at DiskDoctor’s Columbia MD lab. Free evaluation. Call (410) 937-7332.',
     directAnswer:
-      'DiskDoctor does not operate a storefront on the National Mall. DC, Georgetown, Capitol Hill, and Navy Yard recoveries are performed at the Columbia, MD lab. Government, legal, and contractor media is accepted with chain-of-custody. Free evaluation. Call (410) 937-7332. Do not image a classified or CUI disk with consumer software.',
+      'DiskDoctor has no office in Washington, DC; the lab is in Columbia, MD. DC, Georgetown, Capitol Hill, and Navy Yard recoveries are performed at the Columbia, MD lab. Government, legal, and contractor media is accepted with chain-of-custody. Free evaluation. Call (410) 937-7332. Do not image a classified or CUI disk with consumer software.',
     heroDescription:
-      'DC-area hard drive, SSD and RAID recovery through the Columbia laboratory. Built for legal, contractor, and office failures — not a tourist-page about monuments.',
+      'DC-area hard drive, SSD and RAID recovery through the Columbia laboratory. Built for legal, contractor and office failures.',
     paragraphs: [
-      'Washington jobs are often time-bound: a partner’s laptop died the night before a filing, a RAID holding discovery productions lost a disk, a phone with field photos will not boot. The laboratory that can clone those devices is in Columbia, Maryland, about 30–45 minutes from downtown depending on the Beltway.',
+      'Washington jobs are often time-bound: a partner’s laptop died the night before a filing, a RAID holding discovery productions lost a disk, an external drive with case files stopped showing up. The laboratory that can clone those devices is in Columbia, Maryland, about 30–45 minutes from downtown depending on the Beltway.',
       'We are not a federal contractor by default and we do not claim SCIF access on this page. If your media is classified, follow your agency’s procedure. For unclassified business, legal, and personal media, intake is the same: power down, no CHKDSK, no RAID rebuild, document the serials, and either drop at Columbia or ship with tracking.',
       'Chain of custody, restricted bench access, and return on encrypted drives are routine for DC law firms and contractors. Put that requirement on the form. We do not mine files for marketing and we do not keep copies longer than the agreed retention after you confirm the delivery disk.',
-      'Georgetown, Capitol Hill, Dupont, Foggy Bottom, Navy Yard, and Shaw are service areas, not fake offices. If a directory lists a DC street for DiskDoctor that is not 10015 Old Columbia Rd or the Tysons appointment suite, it is stale or belongs to another entity.',
+      'Georgetown, Capitol Hill, Dupont, Foggy Bottom, Navy Yard, and Shaw are service areas.',
       'Turnaround: logical 24–48 hours after arrival, physical/RAID 3–7 days, emergency by phone. Evaluation free. No data, no charge on the recovery fee.',
       'Driving from downtown: I-295 or 395 to the Beltway to 29 north, or 95 if that is moving. Metro does not reach the Columbia suite; our Tysons office on the Silver Line is closer, by appointment, if you will not drive to Howard County. Tysons is by appointment. Call ahead so someone is here to meet you.',
       'Law firms around Judiciary Square and K Street: BitLocker and FileVault volumes are routine. Bring the protector key or password. We will not “break” encryption as a service. If the SSD is not detected in firmware, chip-level work may still return an encrypted blob you can unlock in-house.',
       'Contractors in Navy Yard and Crystal City (the DC side of that commute): RAID 6 and virtual disks on failed members are the expensive cases. Photograph slot order. Do not let a hardware card finish a rebuild overnight “so it is ready in the morning.”',
-      'This page is not a guide to the monuments. If a directory still describes DiskDoctor with Mall copy, that is leftover tourism text from an older template. The service is laboratory recovery for failed media that happens to be used by people who work in the District.',
+      'The service is laboratory recovery for failed media that happens to be used by people who work in the District.',
       'Dupont, Logan, and Shaw offices: a partner laptop that died the night before a filing is the usual rush. Power it down. Do not run Startup Repair overnight. Drop in Columbia in the morning or ship with tracking. Our Tysons office is closer, by appointment, if you will not cross into Maryland.',
       'Georgetown and Foggy Bottom: Fusion Drives and failing NVMe modules are common. Disk Utility First Aid on a clicking HDD is a write. Imaging is a read. Bring the machine or the pulled storage.',
       'If a DC IT vendor already started a RAID rebuild “so it would be ready Monday,” stop it and send the members. Partial writes are often still reconstructable. Finishing the rebuild is how the second disk dies.',
       'Capitol Hill and Judiciary Square filings: a dead laptop the night before a deadline is not a reason to run Startup Repair until 3 a.m. Power it down. Columbia can image in the morning. Our Tysons office can see you by appointment if you will not cross into Maryland.',
       'Navy Yard and Southwest contractors: RAID 6 and virtual disks are the usual expensive case. Photograph slot order. Do not let a hardware card import a foreign configuration over a weekend. Unclassified media only unless your contracting officer says otherwise.',
       'Georgetown retailers and restaurants: a POS SSD that vanished from BIOS after a power blip still often clones. Do not reinstall the POS image on the failed module. Ticket history lives on the NAND until you overwrite it.',
-      'If a directory lists a National Mall address for DiskDoctor, ignore it. This operation’s streets are 10015 Old Columbia Rd in Columbia and 8300 Boone Blvd in Tysons (appointment). DC is a service area of those two, not a third laboratory.',
+      'Our addresses are 10015 Old Columbia Rd in Columbia and 8300 Boone Blvd in Tysons (by appointment). DC is a service area of those two.',
       'What to bring from DC: powered-down media, RAID members labeled by slot, BitLocker or FileVault keys if the volume is encrypted, and a note if chain-of-custody is required. Unclassified business and personal media only on this public form.',
       'What happens next: Columbia evaluates at no charge, quotes, clones, and returns files on new media. Pickup in Columbia, scheduled Tysons return, or tracked shipping. We do not email archives of recovered legal files.',
       'If you are on the Hill and cannot drive to Howard County, book Tysons. By appointment. Call ahead so someone is here to meet you. Do not leave a drive with a building receptionist who is not DiskDoctor staff.',
@@ -254,15 +271,25 @@ export const locationCopy: Record<string, LocationCopy> = {
         title: 'RAID 6 with a failed rebuild',
         body: 'A RAID 6 starts a rebuild, then a second disk slow-fails. We clone every member, including the disk that was being rebuilt, and reconstruct from parity. Stop the controller before it finishes.',
       },
+    ],
+    reviews: [
       {
-        title: 'Water-damaged iPhone',
-        body: 'A wet phone gets sealed in rice, which does nothing useful. Chip-level work in the Columbia lab is what reads the storage when the board won’t boot. Stop charging wet phones.',
+        quote:
+          'Our hard drive went down as a part of Western Digital’s hack in 2023… our business was at a stand still… we were back up and running in 24hours.',
+        author: 'Jennifer T.',
+        date: 'April 2023',
+      },
+      {
+        quote:
+          'Our RAID server unexpectedly crashed at our business… they diagnosed the issue, provided clear updates, and successfully recovered all our vital information.',
+        author: 'Moeez A.',
+        date: 'March 2025',
       },
     ],
     faqs: [
       {
         question: 'Where is DiskDoctor for Washington DC data recovery?',
-        answer: 'The lab is in Columbia, MD. DC is a service area. Drop off at the Columbia lab, book a Tysons appointment, or ship. There is no Mall kiosk.',
+        answer: 'The lab is in Columbia, MD. DC is a service area. Drop off at the Columbia lab, book a Tysons appointment, or ship.',
       },
       {
         question: 'Can you handle legal hold and chain of custody?',
@@ -292,28 +319,24 @@ export const locationCopy: Record<string, LocationCopy> = {
     kind: 'service-area',
     seoTitle: 'Data Recovery Rockville MD | Columbia Lab',
     seoDescription:
-      'Rockville and Montgomery County data recovery at DiskDoctor’s Columbia lab. Hard drive, RAID, SSD, phone. Free evaluation. Call (410) 937-7332.',
+      'Rockville and Montgomery County data recovery for hard drives, SSDs and RAID at our Columbia lab. Free evaluation. Call (410) 937-7332.',
     directAnswer:
       'Rockville data recovery is performed at DiskDoctor’s Columbia, MD lab, not a Rockville storefront. Montgomery County hard drives, SSDs and RAID arrays can be dropped in Columbia or shipped from Rockville, North Bethesda, or Gaithersburg. Free evaluation. Call (410) 937-7332.',
     heroDescription:
-      'Montgomery County recovery through the Columbia laboratory. Built for biotech, professional offices, and home NAS failures — not a park-guide page.',
+      'Montgomery County recovery through the Columbia laboratory. Built for biotech, professional offices and home NAS failures.',
     paragraphs: [
       'Rockville and North Bethesda produce a lot of NAS and workstation failures: 4-bay desktop RAIDs in home offices, lab PCs with research data, and BitLocker volumes that vanished after a firmware update. Those jobs need a clone, not another trip through Windows Startup Repair.',
       'There is no DiskDoctor street address in Rockville. The working lab is 10015 Old Columbia Rd, Columbia. Drive time is typically 30–40 minutes via 29 or 95/495. Gaithersburg, Derwood, Twinbrook, and White Flint ship as often as they drive.',
       'Biotech and professional offices in the Pike District should say if media contains regulated research or client files. We apply chain-of-custody and do not keep extra copies after you confirm delivery.',
-      '`data recovery rockville md` is already a query this site appears for. This page exists so that query lands on honest service-area copy, not a fake LocalBusiness pin in zip 20850.',
       'Turnaround and pricing policy match Columbia: free evaluation, fixed quote, no data no charge, 24–48 hours logical, 3–7 days physical/RAID.',
       'I-270 and the Pike: from Rockville Town Center, 270 to 495 to 29 is the usual drive to Old Columbia Rd. From North Bethesda and White Flint, 355 to the Beltway works when 270 is stopped. Gaithersburg and Germantown often ship; a morning drop in Columbia still beats a week of “repair software” on a clicking NAS.',
       'Pike & Rose and Twinbrook offices run a lot of 4-bay desktop RAIDs under desks. When one disk clicks, the enclosure’s “repair” button is a rebuild. Power the box down, label the slots, and bring all four. We clone in Columbia and reconstruct in software.',
-      'Montgomery County clinics and professional practices: say on the form if the volume holds patient or client files. We apply chain-of-custody and return on encrypted media. We do not need a Rockville storefront to do that.',
+      'Montgomery County clinics and professional practices: say on the form if the volume holds patient or client files. We apply chain-of-custody and return on encrypted media.',
       'If you already started a Synology or QNAP rebuild from a Rockville home office, stop it. Send the members anyway. Partial rebuilds are often still reconstructable from clones. Continuing the rebuild is how the second disk dies.',
-      'North Bethesda condos and Pike District offices: a 4-bay RAID under a desk is not a second laboratory. When one disk clicks, the enclosure’s repair button is a rebuild. Label the slots. Bring all four to Columbia or ship them padded, separately wrapped, in one box.',
       'Gaithersburg and Derwood: overnight to 10015 Old Columbia Rd is often faster than sitting on 270. Include OS, what failed, and the folder names that matter. We email when the box is opened.',
       'BitLocker volumes from Montgomery County professional offices: bring the protector key. We can image an undetected NVMe and return an encrypted blob you unlock in-house. We will not “break” BitLocker as a service.',
       'Twinbrook and White Flint home offices: Lightroom catalogs on a single 8TB disk are the usual failure. If the disk is clicking, stop the catalog. Every extra spin is how remaining photos disappear. Pad the drive and send it to Columbia.',
-      'Pike District biotech and professional suites: say on the form if the volume holds regulated research or client files. We apply chain-of-custody and return on encrypted media. We do not need a Rockville pin in 20850 to do that work.',
       'Gaithersburg life-science and engineering shops: RAID 1 pairs used for instruments should both travel, even if only one is clicking. The quiet mirror is often next. We clone both before anyone rebuilds.',
-      'If Google still shows a Rockville storefront for this lab, it is a leftover citation. The working address is 10015 Old Columbia Rd Suite B 215. Rockville is how you describe the customer, not a second cleanroom.',
       'What to bring from Rockville: powered-down NAS or disks, slot photos, BitLocker key if needed, and the folder names that matter. Montgomery County clinics should say if patient files are on the volume so we apply chain-of-custody.',
       'What happens next: Columbia evaluates free, quotes, clones, returns files on new media. Drive 29 or 270/495, or overnight the box. Book a Tysons appointment only if you live closer to Boone Blvd than to Oakland Ridge.',
       'If a Pike District IT person already ran recovery software on the live disks, tell us. Remaining readable sectors can still be cloned. Do not format the original because a partial USB copy exists.',
@@ -353,25 +376,21 @@ export const locationCopy: Record<string, LocationCopy> = {
         question: 'Is evaluation free?',
         answer: 'Yes. Fixed quote before work. No data, no charge on the recovery fee.',
       },
-      {
-        question: 'Can I drop a phone in Rockville?',
-        answer: 'Not at a Rockville storefront. Drop off at the Columbia lab, book a Tysons appointment, or ship the device powered off.',
-      },
     ],
     relatedServiceIds: ['raid-recovery', 'file-recovery', 'windows-recovery', 'mac-recovery'],
-    relatedLocationSlugs: ['columbia-md', 'potomac-md', 'washington-dc', 'tysons-va'],
+    relatedLocationSlugs: ['columbia-md', 'bethesda-md', 'potomac-md', 'washington-dc', 'tysons-va'],
   },
   'alexandria-va': {
     kind: 'service-area',
     seoTitle: 'Data Recovery Alexandria VA | Tysons Office',
     seoDescription:
-      'Alexandria VA data recovery for hard drives, SSDs and RAID. Our Tysons office by appointment, or ship it to us free both ways. Free evaluation. Call (410) 937-7332.',
+      'Alexandria VA data recovery for hard drives, SSDs and RAID. Tysons office by appointment, or ship it to us free both ways. Call (410) 937-7332.',
     directAnswer:
       'Alexandria does not have a DiskDoctor storefront. Old Town, Del Ray and Eisenhower Valley clients meet us at our Tysons office by appointment, or ship the drive to us free both ways. Free evaluation. Call (410) 937-7332.',
     heroDescription:
       'Hard drive, SSD and RAID recovery for Alexandria. Stop using a clicking drive. Do not rebuild a NAS.',
     paragraphs: [
-      'Alexandria failures are the usual mix: laptop disks that click on the GW Parkway commute and RAID boxes in home offices. None of that requires a fake Old Town address. It requires a careful clone of the failing disk before anything else is tried.',
+      'Alexandria failures are the usual mix: laptop disks that click on the GW Parkway commute and RAID boxes in home offices. It requires a careful clone of the failing disk before anything else is tried.',
       'Book an appointment at our Tysons office (8300 Boone Blvd), or ship it to us free both ways. Pickup is also available, call for details. Evaluation is free. No data, no charge.',
       'If a local repair shop already opened the drive, tell us. We can still image many of those, but an opened drive needs clean-room work, not another try on a counter.',
       'From Eisenhower Avenue and Huntington, the Beltway west to Tysons is a short drive if you booked a Boone Blvd appointment. Do not leave a clicking NAS running in a Del Ray office “until Friday.”',
@@ -396,7 +415,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     kind: 'service-area',
     seoTitle: 'Data Recovery Arlington VA | Tysons Office',
     seoDescription:
-      'Arlington VA data recovery for RAID, SSDs and hard drives. Our Tysons office by appointment, or ship it to us free both ways. Free evaluation. Call (410) 937-7332.',
+      'Arlington VA data recovery for RAID, SSDs and hard drives. Tysons office by appointment, or ship it to us free both ways. Call (410) 937-7332.',
     directAnswer:
       'Arlington, Rosslyn, Ballston and Crystal City data recovery: meet us at our Tysons office by appointment, or ship the drive to us free both ways. No Arlington storefront. Free evaluation. Call (410) 937-7332. Power down failed RAID and clicking disks.',
     heroDescription:
@@ -427,23 +446,19 @@ export const locationCopy: Record<string, LocationCopy> = {
     kind: 'service-area',
     seoTitle: 'Data Recovery Annapolis MD | Columbia Lab',
     seoDescription:
-      'Annapolis data recovery at DiskDoctor’s Columbia MD lab — not SEO services. Hard drive, RAID, phone. Free evaluation. Call (410) 937-7332.',
+      'Annapolis MD data recovery for hard drives, SSDs and RAID at our Columbia lab. Free evaluation, free shipping both ways. Call (410) 937-7332.',
     directAnswer:
-      'Annapolis and Anne Arundel County data recovery is done at the Columbia, MD lab. This is not an SEO or IT-retainer page. Failed drives and RAID arrays can be shipped from Annapolis or dropped in Columbia. Free evaluation. Call (410) 937-7332.',
+      'Annapolis and Anne Arundel County data recovery is done at the Columbia, MD lab. Failed drives and RAID arrays can be shipped from Annapolis or dropped in Columbia. Free evaluation. Call (410) 937-7332.',
     heroDescription:
-      'Anne Arundel recovery through the Columbia laboratory. Hard drives, SSDs and RAID — not “SEO strategies.”',
+      'Anne Arundel recovery through the Columbia laboratory. Hard drive, SSD and RAID recovery for Anne Arundel County.',
     paragraphs: [
-      'Annapolis media fails the same way as everywhere else: marine-electronics laptops, home NAS units, and phones that went over a gunwale. Rice and freezer tricks waste time. Power down and send the device.',
+      'Annapolis media fails the same way as everywhere else: marine-electronics laptops, home NAS units, and laptops that went over a gunwale. Rice and freezer tricks waste time. Power down and send the device.',
       'No Annapolis storefront. Columbia lab. Evaluation free.',
       'From City Dock or West Annapolis, 50 west to 97 to 32 to Columbia is the usual drive. From Arnold and Severna Park, 97 north works. Overnight shipping from Anne Arundel often beats sitting on 50 on a Friday.',
       'Marine electronics and boat-soaked laptops: do not power them. Salt water plus a charger is how boards die. We recover what the NAND still holds after cleaning; we do not “fix the laptop” as a first step.',
       'State-adjacent offices in Annapolis: unclassified business media only on this public form. Follow your agency’s rules for anything else. Chain-of-custody is available when you ask.',
     ],
     scenarios: [
-      {
-        title: 'Water-damaged phone that won’t boot',
-        body: 'The board won’t boot after water damage. Chip-level extraction in the Columbia lab can still read the storage.',
-      },
     ],
     faqs: [
       { question: 'Annapolis shop?', answer: 'No. Columbia, MD lab.' },
@@ -451,20 +466,20 @@ export const locationCopy: Record<string, LocationCopy> = {
       { question: 'Naval Academy / government media?', answer: 'Unclassified personal and business media yes. Follow your organization’s rules for anything else.' },
       { question: 'Cost?', answer: 'Free evaluation. No data, no charge on the recovery fee.' },
     ],
-    relatedServiceIds: ['windows-recovery', 'raid-recovery', 'photo-recovery', 'file-recovery'],
+    relatedServiceIds: ['windows-recovery', 'raid-recovery', 'mac-recovery', 'file-recovery'],
     relatedLocationSlugs: ['columbia-md', 'baltimore-md', 'washington-dc', 'alexandria-va'],
   },
   'frederick-md': {
     kind: 'service-area',
     seoTitle: 'Data Recovery Frederick MD | Columbia Lab',
     seoDescription:
-      'Frederick MD data recovery via DiskDoctor’s Columbia lab. Hard drive, RAID, phone. Free evaluation. Call (410) 937-7332.',
+      'Frederick MD data recovery for hard drives, SSDs and RAID at our Columbia lab. Free evaluation, free shipping both ways. Call (410) 937-7332.',
     directAnswer:
       'Frederick County data recovery is performed in Columbia, MD. No Frederick storefront. Ship or drop failed drives and RAID arrays. Free evaluation. Call (410) 937-7332.',
     heroDescription:
       'Frederick-area recovery at the Columbia laboratory. Stop using a clicking disk. Do not rebuild a NAS.',
     paragraphs: [
-      'Frederick, Urbana, and New Market jobs are often farm-office NAS units and workstation disks that clicked after a storm. Imaging in Columbia is the path. A fake downtown Frederick pin does not clone platters.',
+      'Frederick, Urbana, and New Market jobs are often farm-office NAS units and workstation disks that clicked after a storm. Imaging in Columbia is the path.',
       'From downtown Frederick, 70 east to 29 south is the usual drive to Old Columbia Rd. From Urbana and the 270 corridor, 70 or 270 to the Beltway also works. If the disk is clicking, do not copy “one more folder” before you leave.',
       'Storm and power-event failures are common in Frederick County: a NAS that clicked after a outage, a desktop that would not boot after a surge. Power down. A UPS does not repair a head stack that already started clicking.',
       'Contractors and farms running RAID 1 for invoices: bring both disks even if only one is clicking. The “healthy” mirror is often next. We clone both in Columbia.',
@@ -492,7 +507,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     directAnswer:
       'McLean data recovery goes through our Tysons office (8300 Boone Blvd Suite 513), by appointment, or ship the drive to us free both ways. No McLean storefront. Call (410) 937-7332 before you drive to Tysons.',
     heroDescription:
-      'McLean and Langley clients can meet us at our Tysons office by appointment. Recovery is careful imaging work, not a mall kiosk.',
+      'McLean and Langley clients can meet us at our Tysons office by appointment. Recovery is careful imaging work.',
     paragraphs: [
       'McLean is minutes from the Tysons office. By appointment. Call ahead so someone is here to meet you.',
       'From downtown McLean or Langley, Boone Blvd is a short drive. Call (410) 937-7332 first to book a time.',
@@ -522,13 +537,13 @@ export const locationCopy: Record<string, LocationCopy> = {
     directAnswer:
       'Great Falls does not have a DiskDoctor office. Book an appointment at our Tysons office, or ship the drive to us free both ways. Free evaluation. Call (410) 937-7332.',
     heroDescription:
-      'Great Falls and Reston-area recovery, with our Tysons office by appointment. Not a park brochure.',
+      'Great Falls and Reston-area recovery, with our Tysons office by appointment.',
     paragraphs: [
       'Home NAS and workstation failures in Great Falls: book a Tysons appointment, or ship the drive to us free both ways. Power down clicking disks.',
-      'Great Falls, Reston, and Herndon are not a park-brochure service. The work is cloning a clicking 8TB desktop disk or a 4-bay RAID under a home-office desk. Our Tysons office is the closest place to meet us, by appointment.',
+      'The work is cloning a clicking 8TB desktop disk or a 4-bay RAID under a home-office desk. Our Tysons office is the closest place to meet us, by appointment.',
       'Photo libraries on a single disk are the usual Great Falls failure. If the disk is clicking, stop the Lightroom catalog on that volume. Every extra spin is a write-adjacent risk. Bring the disk in a padded box.',
       'Mail-in from Great Falls: rigid box, two inches of padding, powered down, note with the folders that matter. We confirm receipt by email.',
-      'Reston and Herndon neighbors use the same path: our Tysons office by appointment, or ship it to us free both ways. There is no Great Falls storefront and no park-ranger copy on this page. The job is cloning a failed disk.',
+      'Reston and Herndon neighbors use the same path: our Tysons office by appointment, or ship it to us free both ways. There is no Great Falls office; our Tysons office is the closest, by appointment. The job is cloning a failed disk.',
     ],
     scenarios: [
       {
@@ -542,21 +557,90 @@ export const locationCopy: Record<string, LocationCopy> = {
       { question: 'Timeline?', answer: '24–48 hours logical after arrival.' },
       { question: 'Cost?', answer: 'Free evaluation. No data, no charge.' },
     ],
-    relatedServiceIds: ['file-recovery', 'raid-recovery', 'photo-recovery', 'windows-recovery'],
+    relatedServiceIds: ['file-recovery', 'raid-recovery', 'mac-recovery', 'windows-recovery'],
     relatedLocationSlugs: ['tysons-va', 'mclean-va', 'arlington-va', 'potomac-md'],
+  },
+  'bethesda-md': {
+    kind: 'service-area',
+    seoTitle: 'Data Recovery Bethesda MD | Columbia Lab',
+    seoDescription:
+      'Bethesda MD data recovery for hard drives, SSDs and RAID at our Columbia lab. Free evaluation, free shipping both ways. Call (410) 937-7332.',
+    directAnswer:
+      'Bethesda data recovery is done at our ISO 9001 certified lab in Columbia, MD. Hard drives, SSDs and RAID arrays from Bethesda, Chevy Chase and North Bethesda can be dropped off in Columbia or shipped to us free both ways. Free evaluation. Call (410) 937-7332.',
+    heroDescription:
+      'Montgomery County recovery through the Columbia laboratory, for professional offices, research teams and home offices.',
+    introHeading: 'Who we help in Bethesda',
+    paragraphs: [
+      'Downtown Bethesda has a workforce of more than 43,000 people, according to Montgomery County planners cited by the [Bethesda Urban Partnership](https://bethesda.org/bethesda/facts-figures). Many work in health research, hospitality headquarters, defense and professional offices around the National Institutes of Health and Walter Reed. The failures we see from the area follow that mix: a laptop SSD holding the only copy of a grant draft, an office NAS that reports a degraded volume, a BitLocker-encrypted workstation that stopped booting after an update, or an external drive full of family photos in a Chevy Chase home office.',
+      'Getting your drive to the lab: We don’t have an office in Bethesda. The lab is at 10015 Old Columbia Rd, Columbia, MD, about 30 miles away by the Beltway and US-29 or I-95. Allow extra time at rush hour. If the drive is hard to bring in, ship it to us: shipping both ways is free, and we email you when the box is opened. Pickup is also available; call (410) 937-7332 for details.',
+      'Research, clinical and client files: Tell us on the form if the drive holds patient records, regulated research data or client files. We log intake, photograph serial numbers, restrict access to the bench, look at files only to confirm the recovery worked, and return your data on new media, encrypted on request. We provide a written chain of custody on request. Government-owned or classified media should follow your agency’s own procedure before it leaves the building.',
+      'Encrypted laptops: Most office laptops in Bethesda use BitLocker or FileVault. Bring the recovery key, or have your IT team ready to unlock the recovered image. We recover the encrypted data and you unlock it; we don’t break encryption.',
+      'What to do before you bring it in: Stop using the device. Don’t run recovery software on a drive that clicks, beeps or disappears. Don’t start a NAS “repair” or rebuild. Write down which files matter most, because that helps us check the result.',
+    ],
+    scenarios: [
+      {
+        title: 'Laptop SSD that stopped booting',
+        body: 'A laptop with the only copy of a long report stops booting and the SSD no longer shows up. We work on the drive’s controller to read the flash, then copy the files to new media.',
+      },
+      {
+        title: 'Office NAS with a degraded volume',
+        body: 'A 4-bay NAS under a desk warns that one disk failed. Power it down and bring all the disks. We clone each one and rebuild the volume from the clones, so the originals are never stressed by a rebuild.',
+      },
+      {
+        title: 'External drive with family photos',
+        body: 'An external drive that held years of photos stops mounting after it fell off a desk. We image it in the clean room and recover the photo library to a new drive.',
+      },
+    ],
+    reviews: [
+      {
+        quote:
+          'My computer force reset itself while I was working on my graduate thesis, and suddenly my computer’s SSD corrupted… Disk Doctors were able to recover all my files.',
+        author: 'Emma S.',
+        date: 'July 2026',
+      },
+      {
+        quote: 'Our hard drive went down as a part of Western Digital’s hack in 2023… we were back up and running in 24hours.',
+        author: 'Jennifer T.',
+        date: 'April 2023',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is there a data recovery lab in Bethesda, MD?',
+        answer: 'Our recovery lab is in Columbia, MD, about 30 miles from Bethesda. You can drop your drive off there on weekdays or ship it to us free both ways.',
+      },
+      {
+        question: 'How do I get a drive from Bethesda to your lab?',
+        answer: 'Drive it to 10015 Old Columbia Rd in Columbia, or ship it with tracking. Shipping both ways is free. Pickup is available; call (410) 937-7332 for details.',
+      },
+      {
+        question: 'How long does recovery take?',
+        answer: 'Logical recoveries usually take 24–48 hours after the drive arrives. Physical and RAID recoveries usually take 3–7 days. Emergency handling is available.',
+      },
+      {
+        question: 'Can you recover an encrypted laptop from a Bethesda office?',
+        answer: 'Yes, if you have the BitLocker or FileVault recovery key. We recover the encrypted data and you or your IT team unlock it.',
+      },
+      {
+        question: 'Is the evaluation free?',
+        answer: 'Yes. The evaluation is free, you get a fixed quote before any paid work, and if we can’t recover the data you need, you don’t pay the recovery fee.',
+      },
+    ],
+    relatedServiceIds: ['raid-recovery', 'ssd-recovery', 'windows-recovery', 'mac-recovery'],
+    relatedLocationSlugs: ['potomac-md', 'rockville-md'],
   },
   'potomac-md': {
     kind: 'service-area',
     seoTitle: 'Data Recovery Potomac MD | Columbia Lab',
     seoDescription:
-      'Potomac MD data recovery via DiskDoctor’s Columbia lab. Hard drive, RAID, phone. Free evaluation. Call (410) 937-7332.',
+      'Potomac MD data recovery for hard drives, SSDs and RAID at our Columbia lab. Free evaluation, free shipping both ways. Call (410) 937-7332.',
     directAnswer:
       'Potomac and Bethesda-adjacent recoveries are done at the Columbia, MD lab. No Potomac storefront. Free evaluation. Call (410) 937-7332.',
     heroDescription:
       'Potomac-area hard drive and RAID recovery at the Columbia laboratory. Stop using a failing disk.',
     paragraphs: [
       'Potomac home offices often run large photo and video volumes on desktop RAIDs. When a member clicks, power the box down and send every disk. Rebuilds are how the second disk dies.',
-      'From Potomac Village, 189 to 495 to 29 is a common drive to Columbia. Bethesda-adjacent streets can also use Tysons by appointment if that is shorter. There is no Potomac storefront and no “Bethesda lab.”',
+      'From Potomac Village, 189 to 495 to 29 is a common drive to Columbia. Bethesda-adjacent streets can also use Tysons by appointment if that is shorter. There is no Potomac office.',
       'Video and photo archives on RAID 5 are the expensive Potomac case. One clicking member plus a rebuild is two holes in the stripe. Label the slots. Bring all disks. We reconstruct from clones in Columbia.',
       'Mac desktops and Fusion pairs are common in Potomac households. If Disk Utility cannot repair the volume, stop. First Aid on a clicking HDD is a write. Imaging is a read.',
       'Bethesda-adjacent clients can book a Tysons appointment if that is shorter than Columbia. By appointment. Call ahead so someone is here to meet you.',
@@ -573,7 +657,7 @@ export const locationCopy: Record<string, LocationCopy> = {
       { question: 'Timeline?', answer: '24–48 hours logical after arrival; 3–7 days RAID.' },
       { question: 'Cost?', answer: 'Free evaluation. No data, no charge.' },
     ],
-    relatedServiceIds: ['raid-recovery', 'photo-recovery', 'mac-recovery', 'file-recovery'],
-    relatedLocationSlugs: ['columbia-md', 'rockville-md', 'tysons-va', 'mclean-va'],
+    relatedServiceIds: ['raid-recovery', 'windows-recovery', 'mac-recovery', 'file-recovery'],
+    relatedLocationSlugs: ['columbia-md', 'bethesda-md', 'rockville-md', 'tysons-va', 'mclean-va'],
   },
 };

@@ -6,9 +6,9 @@ export const virtualRecovery: CorePage = {
   navLabel: 'Virtual machine recovery',
   listTitle: 'Virtual machine recovery',
   listDescription: 'VMware, Hyper-V and other virtual machines and datastores',
-  seoTitle: 'Virtual Machine Data Recovery | VMware & Hyper-V | DiskDoctor',
+  seoTitle: 'Virtual Machine Data Recovery | VMware & Hyper-V | Disk Doctors',
   seoDescription:
-    'Recovery for lost or corrupted VMware and Hyper-V virtual machines, VMDK and VHDX files and datastores. Free evaluation, fixed quote, no data no charge. 24/7: (410) 937-7332.',
+    'Recovery for lost or corrupted VMware and Hyper-V virtual machines, VMDK and VHDX files and datastores. Free evaluation, fixed quote, no data no charge.',
   h1: 'Virtual machine data recovery',
   heroEyebrow: 'VMware, Hyper-V and virtual disks',
   heroIntro:

@@ -32,13 +32,13 @@ export const locations: LocationData[] = [
     coordinates: { lat: 39.2037, lng: -76.8610 },
     isHeadOffice: true,
     metaDescription: "Columbia MD data recovery lab at 10015 Old Columbia Rd. Hard drive, SSD, RAID and server recovery. Free evaluation. No data, no charge. Call (410) 937-7332.",
-    heroDescription: "The Columbia lab is the working cleanroom for Maryland, DC, and Northern Virginia jobs. Drop off a failed disk, RAID member, or phone here. We image first, quote before paid work, and return files on new media.",
+    heroDescription: "The Columbia lab is the working cleanroom for Maryland, DC, and Northern Virginia jobs. Drop off a failed disk, SSD or RAID member here. We image first, quote before paid work, and return files on new media.",
     localKeywords: [
       'data recovery Columbia MD',
       'hard drive recovery Columbia Maryland',
       'SSD recovery Columbia',
       'RAID recovery Columbia MD',
-      'iPhone data recovery Columbia',
+      'NAS recovery Columbia MD',
       'laptop data recovery Columbia Maryland'
     ],
     nearbyAreas: [
@@ -62,7 +62,7 @@ export const locations: LocationData[] = [
     zipCode: '21201',
     coordinates: { lat: 39.2904, lng: -76.6122 },
     metaDescription: "Baltimore data recovery via DiskDoctor’s Columbia MD lab. Hard drive, SSD, RAID and server recovery. Free evaluation. No data, no charge. Call (410) 937-7332.",
-    heroDescription: "Baltimore-area recovery is handled at the Columbia laboratory, not a Harbor-front kiosk. Ship or drop the failed device. We image first and quote before paid work.",
+    heroDescription: "Baltimore-area recovery is handled at the Columbia laboratory. Ship or drop the failed device. We image first and quote before paid work.",
     localKeywords: [
       'data recovery Baltimore MD',
       'hard drive recovery Baltimore Maryland',
@@ -91,7 +91,7 @@ export const locations: LocationData[] = [
     zipCode: '20001',
     coordinates: { lat: 38.9072, lng: -77.0369 },
     metaDescription: "Washington DC data recovery for government, legal, and business media at DiskDoctor’s Columbia MD lab. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "DC-area hard drive, SSD and RAID recovery through the Columbia laboratory. Built for legal, contractor, and office failures — not a tourist-page about monuments.",
+    heroDescription: "DC-area hard drive, SSD and RAID recovery through the Columbia laboratory. Built for legal, contractor and office failures.",
     localKeywords: [
       'data recovery Washington DC',
       'government data recovery DC',
@@ -177,8 +177,8 @@ export const locations: LocationData[] = [
     address: 'Serving Rockville Metro Area',
     zipCode: '20850',
     coordinates: { lat: 39.0840, lng: -77.1528 },
-    metaDescription: "Rockville and Montgomery County data recovery at DiskDoctor’s Columbia lab. Hard drive, RAID, SSD, phone. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "Montgomery County recovery through the Columbia laboratory. Built for biotech, professional offices, and home NAS failures — not a park-guide page.",
+    metaDescription: "Rockville and Montgomery County data recovery for hard drives, SSDs and RAID at our Columbia lab. Free evaluation. Call (410) 937-7332.",
+    heroDescription: "Montgomery County recovery through the Columbia laboratory. Built for biotech, professional offices and home NAS failures.",
     localKeywords: [
       'data recovery Rockville MD',
       'Montgomery County data recovery',
@@ -198,6 +198,31 @@ export const locations: LocationData[] = [
     ]
   },
   {
+    slug: 'bethesda-md',
+    city: 'Bethesda',
+    state: 'Maryland',
+    fullName: 'Bethesda, MD',
+    phone: '(410) 937-7332',
+    address: 'Serving Bethesda Metro Area',
+    zipCode: '20814',
+    coordinates: { lat: 38.9807, lng: -77.1003 },
+    metaDescription: "Bethesda MD data recovery for hard drives, SSDs and RAID at our Columbia lab. Free evaluation, free shipping both ways. Call (410) 937-7332.",
+    heroDescription: "Montgomery County recovery through the Columbia laboratory, for professional offices, research teams and home offices.",
+    localKeywords: [
+      'data recovery Bethesda MD',
+      'hard drive recovery Bethesda',
+      'SSD recovery Bethesda MD',
+      'RAID recovery Bethesda'
+    ],
+    nearbyAreas: [
+      'Chevy Chase',
+      'North Bethesda',
+      'Friendship Heights',
+      'Kensington',
+      'Garrett Park'
+    ]
+  },
+  {
     slug: 'annapolis-md',
     city: 'Annapolis',
     state: 'Maryland',
@@ -206,8 +231,8 @@ export const locations: LocationData[] = [
     address: 'Serving Annapolis Metro Area',
     zipCode: '21401',
     coordinates: { lat: 39.1612, lng: -76.5197 },
-    metaDescription: "Annapolis data recovery at DiskDoctor’s Columbia MD lab — not SEO services. Hard drive, RAID, phone. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "Anne Arundel recovery through the Columbia laboratory. Hard drives, SSDs and RAID — not “SEO strategies.”",
+    metaDescription: "Annapolis MD data recovery for hard drives, SSDs and RAID at our Columbia lab. Free evaluation, free shipping both ways. Call (410) 937-7332.",
+    heroDescription: "Anne Arundel recovery through the Columbia laboratory. Hard drive, SSD and RAID recovery for Anne Arundel County.",
     localKeywords: [
       'data recovery Annapolis MD',
       'Anne Arundel County data recovery',
@@ -235,7 +260,7 @@ export const locations: LocationData[] = [
     address: 'Serving Frederick Metro Area',
     zipCode: '21701',
     coordinates: { lat: 39.4143, lng: -77.4105 },
-    metaDescription: "Frederick MD data recovery via DiskDoctor’s Columbia lab. Hard drive, RAID, phone. Free evaluation. Call (410) 937-7332.",
+    metaDescription: "Frederick MD data recovery for hard drives, SSDs and RAID at our Columbia lab. Free evaluation, free shipping both ways. Call (410) 937-7332.",
     heroDescription: "Frederick-area recovery at the Columbia laboratory. Stop using a clicking disk. Do not rebuild a NAS.",
     localKeywords: [
       'data recovery Frederick MD',
@@ -327,7 +352,7 @@ export const locations: LocationData[] = [
     zipCode: '22066',
     coordinates: { lat: 39.0012, lng: -77.2883 },
     metaDescription: "Great Falls VA data recovery with our Tysons office by appointment, or ship it to us free both ways. Free evaluation. Call (410) 937-7332.",
-    heroDescription: "Great Falls and Reston-area recovery, with our Tysons office by appointment. Not a park brochure.",
+    heroDescription: "Great Falls and Reston-area recovery, with our Tysons office by appointment.",
     localKeywords: [
       'data recovery Great Falls VA',
       'Great Falls Virginia data recovery',
@@ -356,7 +381,7 @@ export const locations: LocationData[] = [
     address: 'Serving Potomac Metro Area',
     zipCode: '20854',
     coordinates: { lat: 39.0182, lng: -77.2086 },
-    metaDescription: "Potomac MD data recovery via DiskDoctor’s Columbia lab. Hard drive, RAID, phone. Free evaluation. Call (410) 937-7332.",
+    metaDescription: "Potomac MD data recovery for hard drives, SSDs and RAID at our Columbia lab. Free evaluation, free shipping both ways. Call (410) 937-7332.",
     heroDescription: "Potomac-area hard drive and RAID recovery at the Columbia laboratory. Stop using a failing disk.",
     localKeywords: [
       'data recovery Potomac MD',

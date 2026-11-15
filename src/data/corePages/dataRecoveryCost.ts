@@ -6,9 +6,9 @@ export const dataRecoveryCost: CorePage = {
   navLabel: 'Cost',
   listTitle: 'Data recovery cost',
   listDescription: 'How the free evaluation and fixed quote work',
-  seoTitle: 'How Much Does Data Recovery Cost? | Free Evaluation | DiskDoctor',
+  seoTitle: 'How Much Does Data Recovery Cost? | Free Evaluation | Disk Doctors',
   seoDescription:
-    'What drives the cost of hard drive, SSD and RAID recovery, how our free evaluation and fixed quote work, and why there’s no charge if we can’t recover your data.',
+    'What drives the cost of hard drive, SSD and RAID recovery, how our free evaluation and fixed quote work, and why there is no charge if we recover nothing.',
   h1: 'How much does data recovery cost?',
   heroEyebrow: 'Free evaluation. Fixed quote.',
   heroIntro:
@@ -35,6 +35,26 @@ export const dataRecoveryCost: CorePage = {
         'Parts. A clicking drive usually has failed read/write heads. Fixing that means finding a matching donor drive and swapping the heads in our clean room. How easy the right donor is to find affects the quote.',
         'Urgency. Emergency handling is available when you need your data back as fast as possible. Urgency is one of the factors in the quote, and you’ll know it before you approve.',
         'What already happened to the device. Repeated power-ons, recovery software or a started rebuild can add damage. More damage means more work.',
+      ],
+    },
+    {
+      heading: 'Which jobs usually cost more',
+      paragraphs: [
+        'We don’t publish prices, because the same symptom can be a quick logical fix or a clean-room job. This is how jobs usually compare.',
+      ],
+      table: {
+        columns: ['Job', 'Usually', 'Why'],
+        rows: [
+          ['Deleted files or a formatted drive that still works', 'Lowest', 'No hardware repair; we work on a clone of the drive'],
+          ['Hard drive that’s slow or has bad sectors', 'Low to middle', 'Careful imaging around weak areas'],
+          ['SSD or NVMe that no longer shows up', 'Middle to higher', 'The controller or firmware has to be repaired first'],
+          ['Clicking or dead hard drive', 'Higher', 'Clean-room head swap with a matching donor drive'],
+          ['RAID, NAS or server with failed disks', 'Highest; grows with the number of disks', 'Every disk is cloned, then the array is rebuilt in software'],
+          ['Emergency handling', 'Adds to any of the above', 'Work is scheduled ahead of the queue'],
+        ],
+      },
+      closing: [
+        'You get a fixed quote after the free evaluation, before any paid work. If we can’t recover the data you need, you don’t pay the recovery fee.',
       ],
     },
     {
@@ -85,6 +105,29 @@ export const dataRecoveryCost: CorePage = {
     },
   ],
   faqs: [
+    {
+      question: 'What is the average cost of data recovery?',
+      answer:
+        'There’s no honest average across all jobs. Recovering deleted files from a working drive costs far less than a clean-room repair or a multi-disk RAID. That’s why we evaluate for free and give a fixed quote for your device before any paid work.',
+    },
+    {
+      question: 'How much does hard drive data recovery cost?',
+      answer:
+        'It depends on whether the drive works or is physically damaged. A working drive with deleted files is at the low end. A clicking or dead drive needs a clean-room head swap and costs more. You get a fixed quote after the free evaluation.',
+      link: { href: '/services/hard-drive-recovery', label: 'Hard drive recovery' },
+    },
+    {
+      question: 'How much does SSD data recovery cost?',
+      answer:
+        'If the SSD still shows up, recovery is usually simpler. If it no longer shows up or reports the wrong size, the controller or firmware has to be repaired first, which takes more work. The free evaluation tells us which it is.',
+      link: { href: '/services/ssd-recovery', label: 'SSD recovery' },
+    },
+    {
+      question: 'How much does RAID data recovery cost?',
+      answer:
+        'RAID cost grows with the number of disks and how far a rebuild got. We clone every disk, then rebuild the array from the clones. Tell us the RAID level and number of disks and we can describe the work before you ship.',
+      link: { href: '/services/raid-recovery', label: 'RAID recovery' },
+    },
     {
       question: 'Is the evaluation really free?',
       answer:

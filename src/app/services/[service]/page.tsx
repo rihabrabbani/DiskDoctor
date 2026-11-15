@@ -14,6 +14,7 @@ import { serviceSchema, breadcrumbSchema, faqSchema } from '@/lib/structuredData
 import { coreServicePages, getCoreServicePage } from '@/data/corePages';
 import CorePageLayout from '@/components/corePage/CorePageLayout';
 import { SITE_URL } from '@/lib/site';
+import { GONE_SERVICE_IDS } from '@/lib/gone';
 
 export const dynamicParams = false;
 
@@ -24,7 +25,11 @@ interface ServicePageProps {
 }
 
 export async function generateStaticParams(): Promise<ServiceParams[]> {
-  const ids = new Set([...coreServicePages.map((page) => page.id), ...allServices.map((service) => service.id)]);
+  const ids = new Set(
+    [...coreServicePages.map((page) => page.id), ...allServices.map((service) => service.id)].filter(
+      (id) => !GONE_SERVICE_IDS.includes(id),
+    ),
+  );
   return Array.from(ids, (service) => ({ service }));
 }
 

@@ -17,8 +17,8 @@ const isProductionBuild = process.env.VERCEL_ENV === "production";
 
 export const metadata: Metadata = {
   title: {
-    default: "Data Recovery Services in MD, VA & DC | DiskDoctor",
-    template: "%s | DiskDoctor"
+    default: "Data Recovery Services in MD, VA & DC | Disk Doctors",
+    template: "%s | Disk Doctors"
   },
   description: "Hard drive, SSD, RAID and server data recovery in Columbia MD and Tysons VA. Free evaluation. No data, no charge. Call (410) 937-7332.",
   authors: [{ name: "DiskDoctor Data Recovery" }],
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: SITE_URL_SLASH,
     siteName: 'DiskDoctor Data Recovery',
-    title: 'Data Recovery Services in MD, VA & DC | DiskDoctor',
+    title: 'Data Recovery Services in MD, VA & DC | Disk Doctors',
     description: 'Hard drive, SSD, RAID and server data recovery in Columbia MD and Tysons VA. Free evaluation. No data, no charge.',
     images: [
       {
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Data Recovery Services in MD, VA & DC | DiskDoctor',
+    title: 'Data Recovery Services in MD, VA & DC | Disk Doctors',
     description: 'Hard drive, SSD, RAID and server data recovery. Free evaluation. No data, no charge.',
     images: ['/images/og-image.jpg'],
   },

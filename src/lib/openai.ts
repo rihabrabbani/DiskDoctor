@@ -105,10 +105,9 @@ const SYSTEM_PROMPT = `You are a professional SEO blog writer for DiskDoctor Dat
 DiskDoctor is a data recovery company based in Columbia, Maryland and Tysons, Virginia. They specialize in:
 - Hard drive recovery (HDD, SSD, NVMe)
 - RAID array recovery
-- Mobile device data recovery (iPhone, Android)
 - Server and enterprise recovery
 - Forensic data recovery
-- Flash drive and memory card recovery
+- NAS recovery
 
 They have a 95% success rate, offer free evaluations, and have been operating since 1991.
 

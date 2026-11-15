@@ -7,7 +7,7 @@ export const nasRecovery: CorePage = {
   navLabel: 'NAS',
   listTitle: 'NAS recovery',
   listDescription: 'Synology, QNAP, TrueNAS and other NAS units',
-  seoTitle: 'NAS Data Recovery | Synology, QNAP & TrueNAS | DiskDoctor',
+  seoTitle: 'NAS Data Recovery | Synology, QNAP & TrueNAS | Disk Doctors',
   seoDescription:
     'Data recovery for failed Synology, QNAP, Asustor and TrueNAS units: degraded volumes, failed rebuilds, SHR and RAID. Free evaluation, 24/7 emergency line.',
   h1: 'NAS data recovery for Synology, QNAP and TrueNAS',

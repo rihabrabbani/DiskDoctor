@@ -1803,7 +1803,7 @@ export const allServices: ServicePageData[] = [
         },
         {
           category: 'Storage Media',
-          items: ['Hard Drives (HDD, SSD)', 'USB Flash Drives', 'Memory Cards', 'Cloud Storage', 'Network Drives']
+          items: ['Hard Drives (HDD, SSD)', 'Cloud Storage', 'Network Drives']
         }
       ]
     },
@@ -2349,7 +2349,7 @@ export const allServices: ServicePageData[] = [
       specifications: [
         {
           category: 'Source Drive Types',
-          items: ['SATA HDDs/SSDs', 'NVMe SSDs', 'IDE/PATA Drives', 'SCSI Drives', 'USB Storage', 'SD Cards/Flash Media']
+          items: ['SATA HDDs/SSDs', 'NVMe SSDs', 'IDE/PATA Drives', 'SCSI Drives', 'USB Storage']
         },
         {
           category: 'Cloning Methods',

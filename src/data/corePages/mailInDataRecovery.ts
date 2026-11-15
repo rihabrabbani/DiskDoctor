@@ -8,9 +8,9 @@ export const mailInDataRecovery: CorePage = {
   navLabel: 'Ship your drive',
   listTitle: 'Mail-in data recovery',
   listDescription: 'Free shipping to our lab and back',
-  seoTitle: 'Mail-In Data Recovery | Free Shipping Both Ways | DiskDoctor',
+  seoTitle: 'Mail-In Data Recovery | Free Shipping Both Ways | Disk Doctors',
   seoDescription:
-    'Ship your failed hard drive, SSD, RAID or NAS to our ISO 9001 certified lab. Shipping both ways is free, the evaluation is free, and there’s no charge if we can’t recover your data.',
+    'Ship your failed hard drive, SSD, RAID or NAS to our ISO 9001 certified lab. Shipping both ways and the evaluation are free. No data, no charge.',
   h1: 'Mail-in data recovery with free shipping both ways',
   heroEyebrow: 'Free shipping to our lab and back',
   heroIntro:

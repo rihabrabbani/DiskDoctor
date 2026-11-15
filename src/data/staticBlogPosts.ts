@@ -1,6 +1,7 @@
 import { BlogPost } from '@/lib/types';
+import { seoPostsV5 } from './seoPostsV5';
 
-export const staticBlogPosts: BlogPost[] = [
+const writtenPosts: BlogPost[] = [
   {
     id: 'why-is-my-external-hard-drive-clicking',
     slug: 'why-is-my-external-hard-drive-clicking',
@@ -158,7 +159,7 @@ export const staticBlogPosts: BlogPost[] = [
       {
         heading: 'What “no data, no charge” means on RAID',
         content:
-          '<p>Evaluation is free. If we cannot reconstruct the files you named from the clones, you do not pay a recovery fee. Shipping and return media are separate. A two-disk RAID 1 is not priced like a six-disk RAID 6 with a half-finished rebuild. You get a fixed quote before paid work. Call <a href="tel:+14109377332">(410) 937-7332</a>.</p>',
+          '<p>Evaluation is free. If we cannot reconstruct the files you named from the clones, you do not pay a recovery fee. Shipping both ways is free, and the return drive is included in your fixed quote. A two-disk RAID 1 is not priced like a six-disk RAID 6 with a half-finished rebuild. You get a fixed quote before paid work. Call <a href="tel:+14109377332">(410) 937-7332</a>.</p>',
       },
       {
         heading: 'A 20-minute intake that does not make it worse',
@@ -169,8 +170,19 @@ export const staticBlogPosts: BlogPost[] = [
   },
 ];
 
+/** A post is live once it is published and its scheduledAt date (if any) has passed. */
+export const isLiveBlogPost = (post: BlogPost, now = Date.now()) =>
+  post.status === 'published' && (!post.scheduledAt || Date.parse(post.scheduledAt) <= now);
+
+const allStaticPosts: BlogPost[] = [...writtenPosts, ...seoPostsV5];
+
+/** Static posts that are live right now (scheduled ones appear on their date). */
+export const liveStaticBlogPosts = () => allStaticPosts.filter((post) => isLiveBlogPost(post));
+
+/** Every static post, live or scheduled: their slugs are never looked up in MongoDB. */
+export const staticBlogPosts = allStaticPosts;
+
 export function getStaticBlog(identifier: string) {
-  return (
-    staticBlogPosts.find((b) => b.slug === identifier || b.id === identifier) || null
-  );
+  const post = allStaticPosts.find((b) => b.slug === identifier || b.id === identifier);
+  return post && isLiveBlogPost(post) ? post : null;
 }

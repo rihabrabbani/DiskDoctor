@@ -13,7 +13,7 @@ Professional data recovery laboratory in Columbia, Maryland (head office) with a
 - Contact form: https://www.diskdoctorsamerica.com/contact
 - About: https://www.diskdoctorsamerica.com/about
 
-Services: hard drive recovery, SSD recovery, RAID 0/1/5/6/10 reconstruction, iPhone and Android chip-level recovery, Windows/Mac/Linux volumes. Free evaluation. No data, no charge on the recovery fee if files cannot be retrieved.
+Services: hard drive recovery, SSD recovery, RAID 0/1/5/6/10 reconstruction, NAS and server recovery, Windows/Mac/Linux volumes. Free evaluation. No data, no charge on the recovery fee if files cannot be retrieved.
 
 Other city URLs (Baltimore, Washington DC, Rockville, Alexandria, Arlington, Annapolis, Frederick, McLean, Great Falls, Potomac) are service areas of the Columbia lab, not additional storefronts.
 

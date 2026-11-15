@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { LocationData } from '@/data/locations';
 import { allServices } from '@/data/allServices';
+import { getCoreServicePage } from '@/data/corePages';
 import { telHref } from '@/lib/site';
 
 interface LocationServicesProps {
@@ -11,8 +12,14 @@ interface LocationServicesProps {
 }
 
 export default function LocationServices({ location, serviceIds }: LocationServicesProps) {
-  const selected = (serviceIds || ['raid-recovery', 'mobile-recovery', 'windows-recovery', 'file-recovery'])
-    .map((id) => allServices.find((s) => s.id === id))
+  // Core pages (hard drive, SSD, RAID…) use their list copy; the rest come from allServices.
+  const lookup = (id: string) => {
+    const core = getCoreServicePage(id);
+    if (core) return { id: core.id, title: core.listTitle, description: core.listDescription };
+    return allServices.find((s) => s.id === id);
+  };
+  const selected = (serviceIds || ['raid-recovery', 'ssd-recovery', 'windows-recovery', 'file-recovery'])
+    .map(lookup)
     .filter(Boolean);
 
   return (

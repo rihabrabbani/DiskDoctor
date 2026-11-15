@@ -29,8 +29,6 @@ export const serviceRoutes: ServiceRoute[] = [
   { label: 'Mac Recovery', href: '/services/mac-recovery', category: 'Operating Systems' },
   { label: 'Linux Recovery', href: '/services/linux-recovery', category: 'Operating Systems' },
   { label: 'UNIX Recovery', href: '/services/unix-recovery', category: 'Operating Systems' },
-  { label: 'Photo Recovery', href: '/services/photo-recovery', category: 'Media & Devices' },
-  { label: 'Mobile Recovery', href: '/services/mobile-recovery', category: 'Media & Devices' },
   { label: 'File Recovery', href: '/services/file-recovery', category: 'Media & Devices' },
   { label: 'RAID Recovery', href: '/services/raid-recovery', category: 'Enterprise' },
   { label: 'Virtual Recovery', href: '/services/virtual-recovery', category: 'Enterprise' },

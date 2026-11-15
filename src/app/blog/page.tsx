@@ -1,18 +1,19 @@
 import { Metadata } from 'next';
 import BlogPageClient from './BlogPageClient';
 import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb';
-import { staticBlogPosts } from '@/data/staticBlogPosts';
+import { liveStaticBlogPosts } from '@/data/staticBlogPosts';
 import { SITE_URL } from '@/lib/site';
+import { GONE_BLOG_SLUGS, isGoneTag } from '@/lib/gone';
 
 export const metadata: Metadata = {
   title: 'Data Recovery Blog',
   description:
-    'Hard drive clicking, RAID failures, and phone recovery notes from the Columbia MD lab. Practical steps, not slogans.',
+    'Hard drive, SSD and RAID recovery notes from our Columbia, MD lab: what failed, what to do first, and when to stop. Practical steps, not slogans.',
   alternates: { canonical: `${SITE_URL}/blog` },
 };
 
 async function getPublishedBlogs() {
-  const staticItems = staticBlogPosts.map((blog) => ({
+  const staticItems = liveStaticBlogPosts().map((blog) => ({
     id: blog.id,
     slug: blog.slug,
     title: blog.title,
@@ -65,7 +66,10 @@ export default async function BlogPage({
 }: {
   searchParams?: Promise<{ search?: string }>;
 }) {
-  const blogs = await getPublishedBlogs();
+  // Removed posts (phone, SD card, USB stick) and their tags never show in the listing.
+  const blogs = (await getPublishedBlogs())
+    .filter((blog: { slug: string }) => !GONE_BLOG_SLUGS.includes(blog.slug))
+    .map((blog: { tags: string[] }) => ({ ...blog, tags: (blog.tags || []).filter((tag) => !isGoneTag(tag)) }));
   const resolved = searchParams ? await searchParams : {};
   return <BlogPageClient initialBlogs={blogs} initialSearch={resolved.search || ''} />;
 }

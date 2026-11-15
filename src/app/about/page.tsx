@@ -6,10 +6,10 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: {
-    absolute: 'About the Columbia MD Lab | DiskDoctor',
+    absolute: 'About the Columbia MD Lab | Disk Doctors',
   },
   description:
-    'DiskDoctor Data Recovery operates the Columbia MD laboratory at 10015 Old Columbia Rd and a Tysons VA office by appointment. ISO 9001 certified, recovering data since 1991.',
+    'DiskDoctor runs an ISO 9001 certified lab at 10015 Old Columbia Rd, Columbia, MD, and a Tysons, VA office by appointment. Recovering data since 1991.',
   alternates: { canonical: `${SITE_URL}/about` },
 };
 
@@ -24,7 +24,7 @@ export default function AboutPage() {
           </h1>
           <p>
             This website is the Columbia, Maryland and Tysons, Virginia operation at{' '}
-            {COLUMBIA_ADDRESS}. We recover failed hard drives, SSDs, RAID arrays, and phones.
+            {COLUMBIA_ADDRESS}. We recover failed hard drives, SSDs, RAID arrays, NAS units and servers.
             The laboratory has been doing that work since 1991: 35+ years, 15,000+ cases recovered
             and a 95% success rate.
           </p>
@@ -40,9 +40,8 @@ export default function AboutPage() {
           </p>
           <p>
             We do not run extra storefronts in Baltimore, Washington DC, Rockville, or the other
-            cities listed on this site. Those pages are service areas for the same lab. If a
-            directory still points at another domain for this address and phone number, that is a
-            leftover citation. This site is how you reach this lab.
+            cities listed on this site. Those pages are service areas for the same lab. This site is
+            how you reach this lab.
           </p>
           <p>
             Process: power the device down, drop it off or ship it, free evaluation, fixed quote

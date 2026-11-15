@@ -95,7 +95,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              Data recovery for hard drives, SSDs and RAID servers
+              Data recovery services for hard drives, SSDs and RAID servers
             </motion.h1>
             
             <motion.p 

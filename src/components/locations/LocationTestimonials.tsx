@@ -5,6 +5,7 @@ import { testimonials } from '@/data/testimonials';
 import { telHref } from '@/lib/site';
 import Link from 'next/link';
 import lpReviews from '@/lp/data/lp-reviews.json';
+import type { LocationReview } from '@/data/locationCopy';
 
 type StoredReview = { location: string; name: string; date?: string; stars: number; text?: string; featuredText?: string; excerpt?: string };
 
@@ -15,7 +16,9 @@ const TYSONS_REVIEWS = Object.entries(lpReviews.reviews as Record<string, Stored
   .map(([id, r]) => ({ id, name: r.name, date: r.date ?? '', text: r.text ?? r.featuredText ?? r.excerpt ?? '' }));
 const TYSONS_MAPS_URL = lpReviews.locations.tysons.mapsUrl;
 
-export default function LocationTestimonials({ location }: { location: LocationData }) {
+const COLUMBIA_MAPS_URL = lpReviews.locations.columbia.mapsUrl;
+
+export default function LocationTestimonials({ location, reviews }: { location: LocationData; reviews?: LocationReview[] }) {
   if (isVirginia(location)) {
     return (
       <section className="py-16 bg-[var(--color-surface-100)]">
@@ -71,13 +74,15 @@ export default function LocationTestimonials({ location }: { location: LocationD
               Reviews for the Columbia lab
             </h2>
             <p className="text-center text-[var(--color-text-secondary)] mb-10">
-              Public reviews naming the Columbia facility. {location.city} jobs are processed there
-              {location.slug === 'columbia-md' ? '.' : `, not at a fake ${location.city} storefront.`}
+              Public reviews naming the Columbia facility. {location.city} jobs are processed there.
             </p>
           </>
         )}
         <div className="grid md:grid-cols-2 gap-6">
-          {testimonials.map((t) => (
+          {(reviews
+            ? reviews.map((r) => ({ id: r.author, quote: r.quote, author: r.author, source: 'from a Google review', date: r.date }))
+            : testimonials
+          ).map((t) => (
             <blockquote key={t.id} className="border border-[var(--color-border)] rounded-xl p-6 bg-[var(--color-background)]">
               <p className="text-[var(--color-text-secondary)] leading-relaxed mb-4">“{t.quote}”</p>
               <footer className="text-sm font-semibold text-[var(--color-text-primary)]">
@@ -88,6 +93,20 @@ export default function LocationTestimonials({ location }: { location: LocationD
           ))}
         </div>
         <p className="text-center mt-8">
+          {reviews && (
+            <>
+              <a
+                href={COLUMBIA_MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-map-link="reviews"
+                className="font-semibold text-[var(--color-primary)]"
+              >
+                Read all reviews of our Columbia lab
+              </a>
+              {' · '}
+            </>
+          )}
           <a href={telHref(location.officePhone ?? location.phone)} className="font-semibold text-[var(--color-primary)]">
             Call {location.officePhone ?? location.phone}
           </a>

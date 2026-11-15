@@ -1,6 +1,12 @@
+import Link from 'next/link';
+
 // Answers are always rendered: the page's FAQPage JSON-LD is built from the same list, and Google
 // only accepts FAQ markup whose answers are visible on the page.
-export default function ServiceFAQ({ faqs }: { faqs: { question: string; answer: string }[] }) {
+export default function ServiceFAQ({
+  faqs,
+}: {
+  faqs: { question: string; answer: string; link?: { href: string; label: string } }[];
+}) {
   if (!faqs?.length) return null;
 
   return (
@@ -14,6 +20,13 @@ export default function ServiceFAQ({ faqs }: { faqs: { question: string; answer:
             <div key={faq.question} className="border border-[var(--color-border)] rounded-xl bg-[var(--color-background)] px-5 py-4">
               <h3 className="font-semibold text-[var(--color-text-primary)] mb-2">{faq.question}</h3>
               <p className="text-[var(--color-text-secondary)] leading-relaxed">{faq.answer}</p>
+              {faq.link && (
+                <p className="mt-2">
+                  <Link href={faq.link.href} className="text-[var(--color-primary)] font-medium hover:underline">
+                    {faq.link.label} →
+                  </Link>
+                </p>
+              )}
             </div>
           ))}
         </div>

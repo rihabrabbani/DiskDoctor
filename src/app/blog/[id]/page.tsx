@@ -5,6 +5,8 @@ import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb';
 import { blogPostSchema, breadcrumbSchema, faqSchema } from '@/lib/structuredData';
 import BlogPostContent from './BlogPostContent';
 import { currentBlogSlug, legacyBlogSlug, relatedServiceForPost } from '@/data/blogSlugs';
+import { applyBlogEdits, blogMetaTitle } from '@/data/blogEdits';
+import { isGoneTag } from '@/lib/gone';
 
 interface BlogPostProps {
   params: Promise<{ id: string }>;
@@ -37,8 +39,8 @@ async function getBlog(identifier: string) {
 
     if (!blog) return null;
 
-    // Convert MongoDB document to plain object
-    return {
+    // Convert MongoDB document to plain object, with the code-side text edits (src/data/blogEdits.ts)
+    return applyBlogEdits({
       id: blog.id,
       slug: currentBlogSlug(blog.slug || blog.id),
       title: blog.title,
@@ -51,7 +53,7 @@ async function getBlog(identifier: string) {
       focusKeyword: blog.focusKeyword || '',
       author: blog.author || 'DiskDoctor Team',
       category: blog.category || '',
-      tags: blog.tags || [],
+      tags: (blog.tags || []).filter((tag: string) => !isGoneTag(tag)),
       featuredImage: blog.featuredImage || null,
       images: blog.images || [],
       status: blog.status || 'published',
@@ -59,7 +61,7 @@ async function getBlog(identifier: string) {
       wordCount: blog.wordCount || 0,
       createdAt: blog.createdAt,
       updatedAt: blog.updatedAt || blog.createdAt,
-    };
+    });
   } catch (error) {
     console.error('Error fetching blog:', error);
     return null;
@@ -78,7 +80,7 @@ export async function generateMetadata({ params }: BlogPostProps): Promise<Metad
     };
   }
 
-  const seoTitle = blog.title;
+  const seoTitle = blogMetaTitle(blog.slug, blog.title);
   const seoDescription = (blog.metaDescription || blog.excerpt).length > 155
     ? (blog.metaDescription || blog.excerpt).substring(0, 152) + '...'
     : (blog.metaDescription || blog.excerpt);
@@ -96,7 +98,7 @@ export async function generateMetadata({ params }: BlogPostProps): Promise<Metad
   const canonicalUrl = `https://www.diskdoctorsamerica.com/blog/${blog.slug}`;
 
   return {
-    title: blog.title,
+    title: seoTitle,
     description: seoDescription,
     keywords: keywords,
     authors: [{ name: blog.author }],

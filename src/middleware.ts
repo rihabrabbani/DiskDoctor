@@ -1,7 +1,17 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { GONE_PATHS } from '@/lib/gone'
 
 export function middleware(request: NextRequest) {
+  // Removed pages answer 410 Gone so search engines drop them (src/lib/gone.ts).
+  const path = request.nextUrl.pathname.replace(/\/+$/, '')
+  if (GONE_PATHS.has(path)) {
+    return new NextResponse('410 Gone. This page has been removed.', {
+      status: 410,
+      headers: { 'Content-Type': 'text/plain; charset=utf-8', 'X-Robots-Tag': 'noindex' },
+    })
+  }
+
   const response = NextResponse.next()
 
   response.headers.set('X-Frame-Options', 'DENY')

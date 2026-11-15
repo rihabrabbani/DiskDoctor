@@ -103,7 +103,7 @@ export default async function LocationPage({ params }: LocationPageProps) {
         <LocationPickup phone={location.officePhone ?? location.phone} />
         <LocationServices location={location} serviceIds={copy.relatedServiceIds} />
         <LocationTrustSignals location={location} />
-        <LocationTestimonials location={location} />
+        <LocationTestimonials location={location} reviews={copy.reviews} />
         <LocationFAQ location={location} faqs={copy.faqs} />
         <section className="py-8">
           <div className="container mx-auto px-4 text-center text-sm text-[var(--color-text-secondary)]">

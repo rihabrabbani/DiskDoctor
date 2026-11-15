@@ -22,7 +22,12 @@ export const organizationSchema = {
   "@type": "Organization",
   "@id": ORGANIZATION_ID,
   "name": "DiskDoctor Data Recovery",
-  "alternateName": "Disk Doctor",
+  "alternateName": ["Disk Doctors", "Disk Doctors America", "DiskDoctor", "Disk Doctor"],
+  // The Columbia and Tysons Google Business Profiles.
+  "sameAs": [
+    "https://maps.google.com/?cid=14046850434310190420",
+    "https://maps.google.com/?cid=8914738077225716090",
+  ],
   "url": SITE,
   "logo": `${SITE}/images/logo.png`,
   "image": `${SITE}/images/logo.png`,

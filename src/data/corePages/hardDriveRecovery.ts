@@ -6,9 +6,9 @@ export const hardDriveRecovery: CorePage = {
   navLabel: 'Hard drive',
   listTitle: 'Hard drive recovery',
   listDescription: 'Clicking, beeping, not detected, dropped or dead drives',
-  seoTitle: 'Hard Drive Data Recovery | Clicking & Dead Drives | DiskDoctor',
+  seoTitle: 'Hard Drive Data Recovery | Clicking & Dead Drives | Disk Doctors',
   seoDescription:
-    'Hard drive recovery for clicking, beeping and undetected drives in our ISO 9001 certified lab and clean room. Free evaluation, no data no charge, 24/7 emergency line.',
+    'Recovery for clicking, beeping and undetected hard drives in our ISO 9001 certified lab and clean room. Free evaluation, no data no charge.',
   h1: 'Hard drive data recovery',
   heroEyebrow: 'Clicking, dead and undetected drives',
   heroIntro:

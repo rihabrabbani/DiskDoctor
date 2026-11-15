@@ -7,9 +7,9 @@ export const serverRecovery: CorePage = {
   navLabel: 'Business & virtual servers',
   listTitle: 'Business & virtual servers',
   listDescription: 'VMware, Hyper-V, Linux and Windows servers',
-  seoTitle: 'Server Data Recovery | Windows, Linux & VMware Servers | DiskDoctor',
+  seoTitle: 'Server Data Recovery | Windows, Linux, VMware | Disk Doctors',
   seoDescription:
-    'Recovery for failed business servers: RAID arrays, VMware and Hyper-V virtual machines, Windows and Linux servers. 24/7 emergency line, chain-of-custody on request.',
+    'Recovery for failed business servers: RAID arrays, VMware and Hyper-V VMs, Windows and Linux servers. Chain of custody on request.',
   h1: 'Server and virtual machine data recovery',
   heroEyebrow: 'Business server recovery',
   heroIntro:

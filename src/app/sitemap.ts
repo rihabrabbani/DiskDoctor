@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next'
 import { allServices } from '@/data/allServices'
 import { coreServicePages, dataRecoveryCost, mailInDataRecovery } from '@/data/corePages'
-import { staticBlogPosts } from '@/data/staticBlogPosts'
+import { liveStaticBlogPosts, staticBlogPosts } from '@/data/staticBlogPosts'
 import { currentBlogSlug } from '@/data/blogSlugs'
+import { GONE_BLOG_SLUGS, GONE_SERVICE_IDS } from '@/lib/gone'
 import { locations } from '@/data/locations'
 import clientPromise, { DB_NAME, COLLECTION_NAME } from '@/lib/mongodb'
 
@@ -82,7 +83,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]
 
   // Service pages
-  const serviceIds = new Set([...coreServicePages.map((page) => page.id), ...allServices.map((service) => service.id)])
+  const serviceIds = new Set(
+    [...coreServicePages.map((page) => page.id), ...allServices.map((service) => service.id)].filter(
+      (id) => !GONE_SERVICE_IDS.includes(id),
+    ),
+  )
   const servicePages = Array.from(serviceIds, (id) => ({
     url: `${baseUrl}/services/${id}`,
     lastModified: generatedAt,
@@ -114,6 +119,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     blogPages = blogs
       .filter((blog: any) => Boolean(blog?.slug || blog?.id))
       .filter((blog: any) => !staticSlugs.has(blog.slug || blog.id))
+      .filter((blog: any) => !GONE_BLOG_SLUGS.includes(currentBlogSlug(blog.slug || blog.id)))
       .map((blog: any) => {
         const parsedDate = new Date(blog.updatedAt || blog.createdAt || generatedAt)
         const safeDate = Number.isNaN(parsedDate.getTime()) ? generatedAt : parsedDate
@@ -129,7 +135,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching blogs for sitemap:', error)
   }
 
-  const staticBlogPages = staticBlogPosts.map((blog) => ({
+  const staticBlogPages = liveStaticBlogPosts().map((blog) => ({
     url: `${baseUrl}/blog/${blog.slug}`,
     lastModified: new Date(blog.updatedAt),
     changeFrequency: 'monthly' as const,

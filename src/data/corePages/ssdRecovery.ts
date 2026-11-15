@@ -6,7 +6,7 @@ export const ssdRecovery: CorePage = {
   navLabel: 'SSD & NVMe',
   listTitle: 'SSD & NVMe recovery',
   listDescription: 'Failed, locked or undetected SSDs and NVMe drives',
-  seoTitle: 'SSD & NVMe Data Recovery | Failed and Undetected SSDs | DiskDoctor',
+  seoTitle: 'SSD & NVMe Data Recovery | Failed SSDs | Disk Doctors',
   seoDescription:
     'Recovery from failed, locked and undetected SATA and NVMe SSDs, including laptop SSDs. Free evaluation, fixed quote, no data no charge.',
   h1: 'SSD and NVMe data recovery',

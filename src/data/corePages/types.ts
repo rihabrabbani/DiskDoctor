@@ -11,7 +11,9 @@ export interface CorePageSection {
   heading: string;
   paragraphs?: string[];
   bullets?: string[];
-  // Paragraphs shown after the bullets.
+  // A plain comparison table, shown after the bullets (e.g. which jobs usually cost more).
+  table?: { columns: string[]; rows: string[][] };
+  // Paragraphs shown after the bullets and table.
   closing?: string[];
   // Optional closing link under the section, e.g. { href: '/data-recovery-cost', label: 'How pricing works' }.
   link?: { href: string; label: string };
@@ -43,6 +45,7 @@ export interface CorePage {
   scenariosHeading?: string;
   scenarioIds?: ScenarioId[];
   // Shown visibly and used verbatim for the FAQPage JSON-LD.
-  faqs: { question: string; answer: string }[];
+  // `link` is shown under the visible answer only; the JSON-LD answer stays plain text.
+  faqs: { question: string; answer: string; link?: { href: string; label: string } }[];
   relatedLinks?: { href: string; label: string }[];
 }

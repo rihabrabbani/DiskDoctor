@@ -4,6 +4,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { allServices } from '@/data/allServices';
 import { coreServicePages } from '@/data/corePages';
+import { GONE_SERVICE_IDS } from '@/lib/gone';
 import { PHONE_TEL, SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -26,8 +27,8 @@ const groups: { title: string; ids: string[] }[] = [
     ids: ['windows-recovery', 'mac-recovery', 'linux-recovery', 'unix-recovery'],
   },
   {
-    title: 'Files and photos',
-    ids: ['file-recovery', 'photo-recovery'],
+    title: 'Files',
+    ids: ['file-recovery'],
   },
   {
     title: 'Email, security and backup',
@@ -47,8 +48,8 @@ const directory = [
     .map((service) => ({ id: service.id, title: service.title, description: service.description })),
 ];
 
-// Phone recovery is not promoted: its page stays live but isn't listed here.
-const hidden = new Set(['mobile-recovery']);
+// Removed pages (phone and memory-card work) are never listed.
+const hidden = new Set(GONE_SERVICE_IDS);
 const grouped = new Set([...groups.flatMap((group) => group.ids), ...hidden]);
 const ungrouped = directory.filter((service) => !grouped.has(service.id));
 

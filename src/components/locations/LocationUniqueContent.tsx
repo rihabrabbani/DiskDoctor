@@ -12,6 +12,19 @@ function splitLead(paragraph: string): [string, string] {
   return ['', paragraph];
 }
 
+// "[text](https://…)" in location copy becomes an external link (new tab, rel noopener).
+function withLinks(text: string) {
+  return text.split(/(\[[^\]]+\]\(https:\/\/[^)\s]+\))/).map((part, i) => {
+    const link = part.match(/^\[([^\]]+)\]\((https:\/\/[^)\s]+)\)$/);
+    if (!link) return part;
+    return (
+      <a key={i} href={link[2]} target="_blank" rel="noopener" className="text-[var(--color-primary)] underline">
+        {link[1]}
+      </a>
+    );
+  });
+}
+
 export default function LocationUniqueContent({
   location,
   copy,
@@ -27,7 +40,10 @@ export default function LocationUniqueContent({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
         {/* The location copy is long, so it is laid out as an intro plus cards with a bold lead each,
             instead of one column of paragraphs. The text itself is unchanged. */}
-        <p className="text-xl text-[var(--color-text-primary)] leading-relaxed max-w-3xl">{intro}</p>
+        {copy.introHeading && (
+          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4">{copy.introHeading}</h2>
+        )}
+        <p className="text-xl text-[var(--color-text-primary)] leading-relaxed max-w-3xl">{withLinks(intro)}</p>
         <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
           {rest.map((p) => {
             const [lead, body] = splitLead(p);
@@ -38,7 +54,7 @@ export default function LocationUniqueContent({
               >
                 {lead && <strong className="block mb-1 text-[var(--color-text-primary)]">{lead}</strong>}
                 {lead && ' '}
-                {body.trim()}
+                {withLinks(body.trim())}
               </p>
             );
           })}

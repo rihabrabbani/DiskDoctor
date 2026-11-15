@@ -101,12 +101,7 @@ const nextConfig: NextConfig = {
         destination: '/',
         permanent: true,
       },
-      // A blog post links here; the service page is /services/mobile-recovery.
-      {
-        source: '/services/mobile-device-recovery',
-        destination: '/services/mobile-recovery',
-        statusCode: 301,
-      },
+      // /services/mobile-device-recovery is gone (410, src/lib/gone.ts), not redirected.
       ...Object.entries(blogSlugRenames).map(([oldSlug, newSlug]) => ({
         source: `/blog/${oldSlug}`,
         destination: `/blog/${newSlug}`,

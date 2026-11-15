@@ -77,6 +77,38 @@ export default function CorePageLayout({ page }: { page: CorePage }) {
                       ))}
                     </ul>
                   )}
+                  {section.table && (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-base border border-[var(--color-border)] rounded-xl">
+                        <thead className="bg-[var(--color-surface-100)] text-[var(--color-text-primary)]">
+                          <tr>
+                            {section.table.columns.map((column) => (
+                              <th key={column} scope="col" className="text-left font-semibold px-4 py-3 border-b border-[var(--color-border)]">
+                                {column}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {section.table.rows.map((row) => (
+                            <tr key={row[0]} className="border-b border-[var(--color-border)] last:border-b-0 align-top">
+                              {row.map((cell, i) =>
+                                i === 0 ? (
+                                  <th key={i} scope="row" className="text-left font-medium text-[var(--color-text-primary)] px-4 py-3">
+                                    {cell}
+                                  </th>
+                                ) : (
+                                  <td key={i} className="px-4 py-3">
+                                    {cell}
+                                  </td>
+                                ),
+                              )}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
                   {section.closing?.map((paragraph) => (
                     <p key={paragraph.slice(0, 40)}>{paragraph}</p>
                   ))}

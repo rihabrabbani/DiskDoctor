@@ -1,13 +1,23 @@
 name: IndexNow ping
-on: deployment_status
+on:
+  deployment_status:
+  # Scheduled blog posts go live at Sunday 19:00 UTC without a deploy. The sitemap is cached for up
+  # to an hour, so ping at 20:10 UTC (Mondays 01:10 PKT), once the cached copy has expired.
+  schedule:
+    - cron: '10 20 * * 0'
+  workflow_dispatch:
 jobs:
   ping:
-    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
     runs-on: ubuntu-latest
     steps:
       - name: Send every sitemap URL to IndexNow
         run: |
+          # The first request makes an expired sitemap rebuild; the second one reads the new copy.
+          curl -s -o /dev/null https://www.diskdoctorsamerica.com/sitemap.xml
+          sleep 30
           URLS=$(curl -s https://www.diskdoctorsamerica.com/sitemap.xml | grep -o '<loc>[^<]*' | sed 's/<loc>//' | jq -R . | jq -s -c .)
+          echo "URLs in sitemap: $(echo "$URLS" | jq length)"
           curl -s -o /dev/null -w "IndexNow HTTP %{http_code}\n" -X POST https://api.indexnow.org/IndexNow \
             -H 'Content-Type: application/json; charset=utf-8' \
             -d "{\"host\":\"www.diskdoctorsamerica.com\",\"key\":\"1aeca2920231b8082e782abbbb445484\",\"keyLocation\":\"https://www.diskdoctorsamerica.com/1aeca2920231b8082e782abbbb445484.txt\",\"urlList\":$URLS}"

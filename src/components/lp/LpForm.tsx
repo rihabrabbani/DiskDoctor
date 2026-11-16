@@ -1,31 +1,20 @@
 'use client';
 
-import { useEffect, useRef, useState, type FormEvent } from 'react';
-import {
-  CONTACT_PREFS,
-  DEVICES,
-  DEVICE_VALUES,
-  FILES_NEEDED,
-  LEAD_CHANNELS,
-  POWER_DOWN_SYMPTOMS,
-  PRIOR_ATTEMPT,
-  RAID_LEVELS,
-  STATES,
-  STEER_DEVICE,
-  SYMPTOMS,
-  URGENCY,
-  URGENCY_LABELS,
-  type Attribution,
-  type DeviceValue,
-} from '@/lp/config/form';
+import { useEffect, useRef, useState, type FocusEvent, type FormEvent } from 'react';
+import { DEVICES, DEVICE_VALUES, LEAD_CHANNELS, SYMPTOMS, type Attribution, type DeviceValue } from '@/lp/config/form';
+import { LAB_PHONE, LAB_TEL } from '@/lp/config/areas';
 import { LP_FORM_GUID } from '@/lp/config/hubspot';
 import { isValidEmail, isValidPhone, toE164 } from '@/lp/phone';
 import LpIcon from './LpIcon';
 
-type Step = 1 | 2 | 3 | 'steer';
+// Ads brief 16 Nov, change 2: two steps. Step 1 picks the device; step 2 asks for a name and a phone
+// number or an email (either is enough), with "What happened?" and a one-line note as optional extras.
+// Hidden fields, the honeypot, the events and the dd_lead / dd_ec / dd_form_submit handoff are unchanged.
+
+type Step = 1 | 2;
 type Touch = Partial<Record<'gclid' | 'gbraid' | 'wbraid' | 'src' | 'med' | 'cmp' | 'term' | 'cnt' | 'lp' | 'ch', string>>;
 type DdAttr = { first?: Touch; last?: Touch };
-type Errors = Partial<Record<'name' | 'phone' | 'email', string>>;
+type Errors = Partial<Record<'name' | 'contact' | 'phone' | 'email', string>>;
 
 const URL_KEYS = [
   'gclid',
@@ -145,40 +134,33 @@ function push(event: string, params: Record<string, unknown>) {
 const toggle = (list: string[], value: string) =>
   list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
 
+
 export default function LpForm({
   variant,
   phone,
   tel,
-  talkSuffix,
-  soonerSuffix,
-  stateDefault,
+  mainLine,
+  serviceState,
   presetDevice,
 }: {
   variant: string;
   phone: string;
   tel: string;
-  talkSuffix: string;
-  soonerSuffix: string;
-  stateDefault: string;
+  /** VA pages: also offer the (410) main line next to the Tysons number. */
+  mainLine: boolean;
+  /** service_state for the lead, set by the page (blank on the RAID page). */
+  serviceState: string;
   presetDevice?: DeviceValue;
 }) {
-  // VA pages never say "lab" (brief 9 Nov, section 6). Copy only: fields, events and submit are unchanged.
+  // VA pages never say "lab" (brief 9 Nov, section 6).
   const va = variant.startsWith('va/');
   const [step, setStep] = useState<Step>(1);
   const [device, setDevice] = useState<DeviceValue | null>(presetDevice ?? null);
   const [symptoms, setSymptoms] = useState<string[]>([]);
-  const [filesNeeded, setFilesNeeded] = useState<string[]>([]);
-  const [priorAttempt, setPriorAttempt] = useState('');
-  const [urgency, setUrgency] = useState('');
   const [message, setMessage] = useState('');
-  const [driveCount, setDriveCount] = useState('');
-  const [raidLevel, setRaidLevel] = useState('');
   const [name, setName] = useState('');
-  const [company, setCompany] = useState('');
   const [phoneValue, setPhoneValue] = useState('');
   const [email, setEmail] = useState('');
-  const [state, setState] = useState(stateDefault);
-  const [contactPref, setContactPref] = useState<string>('Call');
   const [errors, setErrors] = useState<Errors>({});
   const [sending, setSending] = useState(false);
   const [apiFailed, setApiFailed] = useState(false);
@@ -192,6 +174,7 @@ export default function LpForm({
   const stepRef = useRef<HTMLDivElement>(null);
   const firstRender = useRef(true);
   const honeypot = useRef<HTMLInputElement>(null);
+  const submitRef = useRef<HTMLButtonElement>(null);
   const fieldRefs = { name: useRef<HTMLInputElement>(null), phone: useRef<HTMLInputElement>(null), email: useRef<HTMLInputElement>(null) };
 
   useEffect(() => {
@@ -215,17 +198,16 @@ export default function LpForm({
       firstRender.current = false;
       return;
     }
-    stepRef.current?.focus();
+    stepRef.current?.focus({ preventScroll: true });
   }, [step]);
 
   const isRaid = device === DEVICE_VALUES.raid;
 
+  // lp_form_step fires once, for the move to step 2.
   const goTo = (next: Step, dev: DeviceValue | null = device) => {
     setStep(next);
-    if (next === 1) return;
-    const key = String(next);
-    if (stepsSeen.current.has(key)) return;
-    stepsSeen.current.add(key);
+    if (next === 1 || stepsSeen.current.has(String(next))) return;
+    stepsSeen.current.add(String(next));
     const last = readAttr().last || {};
     push('lp_form_step', {
       step: next,
@@ -241,28 +223,24 @@ export default function LpForm({
       push('lp_form_start', { lp_variant: variant });
     }
     setDevice(value);
-    goTo(value === STEER_DEVICE ? 'steer' : 2, value);
+    goTo(2, value);
   };
 
-  // Page buttons marked data-cta: the last one clicked becomes dd_cta. A "What happened?" tile also
-  // pre-picks its symptom, and the RAID tile opens the RAID path.
+  // Page links marked data-cta (all href="#start", so the browser scrolls to the form): the last one
+  // clicked becomes dd_cta. A tile or card with a symptom pre-picks it; one with a device (or the RAID
+  // tile) picks that device, which opens step 2.
   const onCta = useRef<(el: Element) => void>(() => {});
   onCta.current = (el) => {
     const cta = el.getAttribute('data-cta') || '';
     try {
       sessionStorage.setItem('dd_cta', cta);
     } catch {}
-    if (el.hasAttribute('data-tile-raid')) {
-      if (step === 1 || step === 'steer' || !isRaid) pickDevice(DEVICE_VALUES.raid);
-      return;
-    }
     const symptom = el.getAttribute('data-tile-symptom');
-    if (!symptom) return;
-    setSymptoms((list) => (list.includes(symptom) ? list : [...list, symptom]));
-    if (step === 'steer') {
-      setDevice(presetDevice ?? null);
-      setStep(1);
-    }
+    if (symptom) setSymptoms((list) => (list.includes(symptom) ? list : [...list, symptom]));
+    const pick = el.hasAttribute('data-tile-raid')
+      ? DEVICE_VALUES.raid
+      : (el.getAttribute('data-card-device') as DeviceValue | null);
+    if (pick && (step === 1 || device !== pick)) pickDevice(pick);
   };
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
@@ -275,18 +253,38 @@ export default function LpForm({
 
   const validate = (): Errors => {
     const next: Errors = {};
-    if (!name.trim()) next.name = 'Please enter your name.';
-    if (!isValidPhone(phoneValue)) next.phone = 'Please enter a phone number with at least 10 digits.';
-    if (!isValidEmail(email)) next.email = 'Please enter a valid email address.';
+    if (!name.trim()) next.name = 'Add your name.';
+    if (!phoneValue.trim() && !email.trim()) next.contact = 'Add a phone number or an email.';
+    if (phoneValue.trim() && !isValidPhone(phoneValue)) next.phone = 'Add the full phone number, with the area code.';
+    if (email.trim() && !isValidEmail(email)) next.email = 'Check the email address: it should look like name@example.com.';
     return next;
+  };
+
+  // iPhone: when the keyboard opens, scroll so the submit button sits just above it, as long as the
+  // field being typed in stays on screen too.
+  const revealSubmit = (event: FocusEvent<HTMLFormElement>) => {
+    const field = event.target;
+    if (!(field instanceof HTMLInputElement) || !matchMedia('(pointer: coarse)').matches) return;
+    window.setTimeout(() => {
+      const button = submitRef.current;
+      if (!button || document.activeElement !== field) return;
+      const vv = window.visualViewport;
+      const top = vv ? vv.offsetTop : 0;
+      const height = vv ? vv.height : window.innerHeight;
+      const by = Math.min(
+        button.getBoundingClientRect().bottom + 12 - (top + height),
+        field.getBoundingClientRect().top - top - 12,
+      );
+      if (by > 0) window.scrollBy({ top: by, behavior: 'smooth' });
+    }, 400);
   };
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    if (sending || !device || device === STEER_DEVICE) return;
+    if (sending || !device) return;
     const found = validate();
     setErrors(found);
-    const firstBad = (['name', 'phone', 'email'] as const).find((k) => found[k]);
+    const firstBad = found.name ? 'name' : found.contact || found.phone ? 'phone' : found.email ? 'email' : null;
     if (firstBad) {
       fieldRefs[firstBad].current?.focus();
       push('lp_form_error', { error_type: 'validation' });
@@ -297,7 +295,7 @@ export default function LpForm({
     setApiFailed(false);
     const attr = readAttr();
     const attribution = attributionFields(attr, landing.current);
-    const e164Phone = toE164(phoneValue);
+    const e164Phone = phoneValue.trim() ? toE164(phoneValue) : '';
     let ok = false;
     try {
       const res = await fetch('/api/lp-lead', {
@@ -308,18 +306,11 @@ export default function LpForm({
           variant,
           device,
           symptoms,
-          filesNeeded,
-          priorAttempt,
-          urgency,
           message,
-          driveCount: isRaid ? driveCount : '',
-          raidLevel: isRaid ? raidLevel : '',
           name,
-          company,
           phone: phoneValue,
           email,
-          state,
-          contactPref,
+          state: serviceState,
           ddDevice: deviceType.current,
           ddCta: session('dd_cta') || 'form',
           ddMatchtype: landing.current.matchtype || '',
@@ -345,7 +336,7 @@ export default function LpForm({
 
     // Tracking handoff (spec section 6): keys and values must match GTM v12 exactly.
     const recoveryDeviceTypeValue = device;
-    const serviceStateValue = state;
+    const serviceStateValue = serviceState;
     const lead = {
       form_id: LP_FORM_GUID,
       conv_id: submissionId.current,
@@ -366,27 +357,31 @@ export default function LpForm({
     location.assign('/thank-you');
   };
 
-  const stepNumber = step === 'steer' ? 1 : step;
   const fieldError = (key: keyof Errors) =>
     errors[key] ? (
       <p className="lp-err" id={`lp-${key}-err`}>
         {errors[key]}
       </p>
     ) : null;
-  const showPowerDown = symptoms.some((s) => POWER_DOWN_SYMPTOMS.includes(s));
-  const canContinue = symptoms.length > 0;
+  const describedBy = (...keys: (keyof Errors)[]) =>
+    keys.filter((k) => errors[k]).map((k) => `lp-${k}-err`).join(' ') || undefined;
+  const mainLineLink = (
+    <>
+      Or call our main line, <a href={LAB_TEL}>{LAB_PHONE}</a>.
+    </>
+  );
 
   return (
-    <div id="start" className="lp-form" data-track-position="form_intro" data-clarity-mask="true">
+    <div id="start" className="lp-form" data-track-position="form_intro" data-clarity-unmask="true">
       <div className="lp-form-head">
-        <h2>Start your free diagnosis</h2>
+        <h2>Start your free evaluation</h2>
         <span className="lp-form-steplabel" aria-live="polite">
-          Step {stepNumber} of 3
+          Step {step} of 2
         </span>
       </div>
       <div className="lp-segs" aria-hidden="true">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className={`lp-seg${i <= stepNumber ? ' is-on' : ''}`} />
+        {[1, 2].map((i) => (
+          <div key={i} className={`lp-seg${i <= step ? ' is-on' : ''}`} />
         ))}
       </div>
 
@@ -411,173 +406,34 @@ export default function LpForm({
             </div>
             <p className="lp-form-talk">
               Prefer to talk? <a href={tel}>Call {phone}</a>
-              {talkSuffix}
+              {mainLine ? <>. {mainLineLink}</> : '.'}
             </p>
-          </>
-        )}
-
-        {step === 'steer' && (
-          <>
-            <div className="lp-steer">
-              <p>Phones, SD cards and USB sticks aren&apos;t our specialty</p>
-              <p>
-                {va ? 'We focus' : 'Our lab focuses'} on hard drives, SSDs, RAID and servers. For phones and memory cards we&apos;re usually
-                not the right fit, and we&apos;d rather tell you now than waste your time.
-              </p>
-            </div>
-            <button
-              type="button"
-              className="lp-btn lp-btn-ghost"
-              style={{ marginTop: 16, fontSize: 15 }}
-              onClick={() => {
-                setDevice(null);
-                setStep(1);
-              }}
-            >
-              Choose a different device
-            </button>
           </>
         )}
 
         {step === 2 && (
-          <>
-            <p className="lp-q" id="lp-sym-q">
-              What&apos;s happening? <span>(pick at least one)</span>
-            </p>
-            <div className="lp-chips" role="group" aria-labelledby="lp-sym-q">
-              {SYMPTOMS.map((label) => (
-                <button
-                  key={label}
-                  type="button"
-                  className="lp-chip"
-                  aria-pressed={symptoms.includes(label)}
-                  onClick={() => setSymptoms((list) => toggle(list, label))}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-            {showPowerDown && (
-              <p className="lp-powerdown" role="status">
-                <LpIcon name="warn" size={18} />
-                Power it off and don&apos;t keep retrying. Every restart can make recovery harder.
-              </p>
-            )}
-            {isRaid && (
-              <div className="lp-grid2">
-                <label className="lp-field">
-                  How many drives?
-                  <input
-                    type="number"
-                    min={1}
-                    inputMode="numeric"
-                    placeholder="e.g. 4"
-                    value={driveCount}
-                    onChange={(e) => setDriveCount(e.target.value)}
-                  />
-                </label>
-                <label className="lp-field">
-                  RAID level
-                  <select value={raidLevel} onChange={(e) => setRaidLevel(e.target.value)}>
-                    <option value="">Choose…</option>
-                    {RAID_LEVELS.map((v) => (
-                      <option key={v} value={v}>
-                        {/^\d+$/.test(v) ? `RAID ${v}` : v}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-            )}
-            <p className="lp-q" id="lp-files-q">
-              What do you need back most? <span>(optional)</span>
-            </p>
-            <div className="lp-chips" role="group" aria-labelledby="lp-files-q">
-              {FILES_NEEDED.map((label) => (
-                <button
-                  key={label}
-                  type="button"
-                  className="lp-chip"
-                  aria-pressed={filesNeeded.includes(label)}
-                  onClick={() => setFilesNeeded((list) => toggle(list, label))}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-            <p className="lp-q" id="lp-prior-q">
-              Has anyone tried to recover it? <span>(optional)</span>
-            </p>
-            <div className="lp-chips" role="group" aria-labelledby="lp-prior-q">
-              {PRIOR_ATTEMPT.map((label) => (
-                <button
-                  key={label}
-                  type="button"
-                  className="lp-chip"
-                  aria-pressed={priorAttempt === label}
-                  onClick={() => setPriorAttempt(priorAttempt === label ? '' : label)}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-            <p className="lp-q" id="lp-urg-q">
-              How urgent is it?
-            </p>
-            <div className="lp-urgency" role="group" aria-labelledby="lp-urg-q">
-              {URGENCY.map((value) => (
-                <button
-                  key={value}
-                  type="button"
-                  className="lp-chip"
-                  aria-pressed={urgency === value}
-                  onClick={() => setUrgency(urgency === value ? '' : value)}
-                >
-                  {URGENCY_LABELS[value]}
-                </button>
-              ))}
-            </div>
-            <label className="lp-field" style={{ marginBottom: 18 }}>
-              <span>
-                Anything else we should know? <span className="lp-hint">Optional</span>
-              </span>
-              <textarea
-                rows={3}
-                maxLength={2000}
-                placeholder={
-                  isRaid
-                    ? 'e.g. Synology 4-bay, two drives failed during a rebuild'
-                    : 'e.g. WD My Passport 2TB, dropped last week, project files on it'
-                }
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              />
-            </label>
-            <div className="lp-form-actions" style={{ marginTop: 0 }}>
-              <button type="button" className="lp-btn lp-btn-ghost" onClick={() => setStep(1)}>
-                Back
-              </button>
-              <button
-                type="button"
-                className="lp-btn lp-btn-red"
-                disabled={!canContinue}
-                aria-describedby={canContinue ? undefined : 'lp-continue-hint'}
-                onClick={() => goTo(3)}
-              >
-                Continue
-              </button>
-            </div>
-            {!canContinue && (
-              <p className="lp-form-hint" id="lp-continue-hint">
-                Pick at least one symptom to continue.
-              </p>
-            )}
-          </>
-        )}
-
-        {step === 3 && (
-          <form noValidate onSubmit={submit}>
+          <form noValidate onSubmit={submit} onFocus={revealSubmit}>
             <div className="lp-fields">
+              {/* Taps only, so it goes first: the typed fields then sit right above the submit button,
+                  which keeps it in view over the iPhone keyboard. Tiles and cards pre-pick these. */}
+              <div>
+                <p className="lp-q" id="lp-sym-q">
+                  What happened? <span>(optional)</span>
+                </p>
+                <div className="lp-chips" role="group" aria-labelledby="lp-sym-q">
+                  {SYMPTOMS.map((label) => (
+                    <button
+                      key={label}
+                      type="button"
+                      className="lp-chip"
+                      aria-pressed={symptoms.includes(label)}
+                      onClick={() => setSymptoms((list) => toggle(list, label))}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
               <label className="lp-field">
                 Your name
                 <input
@@ -585,86 +441,67 @@ export default function LpForm({
                   type="text"
                   name="name"
                   autoComplete="name"
+                  required
+                  data-clarity-mask="true"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   aria-invalid={errors.name ? true : undefined}
-                  aria-describedby={errors.name ? 'lp-name-err' : undefined}
+                  aria-describedby={describedBy('name')}
                 />
                 {fieldError('name')}
               </label>
+              <fieldset className="lp-contact">
+                <legend>
+                  How should we reach you? <span className="lp-hint">Phone or email, either is fine</span>
+                </legend>
+                <label className="lp-field">
+                  Phone
+                  <input
+                    ref={fieldRefs.phone}
+                    type="tel"
+                    inputMode="tel"
+                    name="phone"
+                    autoComplete="tel"
+                    data-clarity-mask="true"
+                    value={phoneValue}
+                    onChange={(e) => setPhoneValue(e.target.value)}
+                    aria-invalid={errors.phone || errors.contact ? true : undefined}
+                    aria-describedby={describedBy('phone', 'contact')}
+                  />
+                  {fieldError('phone')}
+                </label>
+                <label className="lp-field">
+                  Email
+                  <input
+                    ref={fieldRefs.email}
+                    type="email"
+                    name="email"
+                    autoComplete="email"
+                    data-clarity-mask="true"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    aria-invalid={errors.email || errors.contact ? true : undefined}
+                    aria-describedby={describedBy('email', 'contact')}
+                  />
+                  {fieldError('email')}
+                </label>
+                {fieldError('contact')}
+              </fieldset>
               <label className="lp-field">
                 <span>
-                  Company <span className="lp-hint">Optional</span>
+                  Anything else? <span className="lp-hint">Optional</span>
                 </span>
                 <input
                   type="text"
-                  name="company"
-                  autoComplete="organization"
-                  maxLength={200}
-                  value={company}
-                  onChange={(e) => setCompany(e.target.value)}
+                  name="message"
+                  maxLength={500}
+                  autoComplete="off"
+                  data-clarity-mask="true"
+                  placeholder={isRaid ? 'e.g. Synology 4-bay, two drives failed' : 'e.g. WD 2TB external, project files on it'}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
                 />
               </label>
-              <label className="lp-field">
-                <span>
-                  Phone <span className="lp-hint">{va ? 'So we can call you back' : 'So the lab can call you back'}</span>
-                </span>
-                <input
-                  ref={fieldRefs.phone}
-                  type="tel"
-                  name="phone"
-                  autoComplete="tel"
-                  required
-                  value={phoneValue}
-                  onChange={(e) => setPhoneValue(e.target.value)}
-                  aria-invalid={errors.phone ? true : undefined}
-                  aria-describedby={errors.phone ? 'lp-phone-err' : undefined}
-                />
-                {fieldError('phone')}
-              </label>
-              <label className="lp-field">
-                Email
-                <input
-                  ref={fieldRefs.email}
-                  type="email"
-                  name="email"
-                  autoComplete="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  aria-invalid={errors.email ? true : undefined}
-                  aria-describedby={errors.email ? 'lp-email-err' : undefined}
-                />
-                {fieldError('email')}
-              </label>
-              <label className="lp-field">
-                State
-                <select name="state" value={state} onChange={(e) => setState(e.target.value)}>
-                  {STATES.map((s) => (
-                    <option key={s}>{s}</option>
-                  ))}
-                </select>
-              </label>
-              <div className="lp-field">
-                <span id="lp-pref-q">
-                  Best way to reach you <span className="lp-hint">Optional</span>
-                </span>
-                <div className="lp-urgency lp-pref" role="radiogroup" aria-labelledby="lp-pref-q">
-                  {CONTACT_PREFS.map((value) => (
-                    <button
-                      key={value}
-                      type="button"
-                      role="radio"
-                      className="lp-chip"
-                      aria-checked={contactPref === value}
-                      aria-pressed={contactPref === value}
-                      onClick={() => setContactPref(value)}
-                    >
-                      {value}
-                    </button>
-                  ))}
-                </div>
-              </div>
             </div>
             {/* Honeypot: hidden from people, bots fill it in. */}
             <div className="lp-hp" aria-hidden="true">
@@ -674,26 +511,26 @@ export default function LpForm({
               </label>
             </div>
             <div className="lp-form-actions">
-              <button type="button" className="lp-btn lp-btn-ghost" onClick={() => setStep(2)}>
+              <button type="button" className="lp-btn lp-btn-ghost" onClick={() => goTo(1)}>
                 Back
               </button>
-              <button type="submit" className="lp-btn lp-btn-red" disabled={sending}>
-                {sending ? 'Sending…' : 'Get my free diagnosis'}
+              <button ref={submitRef} type="submit" className="lp-btn lp-btn-red" disabled={sending}>
+                {sending ? 'Sending…' : 'Get my free evaluation'}
               </button>
             </div>
             <p className="lp-form-next">
-              Next: we reply within one business day. After the free diagnosis you get a fixed quote, and nothing is
+              Next: we reply within one business day. After the free evaluation you get a fixed quote, and nothing is
               charged unless you approve it.
             </p>
             {apiFailed && (
               <p className="lp-alert" role="alert">
                 Sorry, that didn&apos;t go through. Please try again, or call <a href={tel}>{phone}</a>
-                {soonerSuffix}
+                {mainLine ? <>. {mainLineLink}</> : '.'}
               </p>
             )}
             <p className="lp-form-note">
               Need us sooner? Call <a href={tel}>{phone}</a>
-              {soonerSuffix} By sending this you agree to our <a href="/privacy">privacy policy</a>.
+              {mainLine ? <>. {mainLineLink}</> : '.'} By sending this you agree to our <a href="/privacy">privacy policy</a>.
             </p>
           </form>
         )}

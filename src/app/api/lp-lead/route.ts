@@ -80,14 +80,17 @@ export async function POST(req: NextRequest) {
   if (!UUID.test(submissionId)) return reject('submission id');
   if (!VARIANT.test(variant)) return reject('variant');
   if (!oneOf(device, Object.values(DEVICE_VALUES)) || device === STEER_DEVICE) return reject('device');
-  if (!oneOf(state, STATES)) return reject('state');
+  // Ads brief 16 Nov: the form no longer asks for the state; the page sets it (blank on the RAID page).
+  if (state && !oneOf(state, STATES)) return reject('state');
   if (urgency && !oneOf(urgency, URGENCY)) return reject('urgency');
-  if (symptoms.length === 0 || !symptoms.every((s) => oneOf(s, SYMPTOMS))) return reject('symptoms');
+  if (!symptoms.every((s) => oneOf(s, SYMPTOMS))) return reject('symptoms');
   if (!filesNeeded.every((s) => oneOf(s, FILES_NEEDED))) return reject('files needed');
   if (priorAttempt && !oneOf(priorAttempt, PRIOR_ATTEMPT)) return reject('prior attempt');
   if (raidLevel && !oneOf(raidLevel, RAID_LEVELS)) return reject('raid level');
   if (contactPref && !oneOf(contactPref, CONTACT_PREFS)) return reject('contact pref');
-  if (!name || !isValidPhone(phone) || !isValidEmail(email)) return reject('contact fields');
+  // A name plus a phone number or an email (at least one); whichever is given must be valid.
+  if (!name || (!phone && !email)) return reject('contact fields');
+  if ((phone && !isValidPhone(phone)) || (email && !isValidEmail(email))) return reject('contact fields');
 
   if (LP_FORM_GUID_IS_PLACEHOLDER) {
     console.error('[lp-lead] LP_FORM_GUID is still the placeholder in src/lp/config/hubspot.ts; lead not sent.');
@@ -98,7 +101,7 @@ export async function POST(req: NextRequest) {
   const values: Record<string, string> = {
     firstname,
     lastname: rest.join(' '),
-    phone: toE164(phone),
+    phone: phone ? toE164(phone) : '',
     email: email.toLowerCase(),
     service_state: state,
     recovery_device_type: device,

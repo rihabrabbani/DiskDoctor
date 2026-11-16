@@ -15,11 +15,12 @@ export type Area = {
   eyebrow: string;
   place: string;
   heroSub: string;
-  talkSuffix: string;
-  soonerSuffix: string;
+  /** Form and hero: offer the (410) main line as well (VA pages, whose own number is the Tysons line). */
+  mainLine: boolean;
+  /** service_state sent with the lead (the form no longer asks). */
   stateDefault: string;
   step2: string;
-  /** Tap-to-call block under the H1: the number plus this note. 24/7 only ever goes with the (410) line. */
+  /** Tap-to-call block under the H1: the number plus this note. */
   heroCallNote: string;
   officeH: string;
   officeP: string;
@@ -31,39 +32,38 @@ export type Area = {
   stickyCallLabel: string;
 };
 
-const LAB_PHONE = '(410) 937-7332';
-const LAB_TEL = 'tel:+14109377332';
+export const LAB_PHONE = '(410) 937-7332';
+export const LAB_TEL = 'tel:+14109377332';
 
 const md: Area = {
   id: 'md',
   location: 'columbia',
   office: 'columbia',
-  pill: 'Phone line open 24/7',
+  pill: 'Columbia lab · since 1991',
   phone: LAB_PHONE,
   tel: LAB_TEL,
   eyebrow: 'Local recovery lab · Columbia, MD',
   place: 'Maryland',
   heroSub:
-    'Clicking, not detected, dropped or dead? Our Columbia lab has been recovering data since 1991. The diagnosis is free, and nothing is charged unless you approve the quote and we recover your data.',
-  talkSuffix: ', answered 24/7.',
-  soonerSuffix: ', 24/7.',
+    'Clicking, not detected, dropped or dead? We recover hard drives, SSDs and RAID arrays for offices and individuals across Maryland, in our Columbia lab since 1991.',
+  mainLine: false,
   stateDefault: 'Maryland',
   step2:
     'Walk in to our Columbia lab, or ship it to us: shipping is free both ways. Pickup is also available, call for details.',
-  heroCallNote: 'answered 24/7',
+  heroCallNote: 'Columbia lab',
   officeH: 'A real lab in Columbia, Maryland',
   officeP:
     'Recoveries are done at our Columbia lab, including physical recoveries in our clean room. We’re ISO 9001 certified and have handled more than 15,000 cases since 1991.',
   addrName: 'Disk Doctors · Columbia lab',
   addr: '10015 Old Columbia Rd, Suite B 215, Columbia, MD 21046',
-  addrHours: 'Walk in Mon–Fri, 8:30 a.m.–5:00 p.m. · Phone answered 24/7',
+  addrHours: 'Walk in Mon–Fri, 8:30 a.m.–5:00 p.m.',
   otherOffice: 'Closer to Northern Virginia? We also have an office in Tysons, VA, by appointment.',
   faqBring:
     'No. Shipping is free both ways, and pickup is also available, call for details. You can also walk in at our Columbia lab, Mon–Fri 8:30–5.',
-  stickyCallLabel: 'Call 24/7',
+  stickyCallLabel: 'Call our team',
 };
 
-// 24/7 wording only ever attaches to the (410) line, never to the Tysons 571 line.
+// Ads brief 16 Nov: no "24/7" anywhere on the landing pages, and no do-this-don't-do-that advice.
 // Brief 9 Nov, section 6: VA copy never mentions the Columbia lab or where recovery is done, and never
 // implies a lab in Virginia. Tysons is only ever "our Tysons office, by appointment".
 const va: Area = {
@@ -76,9 +76,8 @@ const va: Area = {
   eyebrow: 'Tysons office · Northern Virginia & DC',
   place: 'Northern Virginia & DC',
   heroSub:
-    'Clicking, not detected, dropped or dead? Meet us at our Tysons office by appointment, or ship your drive to us, free both ways. Recovering data since 1991. The diagnosis is free, and nothing is charged unless you approve the quote and we recover your data.',
-  talkSuffix: `. Emergency? Our 24/7 line ${LAB_PHONE} is always answered.`,
-  soonerSuffix: `, or our 24/7 line ${LAB_PHONE}.`,
+    'Clicking, not detected, dropped or dead? We recover hard drives, SSDs and RAID arrays for offices and individuals across Northern Virginia and DC. Meet us at our Tysons office by appointment, or ship your drive to us, free both ways.',
+  mainLine: true,
   stateDefault: 'Virginia',
   step2:
     'Bring it to our Tysons office by appointment, or ship it to us free both ways. Pickup is also available, call for details.',
@@ -99,10 +98,12 @@ const va: Area = {
 const all: Area = {
   ...md,
   id: 'all',
+  // The RAID page serves MD, DC and VA, so the form leaves service_state blank.
+  stateDefault: '',
   eyebrow: 'Recovery lab · Columbia, MD · serving MD, DC & VA',
   place: '',
   heroSub:
-    'Failed rebuild, degraded array or a NAS that won’t mount? Our Columbia, MD lab has been recovering data since 1991, for businesses across MD, DC & VA. Ship the drives free both ways or bring them to our Columbia lab. The diagnosis is free, and nothing is charged unless you approve the quote and we recover your data.',
+    'Failed rebuild, degraded array or a NAS that won’t mount? RAID, NAS and server recovery for businesses across MD, DC and VA, in our Columbia lab since 1991.',
 };
 
 export const AREAS: Record<AreaId, Area> = { md, va, all };

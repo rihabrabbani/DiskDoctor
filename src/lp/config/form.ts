@@ -16,11 +16,10 @@ export const DEVICES: { label: string; value: DeviceValue }[] = [
   { label: 'Laptop hard drive', value: DEVICE_VALUES.laptop },
   { label: 'SSD or NVMe', value: DEVICE_VALUES.ssd },
   { label: 'RAID, NAS or server', value: DEVICE_VALUES.raid },
-  { label: 'Phone, SD card or USB stick', value: DEVICE_VALUES.phone },
   { label: 'Something else', value: DEVICE_VALUES.other },
 ];
 
-/** Polite stop: no step 2 and no lead for this device. */
+/** No longer offered on the form (ads brief 16 Nov); the API still refuses it. */
 export const STEER_DEVICE: DeviceValue = DEVICE_VALUES.phone;
 
 /** dd_symptoms options = these labels. */
@@ -34,6 +33,8 @@ export const SYMPTOMS = [
   'Something else',
 ] as const;
 
+export type Symptom = (typeof SYMPTOMS)[number];
+
 /** dd_urgency options: the stored values stay the same, only the labels imply business. */
 export const URGENCY = ['Today', 'This week', 'No rush'] as const;
 export const URGENCY_LABELS: Record<(typeof URGENCY)[number], string> = {
@@ -41,9 +42,6 @@ export const URGENCY_LABELS: Record<(typeof URGENCY)[number], string> = {
   'This week': 'Needed within a few days',
   'No rush': 'No hard deadline',
 };
-
-/** Symptoms that show the power-down note. */
-export const POWER_DOWN_SYMPTOMS: readonly string[] = ['Clicking or beeping', 'Dropped', 'Water or power damage'];
 
 /** dd_files_needed options (multi, joined with ";"). */
 export const FILES_NEEDED = [

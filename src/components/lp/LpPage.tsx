@@ -17,9 +17,7 @@ import {
   LpHeader,
   LpHero,
   OfficeBlock,
-  RaidFirstHour,
   SymptomGrid,
-  UrgencyBand,
   WhatHappenedTiles,
 } from './LpSections';
 
@@ -54,22 +52,13 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
   const faq = [
     {
       q: 'How much does it cost?',
-      a: 'The diagnosis is free. After it, you get a fixed quote before any paid work, and nothing is charged unless you approve it. The return drive for your data is included in the quote. If we can’t recover your data, you don’t pay.',
+      a: 'The evaluation is free. After it, you get a fixed quote before any paid work, and nothing is charged unless you approve it. The return drive for your data is included in the quote. If we can’t recover your data, you don’t pay.',
     },
     {
       q: 'How long does it take?',
-      a: 'Logical recoveries, like deleted files or a formatted drive, usually take 24–48 hours. Physical failures, like clicking drives, usually take 3–7 days. For emergencies, call the 24/7 line.',
+      a: 'Logical recoveries, like deleted files or a formatted drive, usually take 24–48 hours. Physical failures, like clicking drives, usually take 3–7 days.',
     },
     { q: `Do I have to bring ${templateId === 'raid' ? 'the drives' : 'the drive'} in?`, a: area.faqBring },
-    template.faqFirstAid,
-    ...(templateId === 'raid'
-      ? []
-      : [
-          {
-            q: 'Do you recover phones or SD cards?',
-            a: `${isVa ? 'We specialise' : 'Our lab specialises'} in hard drives, SSDs, RAID and servers. For phones, SD cards and USB sticks we’re usually not the right fit.`,
-          },
-        ]),
   ];
   // The SSD page opens with SSD symptoms instead of the area's "Clicking, not detected…" question.
   const heroSub = template.heroQuestion ? area.heroSub.replace(/^[^?]*\?/, template.heroQuestion) : area.heroSub;
@@ -90,17 +79,14 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
               variant={lpVariant(areaId, templateId)}
               phone={area.phone}
               tel={area.tel}
-              talkSuffix={area.talkSuffix}
-              soonerSuffix={area.soonerSuffix}
-              stateDefault={area.stateDefault}
+              mainLine={area.mainLine}
+              serviceState={area.stateDefault}
               presetDevice={template.device}
             />
           }
         />
         <WhatHappenedTiles />
         <ReviewMarquee reviews={reviews.strip} links={marqueeLinks} ratings={marqueeRatings} showOffice={isVa} />
-        <UrgencyBand template={template} va={isVa} />
-        {templateId === 'raid' && <RaidFirstHour photo={photos.firstHour} />}
         <StatsBand />
         <SymptomGrid template={template} photos={photos.failures} va={isVa} />
         <HowItWorks area={area} photos={HOW_IT_WORKS_PHOTOS} va={isVa} />

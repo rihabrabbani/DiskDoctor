@@ -42,6 +42,19 @@ type RawReview = {
   featuredText?: string;
 };
 
+// Ads brief 16 Nov: every review stays, but work-related ones lead and the family-photo ones go last.
+// MD pages also get the Columbia work reviews, which their strips didn't have.
+const WORK_FIRST = ['mustafar-raheem', 'jordan-johnson', 'jennifer-leigh-tully', 'sunny-2021', 'moeez-ahmed'];
+const PERSONAL_LAST = ['kylie-berry', 'yaadira-brown', 'yassaman-hashemi', 'sincerelymaha', 'gracie-hunt'];
+// The featured block follows the same idea: a work review instead of a personal one.
+const FEATURED_OVERRIDE: Record<string, string> = {
+  'va/hard-drive': 'jordan-johnson',
+  'va/data-recovery': 'jordan-johnson',
+  'va/ssd': 'jordan-johnson',
+  'md/hard-drive': 'jennifer-leigh-tully',
+  'md/data-recovery': 'jennifer-leigh-tully',
+};
+
 const MIN_STARS = 4;
 const LP_EXCLUDE = new Set(['menna-khaliel', 'kristin-deghetaldi']);
 const VA_EXCLUDE = new Set(['moeez-ahmed']);
@@ -95,6 +108,11 @@ export function pageReviews(key: string) {
   } else {
     strip = strip.filter((r) => r.location === 'columbia');
   }
+  const location = isVa ? 'tysons' : 'columbia';
+  const work = WORK_FIRST.filter((id) => allowed(id) && reviews[id]?.location === location);
+  const rank = (id: string) => (PERSONAL_LAST.includes(id) ? 1 : 0);
+  strip = [...work.map(toReview).filter(good), ...strip.filter((r) => !work.includes(r.id))];
+  strip = strip.map((r, i) => ({ r, i })).sort((a, b) => rank(a.r.id) - rank(b.r.id) || a.i - b.i).map(({ r }) => r);
 
   // The hero stack sits next to the page's own rating, so it only shows that location's reviewers.
   // VA: every Tysons reviewer, real photos first. MD/RAID: the JSON stack, minus any Tysons reviewer.
@@ -110,8 +128,9 @@ export function pageReviews(key: string) {
         .filter((r) => r.location === 'columbia' && r.stars >= MIN_STARS)
         .map(toAvatar);
 
-  if (!allowed(page.featured)) throw new Error(`lp-reviews.json: featured review "${page.featured}" is excluded on ${key}`);
-  return { heroStack, featured: toReview(page.featured), strip };
+  const featured = FEATURED_OVERRIDE[key] ?? page.featured;
+  if (!allowed(featured)) throw new Error(`lp-reviews.json: featured review "${featured}" is excluded on ${key}`);
+  return { heroStack, featured: toReview(featured), strip };
 }
 
 export const REVIEWS_UPDATED = data.updated;

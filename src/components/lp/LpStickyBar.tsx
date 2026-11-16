@@ -45,7 +45,7 @@ export default function LpStickyBar({
           {callLabel}
         </a>
         <a href="#start" data-cta="sticky" className="lp-btn lp-btn-red" tabIndex={formInView ? -1 : undefined}>
-          Free diagnosis
+          Free evaluation
         </a>
       </nav>
       <nav aria-label="Call the lab" className="lp-topbar" data-track-position="sticky" data-hidden={!headerGone}>
@@ -53,7 +53,7 @@ export default function LpStickyBar({
           <span className="lp-topbar-note">{topNote}</span>
           <div className="lp-topbar-actions">
             <a href="#start" data-cta="sticky" className="lp-topbar-start" tabIndex={headerGone ? undefined : -1}>
-              Start free diagnosis
+              Start free evaluation
             </a>
             <a href={tel} className="lp-btn lp-btn-ink" tabIndex={headerGone ? undefined : -1}>
               <LpIcon name="phone" size={16} />

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import type { Area } from '@/lp/config/areas';
+import { LAB_PHONE, LAB_TEL, type Area } from '@/lp/config/areas';
 import type { FaqItem, Template } from '@/lp/config/templates';
 import type { LocationRating, LpReview, StackAvatar } from '@/lp/reviews';
 import type { LabPhotoCode } from '@/data/labPhotos';
@@ -8,8 +8,6 @@ import logo from '@/../public/images/light_mode.png';
 import LabFigure from '@/components/lab/LabFigure';
 import LpIcon, { type IconName } from './LpIcon';
 import { Avatar, RatingStars } from './ReviewBits';
-
-const LAB_TEL = 'tel:+14109377332';
 
 // Original line art: drive platters, rotating slowly (decorative).
 export function Platter({ size, dark = false }: { size: number; dark?: boolean }) {
@@ -51,7 +49,7 @@ export function LpHeader({ area }: { area: Area }) {
 
 export const FIXED_QUOTE = 'You get a fixed quote before any paid work. Nothing is charged unless you approve it.';
 
-const TICKS = ['Free diagnosis', 'You approve the quote first', 'No data, no charge', 'Free shipping both ways'];
+const TICKS = ['Free evaluation', 'You approve the quote first', 'No data, no charge', 'Free shipping both ways'];
 
 export function LpHero({
   area,
@@ -90,9 +88,9 @@ export function LpHero({
                 <strong>{area.phone}</strong> · {area.heroCallNote}
               </span>
             </a>
-            {area.tel !== LAB_TEL && (
+            {area.mainLine && (
               <p>
-                Emergency? Our 24/7 line <a href={LAB_TEL}>(410) 937-7332</a> is always answered.
+                Or call our main line, <a href={LAB_TEL}>{LAB_PHONE}</a>.
               </p>
             )}
           </div>
@@ -114,36 +112,21 @@ export function LpHero({
               <a href="#reviews">{ratingSub}</a>
             </div>
           </div>
+          {/* Ads brief 16 Nov, change 3.5: the ticks get taps, so each one opens the form. */}
           <ul className="lp-ticks">
             {TICKS.map((t) => (
               <li key={t}>
-                <span className="lp-tick">
-                  <LpIcon name="check" size={15} strokeWidth={3} />
-                </span>
-                {t}
+                <a href="#start" data-cta="hero">
+                  <span className="lp-tick">
+                    <LpIcon name="check" size={15} strokeWidth={3} />
+                  </span>
+                  {t}
+                </a>
               </li>
             ))}
           </ul>
         </div>
         {form}
-      </div>
-    </section>
-  );
-}
-
-// VA pages (brief 9 Nov, section 6) say "us", never "the lab".
-export function UrgencyBand({ template, va = false }: { template: Template; va?: boolean }) {
-  const text = va ? template.urgency.text.replace('Talk to the lab first.', 'Talk to us first.') : template.urgency.text;
-  return (
-    <section className="lp-dark lp-urgency-band" data-track-position="urgency_band">
-      <div className="lp-wrap">
-        <LpIcon name="warn" size={28} />
-        <p>
-          <strong>{template.urgency.strong}</strong> {text}
-        </p>
-        <a href={LAB_TEL} className="lp-btn lp-btn-ghost-dark">
-          {va ? 'Talk to us, 24/7' : 'Talk to the lab, 24/7'}
-        </a>
       </div>
     </section>
   );
@@ -187,42 +170,6 @@ export function WhatHappenedTiles() {
   );
 }
 
-export function RaidFirstHour({ photo }: { photo?: LabPhotoCode }) {
-  // RAID page only, which is never a VA page.
-  return (
-    <section className="lp-reveal" data-track-position="raid_first_hour">
-      <div className="lp-wrap lp-sec">
-        <h2 className="lp-h2">First hour after a RAID failure</h2>
-        <div className="lp-firsthour">
-          <div className="lp-firsthour-col is-dont">
-            <h3>Don&apos;t</h3>
-            <ul>
-              <li>Rebuild the array</li>
-              <li>Run chkdsk or fsck</li>
-              <li>Swap the drive order</li>
-              <li>Re-initialize the controller</li>
-            </ul>
-          </div>
-          <div className="lp-firsthour-col is-do">
-            <h3>Do</h3>
-            <ul>
-              <li>Power it down</li>
-              <li>Label each drive with its slot</li>
-              <li>Note the RAID level and controller</li>
-              <li>
-                Call us: <a href={LAB_TEL}>(410) 937-7332</a>, answered 24/7
-              </li>
-            </ul>
-          </div>
-        </div>
-        {photo && (
-          <LabFigure code={photo} sizes="(min-width: 1200px) 1100px, 100vw" aspect="3 / 1" className="lp-firsthour-photo" />
-        )}
-      </div>
-    </section>
-  );
-}
-
 export function SymptomGrid({ template, photos = [], va = false }: { template: Template; photos?: LabPhotoCode[]; va?: boolean }) {
   return (
     <section className="lp-reveal">
@@ -243,14 +190,23 @@ export function SymptomGrid({ template, photos = [], va = false }: { template: T
           </div>
         )}
         <div className="lp-cards">
+          {/* Ads brief 16 Nov, change 3.1: each card scrolls to the form and picks its device and/or
+              symptom there (LpForm listens for data-cta clicks). */}
           {template.symptoms.map((s) => (
-            <div key={s.title} className="lp-card">
+            <a
+              key={s.title}
+              href="#start"
+              className="lp-card lp-card-link"
+              data-cta="card"
+              data-card-device={s.device}
+              data-tile-symptom={s.symptom}
+            >
               <span className="lp-card-icon">
                 <LpIcon name={s.icon} />
               </span>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
-            </div>
+            </a>
           ))}
         </div>
         {template.brands && (
@@ -270,9 +226,9 @@ export function HowItWorks({ area, photos = [], va = false }: { area: Area; phot
   const steps = [
     {
       title: 'Tell us what happened',
-      text: va ? 'Use the form or call. Our line is answered 24/7.' : 'Use the form or call. Our lab line is answered 24/7.',
+      text: 'Use the form or call. We reply within one business day.',
     },
-    { title: 'Free diagnosis', text: area.step2 },
+    { title: 'Free evaluation', text: area.step2 },
     { title: 'Fixed quote before any paid work', text: `${FIXED_QUOTE} No data, no charge.` },
     {
       title: 'Get your data back',
@@ -450,11 +406,11 @@ export function FinalCta({ area, heading }: { area: Area; heading: string }) {
       <div className="lp-wrap lp-final-inner">
         <div>
           <h2>{heading}</h2>
-          <p>Free diagnosis. You approve the quote. No data, no charge.</p>
+          <p>Free evaluation. You approve the quote. No data, no charge.</p>
         </div>
         <div className="lp-final-actions">
           <a href="#start" data-cta="footer" className="lp-btn lp-btn-red">
-            Start free diagnosis
+            Start free evaluation
           </a>
           <a href={area.tel} className="lp-btn lp-btn-ghost-dark">
             Call {area.phone}

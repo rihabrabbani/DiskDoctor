@@ -7,14 +7,15 @@ import { LP_FORM_GUID } from '@/lp/config/hubspot';
 import { isValidEmail, isValidPhone, toE164 } from '@/lp/phone';
 import LpIcon from './LpIcon';
 
-// Ads brief 16 Nov, change 2: two steps. Step 1 picks the device; step 2 asks for a name and a phone
-// number or an email (either is enough), with "What happened?" and a one-line note as optional extras.
+// Ads brief 16 Nov, change 2: two steps. Step 1 picks the device; step 2 asks for name, phone and email
+// (all required, as in the HubSpot form), with "What happened?" and a one-line note as optional extras.
+// Urgency and "what do you need back" are asked on /thank-you after the lead is in (LpPrepare).
 // Hidden fields, the honeypot, the events and the dd_lead / dd_ec / dd_form_submit handoff are unchanged.
 
 type Step = 1 | 2;
 type Touch = Partial<Record<'gclid' | 'gbraid' | 'wbraid' | 'src' | 'med' | 'cmp' | 'term' | 'cnt' | 'lp' | 'ch', string>>;
 type DdAttr = { first?: Touch; last?: Touch };
-type Errors = Partial<Record<'name' | 'contact' | 'phone' | 'email', string>>;
+type Errors = Partial<Record<'name' | 'phone' | 'email', string>>;
 
 const URL_KEYS = [
   'gclid',
@@ -254,9 +255,10 @@ export default function LpForm({
   const validate = (): Errors => {
     const next: Errors = {};
     if (!name.trim()) next.name = 'Add your name.';
-    if (!phoneValue.trim() && !email.trim()) next.contact = 'Add a phone number or an email.';
-    if (phoneValue.trim() && !isValidPhone(phoneValue)) next.phone = 'Add the full phone number, with the area code.';
-    if (email.trim() && !isValidEmail(email)) next.email = 'Check the email address: it should look like name@example.com.';
+    if (!phoneValue.trim()) next.phone = 'Add a phone number.';
+    else if (!isValidPhone(phoneValue)) next.phone = 'Add the full phone number, with the area code.';
+    if (!email.trim()) next.email = 'Add an email address.';
+    else if (!isValidEmail(email)) next.email = 'Check the email address: it should look like name@example.com.';
     return next;
   };
 
@@ -284,7 +286,7 @@ export default function LpForm({
     if (sending || !device) return;
     const found = validate();
     setErrors(found);
-    const firstBad = found.name ? 'name' : found.contact || found.phone ? 'phone' : found.email ? 'email' : null;
+    const firstBad = (['name', 'phone', 'email'] as const).find((k) => found[k]);
     if (firstBad) {
       fieldRefs[firstBad].current?.focus();
       push('lp_form_error', { error_type: 'validation' });
@@ -295,8 +297,9 @@ export default function LpForm({
     setApiFailed(false);
     const attr = readAttr();
     const attribution = attributionFields(attr, landing.current);
-    const e164Phone = phoneValue.trim() ? toE164(phoneValue) : '';
+    const e164Phone = toE164(phoneValue);
     let ok = false;
+    let prepareToken = '';
     try {
       const res = await fetch('/api/lp-lead', {
         method: 'POST',
@@ -322,7 +325,9 @@ export default function LpForm({
           website: honeypot.current?.value || '',
         }),
       });
-      ok = res.ok && (await res.json()).ok === true;
+      const json = res.ok ? await res.json() : null;
+      ok = json?.ok === true;
+      prepareToken = typeof json?.prepareToken === 'string' ? json.prepareToken : '';
     } catch {
       ok = false;
     }
@@ -352,6 +357,15 @@ export default function LpForm({
     } catch {}
     sessionStorage.setItem('dd_lead', JSON.stringify(lead));
     sessionStorage.setItem('dd_ec', JSON.stringify({ email: lead.email, phone_number: lead.phone_number }));
+    // For the optional "Help us prepare" questions on /thank-you (its own key: dd_lead stays as GTM expects).
+    if (prepareToken) {
+      try {
+        sessionStorage.setItem(
+          'dd_lp_prepare',
+          JSON.stringify({ submissionId: submissionId.current, email: lead.email, phone: e164Phone, token: prepareToken }),
+        );
+      } catch {}
+    }
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: 'dd_form_submit', dd_form_id: lead.form_id, dd_lead_type: lead.device, dd_lead_channel: lead.ch });
     location.assign('/thank-you');
@@ -450,43 +464,41 @@ export default function LpForm({
                 />
                 {fieldError('name')}
               </label>
-              <fieldset className="lp-contact">
-                <legend>
-                  How should we reach you? <span className="lp-hint">Phone or email, either is fine</span>
-                </legend>
-                <label className="lp-field">
-                  Phone
-                  <input
-                    ref={fieldRefs.phone}
-                    type="tel"
-                    inputMode="tel"
-                    name="phone"
-                    autoComplete="tel"
-                    data-clarity-mask="true"
-                    value={phoneValue}
-                    onChange={(e) => setPhoneValue(e.target.value)}
-                    aria-invalid={errors.phone || errors.contact ? true : undefined}
-                    aria-describedby={describedBy('phone', 'contact')}
-                  />
-                  {fieldError('phone')}
-                </label>
-                <label className="lp-field">
-                  Email
-                  <input
-                    ref={fieldRefs.email}
-                    type="email"
-                    name="email"
-                    autoComplete="email"
-                    data-clarity-mask="true"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    aria-invalid={errors.email || errors.contact ? true : undefined}
-                    aria-describedby={describedBy('email', 'contact')}
-                  />
-                  {fieldError('email')}
-                </label>
-                {fieldError('contact')}
-              </fieldset>
+              <label className="lp-field">
+                <span>
+                  Phone <span className="lp-hint">{va ? 'So we can call you back' : 'So the lab can call you back'}</span>
+                </span>
+                <input
+                  ref={fieldRefs.phone}
+                  type="tel"
+                  inputMode="tel"
+                  name="phone"
+                  autoComplete="tel"
+                  required
+                  data-clarity-mask="true"
+                  value={phoneValue}
+                  onChange={(e) => setPhoneValue(e.target.value)}
+                  aria-invalid={errors.phone ? true : undefined}
+                  aria-describedby={describedBy('phone')}
+                />
+                {fieldError('phone')}
+              </label>
+              <label className="lp-field">
+                Email
+                <input
+                  ref={fieldRefs.email}
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  required
+                  data-clarity-mask="true"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  aria-invalid={errors.email ? true : undefined}
+                  aria-describedby={describedBy('email')}
+                />
+                {fieldError('email')}
+              </label>
               <label className="lp-field">
                 <span>
                   Anything else? <span className="lp-hint">Optional</span>

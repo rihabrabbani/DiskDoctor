@@ -111,9 +111,6 @@
 .lp-pref { margin: 0; }
 .lp-fields { display: flex; flex-direction: column; gap: 14px; }
 .lp-fields .lp-chips { margin: 0; }
-.lp-contact { border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
-.lp-contact legend { padding: 0; margin: 0 0 10px; font-size: 14px; font-weight: 600; }
-.lp-contact legend .lp-hint { font-weight: 400; color: var(--lp-muted); }
 .lp-grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0 0 18px; }
 .lp-field { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600; }
 .lp-field .lp-hint { font-weight: 400; color: var(--lp-muted); }

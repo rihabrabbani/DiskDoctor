@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { PHONE_TEL } from '@/lib/site';
+import LpPrepare from '@/components/lp/LpPrepare';
 
 export const metadata: Metadata = {
   title: 'Thank You',
@@ -36,6 +37,8 @@ export default function ThankYouPage() {
               </a>
               .
             </p>
+            {/* Only after a landing-page lead: optional urgency and files-needed questions. */}
+            <LpPrepare />
             <div className="bg-[var(--color-surface-100)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 mb-8">
               <p className="text-lg text-[var(--color-text-secondary)] leading-relaxed">
                 <strong className="text-[var(--color-text-primary)]">While you wait:</strong>{' '}power the

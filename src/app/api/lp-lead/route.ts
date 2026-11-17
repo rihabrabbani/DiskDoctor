@@ -13,6 +13,7 @@ import {
 } from '@/lp/config/form';
 import { LP_FORM_GUID_IS_PLACEHOLDER, LP_SUBMIT_URL } from '@/lp/config/hubspot';
 import { isValidEmail, isValidPhone, toE164 } from '@/lp/phone';
+import { prepareToken } from '@/lp/prepareToken';
 
 // Landing-page form → HubSpot Forms API (unauthenticated submit endpoint, form "LP – free evaluation").
 // The visitor only ever sees {ok}; HubSpot errors are logged here.
@@ -88,9 +89,8 @@ export async function POST(req: NextRequest) {
   if (priorAttempt && !oneOf(priorAttempt, PRIOR_ATTEMPT)) return reject('prior attempt');
   if (raidLevel && !oneOf(raidLevel, RAID_LEVELS)) return reject('raid level');
   if (contactPref && !oneOf(contactPref, CONTACT_PREFS)) return reject('contact pref');
-  // A name plus a phone number or an email (at least one); whichever is given must be valid.
-  if (!name || (!phone && !email)) return reject('contact fields');
-  if ((phone && !isValidPhone(phone)) || (email && !isValidEmail(email))) return reject('contact fields');
+  // Name, phone and email are all required (phone and email are required in the HubSpot form too).
+  if (!name || !isValidPhone(phone) || !isValidEmail(email)) return reject('contact fields');
 
   if (LP_FORM_GUID_IS_PLACEHOLDER) {
     console.error('[lp-lead] LP_FORM_GUID is still the placeholder in src/lp/config/hubspot.ts; lead not sent.');
@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
   const values: Record<string, string> = {
     firstname,
     lastname: rest.join(' '),
-    phone: phone ? toE164(phone) : '',
+    phone: toE164(phone),
     email: email.toLowerCase(),
     service_state: state,
     recovery_device_type: device,
@@ -155,7 +155,8 @@ export async function POST(req: NextRequest) {
       console.error(`[lp-lead] HubSpot ${res.status}: ${(await res.text()).slice(0, 1000)}`);
       return NextResponse.json({ ok: false }, { status: 502 });
     }
-    return NextResponse.json({ ok: true });
+    // Lets /thank-you add urgency and files needed to this contact (api/lp-prepare).
+    return NextResponse.json({ ok: true, prepareToken: prepareToken(submissionId, values.email, values.phone) });
   } catch (error) {
     console.error('[lp-lead] HubSpot request failed', error);
     return NextResponse.json({ ok: false }, { status: 502 });

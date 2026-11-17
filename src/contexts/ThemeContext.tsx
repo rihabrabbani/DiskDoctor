@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
+import { isLightOnlyPath } from '@/lib/lightOnly';
 
 type Theme = 'light' | 'dark';
 
@@ -18,10 +19,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Check for saved theme preference or default to system preference
     const savedTheme = localStorage.getItem('theme') as Theme;
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    const initialTheme = savedTheme || systemTheme;
-    
+    // Light-only pages (/thank-you) ignore both, like the pre-paint script in app/layout.tsx.
+    const lightOnly = isLightOnlyPath(window.location.pathname);
+    const initialTheme = lightOnly ? 'light' : savedTheme || systemTheme;
+
     setTheme(initialTheme);
     document.documentElement.className = initialTheme;
+    if (lightOnly) document.documentElement.style.colorScheme = 'light';
   }, []);
 
   const toggleTheme = () => {

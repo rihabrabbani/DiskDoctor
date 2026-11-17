@@ -7,6 +7,7 @@ import AnalyticsClicks from "@/components/analytics/AnalyticsClicks";
 import HubspotPageViews from "@/components/analytics/HubspotPageViews";
 import FirstTouch from "@/components/analytics/FirstTouch";
 import StickyMobileBar from "@/components/layout/StickyMobileBar";
+import { LIGHT_ONLY_PATH } from '@/lib/lightOnly';
 import { SITE_URL, SITE_URL_SLASH } from "@/lib/site";
 
 // GTM is the only Google tag on the site: GA4, Google Ads conversions and remarketing all live in the container.
@@ -85,11 +86,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Set the theme before first paint, so dark-mode visitors don't see the light theme flash first.
-            ThemeContext applies the same rule after hydration. */}
+            ThemeContext applies the same rule after hydration. Light-only pages (/thank-you) skip dark mode. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.className=t}catch(e){}",
+              `try{var l=${LIGHT_ONLY_PATH}.test(location.pathname),d=document.documentElement,t=l?'light':localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');d.className=t;if(l)d.style.colorScheme='light'}catch(e){}`,
           }}
         />
       </head>

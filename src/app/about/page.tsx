@@ -3,6 +3,8 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { COLUMBIA_ADDRESS, PHONE_DISPLAY, PHONE_TEL, SITE_URL, TYSONS_ADDRESS } from '@/lib/site';
 import Link from 'next/link';
+import TeamSection from '@/components/about/TeamSection';
+import { teamPersonSchema } from '@/data/team';
 
 export const metadata: Metadata = {
   title: {
@@ -49,13 +51,18 @@ export default function AboutPage() {
             recovery fee if we cannot retrieve what you need. Confidentiality and chain-of-custody
             are available for legal and medical media.
           </p>
+        </article>
+        <TeamSection />
+        <div className="container mx-auto px-4 max-w-3xl text-lg text-[var(--color-text-secondary)] leading-relaxed">
           <p>
             <Link href="/contact" className="text-[var(--color-primary)] font-semibold">Request a free evaluation</Link>
             {' '}or see <Link href="/locations" className="text-[var(--color-primary)] font-semibold">locations</Link>.
           </p>
-        </article>
+        </div>
       </main>
       <Footer />
+      {/* SEO change list v6, T2: Person schema for the team, on /about only. */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(teamPersonSchema) }} />
     </div>
   );
 }

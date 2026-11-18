@@ -8,6 +8,7 @@ import ServicesSection from '@/components/home/ServicesSection';
 import RecoveryProcess from '@/components/home/RecoveryProcess';
 import HomeLocations from '@/components/home/HomeLocations';
 import HomeRecoveries from '@/components/home/HomeRecoveries';
+import HomeTeam from '@/components/home/HomeTeam';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 import EmergencyContact from '@/components/home/EmergencyContact';
 import ScrollAnimations from '@/components/utils/ScrollAnimations';
@@ -25,6 +26,7 @@ export default function HomePage() {
         <ServicesSection />
         <RecoveryProcess />
         <HomeLocations />
+        <HomeTeam />
         <HomeRecoveries />
 
         <section id="faq" className="py-16 lg:py-24">

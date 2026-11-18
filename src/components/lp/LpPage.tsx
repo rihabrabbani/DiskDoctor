@@ -18,6 +18,7 @@ import {
   LpHero,
   OfficeBlock,
   SymptomGrid,
+  TeamBlock,
   WhatHappenedTiles,
 } from './LpSections';
 
@@ -92,6 +93,7 @@ export default function LpPage({ areaId, templateId }: { areaId: AreaId; templat
         <HowItWorks area={area} photos={HOW_IT_WORKS_PHOTOS} va={isVa} />
         {isVa && <LabPhotos photos={photos.lab} mobile={photos.labMobile} />}
         <FeaturedReview rating={featuredRating} ratingBig={ratingBig} review={featured} meta={featuredMeta} />
+        <TeamBlock va={isVa} />
         <OfficeBlock
           area={area}
           mapsUrl={rating.mapsUrl}

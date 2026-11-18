@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { LAB_PHONE, LAB_TEL, type Area } from '@/lp/config/areas';
 import type { FaqItem, Template } from '@/lp/config/templates';
+import { lpTeam } from '@/lp/config/team';
 import type { LocationRating, LpReview, StackAvatar } from '@/lp/reviews';
 import type { LabPhotoCode } from '@/data/labPhotos';
 import logo from '@/../public/images/light_mode.png';
@@ -349,6 +350,32 @@ export function FeaturedReview({
             </a>
           </figcaption>
         </figure>
+      </div>
+    </section>
+  );
+}
+
+// Ads brief 18 Nov: who handles the drive, right after the reviews. No link to /about (it would take ad
+// visitors away from the form, and /about names the Columbia lab) and no Person schema here.
+export function TeamBlock({ va = false }: { va?: boolean }) {
+  return (
+    <section className="lp-reveal" data-track-position="team" aria-labelledby="lp-team-h">
+      <div className="lp-wrap lp-sec lp-team">
+        <h2 id="lp-team-h" className="lp-h2">
+          Who handles your drive
+        </h2>
+        <ul className="lp-team-list">
+          {lpTeam(va).map((m) => (
+            <li key={m.id}>
+              <Image src={m.photo} alt={m.alt} width={96} height={96} loading="lazy" className="lp-team-photo" />
+              <div>
+                <strong>{m.name}</strong>
+                <span className="lp-team-title">{m.title}</span>
+                <p>{m.line}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

@@ -45,7 +45,7 @@ type RawReview = {
 // Ads brief 16 Nov: every review stays, but work-related ones lead and the family-photo ones go last.
 // MD pages also get the Columbia work reviews, which their strips didn't have.
 const WORK_FIRST = ['mustafar-raheem', 'jordan-johnson', 'jennifer-leigh-tully', 'sunny-2021', 'moeez-ahmed'];
-const PERSONAL_LAST = ['kylie-berry', 'yaadira-brown', 'yassaman-hashemi', 'sincerelymaha', 'gracie-hunt'];
+const PERSONAL_LAST = ['kylie-berry', 'yaadira-brown', 'yassaman-hashemi', 'sincerelymaha'];
 // The featured block follows the same idea: a work review instead of a personal one.
 const FEATURED_OVERRIDE: Record<string, string> = {
   'va/hard-drive': 'jordan-johnson',
@@ -56,7 +56,8 @@ const FEATURED_OVERRIDE: Record<string, string> = {
 };
 
 const MIN_STARS = 4;
-const LP_EXCLUDE = new Set(['menna-khaliel', 'kristin-deghetaldi']);
+// 18 Nov: Gracie Hunt's review is off too (same name as the Director of Operations in the team block).
+const LP_EXCLUDE = new Set(['menna-khaliel', 'kristin-deghetaldi', 'gracie-hunt']);
 const VA_EXCLUDE = new Set(['moeez-ahmed']);
 
 const reviews = data.reviews as Record<string, RawReview>;

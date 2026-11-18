@@ -195,10 +195,9 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     reviews: [
       {
-        quote:
-          'My hard drive crashed and I lost all of my family photos… they were able to help get my photos back whereas the other company I previously contacted told me that the data wasn’t even recoverable.',
-        author: 'Gracie H.',
-        date: 'April 2025',
+        quote: 'Immaculately recovered my completely dead 8-terabyte disk drive.',
+        author: 'One Love Co-Op Network',
+        date: 'November 2025',
       },
       {
         quote:

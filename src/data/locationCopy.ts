@@ -195,6 +195,7 @@ export const locationCopy: Record<string, LocationCopy> = {
     ],
     reviews: [
       {
+        // 18 Nov: replaces the Gracie H. review (same name as the Director of Operations).
         quote: 'Immaculately recovered my completely dead 8-terabyte disk drive.',
         author: 'One Love Co-Op Network',
         date: 'November 2025',

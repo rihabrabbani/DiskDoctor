@@ -97,7 +97,7 @@ export const TEMPLATES: Record<TemplateId, Template> = {
     slug: 'raid-nas-server',
     h1: () => ({ lead: 'RAID, NAS & server data recovery' }),
     metaDescription: () =>
-      `RAID, NAS and server data recovery for businesses in MD, DC & VA. Columbia, MD lab, free shipping both ways. ${facts}`,
+      `RAID, NAS and server data recovery for businesses across the US. Columbia, MD lab, free shipping both ways. ${facts}`,
     symptomsH: 'RAID, NAS and server failures we recover from',
     symptomsP: 'Hardware and software RAID, Synology and QNAP NAS boxes, and servers.',
     symptoms: [

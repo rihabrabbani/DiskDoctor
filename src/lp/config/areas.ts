@@ -94,16 +94,16 @@ const va: Area = {
   stickyCallLabel: 'Call Tysons',
 };
 
-// /lp/raid-nas-server: business page for MD, DC & VA, on the lab line.
+// /lp/raid-nas-server: business page, mail-in from anywhere in the US, on the lab line.
 const all: Area = {
   ...md,
   id: 'all',
-  // The RAID page serves MD, DC and VA, so the form leaves service_state blank.
+  // The RAID page is not tied to one state, so the form leaves service_state blank.
   stateDefault: '',
-  eyebrow: 'Recovery lab · Columbia, MD · serving MD, DC & VA',
+  eyebrow: 'Recovery lab · Columbia, MD · mail-in from anywhere in the US',
   place: '',
   heroSub:
-    'Failed rebuild, degraded array or a NAS that won’t mount? RAID, NAS and server recovery for businesses across MD, DC and VA, in our Columbia lab since 1991.',
+    'Failed rebuild, degraded array or a NAS that won’t mount? RAID, NAS and server recovery for businesses across the US, in our Columbia lab since 1991.',
 };
 
 export const AREAS: Record<AreaId, Area> = { md, va, all };
